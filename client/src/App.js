@@ -4,9 +4,6 @@ import { Route, Routes } from 'react-router-dom'
 import Footer from "./components/Footer/Footer.js";
 import './app.css'
 
-
-
-
 function App() {
 
   return (
