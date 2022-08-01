@@ -1,8 +1,5 @@
 import style from "./Footer.module.css"
-import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
-import { BsFillBriefcaseFill } from "react-icons/bs";
-
-
+import { FaGithub } from "react-icons/fa";
 
 function Footer() {
     return (

@@ -16,7 +16,7 @@ function NavBar() {
             <NavbarContainer>
                 <NavbarWrapper>
                     <IconLogo>
-                        Tu Hermana
+                        PF-LIBROS
                     </IconLogo>
                     <IconLogoMovile onClick={() => changeClick()}>
                         {click ? <FaTimes /> : <FaBars />}
