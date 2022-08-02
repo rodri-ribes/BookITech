@@ -8,7 +8,7 @@ import { setComent } from '../../redux/features/data/dataSlice';
 function Review({currentValue}) {
     const dispatch=useDispatch()
     const [form,setForm]= useState({
-        review:""
+        review:"",
     })
   return (
    <> 
@@ -16,7 +16,8 @@ function Review({currentValue}) {
         <Formik
             initialValues={
                 {
-                    review:""
+                    review:"",
+                    nameUser:"Name1"
                 }
             }
             validate={(v)=>{
@@ -39,6 +40,7 @@ function Review({currentValue}) {
         >
          {({errors})=>(
             <Form >
+               <div className={det.ContainerForm}>
                 <div className={det.Container_Det3}>
                     <label >Let your review here</label>
                     <Field
@@ -51,14 +53,16 @@ function Review({currentValue}) {
                     />
                     <ErrorMessage name='review' component={()=>(<div>{errors.review}</div>)}/>
                     
-                </div>
                     <button 
                         type="submit"
                         className={det.SubButton}><strong>Submit</strong>
                     </button>
-                <div>
-                    <ReviewCard currentValue={currentValue} form={form}/>
                 </div>
+                    
+                <div>
+                    <ReviewCard currentValue={currentValue}/>
+                </div>
+               </div>
             </Form>
          )}    
         </Formik>

@@ -41,6 +41,10 @@ function removeHover(){
     <>
     {}
   <div className={det.ContainerMaxDet}>
+      <div className={det.Container_Det2}>
+        <img src={img} alt="not found" className={det.ImgRedonda1}/>
+        <button className={det.Container_Information_btn}>Buy me!! <RiShoppingCart2Fill/></button>
+      </div>
     <div className={det.Container_Det1}>
       <h1 className={det.Title}>Tittle</h1> 
       <h2>Author</h2>
@@ -70,13 +74,22 @@ function removeHover(){
         </div>
         
       </div>
-      
-      <div className={det.Container_Det2}>
-        <img src={img} alt="not found" width="500px"/>
-        <button>Buy me!! <RiShoppingCart2Fill/></button>
       </div>
-        <Review currentValue={currentValue}/> 
+      <div className={det.ContainerSumm}>
+        <div className={det.Container_Det6}>
+          <h1 className={det.Summary}>Summary</h1>
+          <p>
+            Wilco es una banda de rock alternativo de Chicago, Illinois, Estados Unidos, formada en 1994 por los miembros restantes de la banda de country alternativo Uncle Tupelo poco después de la marcha del cantante Jay Farrar. La formación de Wilco ha sufrido diversos cambios desde su formación, con solo el vocalista/compositor Jeff Tweedy y el bajista John Stirratt como miembros fijos desde el inicio. Desde principios de 2004, el resto de la banda consta del guitarrista Nels Cline, los multiinstrumentistas Pat Sansone y Mikael Jorgensen y el batería Glenn Kotche. Han lanzado al mercado ocho discos de estudio, un álbum en directo y tres colaboraciones: dos con Billy Bragg y uno con The Minus 5.
+          </p>
+        </div>
+        <div className={det.Container_Det6}>
+          <h1 className={det.Summary}>Synapse</h1>
+          <p>
+            Wilco es una banda de rock alternativo de Chicago, Illinois, Estados Unidos, formada en 1994 por los miembros restantes de la banda de country alternativo Uncle Tupelo poco después de la marcha del cantante Jay Farrar. La formación de Wilco ha sufrido diversos cambios desde su formación, con solo el vocalista/compositor Jeff Tweedy y el bajista John Stirratt como miembros fijos desde el inicio. Desde principios de 2004, el resto de la banda consta del guitarrista Nels Cline, los multiinstrumentistas Pat Sansone y Mikael Jorgensen y el batería Glenn Kotche. Han lanzado al mercado ocho discos de estudio, un álbum en directo y tres colaboraciones: dos con Billy Bragg y uno con The Minus 5.
+          </p>
+        </div>
       </div>
+      <Review currentValue={currentValue}/> 
     </>
   )
 }
