@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-//features
+//Aca
 
-import userReducers from "../features/user/userSlice.js";
+import dataReducers from "../features/data/dataSlice.js";
 
 const store = configureStore({
     reducer: {
-        user: userReducers,
+        data: dataReducers,
     }
 })
 
