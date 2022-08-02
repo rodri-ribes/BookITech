@@ -1,0 +1,76 @@
+body{
+    background-color: burlywood;
+}
+.ContainerMaxDet{
+    display: flex;
+}
+.ContainerRev{
+    display: flex;
+    flex-direction: column;
+
+}
+.Container_Det1 {
+    width: 700px;
+    background-color: rgba(72, 68, 68, 0.365);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+}
+.Container_Det2 {
+    border: solid 5px rgb(84, 123, 136);
+    background-color: rgba(72, 68, 68, 0.483);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+}
+.Container_Det3{
+    margin: 10px;
+    width: 100%;
+}
+.Title{
+    color:rgb(47, 31, 2);
+    margin: 30px;
+    font-size:50px;
+}
+.List{
+    list-style:none;
+    margin: 20px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    font-size: 20px;
+    font-family:fantasy;
+}
+.Price{
+    margin: 30px;;
+}
+.ButtonRow{
+    display: inline-flex;
+    justify-content:space-around;
+    width: 70%;
+    box-sizing: border-box;
+    user-select: none;
+}
+.StarButton{
+    font-size: 2rem;
+    background-color: unset;
+    border:none;
+    
+}
+.StarButton:hover{
+    cursor: pointer;
+}
+.Review{
+    border: solid 1px grey;
+    border-radius: 5px;
+    height: 100px;
+    width: 300px;
+    padding: 10px;
+
+}
+.SubButton{
+    width: 300px;
+    height: 30px;
+}
