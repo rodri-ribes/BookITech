@@ -6,7 +6,6 @@ export const dataSlice = createSlice({
     name: "data",
     initialState: {
         details:[],
-        comments:[],
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -16,20 +15,12 @@ export const dataSlice = createSlice({
         getBookDetails: (state,actions)=>{
             state.details= actions.payload
         },
-        addComments:(state, actions)=>{
-            return{
-                ...state,
-                comments:[...state.comments,actions.payload]
-            }
-            
-        }
     }
 })
 
 //Cada reducer que creen lo tienen que exportar asi
 
 export const { addLibro } = dataSlice.actions;
-export const {addComments}= dataSlice.actions;
 export const {getBookDetails} = dataSlice.actions;
 
 
@@ -42,7 +33,9 @@ export default dataSlice.reducer;
 export const getLibros = () => async (dispatch) => {
 
     try {
-        const resp = await axios.get(`http://localhost:3001/ejemplo`,)
+        const resp = await axios.get(`http://localhost:3001/ejemplo`,{
+
+        })
         dispatch(addLibro(resp.data))
     } catch (error) {
         console.log(error)
@@ -55,7 +48,4 @@ export const getBookDetail=(id)=> async(dispatch)=>{
     } catch (error) {
         console.log(error)
     }
-}
-export const setComent =(payload)=>async (dispatch) =>{
-    dispatch(addComments(payload))
 }
