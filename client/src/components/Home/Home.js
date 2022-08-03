@@ -1,55 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CardBook from './CardBook/CardBook'
 import style from './home.module.css'
 import { Paginacion } from './Pagination/Pagination';
-
+import { useDispatch, useSelector } from 'react-redux'
+import { getLibros } from '../../redux/features/data/dataSlice';
 
 export default function Home() {
 
-    //array de pruebaa
+    let dispatch = useDispatch();
 
-    let books = [
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PHYSICAL", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PHYSICAL", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PHYSICAL", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PHYSICAL", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PHYSICAL", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PHYSICAL", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-        { name: "Title ultimo", img: "img1", author: "Author", gender: "Terror", idiom: "español", format: "PDF", price: 500 },
-    ]
+    useEffect(() => {
+        dispatch(getLibros())
+    }, [dispatch])
+
+    let books = useSelector(state => state.data.books);
+
+    //logica de paginado
 
     const [pagina, setPagina] = useState(1);
 
@@ -67,13 +33,13 @@ export default function Home() {
                     ).map((l, i) => {
                         return (
                             <CardBook
-                                name={l.name}
+                                name={l.title}
                                 author={l.author}
                                 gender={l.gender}
                                 idiom={l.idiom}
                                 format={l.format}
                                 price={l.price}
-                                img={l.img}
+                                img={l.image}
                                 key={i}
                             />
                         )

@@ -5,12 +5,12 @@ import axios from "axios";
 export const dataSlice = createSlice({
     name: "data",
     initialState: {
-
+        books: []
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
         addLibro: (state, actions) => {
-            state.projects = actions.payload
+            state.books = actions.payload;
         }
     }
 })
@@ -28,8 +28,7 @@ export default dataSlice.reducer;
 export const getLibros = () => async (dispatch) => {
 
     try {
-        const resp = await axios.get(`http://localhost:3001/ejemplo`, {
-        })
+        const resp = await axios.get(`http://localhost:3001/books`)
         dispatch(addLibro(resp.data))
     } catch (error) {
         console.log(error)
