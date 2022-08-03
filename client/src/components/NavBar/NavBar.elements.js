@@ -12,6 +12,14 @@ export const NavbarContainer = styled.div`
     `;
 
 
+export const ContainerSearch = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 800px;
+`;
+
+
 export const NavbarWrapper = styled.div`
     margin: auto;
     width: 100%;
@@ -34,7 +42,7 @@ export const IconLogo = styled.div`
     font-family: "Oswald";
     font-size: 2rem;
     color: #ebc88b;
-
+    width: 100%;
     @media screen and (max-width: 968px){
         width: 100%;
         margin-left: 20px;
@@ -47,7 +55,6 @@ export const Menu = styled.ul`
     display: flex;
     justify-content: center;
     align-items: center;
-    
     @media screen and (max-width: 968px){
         width: 100%;
         height: 100vh;

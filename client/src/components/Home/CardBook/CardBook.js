@@ -4,19 +4,25 @@ import { RiShoppingCartLine } from 'react-icons/ri'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { AddCart, deleteCart } from '../../../redux/features/data/dataSlice'
 
 export default function CardBook({ id, name, author, img, gender, idiom, format, price }) {
 
     const [cart, setCart] = useState(false)
     const [heart, setHeart] = useState(false)
 
+    let dispatch = useDispatch();
+
     const addToCart = () => {
         //Aca iria el dispatch de la actions que agregaria el item al carrito
         setCart(true)
+        dispatch(AddCart(id))
     }
     const RemoveToCart = () => {
         //Aca iria el dispatch de la actions que quitaria el item al carrito
         setCart(false)
+        dispatch(deleteCart(id))
     }
 
     const addToFav = () => {
@@ -32,8 +38,6 @@ export default function CardBook({ id, name, author, img, gender, idiom, format,
     return (
         <div className={style.Container}>
             <div className={style.Container__IMG}>
-                {/* <p className={style.Container__IMG_gender}>{gender}</p>
-                <p className={style.Container__IMG_format}>{format}</p> */}
                 <img src={img} alt={name} />
             </div>
             <div className={style.Container__Information}>

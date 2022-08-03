@@ -6,10 +6,10 @@ export const dataSlice = createSlice({
     name: "data",
     initialState: {
         books: [],
-        projects: [],
         book: [],
         author: [],
         details: [],
+        Cart: []
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -31,13 +31,19 @@ export const dataSlice = createSlice({
         getBookDetails: (state, actions) => {
             state.details = actions.payload
         },
+        addCart: (state, actions) => {
+            state.Cart = state.Cart.concat(state.books.filter(l => l.isbn13 === actions.payload))
+        },
+        deleteCart: (state, actions) => {
+            state.Cart = state.Cart.filter(l => l.isbn13 !== actions.payload)
+        },
 
     }
 })
 
 //Cada reducer que creen lo tienen que exportar asi
 
-export const { addLibro, SearchAuthor, SearchTitle, getBookDetails } = dataSlice.actions;
+export const { addLibro, SearchAuthor, SearchTitle, getBookDetails, addCart, deleteCart } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
 
@@ -85,4 +91,12 @@ export const getBookDetail = (id) => async (dispatch) => {
     } catch (error) {
         console.log(error)
     }
+}
+
+
+export const AddCart = (id) => async (dispatch) => {
+    dispatch(addCart(id))
+}
+export const DeleteCart = (id) => async (dispatch) => {
+    dispatch(deleteCart(id))
 }
