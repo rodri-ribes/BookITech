@@ -1,17 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export const dataSlice = createSlice({
-    name: 'data',
+    name: "data",
     initialState: {
+        books: [],
         projects: [],
         book: [],
         author: [],
+        details: [],
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
         addLibro: (state, actions) => {
-            state.projects = actions.payload;
+            state.books = actions.payload;
         },
         //Search
         SearchTitle: (state, actions) => {
@@ -25,18 +28,32 @@ export const dataSlice = createSlice({
                 e.author.includes(actions.payload)
             );
         },
-    },
-});
+        getBookDetails: (state, actions) => {
+            state.details = actions.payload
+        },
+
+    }
+})
 
 //Cada reducer que creen lo tienen que exportar asi
 
-export const { addLibro, SearchAuthor, SearchTitle } = dataSlice.actions;
+export const { addLibro, SearchAuthor, SearchTitle, getBookDetails } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
 
 export default dataSlice.reducer;
 
-//Aca irian las actions, dejo una como modo de ejemplo
+//Aca irian las actions, dejo una como modo de ejemplo 
+
+export const getLibros = () => async (dispatch) => {
+
+    try {
+        const resp = await axios.get(`http://localhost:3001/books`)
+        dispatch(addLibro(resp.data))
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 //Search
 export const disSearch = (payload) => async (dispatch) => {
@@ -46,7 +63,7 @@ export const getSearch = (name) => async (dispatch) => {
     try {
         let buscar = await axios.get(
             //URL PARA BUSCAR
-            `http://localhost:3001/books/${name}`
+            http://localhost:3001/books/${name}
         );
         dispatch(disSearch(buscar.data));
         // console.log(buscar.data);
@@ -59,3 +76,13 @@ export const getSearch = (name) => async (dispatch) => {
 export const getSearchAuthor = (payload) => (dispatch) => {
     dispatch(SearchAuthor(payload));
 };
+
+
+export const getBookDetail = (id) => async (dispatch) => {
+    try {
+        const resp = await axios.get(`http://localhost:3001/Book/${id}`)
+        dispatch(getBookDetail(resp.data))
+    } catch (error) {
+        console.log(error)
+    }
+}
