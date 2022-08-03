@@ -46,7 +46,7 @@ export const getSearch = (name) => async (dispatch) => {
     try {
         let buscar = await axios.get(
             //URL PARA BUSCAR
-            `http://localhost:3003/api/tasks?name=${name}`
+            `http://localhost:3001/books/${name}`
         );
         dispatch(disSearch(buscar.data));
         // console.log(buscar.data);
