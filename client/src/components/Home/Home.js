@@ -34,6 +34,7 @@ export default function Home() {
                         return (
                             <CardBook
                                 name={l.title}
+                                id={l.isbn13}
                                 author={l.author}
                                 gender={l.gender}
                                 idiom={l.idiom}
