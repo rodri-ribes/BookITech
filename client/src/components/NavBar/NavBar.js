@@ -7,6 +7,7 @@ import {
     MenuItemLink,
     IconLogoMovile,
     IconLogo,
+    ContainerSearch,
 } from './NavBar.elements';
 import {
     FaBars,
@@ -17,6 +18,7 @@ import {
 } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 import Search from '../Search/Search';
+import CartShopping from '../CartShopping/CartShopping';
 
 function NavBar() {
     const [click, setClick] = useState(false);
@@ -28,11 +30,13 @@ function NavBar() {
         <>
             <NavbarContainer>
                 <NavbarWrapper>
-                    <IconLogo>PF-LIBROS</IconLogo>
-                    <Search />
-                    <IconLogoMovile onClick={() => changeClick()}>
-                        {click ? <FaTimes /> : <FaBars />}
-                    </IconLogoMovile>
+                    <ContainerSearch>
+                        <IconLogo>PF-LIBROS</IconLogo>
+                        <Search />
+                        <IconLogoMovile onClick={() => changeClick()}>
+                            {click ? <FaTimes /> : <FaBars />}
+                        </IconLogoMovile>
+                    </ContainerSearch>
                     <Menu click={click}>
                         <MenuItem onClick={() => changeClick()}>
                             <MenuItemLink>
@@ -58,6 +62,7 @@ function NavBar() {
                                 </div>
                             </MenuItemLink>
                         </MenuItem>
+                        <CartShopping />
                     </Menu>
                 </NavbarWrapper>
             </NavbarContainer>
