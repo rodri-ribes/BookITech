@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 import Footer from "./components/Footer/Footer.js";
 import './app.css'
 import Home from "./components/Home/Home.js";
+import Detail from "./components/BookDetail/Detail"
 
 function App() {
 
