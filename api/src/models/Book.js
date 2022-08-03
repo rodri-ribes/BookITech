@@ -42,11 +42,12 @@ const BookSchema = new Schema({
     release_date:{
         type: Date
     },
+    img:{
+        type:String
+    },
     comments:[{
-        body:{ type: String, date: Date},
-        author:{ type: String },
-        rating:{ type: Number, min: 0, max: 10},
-        spoiler:{type: Boolean}
+        type: Schema.Types.ObjectId,
+        ref:'Comment'
     }]
 
 })
