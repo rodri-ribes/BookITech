@@ -85,10 +85,12 @@
 .Container__Information_title{
     font-family: 'Noto Sans', sans-serif;
     letter-spacing: 2px;
-    font-size: 1.3rem;
+    font-size: 0.8rem;
     margin-left: 0.5rem;
     width: 100%;
     word-wrap: break-word;
+    text-decoration: none;
+    color: white;
 }
 
 .Container__Information__ContainerAuthorAndPrice_author{

@@ -86,4 +86,3 @@ export const getBookDetail = (id) => async (dispatch) => {
         console.log(error)
     }
 }
-
