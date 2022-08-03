@@ -1,16 +1,18 @@
 import React,{useEffect,useState} from 'react'
 import {useParams} from "react-router-dom"
 import {useDispatch, useSelector} from "react-redux"
-import { getBookDetails } from '../../redux/features/data/dataSlice'
+import { getBookDetails ,setComent} from '../../redux/features/data/dataSlice'
 import det from "./Detail.module.css"
 import {RiShoppingCart2Fill} from "react-icons/ri"
 import {FaStar} from "react-icons/fa"
-import Review from './Review'
+import ReviewCards from './ReviewCards'
+
+
 const img= "https://www.collinsdictionary.com/images/full/book_181404689_1000.jpg"
 function Detail() {
   //nombre, autor, editorial, genero, idioma, formato, precio, stock, img
   const dispatch=useDispatch()
-  const {details}=useSelector((state=>state.data))
+  //const {details}=useSelector((state=>state.data))
   const {id}= useParams()
   useEffect(()=>{
     dispatch(getBookDetails(id))
@@ -27,6 +29,7 @@ const[hover,setHover]= useState(undefined)
 
 function changeClick(value){
   setCurrent(value)
+  //dispatch(setComent(currentValue))
 }
 function hoverStar(value){
   setHover(value)  
@@ -89,7 +92,8 @@ function removeHover(){
           </p>
         </div>
       </div>
-      <Review currentValue={currentValue}/> 
+      {/* <Review currentValue={currentValue} currentUser="1"/>  */}
+      <ReviewCards currentValue={currentValue} currentUserId="1"/>
     </>
   )
 }

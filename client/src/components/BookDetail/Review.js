@@ -1,71 +1,46 @@
 import React,{useState}from 'react'
 import det from "./Detail.module.css"
-import {useDispatch} from "react-redux"
-import ReviewCard from "./ReviewCard"
-import {Formik,Form,ErrorMessage,Field} from "formik";
-import { setComent } from '../../redux/features/data/dataSlice';
+// import {useDispatch,useSelector} from "react-redux"
+// import { setComent } from '../../redux/features/data/dataSlice';
 
-function Review({currentValue}) {
-    const dispatch=useDispatch()
-    const [form,setForm]= useState({
-        review:"",
-    })
+function Review({handleSubmit,submitLabel,hasCancelButt=false,initialText="",handleCancel}) {
+    // const {comments}=useSelector((state=>state.data))
+    // const dispatch=useDispatch()
+    const [form,setForm]= useState(initialText)
+    const isDisable= form.length===0
+
+    const onSubmit =e =>{
+        e.preventDefault()
+        handleSubmit(form)
+        setForm("")
+    }
+   
   return (
    <> 
      <div className={det.ContainerRev}>
-        <Formik
-            initialValues={
-                {
-                    review:"",
-                    nameUser:"Name1"
-                }
-            }
-            validate={(v)=>{
-                let error={}
-                if(!v.review){
-                    error.review="Please insert a comentary"
-                }
-                else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(v.review)){
-                    error.review="Review need a comentary"
-                }
-                return error
-            }}
-            onSubmit={(v,{resetForm})=>{
-                resetForm()
-                setForm(v)
-                dispatch(setComent(v))
-                console.log(form);
-                console.log("enviado")
-            }}
-        >
-         {({errors})=>(
-            <Form >
-               <div className={det.ContainerForm}>
+            <form onSubmit={onSubmit}>
+               <div className={det.ContainerForm2}>
                 <div className={det.Container_Det3}>
                     <label >Let your review here</label>
-                    <Field
-                        type="text"
-                        name="review"
-                        id="review"
+                    <textarea
+                        value={form}
                         placeholder='Customer Review'
                         className={det.Review}
-                        as="textarea"
+                        onChange={(e)=>setForm(e.target.value)}
                     />
-                    <ErrorMessage name='review' component={()=>(<div>{errors.review}</div>)}/>
-                    
-                    <button 
-                        type="submit"
-                        className={det.SubButton}><strong>Submit</strong>
-                    </button>
                 </div>
-                    
-                <div>
-                    <ReviewCard currentValue={currentValue}/>
+                <div className={det.ButtonContainer}>
+                <button 
+                        disabled={isDisable}
+                        className={det.comment_form_button}><strong>{submitLabel}</strong>
+                    </button>
+                    {hasCancelButt && (
+                        <button type="button" className={det.comment_form_button}
+                        onClick={handleCancel}>cancel</button>
+                    )}
                 </div>
                </div>
-            </Form>
-         )}    
-        </Formik>
+            </form>    
     </div>
    </>
   )
