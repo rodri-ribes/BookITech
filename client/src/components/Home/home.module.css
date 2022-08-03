@@ -1,0 +1,35 @@
+.Container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.Container__PanelCards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.Container__Pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.Container__Pagination_btns{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 200px;
+    outline: 1px solid blue;
+}
+
+.Container__Pagination_btns button{
+    padding: 5px 10px;
+}

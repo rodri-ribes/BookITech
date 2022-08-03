@@ -5,33 +5,39 @@ import axios from "axios";
 export const dataSlice = createSlice({
     name: "data",
     initialState: {
-        details:[],
-        comments:[],
+        books: [],
+        projects: [],
+        book: [],
+        author: [],
+        details: [],
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
         addLibro: (state, actions) => {
-            state.projects = actions.payload
+            state.books = actions.payload;
         },
-        getBookDetails: (state,actions)=>{
-            state.details= actions.payload
-        },
-        addComments:(state, actions)=>{
-            return{
+        //Search
+        SearchTitle: (state, actions) => {
+            return {
                 ...state,
-                comments:[...state.comments,actions.payload]
-            }
-            
-        }
+                book: actions.payload,
+            };
+        },
+        SearchAuthor: (state, actions) => {
+            state.author = state.allprojects.filter((e) =>
+                e.author.includes(actions.payload)
+            );
+        },
+        getBookDetails: (state, actions) => {
+            state.details = actions.payload
+        },
+
     }
 })
 
 //Cada reducer que creen lo tienen que exportar asi
 
-export const { addLibro } = dataSlice.actions;
-export const {addComments}= dataSlice.actions;
-export const {getBookDetails} = dataSlice.actions;
-
+export const { addLibro, SearchAuthor, SearchTitle, getBookDetails } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
 
@@ -42,20 +48,42 @@ export default dataSlice.reducer;
 export const getLibros = () => async (dispatch) => {
 
     try {
-        const resp = await axios.get(`http://localhost:3001/ejemplo`,)
+        const resp = await axios.get(`http://localhost:3001/books`)
         dispatch(addLibro(resp.data))
     } catch (error) {
         console.log(error)
     }
 }
-export const getBookDetail=(id)=> async(dispatch)=>{
+
+//Search
+export const disSearch = (payload) => async (dispatch) => {
+    dispatch(SearchTitle(payload));
+};
+export const getSearch = (name) => async (dispatch) => {
     try {
-        const resp =await axios.get(`http://localhost:3001/Book/${id}`)
+        let buscar = await axios.get(
+            //URL PARA BUSCAR
+            http://localhost:3001/books/${name}
+        );
+        dispatch(disSearch(buscar.data));
+        // console.log(buscar.data);
+    } catch (error) {
+        alert('No hay libros');
+        console.log(error);
+    }
+};
+
+export const getSearchAuthor = (payload) => (dispatch) => {
+    dispatch(SearchAuthor(payload));
+};
+
+
+export const getBookDetail = (id) => async (dispatch) => {
+    try {
+        const resp = await axios.get(`http://localhost:3001/Book/${id}`)
         dispatch(getBookDetail(resp.data))
     } catch (error) {
         console.log(error)
     }
 }
-export const setComent =(payload)=>async (dispatch) =>{
-    dispatch(addComments(payload))
-}
+
