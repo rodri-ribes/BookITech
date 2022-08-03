@@ -1,0 +1,216 @@
+body{
+    background-color: rgb(196, 169, 135);
+}
+.ContainerMaxDet{
+    display: flex;
+}
+.ContainerRev{
+    display: flex;
+    flex-direction: column;
+
+}
+.Container_Det1 {
+    width: 700px;
+    background-color: rgba(72, 68, 68, 0.365);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+}
+.Container_Det2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+    margin-left: 150px;
+    margin-right: 150px;
+}
+.Container_Det3{
+    display:flex;
+    flex-direction: column;
+    margin: 20px;
+    width: 100%;
+    
+}
+.Container_Det4{
+    display:flex;
+    flex-direction:column;
+    background-color:rgb(198, 170, 170);
+    border-radius:10px;
+    margin: 20px;
+    height: 300px;
+    width: 600px;
+    overflow: auto;
+}
+.Container_Det5{
+    display:inline-flex
+}
+.Container_Det6{
+    margin: 30px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    overflow: auto;
+    width:100%
+}
+.ContainerSumm{
+    display: inline-flex
+}
+.ContainerForm{
+    display: inline-flex; 
+}
+.ContainerForm2{
+    display: flex;
+    flex-direction: column;
+}
+.Title{
+    color:rgb(47, 31, 2);
+    margin: 30px;
+    font-size:50px;
+}
+.Title1{
+    color:rgb(47, 31, 2);
+    margin: 10px;
+    
+}
+.List{
+    list-style:none;
+    margin: 20px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    font-size: 20px;
+    font-family:fantasy;
+}
+.List1{
+    list-style:none;
+    margin: 20px;
+    display: flex;
+    font-size: 20px;
+    font-family:fantasy;
+}
+.Price{
+    margin: 30px;;
+}
+.ButtonRow{
+    display: inline-flex;
+    justify-content:space-around;
+    width: 70%;
+    box-sizing: border-box;
+    user-select: none;
+}
+.StarButton{
+    font-size: 2rem;
+    background-color: unset;
+    border:none;
+    
+}
+.StarButton:hover{
+    cursor: pointer;
+}
+.Review{
+    border: solid 1px grey;
+    border-radius: 5px;
+    height: 100px;
+    width: 600px;
+    padding: 10px;
+}
+/* .SubButton{
+    margin-top: 20px;
+    width: 600px;
+    height: 30px;
+} */
+.Container_Information_btn{ 
+    padding: 5px 10px; 
+    border: none; 
+    font-size: 25px;
+    border-radius: 20px; 
+    transition: all 1s; 
+    cursor: pointer; 
+    color: rgb(241, 7, 7); 
+    width: 300px;
+} 
+.ImgRedonda{
+    border:1px solid #666;
+    width:30px;
+    height:30px;
+    border-radius:150px;
+    margin-right: 12px;
+}
+.ImgRedonda1{
+    border:10px solid #666;
+    width:300px;
+    height:300px;
+    border-radius:150px;
+    margin: 10px;
+}
+.Summary{
+    display: flex;
+    margin-bottom: 20px;
+    border-style:groove;
+    justify-content:center;
+}
+.comment {
+    display: flex;
+    margin-bottom: 28px;
+  }
+.comments_title {
+    display:flex;
+    justify-content:center;
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
+  .comment_right_part {
+    width: 100%;
+  }
+  .comment_content {
+    display: flex;
+  }
+  .comment-text {
+    font-size: 18px;
+  }
+  .author {
+    margin-right: 8px;
+    font-size: 20px;
+    color: rgb(246, 59, 59);
+  }
+  .replies {
+    margin-top: 20px;
+  }
+.Comment_actions{
+    display: flex;
+    font-size: 12px;
+    color: rgb(51, 51, 51);
+    cursor: pointer;
+    margin-top: 8px;
+}
+.Comment_action {
+    margin-right: 8px;
+  }
+  
+.Comment_action:hover {
+    text-decoration: underline;
+  }
+  .comment_form_button {
+    font-size: 16px;
+    padding: 8px 16px;
+    background: rgb(59, 130, 246);
+    border-radius: 8px;
+    color: white;
+  }
+  
+  .comment_form_button:hover:enabled {
+    cursor: pointer;
+    background: rgb(37, 99, 235);
+  }
+  
+  .comment_form_button:disabled {
+    opacity: 0.7;
+    cursor: default;
+  }
+  
+  .comment_form_cancel_button {
+    margin-left: 10px;
+  }
+  .ButtonContainer{
+    margin-left: 20px;
+  }
+  
