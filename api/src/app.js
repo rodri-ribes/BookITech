@@ -1,7 +1,8 @@
 const express = require ("express")
 const morgan = require ("morgan")
 const routes = require ("./routes/index")
-
+require('dotenv').config();
+const db = require('./database/db')
 const server = express()
 
 server.name = 'API'
