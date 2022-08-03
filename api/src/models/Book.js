@@ -43,10 +43,8 @@ const BookSchema = new Schema({
         type: Date
     },
     comments:[{
-        body:{ type: String, date: Date},
-        author:{ type: String },
-        rating:{ type: Number, min: 0, max: 10},
-        spoiler:{type: Boolean}
+        type: Schema.Types.ObjectId,
+        ref:'Comment'
     }]
 
 })
