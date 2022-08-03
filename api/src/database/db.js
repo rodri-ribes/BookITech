@@ -10,8 +10,9 @@ const {URI} = process.env
 //   client.close();
 
 //});
+const uriHardCoded = mongodb+srv://pablodclavijo:dy2ECWpWN8XBfQP@cluster0.y36ey.mongodb.net/?retryWrites=true&w=majority
 mongoose
-  .connect(URI, {useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(uriHardCoded, {useNewUrlParser: true, useUnifiedTopology: true })
   .then(()=> console.log("connected to mongodbAtlas"))
   .catch(err => console.log(err))
 
