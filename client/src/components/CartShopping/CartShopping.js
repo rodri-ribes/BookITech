@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CardBooksInCart from './CardBooksInCart/CardBooksInCart';
 import calcularCarrito from './functions/calcularCarrito';
 import { FaCartArrowDown } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom';
 
 export default function CartShopping() {
 
@@ -50,6 +51,22 @@ export default function CartShopping() {
     }
     let total = calcularCarrito(contador, books)
     total = total.toFixed(2)
+
+    //logica de procesar pago
+
+    let navigate = useNavigate()
+
+    const submitPay = () => {
+        if (window.localStorage.getItem("user")) {
+            //aca iria el dispatch y el navigate
+        } else {
+            let aux = window.confirm("You need an account to continue with the purchase")
+            if (aux) {
+                navigate("/signup")
+            }
+        }
+    }
+
     return (
         <>
             <Container>
@@ -77,7 +94,7 @@ export default function CartShopping() {
                             )
                         })}
                         <ContainerCash>
-                            <button>TOTAL TO PAY $ {total}</button>
+                            <button onClick={() => submitPay()}>TOTAL TO PAY $ {total}</button>
                         </ContainerCash>
                     </>
                     :
