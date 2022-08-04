@@ -9,12 +9,14 @@ export const dataSlice = createSlice({
         author: [],
         details: [],
         Cart: [],
+        Favs: [],
         allBooks: [],
         NomAuthor: [],
         genre: [],
         format: [],
         range: [],
         A_Z: [],
+
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -58,6 +60,14 @@ export const dataSlice = createSlice({
                 books: copiaA,
             };
         },
+
+        addFav: (state, actions) => {
+            state.Favs = state.Favs.concat(state.books.filter(l => l.isbn13 === actions.payload))
+        },
+        deleteFav: (state, actions) => {
+            state.Favs = state.Favs.filter(l => l.isbn13 !== actions.payload)
+        },
+
         AllGenre: (state, actions) => {
             let copi =
                 actions.payload === 'all'
@@ -131,12 +141,16 @@ export const dataSlice = createSlice({
 
 //Cada reducer que creen lo tienen que exportar asi
 
+
+
+
 export const {
     addLibro,
     SearchAuthor,
     SearchTitle,
     getBookDetails,
     addCart,
+    addFav,deleteFav
     deleteCart,
     FAuthor,
     AllGenre,
@@ -144,6 +158,7 @@ export const {
     Range,
     ORDEN,
 } = dataSlice.actions;
+
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
 
@@ -195,8 +210,16 @@ export const AddCart = (id) => async (dispatch) => {
     dispatch(addCart(id));
 };
 export const DeleteCart = (id) => async (dispatch) => {
-    dispatch(deleteCart(id));
-};
+
+    dispatch(deleteCart(id))
+}
+export const addFavs = (id) => async (dispatch) => {
+    dispatch(addFav(id))
+}
+export const deleteFavs = (id) => async (dispatch) => {
+    dispatch(deleteFav(id))
+}
+
 export const FilterAuthor = (payload) => async (dispatch) => {
     dispatch(FAuthor(payload));
 };

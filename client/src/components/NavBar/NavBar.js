@@ -51,6 +51,7 @@ function NavBar() {
                         </>
                     </ContainerSearch>
                     <Menu click={click}>
+
                         {window.localStorage.getItem("user") ?
                             <>
                                 <MenuItem onClick={() => changeClick()}>

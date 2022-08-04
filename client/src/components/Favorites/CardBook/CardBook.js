@@ -10,7 +10,7 @@ import { AddCart, addFavs, deleteCart, deleteFavs } from '../../../redux/feature
 export default function CardBook({ id, name, author, img, gender, idiom, format, price }) {
 
     const [cart, setCart] = useState(false)
-    const [heart, setHeart] = useState(false)
+    const [heart, setHeart] = useState(true)
 
     let dispatch = useDispatch();
 
@@ -26,13 +26,11 @@ export default function CardBook({ id, name, author, img, gender, idiom, format,
     }
 
     const addToFav = () => {
-        //Aca iria el dispatch de la actions que agregaria el item al carrito
         setHeart(true)
         dispatch(addFavs(id))
     }
     const RemoveToFav = () => {
-        //Aca iria el dispatch de la actions que quitaria el item al carrito
-        setHeart(false)
+        setHeart(true)
         dispatch(deleteFavs(id))
     }
 
