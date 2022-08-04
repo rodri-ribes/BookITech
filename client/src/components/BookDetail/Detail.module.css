@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(196, 169, 135);
+    background:linear-gradient(to right,rgba(173, 216, 230, 0.744),rgba(255, 255, 255, 0.784),rgba(173, 216, 230, 0.824))
 }
 .ContainerMaxDet{
     display: flex;
@@ -35,7 +35,7 @@ body{
 .Container_Det4{
     display:flex;
     flex-direction:column;
-    background-color:rgb(198, 170, 170);
+    background:linear-gradient(to bottom,rgba(171, 209, 148, 0.744),rgba(255, 255, 255, 0.784),rgba(230, 136, 131, 0.824));
     border-radius:10px;
     margin: 20px;
     height: 300px;
@@ -65,11 +65,22 @@ body{
     color:rgb(47, 31, 2);
     margin: 30px;
     font-size:50px;
+    text-align: center;
 }
 .Title1{
     color:rgb(47, 31, 2);
     margin: 10px;
     
+}
+.subTitle{
+    margin: 10px;
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.authors{
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: rgb(242, 234, 234);
 }
 .List{
     list-style:none;
@@ -88,14 +99,16 @@ body{
     font-family:fantasy;
 }
 .Price{
-    margin: 30px;;
+    margin: 20px;;
 }
 .ButtonRow{
     display: inline-flex;
+    margin-bottom: 20px;
     justify-content:space-around;
     width: 70%;
     box-sizing: border-box;
     user-select: none;
+    border: 3px blue
 }
 .StarButton{
     font-size: 2rem;
@@ -139,13 +152,14 @@ body{
     border:10px solid #666;
     width:300px;
     height:300px;
-    border-radius:150px;
+    background-color: rgba(240, 255, 255, 0.512);
     margin: 10px;
 }
 .Summary{
     display: flex;
     margin-bottom: 20px;
     border-style:groove;
+    border-radius: 30px;
     justify-content:center;
 }
 .comment {
