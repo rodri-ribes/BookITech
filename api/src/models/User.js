@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const UserSchema = new Schema({
     fullName:{type:String},
     email: {type:String},
-    phoneNumber:{type:number},
     passwordHash:{type:String},
     comments:[{
         type: Schema.Types.ObjectId, //Para checkear
