@@ -49,6 +49,13 @@ export const ContainerPanel = styled.div`
         background: red;
         border-radius: 5px;
     }
+
+    @media screen and (max-width: 968px){
+        position: absolute;
+        right: 20px;
+        top: 90px;
+        width: 90%;
+    }
 `;
 
 export const ContainerCash = styled.div`

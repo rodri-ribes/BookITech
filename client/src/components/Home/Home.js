@@ -4,6 +4,7 @@ import style from './home.module.css'
 import { Paginacion } from './Pagination/Pagination';
 import { useDispatch, useSelector } from 'react-redux'
 import { getLibros } from '../../redux/features/data/dataSlice';
+import Search from '../Search/Search';
 
 export default function Home() {
 
@@ -23,8 +24,22 @@ export default function Home() {
 
     const maximo = books.length / porPagina;
 
+    //logica para mostrar el search en home en modo responsive
+
+    const [show, setShow] = useState(false)
+
+    useEffect(() => {
+        if (window.innerWidth < 600) {
+            setShow(true)
+        }
+    }, [setShow])
+
+
     return (
-        <div className={style.Container} >
+        <div className={style.Container}>
+            <div className={style.Container__Search}>
+                {show && <Search />}
+            </div>
             <div className={style.Container__PanelCards} >
                 {
                     books.slice(

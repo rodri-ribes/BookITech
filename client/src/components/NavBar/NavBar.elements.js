@@ -13,10 +13,12 @@ export const NavbarContainer = styled.div`
 
 
 export const ContainerSearch = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 800px;
+    position: relative;
+    width: 1150px;
+    left: -150px;
+    @media screen and (max-width: 968px){
+        display: none;
+    }
 `;
 
 
@@ -43,9 +45,12 @@ export const IconLogo = styled.div`
     font-size: 2rem;
     color: #ebc88b;
     width: 100%;
+    .navlink{
+        text-decoration: none;
+        color: #ebc88b;
+    }
     @media screen and (max-width: 968px){
-        width: 100%;
-        margin-left: 20px;
+        display: flex;
     }
 `;
 
@@ -55,6 +60,7 @@ export const Menu = styled.ul`
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 700px;
     @media screen and (max-width: 968px){
         width: 100%;
         height: 100vh;
@@ -139,5 +145,7 @@ export const IconLogoMovile = styled.div`
         color: #ebebeb;
         font-size: 2rem;
         padding-right: 15px;
+        align-items: flex-start;
+        margin-left: 1rem;
     }
 `;
