@@ -1,12 +1,11 @@
-const { Router } = require ('express');
+const { Router } = require('express');
 const { getBooks, getBooksByName, getBooksById } = require('../controllers/booksController');
-const { verifyToken } = require("./verifyToken.js");
 const router = Router()
 
-router.get("/", verifyToken, getBooks)
+router.get("/", getBooks)
 
-router.get("/:name", verifyToken, getBooksByName)
+router.get("/:name", getBooksByName)
 
-router.get("/id/:id", verifyToken, getBooksById)
+router.get("/id/:id", getBooksById)
 
 module.exports = router

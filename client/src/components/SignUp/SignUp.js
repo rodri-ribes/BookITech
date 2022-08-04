@@ -45,11 +45,13 @@ export default function SignUp() {
 
                 let { name, email, password } = valores;
 
-                name = name.charAt(0).toUpperCase() + name.slice(1)
+                let fullName;
 
+                fullName = name.charAt(0).toUpperCase() + name.slice(1)
+                console.log(fullName, email, password)
                 try {
                     let resp = await axios.post(`http://localhost:3001/signup`, {
-                        name, password, email
+                        fullName, email, password
                     })
                     window.localStorage.setItem("user", JSON.stringify(resp.data))
 
