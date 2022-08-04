@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import {useParams} from "react-router-dom"
 import {useDispatch, useSelector} from "react-redux"
-import { getBookDetail ,setComent} from '../../redux/features/data/dataSlice'
+import { getBookDetail ,AddCart,deleteCart} from '../../redux/features/data/dataSlice'
 import det from "./Detail.module.css"
 import {RiShoppingCart2Fill} from "react-icons/ri"
 import {FaStar} from "react-icons/fa"
@@ -13,6 +13,7 @@ function Detail() {
   //nombre, autor, editorial, genero, idioma, formato, precio, stock, img
   const dispatch=useDispatch()
   const {details}=useSelector((state=>state.data))
+  const [cart,setCart]= useState(false)
   const {id}= useParams()
   useEffect(()=>{
     dispatch(getBookDetail(id))
@@ -43,6 +44,17 @@ function prom(){
   let ceil=Math.ceil(avg)
   return ceil
 }
+const addToCart = () => {
+  //Aca iria el dispatch de la actions que agregaria el item al carrito
+  setCart(true)
+  dispatch(AddCart(id))
+}
+const RemoveToCart = () => {
+  //Aca iria el dispatch de la actions que quitaria el item al carrito
+  setCart(false)
+  dispatch(deleteCart(id))
+}
+
 //
   return (
     <>
@@ -50,7 +62,12 @@ function prom(){
   <div className={det.ContainerMaxDet}>
       <div className={det.Container_Det2}>
         <img src={details.image} alt="not found" className={det.ImgRedonda1}/>
-        <button className={det.Container_Information_btn}>Buy me!! <RiShoppingCart2Fill/></button>
+        {cart ?
+                    <button className={`${det.Container__Information_btn} ${det.Container__Information_btnTrue}`} onClick={() => RemoveToCart()}>Remove From Cart <RiShoppingCart2Fill/> </button>
+                    :
+                    <button className={`${det.Container__Information_btn} ${det.Container__Information_btnFalse}`} onClick={() => addToCart()}>Add To Cart <RiShoppingCart2Fill/> </button>
+                }
+        {/* <button className={det.Container_Information_btn}>Buy me!! <RiShoppingCart2Fill/></button> */}
       </div>
     <div className={det.Container_Det1}>
       <h1 className={det.Title}>{details.title}</h1> 
