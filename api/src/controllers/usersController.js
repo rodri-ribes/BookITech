@@ -1,26 +1,23 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Users } = require("../models/User");
+const User = require("../models/User");
 
 
 
- async function loginUser (req, res) {
+async function loginUser(req, res) {
 
     const { email, password } = req.body;
 
-   
-
-    const user = await Users.findOne({
-        where: { email }
+    const user = await User.findOne({
+        email
     })
 
-
     if (user) {
-        
-        const pass = await bcrypt.compare(password, user.passwordHash)
-        
+
+        const pass = bcrypt.compare(password, user.passwordHash)
+
         if (pass) {
-           
+
             const token = jwt.sign({ _id: user.id }, 'secretKey')
             res.json({
                 id: user.id,
@@ -29,7 +26,7 @@ const { Users } = require("../models/User");
                 token: token
             })
         } else {
-            
+
             res.status(401).send("invalid user or password")
         }
     } else {
@@ -38,39 +35,31 @@ const { Users } = require("../models/User");
 };
 
 
-async function createUser (req, res) {
-    const { name, email, password } = req.body;
+async function createUser(req, res) {
 
+    const { fullName, email, password } = req.body;
 
+    console.log(fullName, email, password)
 
-    if (name && email && password) {
+    if (fullName && email && password) {
 
-        
-
-        let existe = await Users.findOne({
-            where: { email }
-        })
-
-        
+        let existe = await User.findOne({ email })
 
         if (existe) {
             return res.status(401).send("The user is already registered");
         } else {
-            
+
             let passwordHash = await bcrypt.hash(password, 10);
 
-            
-
-            const newUser = await Users.save({
-                name, email, password, passwordHash
+            const newUser = await User.save({
+                fullName, email, passwordHash
             })
 
             const token = jwt.sign({ _id: newUser.id }, 'secretKey')
 
-
             res.status(200).json({
                 id: newUser.id,
-                name: newUser.name,
+                name: newUser.fullName,
                 email: newUser.email,
                 token: token
             })
