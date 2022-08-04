@@ -126,21 +126,6 @@ body{
     width: 600px;
     padding: 10px;
 }
-/* .SubButton{
-    margin-top: 20px;
-    width: 600px;
-    height: 30px;
-} */
-.Container_Information_btn{ 
-    padding: 5px 10px; 
-    border: none; 
-    font-size: 25px;
-    border-radius: 20px; 
-    transition: all 1s; 
-    cursor: pointer; 
-    color: rgb(241, 7, 7); 
-    width: 300px;
-} 
 .ImgRedonda{
     border:1px solid #666;
     width:30px;
@@ -227,4 +212,33 @@ body{
   .ButtonContainer{
     margin-left: 20px;
   }
+
+  .Container__Information_btn{
+    align-self: center;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 2px;
+    opacity: 1;
+    transition: all 1s;
+    cursor: pointer;
+    font-weight: 600;
+    color: white;
+    transform: scale(1.5);
+}
+
+.Container__Information_btn:active{
+    transform: scale(1.05);
+}
+
+.Container__Information_btnTrue{
+    background-color: red;
+}
+
+.Container__Information_btnFalse{
+    background-color: rgb(10, 163, 10);
+}
+
+.Container__Information_btnFalse:hover{
+    background-color: rgb(0, 101, 0);
+}
   
