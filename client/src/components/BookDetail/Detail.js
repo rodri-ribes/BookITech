@@ -116,8 +116,7 @@ const RemoveToCart = () => {
           <p>Average Rating: {currentValue.length>0&&prom()} ⭐</p>
         </div>
       </div>
-      {/* <Review currentValue={currentValue} currentUser="1"/>  */}
-      <ReviewCards currentUserId="1"/>
+      {/* <ReviewCards currentUserId="1"/> */}
     </>
   )
 }

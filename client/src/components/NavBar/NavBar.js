@@ -42,7 +42,7 @@ function NavBar() {
                             <MenuItemLink>
                                 <div>
                                     <FaUserAlt />
-                                    <NavLink to="/about">ABOUT</NavLink>
+                                    <NavLink to="/favorites">FAVORITES</NavLink>
                                 </div>
                             </MenuItemLink>
                         </MenuItem>

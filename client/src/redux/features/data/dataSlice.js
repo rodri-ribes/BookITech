@@ -8,7 +8,8 @@ export const dataSlice = createSlice({
         book: [],
         author: [],
         details: [],
-        Cart: []
+        Cart: [],
+        Favs: [],
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -36,13 +37,19 @@ export const dataSlice = createSlice({
         deleteCart: (state, actions) => {
             state.Cart = state.Cart.filter(l => l.isbn13 !== actions.payload)
         },
+        addFav: (state, actions) => {
+            state.Favs = state.Favs.concat(state.books.filter(l => l.isbn13 === actions.payload))
+        },
+        deleteFav: (state, actions) => {
+            state.Favs = state.Favs.filter(l => l.isbn13 !== actions.payload)
+        },
 
     }
 })
 
 //Cada reducer que creen lo tienen que exportar asi
 
-export const { addLibro, SearchAuthor, SearchTitle, getBookDetails, addCart, deleteCart } = dataSlice.actions;
+export const { addFav,deleteFav,addLibro, SearchAuthor, SearchTitle, getBookDetails, addCart, deleteCart } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
 
@@ -98,4 +105,10 @@ export const AddCart = (id) => async (dispatch) => {
 }
 export const DeleteCart = (id) => async (dispatch) => {
     dispatch(deleteCart(id))
+}
+export const addFavs = (id) => async (dispatch) => {
+    dispatch(addFav(id))
+}
+export const deleteFavs = (id) => async (dispatch) => {
+    dispatch(deleteFav(id))
 }
