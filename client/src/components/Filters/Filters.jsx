@@ -15,7 +15,7 @@ export default function Filters({ setPagina }) {
         max: '',
         min: '',
     });
-    const book = useSelector((state) => state.data.prueba);
+    const book = useSelector((state) => state.data.allBooks);
     const books = [...new Set(book.map((e) => e.genre))];
     const autor = [...new Set(book.map((e) => e.author))];
     function handleAuthor(e) {
@@ -86,7 +86,7 @@ export default function Filters({ setPagina }) {
                         Author
                     </option>
                     {/* aca cuando esten los autores */}
-                    {autor.map((e) => {
+                    {autor?.map((e) => {
                         return (
                             <option className={style.columna} key={e} value={e}>
                                 {e}
