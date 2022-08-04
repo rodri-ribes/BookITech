@@ -1,4 +1,3 @@
-
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -86,8 +85,8 @@ export const getSearchAuthor = (payload) => (dispatch) => {
 
 export const getBookDetail = (id) => async (dispatch) => {
     try {
-        const resp = await axios.get(`http://localhost:3001/Book/${id}`)
-        dispatch(getBookDetail(resp.data))
+        const resp = await axios.get(`http://localhost:3001/books/id/${id}`)
+        dispatch(getBookDetails(resp.data))
     } catch (error) {
         console.log(error)
     }
