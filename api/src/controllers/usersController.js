@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Users } = require("../models/User");
+const  User  = require("../models/User");
 
 
 
@@ -10,8 +10,8 @@ const { Users } = require("../models/User");
 
    
 
-    const user = await Users.findOne({
-        where: { email }
+    const user = await User.findOne({
+         email 
     })
 
 
@@ -39,16 +39,16 @@ const { Users } = require("../models/User");
 
 
 async function createUser (req, res) {
-    const { name, email, password } = req.body;
+    const { fullName, email, password } = req.body;
 
 
 
-    if (name && email && password) {
+    if (fullName && email && password) {
 
         
 
-        let existe = await Users.findOne({
-            where: { email }
+        let existe = await User.findOne({
+             email 
         })
 
         
@@ -61,9 +61,12 @@ async function createUser (req, res) {
 
             
 
-            const newUser = await Users.save({
-                name, email, password, passwordHash
-            })
+            //const newUser = await User.save({
+            //    name, email, password, passwordHash
+            //})
+
+            const newUser = new User ({fullName, email, passwordHash})
+                await newUser.save(); 
 
             const token = jwt.sign({ _id: newUser.id }, 'secretKey')
 

@@ -4,7 +4,7 @@ const { verifyToken } = require("./verifyToken.js");
 
 const router = Router();
 
-router.post('/', verifyToken , createUser);
+router.post('/' , createUser);
 
 router.post('/', verifyToken , loginUser);
 

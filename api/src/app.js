@@ -16,6 +16,7 @@ server.use((req, res, next) => {
   next();
 })
 
+server.use(express.json());
 server.use('/', routes);
 
 server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars

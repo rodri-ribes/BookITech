@@ -10,7 +10,7 @@ const {URI} = process.env
 //   client.close();
 
 //});
-const uriHardCoded = "mongodb+srv://pablodclavijo:dy2ECWpWN8XBfQP@cluster0.y36ey.mongodb.net/?retryWrites=true&w=majority"
+const uriHardCoded = "mongodb+srv://JGuazzini:pedroangel02@cluster0.y36ey.mongodb.net/?retryWrites=true&w=majority"
 mongoose
   .connect(uriHardCoded, {useNewUrlParser: true, useUnifiedTopology: true })
   .then(()=> console.log("connected to mongodbAtlas"))

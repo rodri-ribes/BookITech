@@ -3,7 +3,7 @@ const { getBooks, getBooksByName, getBooksById } = require('../controllers/books
 const { verifyToken } = require("./verifyToken.js");
 const router = Router()
 
-router.get("/", verifyToken, getBooks)
+router.get("/", getBooks)
 
 router.get("/:name", verifyToken, getBooksByName)
 
