@@ -20,6 +20,7 @@ export default function Search() {
         e.preventDefault();
         if (!name) {
             alert('failed search');
+            setName('');
         } else {
             dispatch(getSearch(name));
             dispatch(getSearchAuthor(name));
@@ -34,7 +35,7 @@ export default function Search() {
                     className={style.input}
                     onChange={(e) => handleChange(e)}
                     type="text"
-                    placeholder="Buscar..."
+                    placeholder="Search..."
                     value={name}
                 />
                 <button type="submit" className={style.btn}>

@@ -16,8 +16,20 @@ export default function Filters({ setPagina }) {
         min: '',
     });
     const book = useSelector((state) => state.data.allBooks);
-    const books = [...new Set(book.map((e) => e.genre))];
-    const autor = [...new Set(book.map((e) => e.author))];
+    // const books = [...new Set(book.map((e) => e.genre))];
+    const autor = [...new Set(book.map((e) => e.authors))];
+    const [errors, setErrors] = useState({});
+
+    function validate() {
+        let err = {};
+        if (!range.min) {
+            err.min = 'Min Required';
+        }
+        if (!range.max) {
+            err.max = 'Máx Required';
+        }
+        return err;
+    }
     function handleAuthor(e) {
         e.preventDefault();
         dispatch(FilterAuthor(e.target.value));
@@ -41,120 +53,153 @@ export default function Filters({ setPagina }) {
 
     function handleRange(e) {
         e.preventDefault();
-        dispatch(PriceRange(range));
-        setRange({ max: '', min: '' });
-        // console.log('holaaa');
-        setPagina(1);
-        // setorder(e.target.value)
+        if (!range.max || !range.min) {
+            alert('Máx and Min Required');
+        } else {
+            dispatch(PriceRange(range));
+            setRange({ max: '', min: '' });
+            // console.log('holaaa');
+            setPagina(1);
+            // setorder(e.target.value)
+        }
     }
     function handleChange(e) {
         setRange({
             ...range,
             [e.target.name]: e.target.value,
         });
+        setErrors(
+            validate({
+                ...range,
+                [e.target.name]: e.target.value,
+            })
+        );
     }
     function handleOrden(e) {
         e.preventDefault();
         dispatch(ORdenAZ(e.target.value));
-        // setPagina(1);
+        setPagina(1);
     }
 
     return (
-        <div className={style.div}>
-            <div>
-                <select
-                    className={style.select}
-                    onChange={(e) => handleOrden(e)}
-                >
-                    <option className={style.columna} value="all">
-                        ALL
-                    </option>
-                    <option className={style.columna} value="A-Z">
-                        A-Z
-                    </option>
-                    <option className={style.columna} value="Z-A">
-                        Z-A
-                    </option>
-                </select>
+        <div>
+            <div className={style.div2}>
+                <label className={style.label}>Order A-Z</label>
+                <label className={style.labelA}>Author</label>
+                <label className={style.labelG}>Genre</label>
+                <label className={style.labelF}>Format</label>
+                <label className={style.labelP}>Price Range</label>
             </div>
-            <div>
-                <select
-                    className={style.select}
-                    onChange={(e) => handleAuthor(e)}
-                >
-                    <option className={style.columna} value="all">
-                        Author
-                    </option>
-                    {/* aca cuando esten los autores */}
-                    {autor?.map((e) => {
-                        return (
-                            <option className={style.columna} key={e} value={e}>
-                                {e}
-                            </option>
-                        );
-                    })}
-                </select>
-            </div>
-            <div>
-                <select
-                    className={style.select}
-                    onChange={(e) => handleGenre(e)}
-                >
-                    <option className={style.columna} value="all">
-                        Genre
-                    </option>
-                    {/* los generos  */}
-                    {books?.map((e, k) => {
-                        return (
-                            <option className={style.columna} key={k} value={e}>
-                                {e}
-                            </option>
-                        );
-                    })}
-                </select>
-            </div>
-            <div>
-                <select
-                    className={style.select}
-                    onChange={(e) => handleFormat(e)}
-                >
-                    <option className={style.columna} value="all">
-                        Format
-                    </option>
-                    <option className={style.columna} value="pdf">
-                        PDF
-                    </option>
-                    <option className={style.columna} value="physical">
-                        Physical
-                    </option>
-                </select>
-            </div>
-            <div className={style.rango}>
-                <form onSubmit={(e) => handleRange(e)}>
-                    <input
-                        className={style.input}
-                        type="number"
-                        placeholder="Min"
-                        name="min"
-                        min={'0'}
-                        value={range.min}
-                        onChange={(e) => handleChange(e)}
-                    />
 
-                    <input
-                        className={style.input}
-                        type="number"
-                        placeholder="Max"
-                        name="max"
-                        min="0"
-                        value={range.max}
-                        onChange={(e) => handleChange(e)}
-                    />
+            <div className={style.div}>
+                <div>
+                    <select
+                        className={style.select}
+                        onChange={(e) => handleOrden(e)}
+                    >
+                        <option className={style.columna} value="all">
+                            ALL
+                        </option>
+                        <option className={style.columna} value="A-Z">
+                            A-Z
+                        </option>
+                        <option className={style.columna} value="Z-A">
+                            Z-A
+                        </option>
+                    </select>
+                </div>
+                <div>
+                    <select
+                        className={style.select}
+                        onChange={(e) => handleAuthor(e)}
+                    >
+                        <option className={style.columna} value="all">
+                            Author
+                        </option>
+                        {/* aca cuando esten los autores */}
+                        {autor?.map((e, k) => {
+                            return (
+                                <option
+                                    className={style.columna}
+                                    key={k}
+                                    value={e}
+                                >
+                                    {e}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </div>
+                <div>
+                    <select
+                        className={style.select}
+                        onChange={(e) => handleGenre(e)}
+                    >
+                        <option className={style.columna} value="all">
+                            Genre
+                        </option>
+                        {/* los generos  */}
+                        {/* {books?.map((e, k) => {
+                            return (
+                                <option
+                                    className={style.columna}
+                                    key={k}
+                                    value={e}
+                                >
+                                    {e}
+                                </option>
+                            );
+                        })} */}
+                    </select>
+                </div>
+                <div>
+                    <select
+                        className={style.select}
+                        onChange={(e) => handleFormat(e)}
+                    >
+                        <option className={style.columna} value="all">
+                            Format
+                        </option>
+                        <option className={style.columna} value="pdf">
+                            PDF
+                        </option>
+                        <option className={style.columna} value="physical">
+                            Physical
+                        </option>
+                    </select>
+                </div>
+                <div className={style.rango}>
+                    <form onSubmit={(e) => handleRange(e)}>
+                        <input
+                            className={style.input}
+                            type="number"
+                            placeholder="Min"
+                            name="min"
+                            min={'0'}
+                            value={range.min}
+                            onChange={(e) => handleChange(e)}
+                        />
 
-                    <button className={style.button} type="submit">
-                        Filter
-                    </button>
-                </form>
+                        <input
+                            className={style.input}
+                            type="number"
+                            placeholder="Max"
+                            name="max"
+                            min="0"
+                            value={range.max}
+                            onChange={(e) => handleChange(e)}
+                        />
+
+                        <button className={style.button} type="submit">
+                            Filter
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div>
+                {(errors.max || errors.min) && (
+                    <p className={style.error}>{errors.max || errors.min}</p>
+                )}
             </div>
         </div>
     );
