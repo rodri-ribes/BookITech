@@ -43,7 +43,6 @@ async function loginUser(req, res) {
 async function createUser (req, res) {
     const { fullName, email, password } = req.body;
 
-
     console.log(fullName, email, password)
 
     if (fullName && email && password) {
