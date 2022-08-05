@@ -2,6 +2,7 @@
     position: relative;
     padding: 5px;
     margin-left: 45%;
+
 }
 .input {
     height: 40px;
@@ -26,3 +27,4 @@
     border-radius: 50%;
     cursor: pointer;
 }
+
