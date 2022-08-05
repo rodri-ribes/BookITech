@@ -21,7 +21,8 @@ export default function Home() {
 
     const porPagina = 10;
 
-    const maximo = books.length / porPagina;
+    const ceil = books.length / porPagina;
+    const maximo =Math.ceil(ceil)
 
     //logica para mostrar el search en home en modo responsive
 
