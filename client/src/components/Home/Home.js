@@ -35,8 +35,8 @@ export default function Home() {
 
     return (
         <div className={style.Container}>
+            <Filters setPagina={setPagina} />
             <div className={style.Container__Search}>{show && <Search />}</div>
-            <Filters />
             <div className={style.Container__PanelCards}>
                 {books
                     .slice(
