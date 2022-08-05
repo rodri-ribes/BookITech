@@ -2,29 +2,32 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const BookSchema = new Schema({
-    name:{
+    title:{
         type: String,
         required: true,
         lowercase: true
     },
+    isbn13:{
+        type: String
+    },
     author:{
         type: String,
-        required: true,
+        required: false,
         lowercase: true
     },
     editorial:{
         type: String,
-        required: true,
+        required: false,
         lowercase: true
     },
-    genre:{
+    subtitle:{
         type: String,
-        required: true,
+        required: false,
         lowercase: true
     },
     language:{
         type: String,
-        required: true,
+        required: false,
         lowercase: true
     },
     format:{
@@ -32,7 +35,7 @@ const BookSchema = new Schema({
         enum: ['pdf', 'physical']
     },
     price:{
-        type: Number,
+        type: String,
         min: 0
     },
     stock:{
@@ -42,13 +45,14 @@ const BookSchema = new Schema({
     release_date:{
         type: Date
     },
-    img:{
+    image:{
         type:String
     },
     comments:[{
         type: Schema.Types.ObjectId,
         ref:'Comment'
     }]
+    
 
 })
 
