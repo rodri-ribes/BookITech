@@ -1,11 +1,12 @@
 const { Router } = require('express');
-const  { createUser, loginUser } = require ("../controllers/usersController");
-const { verifyToken } = require("./verifyToken.js");
+const { createUser, loginUser } = require("../controllers/usersController");
 
 const router = Router();
 
+
 router.post('/' , createUser);
 
-router.post('/', verifyToken , loginUser);
+
+router.post('/', loginUser);
 
 module.exports = router

@@ -1,7 +1,7 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const {mongoose} = require('mongoose')
+const { mongoose } = require('mongoose')
 require('dotenv').config();
-const {URI} = process.env
+const { URI } = process.env
 // const client = new MongoClient(URI, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 // client.connect(err => {
 //   const collection = client.db("test").collection("devices");
@@ -12,8 +12,8 @@ const {URI} = process.env
 //});
 const uriHardCoded = "mongodb+srv://JGuazzini:pedroangel02@cluster0.y36ey.mongodb.net/?retryWrites=true&w=majority"
 mongoose
-  .connect(uriHardCoded, {useNewUrlParser: true, useUnifiedTopology: true })
-  .then(()=> console.log("connected to mongodbAtlas"))
+  .connect(uriHardCoded, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("connected to mongodbAtlas"))
   .catch(err => console.log(err))
 
 const db = mongoose.connection;
