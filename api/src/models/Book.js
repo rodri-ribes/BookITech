@@ -10,12 +10,12 @@ const BookSchema = new Schema({
     isbn13:{
         type: String
     },
-    author:{
+    authors:{
         type: String,
         required: false,
         lowercase: true
     },
-    editorial:{
+    publisher:{
         type: String,
         required: false,
         lowercase: true
@@ -30,23 +30,24 @@ const BookSchema = new Schema({
         required: false,
         lowercase: true
     },
-    format:{
-        type: String,
-        enum: ['pdf', 'physical']
+    pages:{
+        type: Number
+    },
+    year:{
+        type: Number
+    },
+    rating:{
+        type: Number
+    },
+    desc:{
+        type: String
     },
     price:{
         type: String,
         min: 0
     },
-    stock:{
-        type: Number,
-        min: 0
-    },
-    release_date:{
-        type: Date
-    },
     image:{
-        type:String
+        type: String
     },
     comments:[{
         type: Schema.Types.ObjectId,
