@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import {useParams} from "react-router-dom"
 import {useDispatch, useSelector} from "react-redux"
-import { getBookDetails ,setComent} from '../../redux/features/data/dataSlice'
+import { getBookDetail ,AddCart,deleteCart} from '../../redux/features/data/dataSlice'
 import det from "./Detail.module.css"
 import {RiShoppingCart2Fill} from "react-icons/ri"
 import {FaStar} from "react-icons/fa"
@@ -12,10 +12,11 @@ const img= "https://www.collinsdictionary.com/images/full/book_181404689_1000.jp
 function Detail() {
   //nombre, autor, editorial, genero, idioma, formato, precio, stock, img
   const dispatch=useDispatch()
-  //const {details}=useSelector((state=>state.data))
+  const {details}=useSelector((state=>state.data))
+  const [cart,setCart]= useState(false)
   const {id}= useParams()
   useEffect(()=>{
-    dispatch(getBookDetails(id))
+    dispatch(getBookDetail(id))
   },[dispatch,id])
 //starts//
 
@@ -24,11 +25,11 @@ const colors={
   grey:"#a9a9a9"
 }
 const starts = Array(5).fill(0)
-const[currentValue,setCurrent]= useState(0)
+const[currentValue,setCurrent]= useState([])
 const[hover,setHover]= useState(undefined)
 
 function changeClick(value){
-  setCurrent(value)
+  setCurrent([value,...currentValue])
   //dispatch(setComent(currentValue))
 }
 function hoverStar(value){
@@ -37,27 +38,46 @@ function hoverStar(value){
 function removeHover(){
   setHover(undefined)
 }
+function prom(){
+  let sum= currentValue.reduce((prev,curr)=>curr+=prev)
+  let avg=sum/currentValue.length
+  let ceil=Math.ceil(avg)
+  return ceil
+}
+const addToCart = () => {
+  //Aca iria el dispatch de la actions que agregaria el item al carrito
+  setCart(true)
+  dispatch(AddCart(id))
+}
+const RemoveToCart = () => {
+  //Aca iria el dispatch de la actions que quitaria el item al carrito
+  setCart(false)
+  dispatch(deleteCart(id))
+}
 
 //
-
   return (
     <>
     {}
   <div className={det.ContainerMaxDet}>
       <div className={det.Container_Det2}>
-        <img src={img} alt="not found" className={det.ImgRedonda1}/>
-        <button className={det.Container_Information_btn}>Buy me!! <RiShoppingCart2Fill/></button>
+        <img src={details.image} alt="not found" className={det.ImgRedonda1}/>
+        {cart ?
+                    <button className={`${det.Container__Information_btn} ${det.Container__Information_btnTrue}`} onClick={() => RemoveToCart()}>Remove From Cart <RiShoppingCart2Fill/> </button>
+                    :
+                    <button className={`${det.Container__Information_btn} ${det.Container__Information_btnFalse}`} onClick={() => addToCart()}>Add To Cart <RiShoppingCart2Fill/> </button>
+                }
+        {/* <button className={det.Container_Information_btn}>Buy me!! <RiShoppingCart2Fill/></button> */}
       </div>
     <div className={det.Container_Det1}>
-      <h1 className={det.Title}>Tittle</h1> 
-      <h2>Author</h2>
+      <h1 className={det.Title}>{details.title}</h1> 
+      <h3 className={det.subTitle}>{details.subtitle}</h3>
+      <h2 className={det.authors}>{details.authors}</h2>
      <ul className={det.List}>
       <li>Genre</li>
-      <li>Language</li>
-      <li>Format</li>
-      <li>Stock</li>
+      <li>{details.language}</li>
      </ul>
-        <h2 className={det.Price}>Price</h2>
+        <h2 className={det.Price}>{details.price}</h2>
         <div className={det.ButtonRow}>
             <h2>Rating</h2>
             <div className={det.StarButton}>
@@ -82,18 +102,21 @@ function removeHover(){
         <div className={det.Container_Det6}>
           <h1 className={det.Summary}>Summary</h1>
           <p>
-            Wilco es una banda de rock alternativo de Chicago, Illinois, Estados Unidos, formada en 1994 por los miembros restantes de la banda de country alternativo Uncle Tupelo poco después de la marcha del cantante Jay Farrar. La formación de Wilco ha sufrido diversos cambios desde su formación, con solo el vocalista/compositor Jeff Tweedy y el bajista John Stirratt como miembros fijos desde el inicio. Desde principios de 2004, el resto de la banda consta del guitarrista Nels Cline, los multiinstrumentistas Pat Sansone y Mikael Jorgensen y el batería Glenn Kotche. Han lanzado al mercado ocho discos de estudio, un álbum en directo y tres colaboraciones: dos con Billy Bragg y uno con The Minus 5.
+            {details.desc}
           </p>
         </div>
         <div className={det.Container_Det6}>
-          <h1 className={det.Summary}>Synapse</h1>
-          <p>
-            Wilco es una banda de rock alternativo de Chicago, Illinois, Estados Unidos, formada en 1994 por los miembros restantes de la banda de country alternativo Uncle Tupelo poco después de la marcha del cantante Jay Farrar. La formación de Wilco ha sufrido diversos cambios desde su formación, con solo el vocalista/compositor Jeff Tweedy y el bajista John Stirratt como miembros fijos desde el inicio. Desde principios de 2004, el resto de la banda consta del guitarrista Nels Cline, los multiinstrumentistas Pat Sansone y Mikael Jorgensen y el batería Glenn Kotche. Han lanzado al mercado ocho discos de estudio, un álbum en directo y tres colaboraciones: dos con Billy Bragg y uno con The Minus 5.
-          </p>
+          <h1 className={det.Summary}>Tecnic description</h1>
+          <h3>{details.title}</h3>
+          <p>Authors: {details.authors}</p>
+          <p>Publisher: {details.publisher}</p>
+          <p>language: {details.language}</p>
+          <p>Year of published: {details.year}</p>
+          <p>Total pages: {details.pages}</p>
+          <p>Average Rating: {currentValue.length>0&&prom()} ⭐</p>
         </div>
       </div>
-      {/* <Review currentValue={currentValue} currentUser="1"/>  */}
-      <ReviewCards currentValue={currentValue} currentUserId="1"/>
+      {/* <ReviewCards currentUserId="1"/> */}
     </>
   )
 }

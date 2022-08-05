@@ -1,6 +1,6 @@
-const express = require ("express")
-const morgan = require ("morgan")
-const routes = require ("./routes/index")
+const express = require("express")
+const morgan = require("morgan")
+const routes = require("./routes/index")
 require('dotenv').config();
 const db = require('./database/db');
 const { urlencoded } = require("express");
@@ -10,6 +10,8 @@ server.name = 'API'
 server.use(express.json());
 server.use(urlencoded({ extended: false }))
 server.use(morgan('dev'));
+
+server.use(express.json())
 
 server.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
@@ -22,11 +24,11 @@ server.use((req, res, next) => {
 server.use('/', routes);
 
 server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
-    const status = err.status || 500;
-    const message = err.message || err;
-    console.error(err);
-    res.status(status).send(message);
-  });
+  const status = err.status || 500;
+  const message = err.message || err;
+  console.error(err);
+  res.status(status).send(message);
+});
 
 
 module.exports = server
