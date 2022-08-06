@@ -93,6 +93,7 @@ function NavBar() {
                         }
                     </Menu>
                     <CartShopping />
+
                 </NavbarWrapper>
             </NavbarContainer>
         </>

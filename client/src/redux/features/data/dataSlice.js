@@ -150,7 +150,7 @@ export const {
     SearchTitle,
     getBookDetails,
     addCart,
-    addFav,deleteFav
+    addFav,deleteFav,
     deleteCart,
     FAuthor,
     AllGenre,
