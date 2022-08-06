@@ -2,14 +2,15 @@ const axios = require ("axios")
 const Book = require('../models/Book')
 
 
+//ESTA FUNCIÓN TRAE TODOS LOS LIBROS Y SI SE LE MANDA UNA QUERY HACE EL FILTRO POR EL DETERMINADO TITLE O AUTHORS
 
 async function getBooks (req, res){
     const { title } = req.query
     try {
         if (title){
-            let search = await Book.find({title: `/${title}/i`})
-            console.log(title);
-            res.status(200).send(search)
+            let search = await Book.find({title: { "$regex": `${title}`, "$options": "i" } })
+            let searchAuthors = await Book.find({authors: { "$regex": `${title}`, "$options": "i" }})
+            res.status(200).send(search.concat(searchAuthors))
         }else {
             let allBooks = await Book.find({})
             res.status(200).send(allBooks)
@@ -19,13 +20,14 @@ async function getBooks (req, res){
     }
 }
     
+//ESTA FUNCIÓN PUEDE SER UTILIZADA PARA USAR LOS FILTROS, BUSCA POR TITLE Y AUTHORS
 
 async function getBooksByName (req, res){
-    const { title } = req.query
+    const { name } = req.params
     try {
-        console.log(title);
-        let search = await Book.find({ title: `/${title}/i` })
-        res.status(200).send(search)
+        let search = await Book.find({title: { "$regex": `${name}`, "$options": "i" }})
+        let searchAuthors = await Book.find({authors: { "$regex": `${name}`, "$options": "i" }})
+        res.status(200).send(search.concat(searchAuthors))
     } catch (error) {
         res.status(404).json({error: "An unexpected error occurred, please try again later"})
     }
@@ -33,7 +35,7 @@ async function getBooksByName (req, res){
 
 
 async function getBooksById (req, res){
-    const { id } = req.query
+    const { id } = req.params
     try {
         let book = await Book.findOne({isbn13: id})
         res.status(200).send(book) 

@@ -6,9 +6,9 @@ const router = Router()
 
 router.get("/", getBooks)
 
-router.get("/", getBooksByName)
+router.get("/:name", getBooksByName)
 
-router.get("/id/", getBooksById)
+router.get("/id/:id", getBooksById)
 
 
 
