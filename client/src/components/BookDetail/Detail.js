@@ -1,11 +1,13 @@
 import React,{useEffect,useState} from 'react'
-import {useParams} from "react-router-dom"
+import {useParams,Link} from "react-router-dom"
+import { GoSignIn } from 'react-icons/go'
 import {useDispatch, useSelector} from "react-redux"
 import { getBookDetail ,AddCart,deleteCart} from '../../redux/features/data/dataSlice'
 import det from "./Detail.module.css"
 import {RiShoppingCart2Fill} from "react-icons/ri"
 import {FaStar} from "react-icons/fa"
 import ReviewCards from './ReviewCards'
+
 
 
 const img= "https://www.collinsdictionary.com/images/full/book_181404689_1000.jpg"
@@ -74,8 +76,8 @@ const RemoveToCart = () => {
       <h3 className={det.subTitle}>{details.subtitle}</h3>
       <h2 className={det.authors}>{details.authors}</h2>
      <ul className={det.List}>
-      <li>Genre</li>
-      <li>{details.language}</li>
+      <li className={det.ListEle}>Genre</li>
+      <li className={det.ListEle}>{details.language}</li>
      </ul>
         <h2 className={det.Price}>{details.price}</h2>
         <div className={det.ButtonRow}>
@@ -106,7 +108,7 @@ const RemoveToCart = () => {
           </p>
         </div>
         <div className={det.Container_Det6}>
-          <h1 className={det.Summary}>Tecnic description</h1>
+          <h1 className={det.Summary}>Technic description</h1>
           <h3>{details.title}</h3>
           <p>Authors: {details.authors}</p>
           <p>Publisher: {details.publisher}</p>
@@ -116,7 +118,11 @@ const RemoveToCart = () => {
           <p>Average Rating: {currentValue.length>0&&prom()} ⭐</p>
         </div>
       </div>
-      {/* <ReviewCards currentUserId="1"/> */}
+      {window.localStorage.getItem("user")?<ReviewCards currentUserId="1"/> :
+      <div className={det.GoSignIn}>
+        <GoSignIn />
+        <Link className={det.SignIn} to="/signin">let your review</Link>
+      </div>}
     </>
   )
 }

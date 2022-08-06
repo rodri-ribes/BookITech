@@ -1,5 +1,5 @@
 body{
-    background:linear-gradient(to right,rgba(173, 216, 230, 0.744),rgba(255, 255, 255, 0.784),rgba(173, 216, 230, 0.824))
+    background:linear-gradient(to right,rgba(173, 216, 230, 0.744),rgba(255, 255, 255, 0.784),rgba(173, 216, 230, 0.824));
 }
 .ContainerMaxDet{
     display: flex;
@@ -7,7 +7,6 @@ body{
 .ContainerRev{
     display: flex;
     flex-direction: column;
-
 }
 .Container_Det1 {
     width: 700px;
@@ -24,6 +23,7 @@ body{
     border-radius: 5px;
     margin-left: 150px;
     margin-right: 150px;
+    margin-bottom: 20px;
 }
 .Container_Det3{
     display:flex;
@@ -91,6 +91,12 @@ body{
     font-size: 20px;
     font-family:fantasy;
 }
+.ListEle{
+    border: solid 1px blue;
+    padding: 10px;
+    border-radius: 150px;
+    background-color:orangered
+}
 .List1{
     list-style:none;
     margin: 20px;
@@ -134,11 +140,13 @@ body{
     margin-right: 12px;
 }
 .ImgRedonda1{
-    border:10px solid #666;
+    border:2px solid #666;
+    border-radius: 20px;
     width:300px;
     height:300px;
     background-color: rgba(240, 255, 255, 0.512);
     margin: 10px;
+    object-fit: cover;
 }
 .Summary{
     display: flex;
@@ -241,7 +249,34 @@ body{
 .Container__Information_btnFalse:hover{
     background-color: rgb(0, 101, 0);
 }
+.GoSignIn{
+    display:flex;
+    border: solid 1px rgb(56, 76, 202);
+    border-radius: 10px;
+    width: 200px;
+    margin-left: 540px;
+    justify-content:center;
+}
+.GoSignIn:hover{
+    transform: scale(1.5);
+    background-color:rgb(13, 2, 2);
+    color:rgb(236, 246, 236)
+}
+.SignIn{
+    text-decoration: none;
+    color:rgb(21, 18, 18)
+}
+.SignIn:hover{
+    color:white
+}
   
 @media screen and (max-width: 968px){
-    
+    .Container_Det1{
+    width: 700px;
+    background-color: rgba(72, 68, 68, 0.365);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    }
 }
