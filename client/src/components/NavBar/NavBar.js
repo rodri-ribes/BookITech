@@ -9,14 +9,11 @@ import {
     IconLogo,
     ContainerSearch,
 } from './NavBar.elements';
-import {
-    FaBars,
-    FaTimes,
-} from 'react-icons/fa';
+import { FaBars, FaTimes } from 'react-icons/fa';
 
-import { GoSignIn } from 'react-icons/go'
-import { RiLogoutBoxFill } from 'react-icons/ri'
-import { BsHeartFill } from 'react-icons/bs'
+import { GoSignIn } from 'react-icons/go';
+import { RiLogoutBoxFill } from 'react-icons/ri';
+import { BsHeartFill } from 'react-icons/bs';
 
 import { NavLink } from 'react-router-dom';
 import Search from '../Search/Search';
@@ -30,8 +27,8 @@ function NavBar() {
     };
 
     const handleLogout = () => {
-        window.localStorage.removeItem("user")
-    }
+        window.localStorage.removeItem('user');
+    };
 
     return (
         <>
@@ -51,14 +48,15 @@ function NavBar() {
                         </>
                     </ContainerSearch>
                     <Menu click={click}>
-
-                        {window.localStorage.getItem("user") ?
+                        {window.localStorage.getItem('user') ? (
                             <>
                                 <MenuItem onClick={() => changeClick()}>
                                     <MenuItemLink>
                                         <div>
                                             <BsHeartFill />
-                                            <NavLink to="/favorites">FAVORITES</NavLink>
+                                            <NavLink to="/favorites">
+                                                FAVORITES
+                                            </NavLink>
                                         </div>
                                     </MenuItemLink>
                                 </MenuItem>
@@ -66,18 +64,25 @@ function NavBar() {
                                     <MenuItemLink>
                                         <div>
                                             <RiLogoutBoxFill />
-                                            <NavLink to="/" onClick={() => handleLogout()}>LOGOUT</NavLink>
+                                            <NavLink
+                                                to="/"
+                                                onClick={() => handleLogout()}
+                                            >
+                                                LOGOUT
+                                            </NavLink>
                                         </div>
                                     </MenuItemLink>
                                 </MenuItem>
                             </>
-                            :
+                        ) : (
                             <>
                                 <MenuItem onClick={() => changeClick()}>
                                     <MenuItemLink>
                                         <div>
                                             <GoSignIn />
-                                            <NavLink to="/signin">SIGN IN</NavLink>
+                                            <NavLink to="/signin">
+                                                SIGN IN
+                                            </NavLink>
                                         </div>
                                     </MenuItemLink>
                                 </MenuItem>
@@ -85,12 +90,14 @@ function NavBar() {
                                     <MenuItemLink>
                                         <div>
                                             <GoSignIn />
-                                            <NavLink to="/signup">SIGN UP</NavLink>
+                                            <NavLink to="/signup">
+                                                SIGN UP
+                                            </NavLink>
                                         </div>
                                     </MenuItemLink>
                                 </MenuItem>
                             </>
-                        }
+                        )}
                     </Menu>
                     <CartShopping />
                 </NavbarWrapper>

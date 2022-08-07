@@ -8,7 +8,7 @@ import Search from '../Search/Search';
 import Filters from '../Filters/Filters';
 export default function Home() {
     let dispatch = useDispatch();
-
+    let [orden, setOrden] = useState('');
     useEffect(() => {
         dispatch(getLibros());
     }, [dispatch]);
@@ -35,7 +35,7 @@ export default function Home() {
 
     return (
         <div className={style.Container}>
-            <Filters setPagina={setPagina} />
+            <Filters setPagina={setPagina} setOrden={setOrden} />
             <div className={style.Container__Search}>{show && <Search />}</div>
             <div className={style.Container__PanelCards}>
                 {books
