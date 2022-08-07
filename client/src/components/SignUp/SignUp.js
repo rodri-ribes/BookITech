@@ -4,9 +4,10 @@ import style from './SignUp.module.css'
 import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux';
-import { getLibros } from '../../redux/features/data/dataSlice';
-
+import { useDispatch } from 'react-redux';
+import { getLibros, getUser } from '../../redux/features/data/dataSlice';
+import { GoogleButton } from 'react-google-button'
+import { UserAuth } from '../../firebase/AuthContext';
 
 export default function SignUp() {
 
@@ -20,17 +21,29 @@ export default function SignUp() {
 
     let dispatch = useDispatch();
 
+    const { googleSignIn } = UserAuth();
 
+    const handleSubmitGoogle = async () => {
+        try {
+            await googleSignIn()
+        } catch (error) {
+            console.log(error)
+        }
+        setTimeout(() => {
+            dispatch(getLibros())
+            navigate("/")
+        }, 5000);
+    }
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     if (window.localStorage.getItem("user")) {
-    //         setTimeout(() => {
-    //             navigate('/')
-    //         }, 100);
-    //     }
+        if (window.localStorage.getItem("user")) {
+            setTimeout(() => {
+                navigate('/')
+            }, 100);
+        }
 
-    // }, [navigate])
+    }, [navigate])
 
 
     return (
@@ -54,7 +67,7 @@ export default function SignUp() {
                         fullName, email, password
                     })
                     window.localStorage.setItem("user", JSON.stringify(resp.data))
-
+                    dispatch(getUser(resp.data))
                     setConfirm({ message: "Successfully registered", visible: true, error: false })
 
                     setTimeout(() => {
@@ -142,8 +155,11 @@ export default function SignUp() {
                             <ErrorMessage name='password2' component={() => (<div className={style.Container__Div_Error}><p>{errors.password2}</p></div>)} />
                         </div>
                         <button type='submit' className={style.Container__Button}>SignUp</button>
-                        <p className={style.Container__Register}>You already have an account? <Link to="/signin" className={style.Container__Register_Link}>Sign In</Link></p>
                         {confirm.visible ? <div className={`${confirm.error ? style.Container__Div_NotSucess : style.Container__Div_Sucess}`}><p>{confirm.message}</p></div> : null}
+                        <p className={style.Container__Register}>You already have an account? <Link to="/signin" className={style.Container__Register_Link}>Sign In</Link></p>
+                        <div className={style.Container__Google}>
+                            <GoogleButton onClick={() => handleSubmitGoogle()} />
+                        </div>
                     </Form>
                 </div>
             )}
