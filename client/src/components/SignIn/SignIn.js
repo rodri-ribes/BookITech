@@ -123,7 +123,6 @@ export default function SignIn() {
                         <div className={style.Container__Google}>
                             <GoogleButton onClick={() => handleSubmitGoogle()} />
                         </div>
-                        {user ? <p>{user.displayName}</p> : <p>no esta iniciado</p>}
                     </Form>
                 </div>
             )}
