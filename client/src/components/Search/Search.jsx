@@ -64,7 +64,7 @@ export default function Search() {
                 </form>
             </div>
             <datalist className={style.dentro} id="form">
-                {option &&
+                {display &&
                     option
                         ?.filter((e) =>
                             e.toLowerCase().includes(name.toLowerCase())
