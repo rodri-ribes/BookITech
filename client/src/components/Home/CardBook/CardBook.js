@@ -40,7 +40,9 @@ export default function CardBook({ id, name, author, img, gender, idiom, format,
     return (
         <div className={style.Container}>
             <div className={style.Container__IMG}>
-                <img src={img} alt={name} />
+                <Link to={`/${id}`}>
+                    <img src={img} alt={name} />
+                </Link>
             </div>
             <div className={style.Container__Information}>
                 <div className={style.Container__Information__Heart}>

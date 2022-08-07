@@ -4,6 +4,7 @@ import axios from 'axios';
 export const dataSlice = createSlice({
     name: 'data',
     initialState: {
+        user: [],
         books: [],
         book: [],
         author: [],
@@ -19,6 +20,9 @@ export const dataSlice = createSlice({
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
+        addUser: (state, actions) => {
+            state.user = actions.payload;
+        },
         addLibro: (state, actions) => {
             state.books = actions.payload;
             state.allBooks = actions.payload;
@@ -124,23 +128,23 @@ export const dataSlice = createSlice({
             let filterAZ =
                 actions.payload === 'A-Z'
                     ? copiABC.sort((a, b) => {
-                          if (a.title > b.title) {
-                              return 1;
-                          }
-                          if (b.title > a.title) {
-                              return -1;
-                          }
-                          return 0;
-                      })
+                        if (a.title > b.title) {
+                            return 1;
+                        }
+                        if (b.title > a.title) {
+                            return -1;
+                        }
+                        return 0;
+                    })
                     : copiABC.sort((a, b) => {
-                          if (a.title > b.title) {
-                              return -1;
-                          }
-                          if (b.title > a.title) {
-                              return 1;
-                          }
-                          return 0;
-                      });
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (b.title > a.title) {
+                            return 1;
+                        }
+                        return 0;
+                    });
             return {
                 ...state,
                 A_Z: actions.payload === 'all' ? [...state.allBooks] : filterAZ,
@@ -167,6 +171,7 @@ export const {
     Formats,
     Range,
     ORDEN,
+    addUser
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -174,6 +179,10 @@ export const {
 export default dataSlice.reducer;
 
 //Aca irian las actions, dejo una como modo de ejemplo
+
+export const getUser = (data) => async (dispatch) => {
+    dispatch(addUser(data))
+}
 
 export const getLibros = () => async (dispatch) => {
     try {
