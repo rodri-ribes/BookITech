@@ -39,8 +39,8 @@ export default function Search() {
             // setOption([]);
         } else {
             dispatch(getSearch(name));
-            setDisplay(false);
             setName('');
+            setDisplay(false);
         }
     }
     function setClick(val) {
