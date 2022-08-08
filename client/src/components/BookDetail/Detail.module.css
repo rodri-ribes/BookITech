@@ -257,6 +257,14 @@ body{
     margin-left: 540px;
     justify-content:center;
 }
+.GoSignIn1{
+    display:flex;
+    border: solid 1px rgb(56, 76, 202);
+    border-radius: 10px;
+    width: 200px;
+    margin-left: 340px;
+    justify-content:center;
+}
 .GoSignIn:hover{
     transform: scale(1.5);
     background-color:rgb(13, 2, 2);

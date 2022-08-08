@@ -15,12 +15,12 @@ function ReviewCards({currentUserId}) {
     
     const RootComments=back.filter(f=>f.parentId===null)
     // const dispatch=useDispatch()
-    useEffect(()=>{
-        getComments().then(data=>{
-          // dispatch(setComent(data))
-          BackComment(data)
-        })
-    },[])
+    // useEffect(()=>{
+    //     getComments().then(data=>{
+    //       // dispatch(setComent(data))
+    //       BackComment(data)
+    //     })
+    // },[])
     const getReplies = commentId=>{
       return back.filter(f=>f.parentId===commentId)
       .sort((a,b)=>new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
