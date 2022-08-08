@@ -32,17 +32,16 @@ export default function SignIn() {
         }
         setTimeout(() => {
             dispatch(getLibros())
-            navigate("/")
-        }, 5000);
+        }, 3000);
     }
 
+    //si el usuario no esta logueado no pueda acceder
+
     useEffect(() => {
-        if (window.localStorage.getItem("user")) {
-            setTimeout(() => {
-                navigate('/')
-            }, 100);
+        if (user || window.localStorage.getItem("user")) {
+            navigate("/");
         }
-    }, [navigate])
+    }, [])
 
     return (
         <Formik

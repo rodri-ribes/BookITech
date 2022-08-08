@@ -4,7 +4,7 @@ import style from './SignUp.module.css'
 import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getLibros, getUser } from '../../redux/features/data/dataSlice';
 import { GoogleButton } from 'react-google-button'
 import { UserAuth } from '../../firebase/AuthContext';
@@ -35,15 +35,15 @@ export default function SignUp() {
         }, 5000);
     }
 
+    //si el usuario no esta logueado no pueda acceder
+
+    let user = useSelector(state => state.data.user)
+
     useEffect(() => {
-
-        if (window.localStorage.getItem("user")) {
-            setTimeout(() => {
-                navigate('/')
-            }, 100);
+        if (user || window.localStorage.getItem("user")) {
+            navigate("/");
         }
-
-    }, [navigate])
+    }, [])
 
 
     return (
