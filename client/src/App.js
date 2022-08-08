@@ -16,6 +16,7 @@ function App() {
 
   return (
     <>
+      <AuthContextProvider>
         <NavBar />
         <div className="container">
           <Routes>
