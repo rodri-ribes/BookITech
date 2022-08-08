@@ -82,6 +82,7 @@ const RemoveToCart = () => {
         <h2 className={det.Price}>{details.price}</h2>
         <div className={det.ButtonRow}>
             <h2>Rating</h2>
+            {window.localStorage.getItem("user")?
             <div className={det.StarButton}>
               {starts.map((_,index)=>{
                 return(
@@ -95,7 +96,11 @@ const RemoveToCart = () => {
                   />
                 )
               })}
-            </div>
+            </div>:
+            <div className={det.GoSignIn1}>
+            <GoSignIn />
+            <Link className={det.SignIn} to="/signin">let your review</Link>
+          </div>}
         </div>
         
       </div>

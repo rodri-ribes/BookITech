@@ -111,6 +111,7 @@ function NavBar({ user, setUser }) {
                         }
                     </Menu>
                     <CartShopping />
+
                 </NavbarWrapper>
             </NavbarContainer>
         </>

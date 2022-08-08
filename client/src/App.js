@@ -10,12 +10,12 @@ import SignIn from './components/SignIn/SignIn.js'
 import SignUp from './components/SignUp/SignUp.js'
 import { AuthContextProvider } from "./firebase/AuthContext.js";
 
+
 function App() {
 
 
   return (
     <>
-      <AuthContextProvider>
         <NavBar />
         <div className="container">
           <Routes>
