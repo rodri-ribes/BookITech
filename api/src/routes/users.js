@@ -3,7 +3,9 @@ const { createUser, loginUser } = require("../controllers/usersController");
 
 const router = Router();
 
-router.post('/', createUser);
+
+router.post('/' , createUser);
+
 
 router.post('/', loginUser);
 

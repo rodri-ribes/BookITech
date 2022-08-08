@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const User = require("../models/User");
+
 
 
 
@@ -8,8 +10,10 @@ async function loginUser(req, res) {
 
     const { email, password } = req.body;
 
+
     const user = await User.findOne({
-        email
+         email 
+
     })
 
     if (user) {
@@ -35,15 +39,23 @@ async function loginUser(req, res) {
 };
 
 
-async function createUser(req, res) {
 
+async function createUser (req, res) {
     const { fullName, email, password } = req.body;
 
     console.log(fullName, email, password)
 
     if (fullName && email && password) {
 
-        let existe = await User.findOne({ email })
+
+        
+
+        let existe = await User.findOne({
+             email 
+        })
+
+        
+
 
         if (existe) {
             return res.status(401).send("The user is already registered");
@@ -51,9 +63,14 @@ async function createUser(req, res) {
 
             let passwordHash = await bcrypt.hash(password, 10);
 
-            const newUser = await User.save({
-                fullName, email, passwordHash
-            })
+
+            //const newUser = await User.save({
+            //    name, email, password, passwordHash
+            //})
+
+            const newUser = new User ({fullName, email, passwordHash})
+                await newUser.save(); 
+
 
             const token = jwt.sign({ _id: newUser.id }, 'secretKey')
 

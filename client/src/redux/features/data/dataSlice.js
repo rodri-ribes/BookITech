@@ -4,6 +4,7 @@ import axios from 'axios';
 export const dataSlice = createSlice({
     name: 'data',
     initialState: {
+        user: [],
         books: [],
         book: [],
         author: [],
@@ -16,10 +17,12 @@ export const dataSlice = createSlice({
         format: [],
         range: [],
         A_Z: [],
-
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
+        addUser: (state, actions) => {
+            state.user = actions.payload;
+        },
         addLibro: (state, actions) => {
             state.books = actions.payload;
             state.allBooks = actions.payload;
@@ -29,12 +32,19 @@ export const dataSlice = createSlice({
             return {
                 ...state,
                 book: actions.payload,
+                books: actions.payload,
             };
         },
         SearchAuthor: (state, actions) => {
-            state.author = state.allBooks.filter((e) =>
-                e.author.includes(actions.payload)
+            let obj = state.allBooks.filter((e) =>
+                e.authors.includes(actions.payload)
             );
+            obj.length
+                ? (state.author = state.author.concat(obj))
+                : state.author.concat([]);
+            // state.books = state.allBooks.filter((e) =>
+            //     e.authors.includes(actions.payload)
+            // );
         },
         getBookDetails: (state, actions) => {
             state.details = actions.payload;
@@ -51,9 +61,7 @@ export const dataSlice = createSlice({
             let copiaA =
                 actions.payload === 'all'
                     ? [...state.allBooks]
-                    : state.allBooks.filter(
-                          (e) => e.author === actions.payload
-                      );
+                    : state.books.filter((e) => e.author === actions.payload);
             return {
                 ...state,
                 NomAuthor: copiaA,
@@ -62,17 +70,19 @@ export const dataSlice = createSlice({
         },
 
         addFav: (state, actions) => {
-            state.Favs = state.Favs.concat(state.books.filter(l => l.isbn13 === actions.payload))
+            state.Favs = state.Favs.concat(
+                state.books.filter((l) => l.isbn13 === actions.payload)
+            );
         },
         deleteFav: (state, actions) => {
-            state.Favs = state.Favs.filter(l => l.isbn13 !== actions.payload)
+            state.Favs = state.Favs.filter((l) => l.isbn13 !== actions.payload);
         },
 
         AllGenre: (state, actions) => {
             let copi =
                 actions.payload === 'all'
                     ? [...state.allBooks]
-                    : state.allBooks.filter((e) => e.genre === actions.payload);
+                    : state.books.filter((e) => e.genre === actions.payload);
 
             return {
                 ...state,
@@ -81,7 +91,7 @@ export const dataSlice = createSlice({
             };
         },
         Formats: (state, actions) => {
-            let copy = [...state.allBooks];
+            let copy = state.books;
             let pruebaa;
             if (actions.payload === 'pdf') {
                 pruebaa = copy.filter((e) => e.format === actions.payload);
@@ -96,39 +106,45 @@ export const dataSlice = createSlice({
             };
         },
         Range: (state, { payload }) => {
-            let copirange = state.allBooks.filter(
-                (e) =>
-                    payload.max >= e.price.slice(1) &&
-                    e.price.slice(1) >= payload.min
-            );
-            return {
-                ...state,
-                range: copirange,
-                books: copirange,
-            };
+            if (payload.min === payload.max) {
+                state.books = [...state.allBooks];
+                state.range = [...state.allBooks];
+                alert('Max and Min are the same, please make them different');
+            } else {
+                let copirange = state.books.filter(
+                    (e) =>
+                        payload.max >= e.price.slice(1) &&
+                        e.price.slice(1) >= payload.min
+                );
+                return {
+                    ...state,
+                    range: copirange,
+                    books: copirange,
+                };
+            }
         },
         ORDEN: (state, actions) => {
-            let copiABC = [...state.allBooks];
+            let copiABC = [...state.books];
             let filterAZ =
                 actions.payload === 'A-Z'
                     ? copiABC.sort((a, b) => {
-                          if (a.title > b.title) {
-                              return 1;
-                          }
-                          if (b.title > a.name) {
-                              return -1;
-                          }
-                          return 0;
-                      })
+                        if (a.title > b.title) {
+                            return 1;
+                        }
+                        if (b.title > a.title) {
+                            return -1;
+                        }
+                        return 0;
+                    })
                     : copiABC.sort((a, b) => {
-                          if (a.title > b.title) {
-                              return -1;
-                          }
-                          if (b.title > a.title) {
-                              return 1;
-                          }
-                          return 0;
-                      });
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (b.title > a.title) {
+                            return 1;
+                        }
+                        return 0;
+                    });
             return {
                 ...state,
                 A_Z: actions.payload === 'all' ? [...state.allBooks] : filterAZ,
@@ -141,30 +157,32 @@ export const dataSlice = createSlice({
 
 //Cada reducer que creen lo tienen que exportar asi
 
-
-
-
 export const {
     addLibro,
     SearchAuthor,
     SearchTitle,
     getBookDetails,
     addCart,
-    addFav,deleteFav,
+    addFav,
+    deleteFav,
     deleteCart,
     FAuthor,
     AllGenre,
     Formats,
     Range,
     ORDEN,
+    addUser
 } = dataSlice.actions;
-
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
 
 export default dataSlice.reducer;
 
 //Aca irian las actions, dejo una como modo de ejemplo
+
+export const getUser = (data) => async (dispatch) => {
+    dispatch(addUser(data))
+}
 
 export const getLibros = () => async (dispatch) => {
     try {
@@ -188,7 +206,7 @@ export const getSearch = (name) => async (dispatch) => {
         dispatch(disSearch(buscar.data));
         // console.log(buscar.data);
     } catch (error) {
-        alert('No hay libros');
+        alert('the books were not found');
         console.log(error);
     }
 };
@@ -210,15 +228,14 @@ export const AddCart = (id) => async (dispatch) => {
     dispatch(addCart(id));
 };
 export const DeleteCart = (id) => async (dispatch) => {
-
-    dispatch(deleteCart(id))
-}
+    dispatch(deleteCart(id));
+};
 export const addFavs = (id) => async (dispatch) => {
-    dispatch(addFav(id))
-}
+    dispatch(addFav(id));
+};
 export const deleteFavs = (id) => async (dispatch) => {
-    dispatch(deleteFav(id))
-}
+    dispatch(deleteFav(id));
+};
 
 export const FilterAuthor = (payload) => async (dispatch) => {
     dispatch(FAuthor(payload));

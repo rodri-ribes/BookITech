@@ -8,24 +8,26 @@ import Detail from "./components/BookDetail/Detail"
 import Favorite from "./components/Favorites/Favorite";
 import SignIn from './components/SignIn/SignIn.js'
 import SignUp from './components/SignUp/SignUp.js'
-import Profile from "./components/Profile/Profile.js"
+import { AuthContextProvider } from "./firebase/AuthContext.js";
+
 
 function App() {
 
+
   return (
     <>
-      <NavBar />
-      <div className="container">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/:id" element={<Detail />} />
-          <Route path="/favorites" element={<Favorite />}/>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </div>
-      <Footer />
+        <NavBar />
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/:id" element={<Detail />} />
+            <Route path="/favorites" element={<Favorite />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Routes>
+        </div>
+        <Footer />
+      </AuthContextProvider>
     </>
   );
 }

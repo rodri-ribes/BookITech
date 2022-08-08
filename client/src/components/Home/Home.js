@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLibros } from '../../redux/features/data/dataSlice';
 import Search from '../Search/Search';
 import Filters from '../Filters/Filters';
+
 export default function Home() {
     let dispatch = useDispatch();
 
@@ -35,8 +36,8 @@ export default function Home() {
 
     return (
         <div className={style.Container}>
+            <Filters setPagina={setPagina} />
             <div className={style.Container__Search}>{show && <Search />}</div>
-            <Filters />
             <div className={style.Container__PanelCards}>
                 {books
                     .slice(
