@@ -18,16 +18,33 @@ import { BsHeartFill } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 import Search from '../Search/Search';
 import CartShopping from '../CartShopping/CartShopping';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../../redux/features/data/dataSlice';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase/index';
 
-function NavBar() {
-    const [click, setClick] = useState(false);
+function NavBar({ user, setUser }) {
+    const [click, setClick] = useState({});
 
     const changeClick = () => {
         setClick(!click);
     };
 
-    const handleLogout = () => {
+    let userr = useSelector((state) => state.data.user);
+    let dispatch = useDispatch();
+
+    const logOut = () => {
+        signOut(auth);
+    };
+
+    const handleLogout = async () => {
         window.localStorage.removeItem('user');
+        dispatch(getUser(null));
+        try {
+            await logOut();
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -48,7 +65,7 @@ function NavBar() {
                         </>
                     </ContainerSearch>
                     <Menu click={click}>
-                        {window.localStorage.getItem('user') ? (
+                        {userr || window.localStorage.getItem('user') ? (
                             <>
                                 <MenuItem onClick={() => changeClick()}>
                                     <MenuItemLink>

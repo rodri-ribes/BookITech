@@ -14,6 +14,7 @@ export const dataSlice = createSlice({
         range: [],
         A_Z: [],
         MinToMax: [],
+        user: [],
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -137,6 +138,9 @@ export const dataSlice = createSlice({
                 books: actions.payload === 'all' ? cambiar : filtrar,
             };
         },
+        addUser: (state, actions) => {
+            state.user = actions.payload;
+        },
     },
 });
 
@@ -154,6 +158,7 @@ export const {
     Range,
     ORDEN,
     MINtoMAX,
+    addUser,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -239,4 +244,7 @@ export const ORdenAZ = (payload) => async (dispatch) => {
 };
 export const ChangeRange = (payload) => async (dispatch) => {
     dispatch(MINtoMAX(payload));
+};
+export const getUser = (data) => async (dispatch) => {
+    dispatch(addUser(data));
 };
