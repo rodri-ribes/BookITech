@@ -10,12 +10,12 @@ import SignUp from './components/SignUp/SignUp.js'
 import Favorite from "./components/Favorites/Favorite";
 import { AuthContextProvider } from "./firebase/AuthContext.js";
 
+
 function App() {
 
 
   return (
     <>
-
       <AuthContextProvider>
         <NavBar />
         <div className="container">

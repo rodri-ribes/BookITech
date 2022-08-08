@@ -10,16 +10,22 @@ import { useNavigate } from 'react-router-dom';
 export default function CartShopping() {
 
     //para hacer aparecer el div del carrito
+
     const [click, setClick] = useState(false);
     const changeClick = () => {
         setClick(!click);
     }
+
     //manejo del state del carrito
     let books = useSelector(state => state.data.Cart)
     let cantidad = books.length;
 
 
-    /**Manejo de sumar elementos */
+    /**----------- Manejo de sumar elementos -------------------------- */
+
+    //este state tiene la cantidades de cada libro, solo habria q hacer una relacion
+    //con el array de los libros, se podria crear un array nuevo con cada objeto con los atributos name del libro, precio y la cantidad
+    //si no sabes como hacerlo hablame, att rodrigo
 
     const [contador, setContador] = useState({})
 
@@ -52,13 +58,17 @@ export default function CartShopping() {
     let total = calcularCarrito(contador, books)
     total = total.toFixed(2)
 
-    //logica de procesar pago
+    //----------------- logica de procesar pago ----------------------------
 
     let navigate = useNavigate()
 
+    let user = useSelector(state => state.data.user)
+
     const submitPay = () => {
-        if (window.localStorage.getItem("user")) {
-            //aca iria el dispatch y el navigate
+
+        if (user || window.localStorage.getItem("user")) {
+            //aca iria la logica del proceso del pago
+
         } else {
             let aux = window.confirm("You need an account to continue with the purchase")
             if (aux) {

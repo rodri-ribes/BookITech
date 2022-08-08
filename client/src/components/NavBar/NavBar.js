@@ -69,6 +69,7 @@ function NavBar({ user, setUser }) {
                         </>
                     </ContainerSearch>
                     <Menu click={click}>
+                        {/* si el usuario esta logueado se cambiara el menu */}
                         {userr || window.localStorage.getItem("user") ?
 
                             <>
@@ -111,6 +112,7 @@ function NavBar({ user, setUser }) {
                         }
                     </Menu>
                     <CartShopping />
+
                 </NavbarWrapper>
             </NavbarContainer>
         </>
