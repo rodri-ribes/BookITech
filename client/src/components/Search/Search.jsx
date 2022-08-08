@@ -11,7 +11,9 @@ export default function Search() {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        let obj = books.map((e) => e.title);
+        let titulo = books.map((e) => e.title);
+        let autor = books.map((e) => e.authors);
+        let obj = titulo.concat(autor);
         setOption(obj);
     }, [books]);
     function handleChange(e) {
