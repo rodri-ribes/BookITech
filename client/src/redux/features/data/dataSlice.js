@@ -13,8 +13,8 @@ export const dataSlice = createSlice({
         Theme: [],
         range: [],
         A_Z: [],
-        MinToMax: [],
         user: [],
+        MinToMax: [],
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
