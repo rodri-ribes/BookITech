@@ -44,12 +44,55 @@ async function getBooksById (req, res){
     }
 }
 
-
-
+/// Admin roles
+async function postBooks(req, res){
+    const { title, authors, publisher, subtitle, 
+            language, pages, year, desc, price, image }=req.body
+        if( title && authors && publisher ){
+            let existe=await Book.findOne({
+                title
+            })
+            if(existe){
+                return res.status(401).send("The Book is already registered");
+            }
+            const newBook= new Book({
+                title, authors, publisher, subtitle, 
+                language, pages, year, desc, price, image
+            })
+            await newBook.save()
+            res.status(200).json({
+                title:newBook.title,
+                authors:newBook.authors,
+                publisher:newBook.publisher,
+                subtitle:newBook.subtitle,
+                language:newBook.language,
+                pages:newBook.pages,
+                year:newBook.year,
+                desc:newBook.desc,
+                price:newBook.price,
+                image:newBook.image,
+            })
+        }
+}
+async function updateBook(req, res){
+    const { title, authors, publisher, subtitle, 
+        language, pages, year, desc, price, image }= req.body
+    const updateBook = { title, authors, publisher, subtitle, 
+        language, pages, year, desc, price, image }
+    await Book.findByIdAndUpdate(req.params.id,updateBook)
+    res.status(200).json({status:"Book update"})
+}
+async function deleteBook(req, res){
+    await Book.findByIdAndRemove(req.params.id)
+    res.json("eliminado babe")
+}
 
 
 module.exports = {
     getBooks,
     getBooksByName,
-    getBooksById
+    getBooksById,
+    postBooks,
+    updateBook,
+    deleteBook
 }

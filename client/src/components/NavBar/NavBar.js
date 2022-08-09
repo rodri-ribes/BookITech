@@ -71,6 +71,7 @@ function NavBar({ user, setUser }) {
                     <Menu click={click}>
                         {/* si el usuario esta logueado se cambiara el menu */}
                         {userr || window.localStorage.getItem("user") ?
+
                             <>
                                 <MenuItem onClick={() => changeClick()}>
                                     <MenuItemLink>

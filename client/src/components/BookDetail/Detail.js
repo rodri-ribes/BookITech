@@ -101,8 +101,7 @@ const RemoveToCart = () => {
             <GoSignIn />
             <Link className={det.SignIn} to="/signin">let your review</Link>
           </div>}
-        </div>
-        
+        </div> 
       </div>
       </div>
       <div className={det.ContainerSumm}>

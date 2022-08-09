@@ -108,7 +108,7 @@ body{
     margin: 20px;;
 }
 .ButtonRow{
-    display: inline-flex;
+    display: grid;
     margin-bottom: 20px;
     justify-content:space-around;
     width: 70%;
