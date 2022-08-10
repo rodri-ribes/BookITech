@@ -10,6 +10,7 @@ import ReviewCards from './ReviewCards'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import  capitalize from '../auxiliar/capitalize'
+import { Card404 } from './Card404'
 
 const img= "https://www.collinsdictionary.com/images/full/book_181404689_1000.jpg"
 const addApostrophes = (string) =>{
@@ -23,6 +24,7 @@ function Detail() {
   const {id}= useParams()
   const [details, setDetails] = useState({})
   const [cart,setCart]= useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   useEffect(()=>{
       axios.get(`http://localhost:3001/books/id/${id}`)
         .then((response)=> setDetails({...response.data,
@@ -31,8 +33,10 @@ function Detail() {
           language:capitalize(response.data.language),
           publisher:capitalize(response.data.publisher)
         }))
+        .then(()=> setIsLoading(false))
         .catch(err => alert(err)) 
   }, [])
+
 //starts//
 
 const colors={
@@ -72,6 +76,10 @@ const RemoveToCart = () => {
 }
 
 //
+
+  
+  if(isLoading) return // así no renderiza el componente vacío mientras carga
+  if(id!=details.isbn13) return <Card404/> 
   return (
     <>
     {}
@@ -142,7 +150,7 @@ const RemoveToCart = () => {
         <Link className={det.SignIn} to="/signin">leave a review</Link>
       </div>}
     </>
-)
+) 
 }
 
 export default Detail
