@@ -95,9 +95,42 @@ async function createUser (req, res) {
         }
     }
 }
+async function GetUser (req,res) {
+    try{
+        const {id} = req.params;
+       
+            // let _id = id
+            let user = await User.findById(id)
+            res.status(200).send(user)
+        
+    } catch(err){
+        res.status(404).send('Fallo en el id')
+    }
+    
+}
+async function PutUser (req,res){
+    try{
+        const {fullName, img ,phone } = req.body
+        const{id}= req.params
+        
+            if(fullName && img && phone){
+                
+                let upDate = {fullName,img,phone}
+                 await User.findByIdAndUpdate(id,upDate)
+                return res.status(200).send('Actualizado')
+            }
+           return  res.status(404).send('falta el body')
+        
+    } catch(err){
+        res.status(404).send('Fallo en el PUT')
+    }
+}
+
 
 
 module.exports = {
     loginUser,
-    createUser
+    createUser,
+    GetUser,
+    PutUser
 }
