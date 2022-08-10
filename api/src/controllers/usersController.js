@@ -27,7 +27,13 @@ async function loginUser(req, res) {
                 id: user.id,
                 name: user.name,
                 email: user.email,
-                token: token
+                token: token,
+                ban : user.ban,
+                img: user.img,
+                phone: user.phone,
+                // rrss: user.rrss,
+                option: user.option,
+                rol: user.rol
             })
         } else {
 
@@ -78,7 +84,13 @@ async function createUser (req, res) {
                 id: newUser.id,
                 name: newUser.fullName,
                 email: newUser.email,
-                token: token
+                token: token,
+                ban : newUser.ban,
+                img: newUser.img ,
+                phone: newUser.phone,
+                // rrss: newUser.rrss,
+                option: newUser.option ,
+                rol: newUser.rol
             })
         }
     }
