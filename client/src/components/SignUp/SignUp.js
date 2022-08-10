@@ -39,17 +39,17 @@ export default function SignUp() {
     }
 
 
-    const signInWithFacebook =  () => {
+    const signInWithFacebook = () => {
         const provider = new FacebookAuthProvider();
-        signInWithPopup(auth, provider )
-        .catch((err) => {
-            console.log(err.message);
-        })
+        signInWithPopup(auth, provider)
+            .catch((err) => {
+                console.log(err.message);
+            })
         setTimeout(() => {
             dispatch(getLibros())
             navigate("/")
         }, 5000);
-        
+
     }
     const responseFacebook = (response) => {
         console.log(response);
@@ -57,21 +57,21 @@ export default function SignUp() {
 
     const signInWithGithub = () => {
         const provider = new GithubAuthProvider();
-        signInWithPopup(auth, provider )
-        .catch((err) => {
-            console.log(err.message);
-        })
+        signInWithPopup(auth, provider)
+            .catch((err) => {
+                console.log(err.message);
+            })
         setTimeout(() => {
             dispatch(getLibros())
             navigate("/")
         }, 5000);
-        
+
     }
     const responseGithub = (response) => {
         console.log(response);
     }
 
-    useEffect(() => {
+
 
 
     let user = useSelector(state => state.data.user)
@@ -81,8 +81,6 @@ export default function SignUp() {
             navigate("/");
         }
     }, [])
-
-
 
 
 
@@ -206,7 +204,7 @@ export default function SignUp() {
                                 callback={responseFacebook} />
                         </div>
                         <div className='github'>
-                            <GithubLoginButton 
+                            <GithubLoginButton
                                 onClick={signInWithGithub}
                                 callback={responseGithub} />
                         </div>
