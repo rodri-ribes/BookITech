@@ -1,7 +1,7 @@
 const Cart = require('../models/Cart.js')
 
 const getCart = async (req, res) => {
-    let { id } = req.body;
+    let { id } = req.params;
 
     if (id) {
         try {
@@ -15,31 +15,62 @@ const getCart = async (req, res) => {
 
 const deleteBookInCart = async (req, res) => {
     let { idUser, idBook } = req.body;
+
     try {
         let encontrado = await Cart.findOne({ user: idUser })
 
         let carrito = encontrado.cart.filter(c => c._id !== idBook)
 
-        if (encontrado.cart.length < 2) {
-            encontrado.cart.splice(0);
-            await encontrado.save()
-            return res.send("se borro el ultimo")
-        } else {
+        encontrado.cart = carrito;
+        await encontrado.save()
+        return res.send("borrado")
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
+const deleteOneBookInCart = async (req, res) => {
+    let { idUser, idBook } = req.body;
+
+    try {
+        let encontrado = await Cart.findOne({ user: idUser })
+
+        let carrito = [];
+
+        encontrado.cart.forEach(c => {
+            if (c._id === idBook) {
+                if (c.cantidad === 1) {
+                    carrito = encontrado.cart.filter(c => c._id !== idBook)
+                } else if (c.cantidad > 1) {
+                    c.cantidad--;
+                }
+            }
+        })
+
+        if (carrito.length > 0) {
             encontrado.cart.length = 0;
             encontrado.cart = carrito;
             await encontrado.save()
-            return res.send("borrado")
+            return res.send("se borro el ultimo")
         }
+
+        await encontrado.save()
+        res.send("fue el ultimo libro, se borro")
     } catch (error) {
         console.log(error)
     }
 }
 
+
+
 const addCart = async (req, res) => {
 
     let { idBook, cantBook, idUser } = req.body;
 
-    console.log(idBook, cantBook, idUser)
+    if (cantBook === undefined) {
+        cantBook = 1
+    }
 
     try {
         let encontrado = await Cart.findOne({
@@ -47,11 +78,11 @@ const addCart = async (req, res) => {
         })
         if (encontrado) {
             let existe = encontrado.cart.filter(c => c._id === idBook)
-            console.log(existe)
+
             if (existe.length > 0) {
                 encontrado.cart.forEach(c => {
                     if (c._id === idBook) {
-                        c.cantidad = cantBook
+                        c.cantidad = parseInt(c.cantidad) + 1
                     }
                 })
                 await encontrado.save();
@@ -83,5 +114,6 @@ const addCart = async (req, res) => {
 module.exports = {
     getCart,
     deleteBookInCart,
+    deleteOneBookInCart,
     addCart
 }
