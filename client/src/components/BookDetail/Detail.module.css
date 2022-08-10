@@ -108,7 +108,7 @@ body{
     margin: 20px;;
 }
 .ButtonRow{
-    display: inline-flex;
+    display: grid;
     margin-bottom: 20px;
     justify-content:space-around;
     width: 70%;
@@ -255,6 +255,14 @@ body{
     border-radius: 10px;
     width: 200px;
     margin-left: 540px;
+    justify-content:center;
+}
+.GoSignIn1{
+    display:flex;
+    border: solid 1px rgb(56, 76, 202);
+    border-radius: 10px;
+    width: 200px;
+    margin-left: 340px;
     justify-content:center;
 }
 .GoSignIn:hover{

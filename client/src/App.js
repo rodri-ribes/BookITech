@@ -5,10 +5,11 @@ import Footer from "./components/Footer/Footer.js";
 import './app.css'
 import Home from "./components/Home/Home.js";
 import Detail from "./components/BookDetail/Detail"
-import Favorite from "./components/Favorites/Favorite";
 import SignIn from './components/SignIn/SignIn.js'
 import SignUp from './components/SignUp/SignUp.js'
+import Favorite from "./components/Favorites/Favorite";
 import { AuthContextProvider } from "./firebase/AuthContext.js";
+
 
 function App() {
 

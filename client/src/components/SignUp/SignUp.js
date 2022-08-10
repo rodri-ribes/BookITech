@@ -4,7 +4,7 @@ import style from './SignUp.module.css'
 import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getLibros, getUser } from '../../redux/features/data/dataSlice';
 import { GoogleButton } from 'react-google-button'
 import { UserAuth } from '../../firebase/AuthContext';
@@ -37,6 +37,7 @@ export default function SignUp() {
             navigate("/")
         }, 5000);
     }
+
 
     const signInWithFacebook =  () => {
         const provider = new FacebookAuthProvider();
@@ -72,13 +73,14 @@ export default function SignUp() {
 
     useEffect(() => {
 
-        if (window.localStorage.getItem("user")) {
-            setTimeout(() => {
-                navigate('/')
-            }, 100);
-        }
 
-    }, [navigate])
+    let user = useSelector(state => state.data.user)
+
+    useEffect(() => {
+        if (user || window.localStorage.getItem("user")) {
+            navigate("/");
+        }
+    }, [])
 
 
 

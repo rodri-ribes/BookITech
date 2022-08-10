@@ -4,25 +4,20 @@ import axios from 'axios';
 export const dataSlice = createSlice({
     name: 'data',
     initialState: {
-        user: [],
         books: [],
         book: [],
-        author: [],
         details: [],
         Cart: [],
         Favs: [],
         allBooks: [],
-        NomAuthor: [],
-        genre: [],
-        format: [],
+        Theme: [],
         range: [],
         A_Z: [],
+        user: [],
+        MinToMax: [],
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
-        addUser: (state, actions) => {
-            state.user = actions.payload;
-        },
         addLibro: (state, actions) => {
             state.books = actions.payload;
             state.allBooks = actions.payload;
@@ -35,17 +30,6 @@ export const dataSlice = createSlice({
                 books: actions.payload,
             };
         },
-        SearchAuthor: (state, actions) => {
-            let obj = state.allBooks.filter((e) =>
-                e.authors.includes(actions.payload)
-            );
-            obj.length
-                ? (state.author = state.author.concat(obj))
-                : state.author.concat([]);
-            // state.books = state.allBooks.filter((e) =>
-            //     e.authors.includes(actions.payload)
-            // );
-        },
         getBookDetails: (state, actions) => {
             state.details = actions.payload;
         },
@@ -57,14 +41,14 @@ export const dataSlice = createSlice({
         deleteCart: (state, actions) => {
             state.Cart = state.Cart.filter((l) => l.isbn13 !== actions.payload);
         },
-        FAuthor: (state, actions) => {
+        FilterTheme: (state, actions) => {
             let copiaA =
                 actions.payload === 'all'
                     ? [...state.allBooks]
-                    : state.books.filter((e) => e.author === actions.payload);
+                    : actions.payload;
             return {
                 ...state,
-                NomAuthor: copiaA,
+                Theme: copiaA,
                 books: copiaA,
             };
         },
@@ -78,49 +62,32 @@ export const dataSlice = createSlice({
             state.Favs = state.Favs.filter((l) => l.isbn13 !== actions.payload);
         },
 
-        AllGenre: (state, actions) => {
-            let copi =
-                actions.payload === 'all'
-                    ? [...state.allBooks]
-                    : state.books.filter((e) => e.genre === actions.payload);
-
-            return {
-                ...state,
-                genre: copi,
-                books: copi,
-            };
-        },
-        Formats: (state, actions) => {
-            let copy = state.books;
-            let pruebaa;
-            if (actions.payload === 'pdf') {
-                pruebaa = copy.filter((e) => e.format === actions.payload);
-            }
-            if (actions.payload === 'physical') {
-                pruebaa = copy.filter((e) => e.format === actions.payload);
-            }
-            return {
-                ...state,
-                format: actions.payload === 'all' ? state.prueba : pruebaa,
-                books: actions.payload === 'all' ? state.prueba : pruebaa,
-            };
-        },
         Range: (state, { payload }) => {
             if (payload.min === payload.max) {
-                state.books = [...state.allBooks];
-                state.range = [...state.allBooks];
+                state.books = [...state.books];
+                state.range = [...state.books];
                 alert('Max and Min are the same, please make them different');
+            } else if (payload.min > payload.max) {
+                state.books = [...state.books];
+                state.range = [...state.books];
+                alert('Min is greater than Max');
             } else {
                 let copirange = state.books.filter(
                     (e) =>
-                        payload.max >= e.price.slice(1) &&
-                        e.price.slice(1) >= payload.min
+                        Number(e.price.slice(1)) >= Number(payload.min) &&
+                        Number(payload.max) >= Number(e.price.slice(1))
                 );
-                return {
-                    ...state,
-                    range: copirange,
-                    books: copirange,
-                };
+                if (!copirange.length) {
+                    state.books = [...state.books];
+                    state.range = [...state.books];
+                    alert('price range not found');
+                } else {
+                    return {
+                        ...state,
+                        range: copirange,
+                        books: copirange,
+                    };
+                }
             }
         },
         ORDEN: (state, actions) => {
@@ -128,29 +95,51 @@ export const dataSlice = createSlice({
             let filterAZ =
                 actions.payload === 'A-Z'
                     ? copiABC.sort((a, b) => {
-                        if (a.title > b.title) {
-                            return 1;
-                        }
-                        if (b.title > a.title) {
-                            return -1;
-                        }
-                        return 0;
-                    })
+                          if (a.title > b.title) {
+                              return 1;
+                          }
+                          if (b.title > a.title) {
+                              return -1;
+                          }
+                          return 0;
+                      })
                     : copiABC.sort((a, b) => {
-                        if (a.title > b.title) {
-                            return -1;
-                        }
-                        if (b.title > a.title) {
-                            return 1;
-                        }
-                        return 0;
-                    });
+                          if (a.title > b.title) {
+                              return -1;
+                          }
+                          if (b.title > a.title) {
+                              return 1;
+                          }
+                          return 0;
+                      });
             return {
                 ...state,
-                A_Z: actions.payload === 'all' ? [...state.allBooks] : filterAZ,
-                books:
-                    actions.payload === 'all' ? [...state.allBooks] : filterAZ,
+                A_Z: actions.payload === 'all' ? [...state.books] : filterAZ,
+                books: actions.payload === 'all' ? [...state.A_Z] : filterAZ,
             };
+        },
+        MINtoMAX: (state, actions) => {
+            let cambiar = [...state.books];
+            let filtrar;
+            if (actions.payload === 'MintoMax') {
+                filtrar = cambiar.sort(
+                    (a, b) =>
+                        Number(a.price.slice(1)) - Number(b.price.slice(1))
+                );
+            }
+            if (actions.payload === 'MaxtoMin') {
+                filtrar = cambiar.sort(
+                    (a, b) =>
+                        Number(b.price.slice(1)) - Number(a.price.slice(1))
+                );
+            }
+            return {
+                ...state,
+                books: actions.payload === 'all' ? cambiar : filtrar,
+            };
+        },
+        addUser: (state, actions) => {
+            state.user = actions.payload;
         },
     },
 });
@@ -159,19 +148,16 @@ export const dataSlice = createSlice({
 
 export const {
     addLibro,
-    SearchAuthor,
     SearchTitle,
     getBookDetails,
     addCart,
-    addFav,
-    deleteFav,
+    addFav,deleteFav,
     deleteCart,
-    FAuthor,
-    AllGenre,
-    Formats,
+    FilterTheme,
     Range,
     ORDEN,
-    addUser
+    MINtoMAX,
+    addUser,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -179,10 +165,6 @@ export const {
 export default dataSlice.reducer;
 
 //Aca irian las actions, dejo una como modo de ejemplo
-
-export const getUser = (data) => async (dispatch) => {
-    dispatch(addUser(data))
-}
 
 export const getLibros = () => async (dispatch) => {
     try {
@@ -194,25 +176,22 @@ export const getLibros = () => async (dispatch) => {
 };
 
 //Search
-export const disSearch = (payload) => async (dispatch) => {
-    dispatch(SearchTitle(payload));
-};
+// export const disSearch = (payload) => async (dispatch) => {
+//     dispatch(SearchTitle(payload));
+// };
 export const getSearch = (name) => async (dispatch) => {
     try {
         let buscar = await axios.get(
             //URL PARA BUSCAR
             `http://localhost:3001/books/${name}`
         );
-        dispatch(disSearch(buscar.data));
+        console.log(buscar.data);
+        dispatch(SearchTitle(buscar.data));
         // console.log(buscar.data);
     } catch (error) {
         alert('the books were not found');
         console.log(error);
     }
-};
-
-export const getSearchAuthor = (payload) => (dispatch) => {
-    dispatch(SearchAuthor(payload));
 };
 
 export const getBookDetail = (id) => async (dispatch) => {
@@ -237,20 +216,34 @@ export const deleteFavs = (id) => async (dispatch) => {
     dispatch(deleteFav(id));
 };
 
-export const FilterAuthor = (payload) => async (dispatch) => {
-    dispatch(FAuthor(payload));
+export const FilTheme = (payload) => async (dispatch) => {
+    try {
+        if (payload === 'all') {
+            dispatch(FilterTheme(payload));
+        } else {
+            let buscar = await axios.get(
+                //URL PARA BUSCAR
+                `http://localhost:3001/books/${payload}`
+            );
+            dispatch(FilterTheme(buscar.data));
+        }
+        // console.log(buscar.data);
+    } catch (error) {
+        alert('the books were not found');
+        console.log(error);
+    }
+    // dispatch(FAuthor(payload));
 };
 
-export const FilterGenre = (payload) => async (dispatch) => {
-    dispatch(AllGenre(payload));
-};
-
-export const FilterFormat = (payload) => async (dispatch) => {
-    dispatch(Formats(payload));
-};
 export const PriceRange = (payload) => async (dispatch) => {
     dispatch(Range(payload));
 };
 export const ORdenAZ = (payload) => async (dispatch) => {
     dispatch(ORDEN(payload));
+};
+export const ChangeRange = (payload) => async (dispatch) => {
+    dispatch(MINtoMAX(payload));
+};
+export const getUser = (data) => async (dispatch) => {
+    dispatch(addUser(data));
 };
