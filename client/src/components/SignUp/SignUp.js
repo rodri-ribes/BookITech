@@ -72,7 +72,7 @@ export default function SignUp() {
     }
 
 
-
+  
 
     let user = useSelector(state => state.data.user)
 
