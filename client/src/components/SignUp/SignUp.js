@@ -71,7 +71,7 @@ export default function SignUp() {
         console.log(response);
     }
 
-    useEffect(() => {
+    // useEffect(() => {
 
 
     let user = useSelector(state => state.data.user)
