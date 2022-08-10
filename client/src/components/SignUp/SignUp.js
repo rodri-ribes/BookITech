@@ -8,6 +8,9 @@ import { useDispatch } from 'react-redux';
 import { getLibros, getUser } from '../../redux/features/data/dataSlice';
 import { GoogleButton } from 'react-google-button'
 import { UserAuth } from '../../firebase/AuthContext';
+import { FacebookLoginButton, GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
+import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider } from 'firebase/auth'
+import { auth } from '../../firebase/index';
 
 export default function SignUp() {
 
@@ -35,6 +38,38 @@ export default function SignUp() {
         }, 5000);
     }
 
+    const signInWithFacebook =  () => {
+        const provider = new FacebookAuthProvider();
+        signInWithPopup(auth, provider )
+        .catch((err) => {
+            console.log(err.message);
+        })
+        setTimeout(() => {
+            dispatch(getLibros())
+            navigate("/")
+        }, 5000);
+        
+    }
+    const responseFacebook = (response) => {
+        console.log(response);
+    }
+
+    const signInWithGithub = () => {
+        const provider = new GithubAuthProvider();
+        signInWithPopup(auth, provider )
+        .catch((err) => {
+            console.log(err.message);
+        })
+        setTimeout(() => {
+            dispatch(getLibros())
+            navigate("/")
+        }, 5000);
+        
+    }
+    const responseGithub = (response) => {
+        console.log(response);
+    }
+
     useEffect(() => {
 
         if (window.localStorage.getItem("user")) {
@@ -44,6 +79,9 @@ export default function SignUp() {
         }
 
     }, [navigate])
+
+
+
 
 
     return (
@@ -158,7 +196,17 @@ export default function SignUp() {
                         {confirm.visible ? <div className={`${confirm.error ? style.Container__Div_NotSucess : style.Container__Div_Sucess}`}><p>{confirm.message}</p></div> : null}
                         <p className={style.Container__Register}>You already have an account? <Link to="/signin" className={style.Container__Register_Link}>Sign In</Link></p>
                         <div className={style.Container__Google}>
-                            <GoogleButton onClick={() => handleSubmitGoogle()} />
+                            <GoogleLoginButton onClick={() => handleSubmitGoogle()} />
+                        </div>
+                        <div className='facebook'>
+                            <FacebookLoginButton
+                                onClick={signInWithFacebook}
+                                callback={responseFacebook} />
+                        </div>
+                        <div className='github'>
+                            <GithubLoginButton 
+                                onClick={signInWithGithub}
+                                callback={responseGithub} />
                         </div>
                     </Form>
                 </div>
