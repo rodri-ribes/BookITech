@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { capitalize } from '../../../components/auxiliar/capitalize';
 
 export const dataSlice = createSlice({
     name: 'data',
@@ -29,9 +30,6 @@ export const dataSlice = createSlice({
                 book: actions.payload,
                 books: actions.payload,
             };
-        },
-        getBookDetails: (state, actions) => {
-            state.details = actions.payload;
         },
         addCart: (state, actions) => {
             state.Cart = state.Cart.concat(
@@ -149,7 +147,6 @@ export const dataSlice = createSlice({
 export const {
     addLibro,
     SearchTitle,
-    getBookDetails,
     addCart,
     addFav,deleteFav,
     deleteCart,
@@ -190,15 +187,6 @@ export const getSearch = (name) => async (dispatch) => {
         // console.log(buscar.data);
     } catch (error) {
         alert('the books were not found');
-        console.log(error);
-    }
-};
-
-export const getBookDetail = (id) => async (dispatch) => {
-    try {
-        const resp = await axios.get(`http://localhost:3001/books/id/${id}`);
-        dispatch(getBookDetails(resp.data));
-    } catch (error) {
         console.log(error);
     }
 };

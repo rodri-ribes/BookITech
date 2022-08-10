@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { AddCart, addFavs, deleteCart, deleteFavs } from '../../../redux/features/data/dataSlice'
 
-export default function CardBook({ id, name, author, img, gender, idiom, format, price }) {
+export default function CardBook({ id, name, author, img, price }) {
 
     const [cart, setCart] = useState(false)
     const [heart, setHeart] = useState(false)
