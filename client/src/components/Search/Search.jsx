@@ -12,9 +12,9 @@ export default function Search() {
     const dispatch = useDispatch();
     useEffect(() => {
         let titulo = books.map((e) => e.title);
-        let autor = books.map((e) => e.authors);
-        let obj = titulo.concat(autor);
-        setOption(obj);
+        // let autor = books.map((e) => e.authors);
+        // let obj = titulo.concat(autor);
+        setOption(titulo);
     }, [books]);
     function handleChange(e) {
         if (name.length >= 2) {
@@ -69,7 +69,7 @@ export default function Search() {
                 {display &&
                     option
                         ?.filter((e) =>
-                            e.toLowerCase().includes(name.toLowerCase())
+                            e.includes(name)
                         )
                         .map((e, k) => {
                             return (
