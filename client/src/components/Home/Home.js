@@ -3,7 +3,7 @@ import CardBook from './CardBook/CardBook';
 import style from './home.module.css';
 import { Paginacion } from './Pagination/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { getLibros } from '../../redux/features/data/dataSlice';
+import { deleteBookDetail, getLibros } from '../../redux/features/data/dataSlice';
 import Search from '../Search/Search';
 import Filters from '../Filters/Filters';
 
