@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { AddCart, addFavs, deleteCart, deleteFavs } from '../../../redux/features/data/dataSlice'
 
-export default function CardBook({ id, name, author, img, gender, idiom, format, price }) {
+export default function CardBook({ id, name, authors, img, subtitle, language, price }) {
 
     const [cart, setCart] = useState(false)
     const [heart, setHeart] = useState(false)
@@ -54,7 +54,7 @@ export default function CardBook({ id, name, author, img, gender, idiom, format,
                 </div>
                 <Link className={style.Container__Information_title} to={`/${id}`}>{name}</Link>
                 <div className={style.Container__Information__ContainerAuthorAndPrice}>
-                    <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{author}</p>
+                    <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors}</p>
                     <h3 className={style.Container__Information__ContainerAuthorAndPrice_price}>{price}</h3>
                 </div>
                 {cart ?
