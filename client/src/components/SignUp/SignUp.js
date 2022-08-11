@@ -11,6 +11,7 @@ import { UserAuth } from '../../firebase/AuthContext';
 import { FacebookLoginButton, GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider } from 'firebase/auth'
 import { auth } from '../../firebase/index';
+const {REACT_APP_API} = process.env
 
 export default function SignUp() {
 
@@ -101,7 +102,7 @@ export default function SignUp() {
                 fullName = name.charAt(0).toUpperCase() + name.slice(1)
                 console.log(fullName, email, password)
                 try {
-                    let resp = await axios.post(`http://localhost:3001/signup`, {
+                    let resp = await axios.post(REACT_APP_API+ `/signup`, {
                         fullName, email, password
                     })
                     window.localStorage.setItem("user", JSON.stringify(resp.data))
