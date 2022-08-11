@@ -1,5 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { capitalize } from '../../../components/auxiliar/capitalize';
+
+const {REACT_APP_API} = process.env
 
 export const dataSlice = createSlice({
     name: 'data',
@@ -29,9 +32,6 @@ export const dataSlice = createSlice({
                 book: actions.payload,
                 books: actions.payload,
             };
-        },
-        getBookDetails: (state, actions) => {
-            state.details = actions.payload;
         },
         addCart: (state, actions) => {
             state.Cart = state.Cart.concat(
@@ -149,10 +149,8 @@ export const dataSlice = createSlice({
 export const {
     addLibro,
     SearchTitle,
-    getBookDetails,
     addCart,
-    addFav,
-    deleteFav,
+    addFav,deleteFav,
     deleteCart,
     FilterTheme,
     Range,
@@ -169,7 +167,7 @@ export default dataSlice.reducer;
 
 export const getLibros = () => async (dispatch) => {
     try {
-        const resp = await axios.get(`http://localhost:3001/books`);
+        const resp = await axios.get(REACT_APP_API + `/books`);
         dispatch(addLibro(resp.data));
     } catch (error) {
         console.log(error);
@@ -184,22 +182,13 @@ export const getSearch = (name) => async (dispatch) => {
     try {
         let buscar = await axios.get(
             //URL PARA BUSCAR
-            `http://localhost:3001/books/${name}`
+            REACT_APP_API +`/books/${name}`
         );
         console.log(buscar.data);
         dispatch(SearchTitle(buscar.data));
         // console.log(buscar.data);
     } catch (error) {
         alert('the books were not found');
-        console.log(error);
-    }
-};
-
-export const getBookDetail = (id) => async (dispatch) => {
-    try {
-        const resp = await axios.get(`http://localhost:3001/books/id/${id}`);
-        dispatch(getBookDetails(resp.data));
-    } catch (error) {
         console.log(error);
     }
 };
@@ -224,7 +213,7 @@ export const FilTheme = (payload) => async (dispatch) => {
         } else {
             let buscar = await axios.get(
                 //URL PARA BUSCAR
-                `http://localhost:3001/books/${payload}`
+                REACT_APP_API + `/books/${payload}`
             );
             dispatch(FilterTheme(buscar.data));
         }

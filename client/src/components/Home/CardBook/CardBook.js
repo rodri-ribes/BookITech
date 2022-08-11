@@ -4,25 +4,49 @@ import { RiShoppingCartLine } from 'react-icons/ri'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { AddCart, addFavs, deleteCart, deleteFavs } from '../../../redux/features/data/dataSlice'
+import axios from 'axios'
+const {REACT_APP_API} = process.env
 
 export default function CardBook({ id, name, authors, img, subtitle, language, price }) {
 
     const [cart, setCart] = useState(false)
     const [heart, setHeart] = useState(false)
 
+
+    let user = useSelector(state => state.data.user)
+
     let dispatch = useDispatch();
 
-    const addToCart = () => {
-        //Aca iria el dispatch de la actions que agregaria el item al carrito
+    const addToCart = async () => {
+        if (user || window.localStorage.getItem("user")) {
+
+            let idBook = id;
+            let auxUser = JSON.parse(window.localStorage.getItem("user"))
+            let idUser = auxUser.id
+            axios.post(REACT_APP_API + '/cart/add', {
+                idUser, idBook
+            })
+        } else {
+            dispatch(AddCart(id))
+        }
         setCart(true)
-        dispatch(AddCart(id))
     }
-    const RemoveToCart = () => {
-        //Aca iria el dispatch de la actions que quitaria el item al carrito
+
+    const RemoveToCart = async () => {
+
+        if (user || window.localStorage.getItem("user")) {
+            let idBook = id;
+            let auxUser = JSON.parse(window.localStorage.getItem("user"))
+            let idUser = auxUser.id
+            await axios.put(REACT_APP_API+ '/cart/delete', {
+                idUser, idBook
+            })
+        } else {
+            dispatch(deleteCart(id))
+        }
         setCart(false)
-        dispatch(deleteCart(id))
     }
 
     const addToFav = () => {

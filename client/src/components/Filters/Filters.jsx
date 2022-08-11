@@ -101,8 +101,8 @@ export default function Filters({ setPagina, setOrden }) {
                 <table>
                     <tbody>
                         <tr>
-                            <th className={style.label}>ORDER A-Z</th>
-                            <th className={style.label}>Thematic</th>
+                            <th className={style.label}>Sort A-Z</th>
+                            <th className={style.label}>Subject</th>
                             <th className={style.label}>
                                 Price
                                 {(errors.max || errors.min) && (
@@ -111,7 +111,7 @@ export default function Filters({ setPagina, setOrden }) {
                                     </p>
                                 )}
                             </th>
-                            <th className={style.label}>ORDER $</th>
+                            <th className={style.label}>Sort $</th>
                         </tr>
                         <tr>
                             <th className={style.th}>
@@ -119,7 +119,7 @@ export default function Filters({ setPagina, setOrden }) {
                                     className={style.AZ}
                                     onChange={(e) => handleOrden(e)}
                                 >
-                                    <option value="all">ALL</option>
+                                    <option value="all">Sort</option>
                                     <option value="A-Z">A-Z</option>
                                     <option value="Z-A">Z-A</option>
                                 </select>
@@ -129,7 +129,7 @@ export default function Filters({ setPagina, setOrden }) {
                                     className={style.select}
                                     onChange={(e) => handleTheme(e)}
                                 >
-                                    <option value="all">Thematic</option>
+                                    <option value="all">Subject</option>
                                     {tematica?.map((e, k) => {
                                         return (
                                             <option key={k} value={e}>

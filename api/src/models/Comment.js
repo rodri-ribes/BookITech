@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const CommentSchema = new Schema({
     content: {
+        
         type: String
     },
     rating: {
@@ -19,6 +20,8 @@ const CommentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Book'
     }
+   
+
 })
 
 module.exports = mongoose.model('Comment', CommentSchema)

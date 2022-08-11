@@ -61,9 +61,9 @@ export default function Search() {
     const dispatch = useDispatch();
     useEffect(() => {
         let titulo = books.map((e) => e.title);
-        let autor = books.map((e) => e.authors);
-        let obj = titulo.concat(autor);
-        setOption(obj);
+        // let autor = books.map((e) => e.authors);
+        // let obj = titulo.concat(autor);
+        setOption(titulo);
     }, [books]);
     function handleChange(e) {
         if (name.length >= 2) {
@@ -127,6 +127,7 @@ export default function Search() {
                         <AiOutlineSearch />
                     </button>
                 </form>
+<<<<<<< HEAD
             </div> */}
                         {/* <datalist id="form">
                         {display &&
@@ -150,5 +151,27 @@ export default function Search() {
                 </SearchUI>
             </form>
         </Box>
+// =======
+//             </div>
+//             <datalist className={style.dentro} id="form">
+//                 {display &&
+//                     option
+//                         ?.filter((e) =>
+//                             e.includes(name)
+//                         )
+//                         .map((e, k) => {
+//                             return (
+//                                 <option
+//                                     key={k}
+//                                     onClick={() => setClick(e)}
+//                                     value={e}
+//                                 >
+//                                     {e}
+//                                 </option>
+//                             );
+//                         })}
+//             </datalist>
+//         </div>
+// >>>>>>> Development
     );
 }

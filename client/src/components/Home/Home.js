@@ -3,9 +3,10 @@ import CardBook from './CardBook/CardBook';
 import style from './home.module.css';
 import { Paginacion } from './Pagination/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { getLibros } from '../../redux/features/data/dataSlice';
+import {  getLibros } from '../../redux/features/data/dataSlice';
 import Search from '../Search/Search';
 import Filters from '../Filters/Filters';
+import capitalize from '../auxiliar/capitalize'
 
 export default function Home() {
     let dispatch = useDispatch();
@@ -22,7 +23,8 @@ export default function Home() {
 
     const porPagina = 10;
 
-    const maximo = books.length / porPagina;
+    const ceil = books.length / porPagina;
+    const maximo =Math.ceil(ceil)
 
     //logica para mostrar el search en home en modo responsive
 
@@ -47,12 +49,8 @@ export default function Home() {
                     .map((l, i) => {
                         return (
                             <CardBook
-                                name={l.title}
+                                name={capitalize(l.title)}
                                 id={l.isbn13}
-                                author={l.author}
-                                gender={l.gender}
-                                idiom={l.idiom}
-                                format={l.format}
                                 price={l.price}
                                 img={l.image}
                                 key={i}

@@ -70,6 +70,7 @@ function NavBar({ user, setUser }) {
 
     return (
         <>
+{/* <<<<<<< HEAD */}
             <AppBar
                 position="sticky"
                 sx={{ backgroundColor: "#0f243b", color: "#DADADA" }}
@@ -96,6 +97,67 @@ function NavBar({ user, setUser }) {
                         >
                             LOGO/BookITech
                         </Typography>
+{/* =======
+            <NavbarContainer>
+                <NavbarWrapper>
+                    <IconLogoMovile onClick={() => changeClick()}>
+                        {click ? <FaTimes /> : <FaBars />}
+                    </IconLogoMovile>
+                    <IconLogo>
+                        <NavLink to="/" className="navlink">
+                            PF-BOOKS
+                        </NavLink>
+                    </IconLogo>
+                    <ContainerSearch>
+                        <>
+                            <Search />
+                        </>
+                    </ContainerSearch>
+                    <Menu click={click}>
+                        {/* si el usuario esta logueado se cambiara el menu */}
+                        {/* {userr || window.localStorage.getItem("user") ?
+
+                            <>
+                                <MenuItem onClick={() => changeClick()}>
+                                    <MenuItemLink>
+                                        <div>
+                                            <BsHeartFill />
+                                            <NavLink to="/favorites">FAVORITES</NavLink>
+                                        </div>
+                                    </MenuItemLink>
+                                </MenuItem>
+                                <MenuItem onClick={() => changeClick()}>
+                                    <MenuItemLink>
+                                        <div>
+                                            <RiLogoutBoxFill />
+                                            <NavLink to="/" onClick={() => handleLogout()}>LOGOUT</NavLink>
+                                        </div>
+                                    </MenuItemLink>
+                                </MenuItem>
+                            </>
+                            :
+                            <>
+                                <MenuItem onClick={() => changeClick()}>
+                                    <MenuItemLink>
+                                        <div>
+                                            <GoSignIn />
+                                            <NavLink to="/signin">SIGN IN</NavLink>
+                                        </div>
+                                    </MenuItemLink>
+                                </MenuItem>
+                                <MenuItem onClick={() => changeClick()}>
+                                    <MenuItemLink>
+                                        <div>
+                                            <GoSignIn />
+                                            <NavLink to="/signup">SIGN UP</NavLink>
+                                        </div>
+                                    </MenuItemLink>
+                                </MenuItem>
+                            </>
+                        }
+                    </Menu>
+                    <CartShopping />
+>>>>>>> Development }*/} */
 
                         {/* <div click={click}> */}
                         {/* si el usuario esta logueado se cambiara el menu */}
