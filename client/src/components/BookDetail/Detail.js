@@ -11,6 +11,7 @@ import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import  capitalize from '../auxiliar/capitalize'
 import { Card404 } from './Card404'
+const {REACT_APP_API} = process.env
 
 const img= "https://www.collinsdictionary.com/images/full/book_181404689_1000.jpg"
 const addApostrophes = (string) =>{
@@ -26,7 +27,7 @@ function Detail() {
   const [cart,setCart]= useState(false)
   const [isLoading, setIsLoading] = useState(true)
   useEffect(()=>{
-      axios.get(`http://localhost:3001/books/id/${id}`)
+      axios.get(REACT_APP_API +`/books/id/${id}`)
         .then((response)=> setDetails({...response.data,
           title: capitalize(response.data.title),
           authors:capitalize(response.data.authors),

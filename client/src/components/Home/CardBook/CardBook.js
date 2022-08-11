@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AddCart, addFavs, deleteCart, deleteFavs } from '../../../redux/features/data/dataSlice'
 import axios from 'axios'
+const {REACT_APP_API} = process.env
 
 export default function CardBook({ id, name, author, img, gender, idiom, format, price }) {
 
@@ -24,7 +25,7 @@ export default function CardBook({ id, name, author, img, gender, idiom, format,
             let idBook = id;
             let auxUser = JSON.parse(window.localStorage.getItem("user"))
             let idUser = auxUser.id
-            axios.post("http://localhost:3001/cart/add", {
+            axios.post(REACT_APP_API + '/cart/add', {
                 idUser, idBook
             })
         } else {
@@ -39,7 +40,7 @@ export default function CardBook({ id, name, author, img, gender, idiom, format,
             let idBook = id;
             let auxUser = JSON.parse(window.localStorage.getItem("user"))
             let idUser = auxUser.id
-            await axios.put("http://localhost:3001/cart/delete", {
+            await axios.put(REACT_APP_API+ '/cart/delete', {
                 idUser, idBook
             })
         } else {
