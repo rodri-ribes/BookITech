@@ -6,9 +6,14 @@ import CardBooksInCart from './CardBooksInCart/CardBooksInCart';
 import calcularCarrito from './functions/calcularCarrito';
 import { FaCartArrowDown } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom';
+// <<<<<<< HEAD
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
+// =======
 import axios from 'axios';
 import filtrarBooksUser from './functions/filtrarBooksUser';
 const {REACT_APP_API } = process.env
+// >>>>>>> Development
 
 export default function CartShopping() {
 
@@ -149,7 +154,7 @@ export default function CartShopping() {
         <>
             <Container>
                 <div>
-                    <BsCart4 onClick={() => changeClick()} />
+                    <ShoppingCartIcon onClick={() => changeClick()} />
                     <p>{cantidad}</p>
                 </div>
             </Container>

@@ -9,12 +9,13 @@ import SignIn from './components/SignIn/SignIn.js'
 import SignUp from './components/SignUp/SignUp.js'
 import Favorite from "./components/Favorites/Favorite";
 import { AuthContextProvider } from "./firebase/AuthContext.js";
+import Profile from "./components/Profile/Profile.js";
 
 
 function App() {
 
   return (
-    <>
+    <div className="container1">
       <AuthContextProvider>
         <NavBar />
         <div className="container">
@@ -24,11 +25,12 @@ function App() {
             <Route path="/favorites" element={<Favorite />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
         <Footer />
       </AuthContextProvider>
-    </>
+    </div>
   );
 }
 
