@@ -8,6 +8,7 @@ import { FaCartArrowDown } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import filtrarBooksUser from './functions/filtrarBooksUser';
+const {REACT_APP_API} = process.env
 
 export default function CartShopping() {
 
@@ -27,7 +28,7 @@ export default function CartShopping() {
             let auxUser = JSON.parse(window.localStorage.getItem("user"))
             idUser = auxUser.id
 
-            let res = axios.get("http://localhost:3001/cart/" + idUser).then(c => {
+            let res = axios.get(REACT_APP_API+ '/cart/' + idUser).then(c => {
                 setCartFiltrado(filtrarBooksUser(booksTotal, c.data[0].cart))
             })
         }
@@ -72,7 +73,7 @@ export default function CartShopping() {
             }))
             let auxUser = JSON.parse(window.localStorage.getItem("user"))
             let idUser = auxUser.id
-            axios.post("http://localhost:3001/cart/add", {
+            axios.post(REACT_APP_API + '/cart/add', {
                 idUser, cantBook, idBook
             })
 
@@ -98,7 +99,7 @@ export default function CartShopping() {
 
             let auxUser = JSON.parse(window.localStorage.getItem("user"))
             let idUser = auxUser.id
-            axios.put("http://localhost:3001/cart/deleteone", {
+            axios.put(REACT_APP_API + '/cart/deleteone', {
                 idUser, idBook
             })
 
