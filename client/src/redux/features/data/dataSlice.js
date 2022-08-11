@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { capitalize } from '../../../components/auxiliar/capitalize';
 
+const {REACT_APP_API} = process.env
+
 export const dataSlice = createSlice({
     name: 'data',
     initialState: {
@@ -165,7 +167,7 @@ export default dataSlice.reducer;
 
 export const getLibros = () => async (dispatch) => {
     try {
-        const resp = await axios.get(`http://localhost:3001/books`);
+        const resp = await axios.get(REACT_APP_API + `/books`);
         dispatch(addLibro(resp.data));
     } catch (error) {
         console.log(error);
@@ -180,7 +182,7 @@ export const getSearch = (name) => async (dispatch) => {
     try {
         let buscar = await axios.get(
             //URL PARA BUSCAR
-            `http://localhost:3001/books/${name}`
+            REACT_APP_API +`/books/${name}`
         );
         console.log(buscar.data);
         dispatch(SearchTitle(buscar.data));
@@ -211,7 +213,7 @@ export const FilTheme = (payload) => async (dispatch) => {
         } else {
             let buscar = await axios.get(
                 //URL PARA BUSCAR
-                `http://localhost:3001/books/${payload}`
+                REACT_APP_API + `/books/${payload}`
             );
             dispatch(FilterTheme(buscar.data));
         }

@@ -5,6 +5,7 @@ import { GrAddCircle, GrSubtractCircle } from 'react-icons/gr'
 import { useDispatch, useSelector } from 'react-redux'
 import { DeleteCart } from '../../../redux/features/data/dataSlice';
 import axios from 'axios'
+const {REACT_APP_API} = process.env
 
 export default function CardBooksInCart({ id, name, img, subtitle, price, state, setContador, sumar, restar, stateUser, setStateUser }) {
 
@@ -20,7 +21,7 @@ export default function CardBooksInCart({ id, name, img, subtitle, price, state,
             idUser = auxUser.id
             let idBook = id
 
-            await axios.put("http://localhost:3001/cart/delete", {
+            await axios.put(REACT_APP_API + '/cart/delete', {
                 idUser, idBook
             })
 
