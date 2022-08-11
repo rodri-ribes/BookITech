@@ -8,7 +8,7 @@ import { FaCartArrowDown } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import filtrarBooksUser from './functions/filtrarBooksUser';
-const {REACT_APP_API} = process.env
+const {REACT_APP_API } = process.env
 
 export default function CartShopping() {
 
@@ -20,6 +20,7 @@ export default function CartShopping() {
     const [cartFiltrado, setCartFiltrado] = useState([])
 
 
+    console.log(process.env)
     const [click, setClick] = useState(false);
 
     const changeClick = async () => {
