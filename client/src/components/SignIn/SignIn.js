@@ -57,7 +57,7 @@ export default function SignIn() {
         setTimeout(() => {
             dispatch(getLibros())
             navigate("/")
-        }, 5000);
+        }, 15000);
         
     }
 
@@ -74,7 +74,7 @@ export default function SignIn() {
         setTimeout(() => {
             dispatch(getLibros())
             navigate("/")
-        }, 5000);
+        }, 15000);
         
     }
     const responseGithub = (response) => {
