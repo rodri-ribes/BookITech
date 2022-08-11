@@ -13,7 +13,6 @@ import { AuthContextProvider } from "./firebase/AuthContext.js";
 
 function App() {
 
-
   return (
     <>
       <AuthContextProvider>
