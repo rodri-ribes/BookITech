@@ -18,6 +18,7 @@ export const dataSlice = createSlice({
         comments: [],
         A_Z: [],
         user: [],
+        userID: [],
         MinToMax: [],
     },
     reducers: {
@@ -142,6 +143,9 @@ export const dataSlice = createSlice({
         addUser: (state, actions) => {
             state.user = actions.payload;
         },
+        addUserID: (state, actions) => {
+            state.userID = actions.payload;
+        },
         comments: (state, actions) => {
             state.comments=actions.payload;
         }
@@ -162,6 +166,7 @@ export const {
     MINtoMAX,
     addUser,
     comments,
+    addUserID
 
 } = dataSlice.actions;
 
@@ -243,6 +248,14 @@ export const ChangeRange = (payload) => async (dispatch) => {
 export const getUser = (data) => async (dispatch) => {
     dispatch(addUser(data));
 };
+export const getUserID=(id) => async (dispatch)=>{
+    try {
+        let uzer= await axios.get(REACT_APP_API +`/user/${id}`)
+        dispatch(addUserID(uzer.data))
+    } catch (error) {
+        console.log(error)
+    }
+}
 export const Comments=(id) => async (dispatch)=>{
     try{
         let komments= await axios.get(REACT_APP_API+`/comments/${id}`)
@@ -255,7 +268,7 @@ export const Comments=(id) => async (dispatch)=>{
 export const postComments=(payload) => async (dispatch)=>{
     try{
         const response= await axios.post(REACT_APP_API +`/comments/`,payload)
-        return response.data
+        dispatch(comments(response))
     }
     catch(error){
         console.log(error)

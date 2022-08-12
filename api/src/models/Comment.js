@@ -12,10 +12,17 @@ const CommentSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    book: [{
+    book: {
         type: Schema.Types.ObjectId,
         ref: 'Book'
-    }]
+    },
+    rating: {
+        type: Number, min: 0, max: 5
+    },
+    parentId: {
+        type: String, 
+        default:null
+    }
    
 
 },{versionKey:false})

@@ -24,6 +24,7 @@ async function postComments (req, res) {
         date: newComment.date,
         user: newComment.user,
         book: newComment.book,
+        parentId: newComment.parentId,
     })
 }
 async function updateComments (req, res){

@@ -1,61 +1,83 @@
-import React, {useState,useEffect} from 'react'
+import React ,{ useEffect,useState }from 'react'
+ import {useSelector,useDispatch} from "react-redux"
 import det from "./Detail.module.css"
-import { useSelector, useDispatch } from "react-redux"
-import { postComments } from '../../redux/features/data/dataSlice'
+// import { setComent } from '../../redux/features/data/dataSlice';
+import {createComment,deleteComment as deleteCommentary,updateComment as updateComments} from "./comments"
+import ReviewCard from './ReviewCard';
+import Review from './Review';
+import { Comments,postComments } from '../../redux/features/data/dataSlice';
 
-function ReviewCards(hasCancelButt="false") {
-    const dispatch= useDispatch()
-    const [form,setForm]= useState("")
-    const {comments}=useSelector(state => state.data)
-    const isDisable= form.length===0
+
+
+function ReviewCards({id}) {
+     const {comments}=useSelector((state=>state.data))
+    const[back,BackComment]= useState([])
+    const[activeComment,setActiveComment]= useState(null)
+    const currentUserId=window.localStorage.getItem("user").slice(7,31)
+    console.log(back);
     
-    function onSubmit(e){
-        e.preventDefault()
-        dispatch(postComments(form))
-        setForm("")
+    const RootComments=back.filter(f=>f.parentId===null)
+     const dispatch=useDispatch()
+     useEffect(()=>{
+          BackComment(comments)
+    },[])
+    const getReplies = commentId=>{
+      return back.filter(f=>f.parentId===commentId)
+      .sort((a,b)=>new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
     }
-    
-
-  return (
+    const addComment= (text, parentId)=>{
+      console.log("addComment",text, parentId)
+       createComment(text, parentId).then(comment=>{
+            BackComment([comment,...back])
+            dispatch(postComments(BackComment))
+         setActiveComment(null)
+         })
+    }
+    const deleteComment=(commentId)=>{
+      if(window.confirm("Are u sure?")){
+        deleteCommentary(commentId).then(()=>{
+          const updatedBackComents= back.filter(f=>f.id !==commentId)
+          BackComment(updatedBackComents)
+          
+        })
+      }
+    }
+    const updateComment=(text,commentId)=>{
+      updateComments(text).then(()=>{
+        const updatedBackComents= back.map(m=>{
+          if(m.id=== commentId){
+            return {...m, body:text}
+          }
+          return m
+        })
+        BackComment(updatedBackComents)
+        setActiveComment(null)
+      })
+    }
+  return ( 
     <>
     <div className={det.ContainerForm}>
-    <div className={det.ContainerRev}>
-         <form onSubmit={onSubmit}
-         >
-               <div className={det.ContainerForm2}>
-                <div className={det.Container_Det3}>
-                    <label >Let your review here</label>
-                    <textarea
-                        value={form}
-                        placeholder='Customer Review'
-                        className={det.Review}
-                        onChange={(e)=>setForm(e.target.value)}
-                    />
-                </div>
-                <div className={det.ButtonContainer}>
-                <button 
-                        disabled={isDisable}
-                        className={det.comment_form_button}><strong>Write</strong>
-                    </button>
-                    {hasCancelButt && (
-                        <button type="button" className={det.comment_form_button}
-                        //onClick={handleCancel}
-                        >cancel</button>
-                    )}
-                </div>
-               </div>
-            </form>
-    </div>
-    <div className={det.Container_Det4}>
+      <div className={det.Container_Det4}>
         <h3 className={det.comments_title}>Comments</h3>
-        {comments.map((c,key)=>{
-            return <div key={key}>
-                {c.content}
-                   </div>
-        })}
-        
-    </div>
-    </div>
+          <div>
+            {RootComments.map(r=>(
+            <ReviewCard 
+              key={r.id} 
+              comment={r} 
+              replies={getReplies(r.id)}
+              currentUserId={currentUserId}
+              deleteComment={deleteComment}
+              activeComment={activeComment}
+              updateComment={updateComment}
+              setActiveComment={setActiveComment}
+              addComment={addComment}
+              />
+            ))}
+          </div>
+      </div>
+        <Review submitLabel="write" handleSubmit={addComment}/>
+      </div>
+
     </>
   )
 }
