@@ -1,0 +1,22 @@
+.cont{
+    background-color:#0a1929;
+    color: #DADADA;
+}
+
+.carousel{
+    margin: 0 auto;
+    overflow-x: hidden;
+}
+
+.containerItem{
+    /* scroll-snap-type: x mandatory; */
+    display: flex;
+    cursor: grab;
+}
+
+.carouselItem{
+    /* scroll-snap-align: center; */
+    height: 40rems;
+    max-width: 30rems;
+    padding: 2rem;
+}

@@ -15,6 +15,7 @@ export const dataSlice = createSlice({
         allBooks: [],
         Theme: [],
         range: [],
+        comments: [],
         A_Z: [],
         user: [],
         MinToMax: [],
@@ -141,6 +142,9 @@ export const dataSlice = createSlice({
         addUser: (state, actions) => {
             state.user = actions.payload;
         },
+        comments: (state, actions) => {
+            state.comments=actions.payload;
+        }
     },
 });
 
@@ -157,6 +161,8 @@ export const {
     ORDEN,
     MINtoMAX,
     addUser,
+    comments,
+
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -237,3 +243,21 @@ export const ChangeRange = (payload) => async (dispatch) => {
 export const getUser = (data) => async (dispatch) => {
     dispatch(addUser(data));
 };
+export const Comments=(id) => async (dispatch)=>{
+    try{
+        let komments= await axios.get(REACT_APP_API+`/comments/${id}`)
+        dispatch(comments(komments.data))
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+export const postComments=(payload) => async (dispatch)=>{
+    try{
+        const response= await axios.post(REACT_APP_API +`/comments/`,payload)
+        return response.data
+    }
+    catch(error){
+        console.log(error)
+    }
+}

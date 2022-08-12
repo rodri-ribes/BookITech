@@ -6,21 +6,21 @@ async function getComments (req, res){
     res.json(Comments)
 }
 async function getOneComment (req, res){
-    const Comments= await Comment.findById(
-        req.params.id
+    const CommentsID=req.params.id
+    const Comments= await Comment.find(
+        {book:CommentsID}
     )
     res.json(Comments)
 }
 
 async function postComments (req, res) {
 
-    const {content,rating,date,user,book}=req.body
+    const comment=req.body
     
-   const newComment= new Comment({content,rating,date,user,book})
+   const newComment= new Comment(comment)
         await newComment.save()
     res.status(200).json({
         content:newComment.content,
-        rating: newComment.rating,
         date: newComment.date,
         user: newComment.user,
         book: newComment.book,

@@ -50,7 +50,7 @@ export default function Home() {
                         return (
                             <CardBook
                                 name={capitalize(l.title)}
-                                id={l.isbn13}
+                                id={l._id}
                                 price={l.price}
                                 img={l.image}
                                 key={i}

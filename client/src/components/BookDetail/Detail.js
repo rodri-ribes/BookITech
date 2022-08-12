@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react'
 import {useParams,Link} from "react-router-dom"
 import { GoSignIn } from 'react-icons/go'
 import {useDispatch} from "react-redux"
-import { AddCart, deleteCart} from '../../redux/features/data/dataSlice'
+import { AddCart, Comments, deleteCart} from '../../redux/features/data/dataSlice'
 import det from "./Detail.module.css"
 import {RiShoppingCart2Fill} from "react-icons/ri"
 import {FaStar} from "react-icons/fa"
@@ -36,7 +36,9 @@ function Detail() {
         }))
         .then(()=> setIsLoading(false))
         .catch(err => alert(err)) 
-  }, [])
+
+        dispatch(Comments(id))
+  }, [id,dispatch])
 
 //starts//
 
@@ -50,7 +52,7 @@ const[hover,setHover]= useState(undefined)
 
 function changeClick(value){
   setCurrent([value,...currentValue])
-  //dispatch(setComent(currentValue))
+  
 }
 function hoverStar(value){
   setHover(value)  
@@ -66,7 +68,7 @@ function prom(){
 }
 const addToCart = () => {
   //Aca iria el dispatch de la actions que agregaria el item al carrito
-  if(id!=details.isbn13) return
+  if(id!==details.isbn13) return
   setCart(true)
   dispatch(AddCart(id))
 }
@@ -80,13 +82,13 @@ const RemoveToCart = () => {
 
   
   if(isLoading) return // así no renderiza el componente vacío mientras carga
-  if(id!=details.isbn13) return <Card404/> 
+  if(id!==details._id) return <Card404/> 
   return (
     <>
     {}
   <div className={det.ContainerMaxDet}>
       <div className={det.Container_Det2}>
-        <img src={details.image} alt="not found" className={det.ImgRedonda1}/>
+        <img src={details.image} alt={img} className={det.ImgRedonda1}/>
         {cart ?
                     <button className={`${det.Container__Information_btn} ${det.Container__Information_btnTrue}`} onClick={() => RemoveToCart()}>Remove From Cart <RiShoppingCart2Fill/> </button>
                     :
@@ -144,7 +146,7 @@ const RemoveToCart = () => {
           <p>Average Rating: {currentValue.length>0&&prom()} ⭐</p>
         </div>
       </div>
-      {window.localStorage.getItem("user") ? <ReviewCards currentUserId="1"/> :
+      {window.localStorage.getItem("user") ? <ReviewCards id={id}/> :
       <div className={det.GoSignIn}>
         <GoSignIn />
         <Link className={det.SignIn} to="/signin">leave a review</Link>

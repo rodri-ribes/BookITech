@@ -6,12 +6,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
 import { getLibros, getUser } from '../../redux/features/data/dataSlice';
-import { GoogleButton } from 'react-google-button'
 import { UserAuth } from '../../firebase/AuthContext';
 import { FacebookLoginButton, GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
-import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider } from 'firebase/auth'
+import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider, onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../../firebase/index';
 const {REACT_APP_API} = process.env
+
 
 export default function SignUp() {
 
@@ -26,6 +26,18 @@ export default function SignUp() {
     let dispatch = useDispatch();
 
     const { googleSignIn } = UserAuth();
+
+    
+    
+        
+
+    
+
+
+
+
+
+
 
     const handleSubmitGoogle = async () => {
         try {
@@ -42,30 +54,31 @@ export default function SignUp() {
 
     const signInWithFacebook = () => {
         const provider = new FacebookAuthProvider();
+        
         signInWithPopup(auth, provider)
+         
             .catch((err) => {
                 console.log(err.message);
             })
         setTimeout(() => {
             dispatch(getLibros())
             navigate("/")
-        }, 5000);
+        }, 15000);
 
     }
-    const responseFacebook = (response) => {
-        console.log(response);
-    }
+  
 
     const signInWithGithub = () => {
         const provider = new GithubAuthProvider();
         signInWithPopup(auth, provider)
+        
             .catch((err) => {
                 console.log(err.message);
             })
         setTimeout(() => {
             dispatch(getLibros())
             navigate("/")
-        }, 5000);
+        }, 15000);
 
     }
     const responseGithub = (response) => {
@@ -202,7 +215,8 @@ export default function SignUp() {
                         <div className='facebook'>
                             <FacebookLoginButton
                                 onClick={signInWithFacebook}
-                                callback={responseFacebook} />
+                               
+                               />
                         </div>
                         <div className='github'>
                             <GithubLoginButton
