@@ -154,6 +154,29 @@ async function PutUser (req,res){
         res.status(404).send('Fallo en el PUT')
     }
 }
+async function PostBook (req,res){
+    try {
+        const {email} = req.params;
+        const {id} = req.body ;
+        // const nomb = await User.find()
+        // let isbn13 = id
+        // let _id = id
+        
+
+            const user = await Book.findById(id)
+        const nomb = await User.findOne({email})
+        // console.log(user)
+       nomb.buy.push(user)
+        // console.log(nomb.option)
+
+        await nomb.save()
+        // console.log(user)
+        res.status(200).send('actualizado')
+        
+    } catch(err){
+        res.status(404).send('No pudimos comprar el libro')
+    }
+}
 
 
 
@@ -161,5 +184,6 @@ module.exports = {
     loginUser,
     createUser,
     GetUser,
-    PutUser
+    PutUser,
+    PostBook
 }
