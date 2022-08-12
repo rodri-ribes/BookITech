@@ -140,7 +140,7 @@ async function createUser(req, res) {
                         <img src=${img[3]} alt='img not foun' width='100' heiht='100'/>
                         <img src=${img[4]} alt='img not foun' width='100' heiht='100'/>
                         <img src=${img[5]} alt='img not foun' width='100' heiht='100'/>
-                    <h5>The best place to buy it at ↓</h5>
+                    <h5>BUY HERE!</h5>
                     <h4>Link to the page</h4>
                 `
               })
