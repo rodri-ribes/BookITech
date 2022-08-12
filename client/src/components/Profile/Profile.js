@@ -19,7 +19,6 @@ import styles from "./Profile.module.css";
 
 function Profile() {
 
-  let User = useSelector((state) => state.data.userUpdate);
 
   let Favs = useSelector((state) => state.data.Favs);
   var favLength = Favs.length;

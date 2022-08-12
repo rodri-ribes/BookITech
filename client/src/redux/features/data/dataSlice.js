@@ -18,7 +18,6 @@ export const dataSlice = createSlice({
         A_Z: [],
         user: [],
         MinToMax: [],
-        userUpdate: [],
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -142,9 +141,6 @@ export const dataSlice = createSlice({
         addUser: (state, actions) => {
             state.user = actions.payload;
         },
-        updateUser: (id) => {
-            // state.userUpdate = actions.payload
-        },
     },
 });
 
@@ -161,7 +157,6 @@ export const {
     ORDEN,
     MINtoMAX,
     addUser,
-    updateUser,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -243,6 +238,3 @@ export const getUser = (data) => async (dispatch) => {
     dispatch(addUser(data));
 };
 
-export const userUpdate = (data) => async (dispatch) => {
-    dispatch(updateUser(data));
-};
