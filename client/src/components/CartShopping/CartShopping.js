@@ -6,14 +6,9 @@ import CardBooksInCart from './CardBooksInCart/CardBooksInCart';
 import calcularCarrito from './functions/calcularCarrito';
 import { FaCartArrowDown } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom';
-// <<<<<<< HEAD
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
-// =======
 import axios from 'axios';
 import filtrarBooksUser from './functions/filtrarBooksUser';
-const {REACT_APP_API } = process.env
-// >>>>>>> Development
+const { REACT_APP_API } = process.env
 
 export default function CartShopping() {
 
@@ -34,7 +29,7 @@ export default function CartShopping() {
             let auxUser = JSON.parse(window.localStorage.getItem("user"))
             idUser = auxUser.id
 
-            let res = axios.get(REACT_APP_API+ '/cart/' + idUser).then(c => {
+            let res = axios.get(REACT_APP_API + '/cart/' + idUser).then(c => {
                 setCartFiltrado(filtrarBooksUser(booksTotal, c.data[0].cart))
             })
         }
@@ -136,11 +131,38 @@ export default function CartShopping() {
     let navigate = useNavigate()
 
 
-    const submitPay = () => {
+    const submitPay = async () => {
 
         if (user || window.localStorage.getItem("user")) {
             //aca iria la logica del proceso del pago
+            // console.log("contador", contador)
+            // console.log("filtrado", cartFiltrado)
+            let items = [];
+            cartFiltrado.forEach(e => {
+                items.push({
+                    title: e.title,
+                    description: e.subtitle,
+                    picture_url: e.image,
+                    category_id: "book",
+                    id: e.isbn13,
+                    currency_id: "ARS",
+                    quantity: contador[e.title],
+                    unit_price: parseFloat(e.price.slice(1))
+                })
+            })
+            console.log(items)
+            try {
+                let resp = await axios.post(REACT_APP_API + '/payment', {
+                    items
+                })
 
+                // console.log(resp.data.init_point)
+                window.location.href = resp.data.init_point
+                // window.location.href = resp.data.sandbox_init_point
+                console.log("respuesta de mercado pago", resp.data)
+            } catch (error) {
+                console.log(error)
+            }
         } else {
             let aux = window.confirm("You need an account to continue with the purchase")
             if (aux) {
@@ -154,7 +176,7 @@ export default function CartShopping() {
         <>
             <Container>
                 <div>
-                    <ShoppingCartIcon onClick={() => changeClick()} />
+                    <BsCart4 onClick={() => changeClick()} />
                     <p>{cantidad}</p>
                 </div>
             </Container>

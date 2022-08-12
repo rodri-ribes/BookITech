@@ -14,6 +14,8 @@ export const Container = styled.div`
             background-color: white;
             padding: 0 0.3rem;
             border-radius: 50%;
+            color: black;
+            font-weight: 600;
         }
     }
     
