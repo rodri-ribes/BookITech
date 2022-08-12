@@ -44,9 +44,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         transition: theme.transitions.create("width"),
         width: "100%",
         [theme.breakpoints.up("sm")]: {
-            width: "12ch",
+            width: "15ch",
             "&:focus": {
-                width: "20ch",
+                width: "30ch",
             },
         },
     },
@@ -65,15 +65,31 @@ export default function Search() {
         // let obj = titulo.concat(autor);
         setOption(titulo);
     }, [books]);
+    // function handleChange(e) {
+    //     if (name.length >= 2) {
+    //         setName(e.target.value);
+    //         setDisplay(true);
+    //         // setOption(books.map((e) => e.title));
+    //     }
+    //     // if (!name) {
+    //     setName(e.target.value);
+    //     if (name.length < 1) {
+    //         setDisplay(false);
+    //         // setOption([]);
+    //     }
+    // }
+
     function handleChange(e) {
-        if (name.length >= 2) {
+        if (name.length >= 3) {
             setName(e.target.value);
+            dispatch(getSearch(name))
             setDisplay(true);
             // setOption(books.map((e) => e.title));
         }
         // if (!name) {
         setName(e.target.value);
-        if (name.length < 1) {
+        dispatch(getSearch(name))
+        if (name.length < 2) {
             setDisplay(false);
             // setOption([]);
         }
@@ -100,7 +116,7 @@ export default function Search() {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <form onSubmit={(e) => handleSubmit(e)}>
-                <SearchUI>
+                <SearchUI >
                     <SearchIconWrapper>
                         <IconButton aria-label="search" color="inherit">
                             <SearchIcon />
@@ -112,6 +128,10 @@ export default function Search() {
                         onChange={(e) => handleChange(e)}
                         type="text"
                         value={name}
+                        sx={{
+                            flexGrow: 1,
+                            display: { md: "flex", xs: "none" }
+                            }}
                     />
                     <div>
                         {/* <div>

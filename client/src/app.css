@@ -1,10 +1,11 @@
 
 .container1{
     background-color:#0a1929;
-    color: rgb(218, 218, 218)
+    color: #DADADA;
 }
 
 .container{
+    text-decoration: none;
     min-height: calc(100vh - 13.14vh - 50px );
     width: 100%;
     max-width: 1300px;
