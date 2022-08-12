@@ -14,7 +14,8 @@ const UserSchema = new Schema({
     phone: {type: String},
     // rrss:[{type: String}],
     option: {type: Object, default: random},
-    rol: {type : String, default: 'user'}
+    rol: {type : String, default: 'user'},
+    buy:[{type: Object}]
 })
 
 module.exports = mongoose.model('User', UserSchema)

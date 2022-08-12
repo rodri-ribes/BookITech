@@ -248,6 +248,7 @@ export const ChangeRange = (payload) => async (dispatch) => {
 export const getUser = (data) => async (dispatch) => {
     dispatch(addUser(data));
 };
+
 export const getUserID=(id) => async (dispatch)=>{
     try {
         let uzer= await axios.get(REACT_APP_API +`/user/${id}`)
@@ -274,3 +275,5 @@ export const postComments=(payload) => async (dispatch)=>{
         console.log(error)
     }
 }
+
+
