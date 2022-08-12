@@ -3,7 +3,7 @@ import det from "./Detail.module.css"
 import { useSelector, useDispatch } from "react-redux"
 import { postComments } from '../../redux/features/data/dataSlice'
 
-function ReviewCards(hasCancelButt="false",id) {
+function ReviewCards(hasCancelButt="false") {
     const dispatch= useDispatch()
     const [form,setForm]= useState("")
     const {comments}=useSelector(state => state.data)

@@ -25,7 +25,6 @@ export default function CartShopping() {
     const [cartFiltrado, setCartFiltrado] = useState([])
 
 
-    console.log(process.env)
     const [click, setClick] = useState(false);
 
     const changeClick = async () => {

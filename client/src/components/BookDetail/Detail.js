@@ -146,7 +146,7 @@ const RemoveToCart = () => {
           <p>Average Rating: {currentValue.length>0&&prom()} ⭐</p>
         </div>
       </div>
-      {window.localStorage.getItem("user") ? <ReviewCards id={id}/> :
+      {window.localStorage.getItem("user") ? <ReviewCards/> :
       <div className={det.GoSignIn}>
         <GoSignIn />
         <Link className={det.SignIn} to="/signin">leave a review</Link>
