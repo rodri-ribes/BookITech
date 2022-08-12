@@ -237,3 +237,4 @@ export const ChangeRange = (payload) => async (dispatch) => {
 export const getUser = (data) => async (dispatch) => {
     dispatch(addUser(data));
 };
+
