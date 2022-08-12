@@ -5,6 +5,7 @@ const commentsRoutes = require("./comments")
 const cartRoutes = require('./cartRoutes');
 const FavRouter = require('./favorite')
 const saveSignInRoutes = require('./saveSigIn')
+const paymentRoutes = require('./paymentRoutes')
 
 const router = Router()
 
@@ -14,6 +15,7 @@ router.use("/comments", commentsRoutes)
 router.use('/cart', cartRoutes)
 router.use('/favorite', FavRouter)
 router.use('/save', saveSignInRoutes)
+router.use('/', paymentRoutes)
 
 
 

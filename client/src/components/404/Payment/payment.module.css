@@ -1,0 +1,32 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.container img{
+    width: 50px;
+    margin-left: 1rem;
+    pointer-events: none
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+
+.container h1{
+    font-size: 2rem;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    text-shadow: 0px 0px 10px rgb(204, 204, 204);
+}
+
+@media screen and (max-width: 968px){
+    .container h1{
+        font-size: 1.2rem;
+    }
+
+    .container img{
+        width: 50px;
+    }
+}
