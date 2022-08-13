@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import CardBook from "../Home/CardBook/CardBook";
 import { useNavigate } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,14 +16,34 @@ import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import styles from "./Profile.module.css";
+import { getDataUser } from "../../redux/features/data/dataSlice";
 
 function Profile() {
 
+  let dispatch = useDispatch()
+  let User = useSelector(state => state.data.dataUser)
 
+  // let User = useSelector((state) => state.data.user);
   let Favs = useSelector((state) => state.data.Favs);
   var favLength = Favs.length;
   var leftConstraints = favLength * -100;
   const [expanded, setExpanded] = useState(false);
+  // let user = window.localStorage.getItem("user")
+  let userId = JSON.parse(window.localStorage.getItem("user"))
+  useEffect(() => {
+    dispatch(getDataUser(userId.id))
+  }, [dispatch])
+  
+
+  // const rating = User.rating
+  // const ratingAvg = function(rating) {
+  //   let i = 0, summ = 0, ArrayLen = myArray.length;
+  //   while (i < ArrayLen) {
+  //       summ = summ + rating[i++];
+  // }
+  //   return summ / ArrayLen;
+  // }
+
 
   const commonStyles = {
     bgcolor: 'background.paper',
@@ -37,14 +57,18 @@ function Profile() {
     setExpanded(isExpanded ? panel : false);
   };
   
-
+  
+  
   // const Img = styled('img')({
-  //   margin: 'auto',
-  //   display: 'block',
-  //   maxWidth: '100%',
-  //   maxHeight: '100%',
-  // });
-
+    //   margin: 'auto',
+    //   display: 'block',
+    //   maxWidth: '100%',
+    //   maxHeight: '100%',
+    // });
+    // console.log(JSON.parse(usuario));
+    console.log(userId.id);
+// console.log(window.localStorage.getItem("user").id);
+console.log(User);
   return (
     <div className={styles.cont}>
       <CssBaseline />
@@ -54,7 +78,7 @@ function Profile() {
             <ButtonBase>
               <Avatar
                 alt="avatar"
-                src="https://avataaars.io/?avatarStyle=Circle&topType=Eyepatch&facialHairType=BeardMagestic&clotheType=BlazerShirt&eyeType=WinkWacky&eyebrowType=RaisedExcitedNatural&mouthType=Serious&skinColor=Tanned"
+                src={User.img || "https://avataaars.io/?avatarStyle=Circle&topType=Eyepatch&facialHairType=BeardMagestic&clotheType=BlazerShirt&eyeType=WinkWacky&eyebrowType=RaisedExcitedNatural&mouthType=Serious&skinColor=Tanned"}
                 sx={{ width: 250, height: 250 }}
               />
             </ButtonBase>
@@ -64,29 +88,56 @@ function Profile() {
               <Grid item xs>
                 {/* <Typography gutterBottom variant="subtitle1" component="div"> */}
                 <Stack direction="row" spacing={1}>
-                <IconButton
-                  aria-label="edit"
-                  sx={{
-                    color: "#DADADA",
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-                  <h1>Username</h1>
+                  <IconButton
+                    aria-label="edit"
+                    sx={{
+                      color: "#DADADA",
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                    <h1>{User.fullName}</h1>
                 </Stack>
+                <br />
                 {/* </Typography> */}
                 <Stack direction="row" spacing={1}>
-                <IconButton
-                  aria-label="edit"
-                  sx={{
-                    color: "#DADADA",
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
-                <Typography gutterBottom variant="subtitle1" component="div">
-                  email
-                </Typography>
+                  <IconButton
+                    aria-label="edit"
+                    sx={{
+                      color: "#DADADA",
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <Typography gutterBottom variant="subtitle1" component="div">
+                    {User.email}
+                  </Typography>
+                </Stack>
+                <Stack direction="row" spacing={1}>
+                  <IconButton
+                    aria-label="edit"
+                    sx={{
+                      color: "#DADADA",
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <Typography gutterBottom variant="subtitle1" component="div">
+                    {(User.name) ? User.name : "Name" }
+                  </Typography>
+                </Stack>
+                <Stack direction="row" spacing={1}>
+                  <IconButton
+                    aria-label="edit"
+                    sx={{
+                      color: "#DADADA",
+                    }}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <Typography gutterBottom variant="subtitle1" component="div">
+                    {(User.lastname) ? User.lastname : "Lastname" }
+                  </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1}>
                 <IconButton
@@ -98,25 +149,29 @@ function Profile() {
                   <EditIcon />
                 </IconButton>
                 <Typography gutterBottom variant="subtitle1" component="div">
-                  Address
+                  {(User.address) ? User.address : "Address" }
                 </Typography>
                 </Stack>
+                <br />
                 <Box sx={{ display: 'flex', justifyContent: 'start' }}>
-      <Box sx={{ ...commonStyles, borderTop: 1 }} />
-    </Box>
+                  <Box sx={{ ...commonStyles, borderTop: 1 }} />
+                </Box>
+                <br />
                 <Typography gutterBottom variant="subtitle1" component="div">
                   Rating (4.5 avg)
                 </Typography>
                 <Typography gutterBottom variant="subtitle1" component="div">
-                  12 reviews
+                  {User.comments.length} reviews
                 </Typography>
                 <Typography gutterBottom variant="subtitle1" component="div">
-                  6 readed books
+                  {User.email.length} favorites
+                </Typography>
+                <Typography gutterBottom variant="subtitle1" component="div">
+                  {User.email.length} readed books
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  Joined in December 01, 2000
+                  Joined in {User.email.length}
                 </Typography>
-                <Typography variant="body2">ID: 1030114</Typography>
               </Grid>
             </Grid>
           </Grid>

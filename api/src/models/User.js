@@ -12,6 +12,7 @@ const UserSchema = new Schema({
     ban: {type: Boolean,default:false},
     img:{type: String, default: random[0]},
     phone: {type: String},
+    address: {type: String},
     // rrss:[{type: String}],
     option: {type: Object, default: random},
     rol: {type : String, default: 'user'},

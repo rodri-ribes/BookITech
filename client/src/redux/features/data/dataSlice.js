@@ -18,6 +18,7 @@ export const dataSlice = createSlice({
         A_Z: [],
         user: [],
         MinToMax: [],
+        dataUser: [],
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -141,6 +142,9 @@ export const dataSlice = createSlice({
         addUser: (state, actions) => {
             state.user = actions.payload;
         },
+        dataUser: (state, actions) => {
+            state.dataUser = actions.payload
+        }
     },
 });
 
@@ -157,6 +161,7 @@ export const {
     ORDEN,
     MINtoMAX,
     addUser,
+    dataUser,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -236,5 +241,14 @@ export const ChangeRange = (payload) => async (dispatch) => {
 };
 export const getUser = (data) => async (dispatch) => {
     dispatch(addUser(data));
+};
+
+export const getDataUser = (id) => async (dispatch) => {
+    try {
+        const res = await axios(REACT_APP_API + `/user/${id}`);
+        dispatch(dataUser(res.data));
+    } catch (error) {
+        console.log(error);
+    }
 };
 

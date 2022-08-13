@@ -117,6 +117,7 @@ async function createUser(req, res) {
                 ban: newUser.ban,
                 img: newUser.img,
                 phone: newUser.phone,
+                address: newUser.address,
                 // rrss: newUser.rrss,
                 option: newUser.option,
                 rol: newUser.rol
