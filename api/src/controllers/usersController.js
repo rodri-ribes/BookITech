@@ -1,7 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const Book = require('../models/Book')
 const User = require("../models/User");
+const  nodemailer = require('nodemailer')
 
 async function GetUser(req, res) {
     try {
@@ -62,7 +63,8 @@ async function loginUser(req, res) {
                 phone: user.phone,
                 // rrss: user.rrss,
                 option: user.option,
-                rol: user.rol
+                rol: user.rol,
+                buy: user.buy
             })
         } else {
 
@@ -108,7 +110,41 @@ async function createUser(req, res) {
 
 
             const token = jwt.sign({ _id: newUser.id }, 'secretKey')
-
+            const book = await Book.find()
+            let img = book.map(e => {
+                let min = []
+                if(min.length < 6){
+                    min.push(e.image)
+                }
+                return min
+            })
+            const  transporter = nodemailer.createTransport({
+                host: "smtp.gmail.com",
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                  user: 'luciano.diazocampo@gmail.com', // generated ethereal user
+                  pass: 'xztlubimqzwdmzov', // generated ethereal password
+                },
+              });
+    
+              const prueba =await transporter.sendMail({
+                from: '"BookITech 📖"  <luciano.diazocampo@gmail.com>',
+                to: email,
+                subject: "HELLOOO ",
+                html: `
+                <h1>Welcome to BookITech 📖</h1>
+                        <img src=${img[0]} alt='img not foun' width='100' heiht='100' />
+                        <img src=${img[1]} alt='img not foun' width='100' heiht='100'/>
+                        <img src=${img[2]} alt='img not foun' width='100' heiht='100'/>                      
+                        <img src=${img[3]} alt='img not foun' width='100' heiht='100'/>
+                        <img src=${img[4]} alt='img not foun' width='100' heiht='100'/>
+                        <img src=${img[5]} alt='img not foun' width='100' heiht='100'/>
+                    <h5>BUY HERE!</h5>
+                    <h4>Link to the page</h4>
+                `
+              })
+              console.log(prueba.messageId);
             res.status(200).json({
                 id: newUser.id,
                 name: newUser.fullName,
@@ -119,7 +155,8 @@ async function createUser(req, res) {
                 phone: newUser.phone,
                 // rrss: newUser.rrss,
                 option: newUser.option,
-                rol: newUser.rol
+                rol: newUser.rol,
+                buy:newUser.buy
             })
         }
     }

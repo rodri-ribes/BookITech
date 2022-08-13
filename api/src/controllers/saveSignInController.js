@@ -1,5 +1,5 @@
 const User = require('../models/User.js')
-
+const nodemailer = require('nodemailer')
 
 const saveSignIn = async (req, res) => {
 
@@ -13,6 +13,22 @@ const saveSignIn = async (req, res) => {
             fullName: displayName,
             img: photoURL
         })
+        const  transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+              user: 'luciano.diazocampo@gmail.com', // generated ethereal user
+              pass: 'xztlubimqzwdmzov', // generated ethereal password
+            },
+          });
+
+          await transporter.sendMail({
+            from: '"BookITech 📖"  <luciano.diazocampo@gmail.com>',
+            to: email,
+            subject: "HELLOOO ",
+            html: '<h1>Welcome to BookITech 📖</h1>'
+          })
         return res.send("creado");
     }
     return res.send("ya existe");
