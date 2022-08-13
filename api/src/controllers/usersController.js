@@ -119,17 +119,17 @@ async function createUser(req, res) {
                 return min
             })
             const  transporter = nodemailer.createTransport({
-                host: "smtp.gmail.com",
+                host: "smtp.zoho.com",
                 port: 465,
                 secure: true, // true for 465, false for other ports
                 auth: {
-                  user: 'luciano.diazocampo@gmail.com', // generated ethereal user
-                  pass: 'xztlubimqzwdmzov', // generated ethereal password
+                  user: 'ledobookitech@zohomail.com', // generated ethereal user
+                  pass: 'frqGYjAbPUUR', // generated ethereal password
                 },
               });
     
               const prueba =await transporter.sendMail({
-                from: '"BookITech 📖"  <luciano.diazocampo@gmail.com>',
+                from: '"BookITech 📖" <ledobookitech@zohomail.com> ',
                 to: email,
                 subject: "HELLOOO ",
                 html: `
