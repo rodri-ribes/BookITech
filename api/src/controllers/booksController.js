@@ -10,10 +10,10 @@ async function getBooks (req, res){
         if (title){
             let search = await Book.find({title: { "$regex": `${title}`, "$options": "i" } })
             let searchAuthors = await Book.find({authors: { "$regex": `${title}`, "$options": "i" }})
-            res.status(200).send(search.concat(searchAuthors))
+            res.status(200).send(search.concat(searchAuthors).filter(e => !e.delisted))
         }else {
             let allBooks = await Book.find({})
-            res.status(200).send(allBooks)
+            res.status(200).send(allBooks.filter(e => !e.delisted))
         }
     } catch (error) {
         res.status(404).json({error: "An unexpected error occurred, please try again later"})
@@ -82,6 +82,12 @@ async function updateBook(req, res){
     await Book.findByIdAndUpdate(req.params.id,updateBook)
     res.status(200).json({status:"Book update"})
 }
+async function delistBook(req, res){
+    const {id} = req.params
+    const success = await Book.findByIdAndUpdate( id, {delisted: true})
+    if(!success) return res.status(400)
+    return res.status(200)
+}
 async function deleteBook(req, res){
     await Book.findByIdAndRemove(req.params.id)
     res.json("eliminado babe")
@@ -94,5 +100,6 @@ module.exports = {
     getBooksById,
     postBooks,
     updateBook,
-    deleteBook
+    deleteBook,
+    delistBook
 }

@@ -7,7 +7,6 @@ export const dataSlice = createSlice({
     initialState: {
         books: [],
         book: [],
-        details: [],
         Cart: [],
         Favs: [],
         allBooks: [],
@@ -16,6 +15,7 @@ export const dataSlice = createSlice({
         A_Z: [],
         user: [],
         MinToMax: [],
+        dashboardState: ['CRUD']
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -139,6 +139,12 @@ export const dataSlice = createSlice({
         addUser: (state, actions) => {
             state.user = actions.payload;
         },
+        changeDashboardState: (state, actions) =>{
+            state.dashboardState = actions.payload;
+        },
+        delistBook: (state, actions) =>{
+            return 
+        }
     },
 });
 
@@ -155,6 +161,8 @@ export const {
     ORDEN,
     MINtoMAX,
     addUser,
+    changeDashboardState,
+    delistBook
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -235,3 +243,18 @@ export const ChangeRange = (payload) => async (dispatch) => {
 export const getUser = (data) => async (dispatch) => {
     dispatch(addUser(data));
 };
+export const changeDashboard = (payload) => async (dispatch) =>{
+    dispatch(changeDashboardState(payload))
+};
+export const deleteBook = (id) => async (dispatch) =>{ 
+    try {
+    let success = await axios.put(
+        `http://localhost:3001/books/delist/${id}`
+    );
+    console.log(success);
+    if(success) dispatch(delistBook());
+} catch (error) {
+    alert('the books were not found');
+    console.log(error);
+}
+}

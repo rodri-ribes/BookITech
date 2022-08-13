@@ -9,6 +9,7 @@ import SignIn from './components/SignIn/SignIn.js'
 import SignUp from './components/SignUp/SignUp.js'
 import Favorite from "./components/Favorites/Favorite";
 import { AuthContextProvider } from "./firebase/AuthContext.js";
+import { AdminDashboard } from "./components/AdminDashboard/AdminDashboard.js";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
             <Route path="/favorites" element={<Favorite />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path='/admin' element={<AdminDashboard/>}/>
           </Routes>
         </div>
         <Footer />
