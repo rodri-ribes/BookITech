@@ -147,7 +147,10 @@ export const dataSlice = createSlice({
             state.userID = actions.payload;
         },
         comments: (state, actions) => {
-            state.comments=actions.payload;
+            state.comments=[actions.payload]
+        },
+        vaciarCommets: (state, actions)=>{
+            state.comments=[]
         }
     },
 });
@@ -166,7 +169,8 @@ export const {
     MINtoMAX,
     addUser,
     comments,
-    addUserID
+    addUserID,
+    vaciarCommets
 
 } = dataSlice.actions;
 
@@ -269,9 +273,29 @@ export const Comments=(id) => async (dispatch)=>{
 export const postComments=(payload) => async (dispatch)=>{
     try{
         const response= await axios.post(REACT_APP_API +`/comments/`,payload)
-        dispatch(comments(response))
+        dispatch(comments(response.data))
     }
     catch(error){
+        console.log(error)
+    }
+}
+export const DeleteComment=(id)=> async (dispatch) => {
+    try {
+        const response = await axios.delete(REACT_APP_API + `/comments/${id}`)
+        dispatch(comments(response.data))
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const Vaciar= () => async (dispatch)=>{
+    dispatch(vaciarCommets())
+}
+export const UpdateComment=(id,payload) => async (dispatch)=>{
+    try {
+        console.log("payload",id,payload)
+        const response = await axios.put(REACT_APP_API +`/comments/${id}`,payload)
+        
+    } catch (error) {
         console.log(error)
     }
 }

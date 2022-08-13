@@ -22,6 +22,9 @@ const CommentSchema = new Schema({
     parentId: {
         type: String, 
         default:null
+    },
+    username:{
+        type:String,
     }
    
 

@@ -19,13 +19,15 @@ async function postComments (req, res) {
     
    const newComment= new Comment(comment)
         await newComment.save()
-    res.status(200).json({
+    res.status(200).json([{
+        _id: newComment._id,
         content:newComment.content,
         date: newComment.date,
         user: newComment.user,
         book: newComment.book,
         parentId: newComment.parentId,
-    })
+        username: newComment.username,
+    }])
 }
 async function updateComments (req, res){
     const { content }= req.body

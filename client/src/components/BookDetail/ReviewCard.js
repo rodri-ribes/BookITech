@@ -6,20 +6,21 @@ import Review from './Review';
 function ReviewCard({comment,replies,currentUserId,updateComment,deleteComment,activeComment,setActiveComment,parentId= null,addComment}) {
     const {userID}=useSelector(state => state.data)
     const fiveMinutes=300000;
-    const timePassed=new Date()- new Date(comment.createdAt)>fiveMinutes
+    const timePassed=new Date()- new Date(comment.date)>fiveMinutes
     const canReply=Boolean(currentUserId)
-    const canEdit =currentUserId===comment.userId && !timePassed
-    const canDelete =currentUserId ===comment.userId && !timePassed
+    const canEdit =currentUserId===comment.user && !timePassed
+    const canDelete =currentUserId ===comment.user && !timePassed
     const createdAt= new Date(comment.date).toLocaleDateString();
     const isReplying =
     activeComment &&
-    activeComment.id === comment.id &&
+    activeComment.id === comment._id &&
     activeComment.type === "replying";
     const isEditing =
     activeComment &&
-    activeComment.id === comment.id &&
+    activeComment.id === comment._id &&
     activeComment.type === "editing";
-    const replyId= parentId?parentId:comment.id
+    const replyId= parentId ? parentId : comment._id
+
   return ( 
     <div className={det.comment}>
         <div>
@@ -28,7 +29,7 @@ function ReviewCard({comment,replies,currentUserId,updateComment,deleteComment,a
         <div className={det.comment_right_part}>
             <div className={det.comment_content}>
                 <div className={det.author}>
-                    {userID.fullName}
+                    {comment.username}
                 </div>
                 <div>
                     {createdAt}
@@ -42,7 +43,7 @@ function ReviewCard({comment,replies,currentUserId,updateComment,deleteComment,a
                 <Review 
                     submitLabel="Edit" 
                     hasCancelButt initialText={comment.content}
-                    handleSubmit={(text)=>updateComment(text,comment.id)}
+                    handleSubmit={(text)=>updateComment(text,comment._id)}
                     handleCancel={()=>setActiveComment(null)}
                     />
             )
@@ -51,8 +52,8 @@ function ReviewCard({comment,replies,currentUserId,updateComment,deleteComment,a
             <div className={det.Comment_actions}>
                 {canReply && 
                 <div className={det.Comment_action}
-                     onClick={() =>setActiveComment({id:comment.id, type:"replying"})}>Reply</div>}
-                {canEdit && 
+                     onClick={() =>setActiveComment({id:comment._id, type:"replying"})}>Reply</div>}
+                {canEdit &&
                 <div className={det.Comment_action}
                      onClick={() =>setActiveComment({id:comment._id,type:"editing"})}>Edit</div>}
                 {canDelete && 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, Link } from "react-router-dom"
 import { GoSignIn } from 'react-icons/go'
-import { useDispatch } from "react-redux"
-import { AddCart, deleteCart , Comments, getUserID } from '../../redux/features/data/dataSlice'
+import { useDispatch, useSelector } from "react-redux"
+import { AddCart, deleteCart , Comments, getUserID , Vaciar} from '../../redux/features/data/dataSlice'
 import det from "./Detail.module.css"
 import { RiShoppingCart2Fill } from "react-icons/ri"
 import { FaStar } from "react-icons/fa"
@@ -45,6 +45,7 @@ function Detail() {
       dispatch(Comments(id))
 
       dispatch(getUserID(currentUserId))
+      return ()=>dispatch(Vaciar())
 
     }, [])
 
@@ -58,6 +59,7 @@ function Detail() {
   const [currentValue, setCurrent] = useState([])
   const [hover, setHover] = useState(undefined)
 
+  const { comments }=useSelector(state=> state.data)
 
   function changeClick(value) {
     setCurrent([value, ...currentValue])
@@ -87,6 +89,9 @@ function Detail() {
     dispatch(deleteCart(id))
   }
   
+  if(!comments[0]){
+    return <div><h1>loading...</h1></div>
+  }
 
   //
 
