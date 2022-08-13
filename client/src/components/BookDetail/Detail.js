@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, Link } from "react-router-dom"
 import { GoSignIn } from 'react-icons/go'
-import { useDispatch } from "react-redux"
-import { AddCart, deleteCart } from '../../redux/features/data/dataSlice'
+import { useDispatch, useSelector } from "react-redux"
+import { AddCart, deleteCart , Comments, getUserID , Vaciar} from '../../redux/features/data/dataSlice'
 import det from "./Detail.module.css"
 import { RiShoppingCart2Fill } from "react-icons/ri"
 import { FaStar } from "react-icons/fa"
@@ -26,6 +26,9 @@ function Detail() {
   const [details, setDetails] = useState({})
   const [cart, setCart] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+
+  const currentUserId=window.localStorage.getItem("user").slice(7,31)
+
   useEffect(() => {
     axios.get(REACT_APP_API + `/books/id/${id}`)
       .then((response) => setDetails({
@@ -37,7 +40,14 @@ function Detail() {
       }))
       .then(() => setIsLoading(false))
       .catch(err => alert(err))
-  }, [])
+
+      
+      dispatch(Comments(id))
+
+      dispatch(getUserID(currentUserId))
+      return ()=>dispatch(Vaciar())
+
+    }, [])
 
   //starts//
 
@@ -48,6 +58,8 @@ function Detail() {
   const starts = Array(5).fill(0)
   const [currentValue, setCurrent] = useState([])
   const [hover, setHover] = useState(undefined)
+
+  const { comments }=useSelector(state=> state.data)
 
   function changeClick(value) {
     setCurrent([value, ...currentValue])
@@ -67,7 +79,7 @@ function Detail() {
   }
   const addToCart = () => {
     //Aca iria el dispatch de la actions que agregaria el item al carrito
-    if (id != details.isbn13) return
+    if (id !== details._id) return
     setCart(true)
     dispatch(AddCart(id))
   }
@@ -76,18 +88,21 @@ function Detail() {
     setCart(false)
     dispatch(deleteCart(id))
   }
+  
+  if(!comments[0]){
+    return <div><h1>loading...</h1></div>
+  }
 
   //
 
-
   if (isLoading) return // así no renderiza el componente vacío mientras carga
-  if (id != details.isbn13) return <Card404 />
+  if (id != details._id) return <Card404 />
   return (
     <>
       { }
       <div className={det.ContainerMaxDet}>
         <div className={det.Container_Det2}>
-          <img src={details.image} alt="not found" className={det.ImgRedonda1} />
+          <img src={details.image} alt={img} className={det.ImgRedonda1} />
           {cart ?
             <button className={`${det.Container__Information_btn} ${det.Container__Information_btnTrue}`} onClick={() => RemoveToCart()}>Remove From Cart <RiShoppingCart2Fill /> </button>
             :
@@ -146,7 +161,8 @@ function Detail() {
           <p>Average Rating: {currentValue.length > 0 && prom()} ⭐</p>
         </div>
       </div>
-      {window.localStorage.getItem("user") ? <ReviewCards currentUserId="1" /> :
+
+      {window.localStorage.getItem("user") ? <ReviewCards id={id} /> :
         <div className={det.GoSignIn}>
           <GoSignIn />
           <Link className={det.SignIn} to="/signin">leave a review</Link>

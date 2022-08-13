@@ -10,6 +10,7 @@ const {REACT_APP_API} = process.env
 export default function CardBooksInCart({ id, name, img, subtitle, price, state, setContador, sumar, restar, stateUser, setStateUser }) {
 
     let dispatch = useDispatch();
+    console.log(id)
 
     let user = useSelector(state => state.data.user)
 

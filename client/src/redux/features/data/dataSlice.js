@@ -15,8 +15,10 @@ export const dataSlice = createSlice({
         allBooks: [],
         Theme: [],
         range: [],
+        comments: [],
         A_Z: [],
         user: [],
+        userID: [],
         MinToMax: [],
     },
     reducers: {
@@ -141,6 +143,15 @@ export const dataSlice = createSlice({
         addUser: (state, actions) => {
             state.user = actions.payload;
         },
+        addUserID: (state, actions) => {
+            state.userID = actions.payload;
+        },
+        comments: (state, actions) => {
+            state.comments=[actions.payload]
+        },
+        vaciarCommets: (state, actions)=>{
+            state.comments=[]
+        }
     },
 });
 
@@ -157,6 +168,10 @@ export const {
     ORDEN,
     MINtoMAX,
     addUser,
+    comments,
+    addUserID,
+    vaciarCommets
+
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -237,4 +252,52 @@ export const ChangeRange = (payload) => async (dispatch) => {
 export const getUser = (data) => async (dispatch) => {
     dispatch(addUser(data));
 };
+
+export const getUserID=(id) => async (dispatch)=>{
+    try {
+        let uzer= await axios.get(REACT_APP_API +`/user/${id}`)
+        dispatch(addUserID(uzer.data))
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const Comments=(id) => async (dispatch)=>{
+    try{
+        let komments= await axios.get(REACT_APP_API+`/comments/${id}`)
+        dispatch(comments(komments.data))
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+export const postComments=(payload) => async (dispatch)=>{
+    try{
+        const response= await axios.post(REACT_APP_API +`/comments/`,payload)
+        dispatch(comments(response.data))
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+export const DeleteComment=(id)=> async (dispatch) => {
+    try {
+        const response = await axios.delete(REACT_APP_API + `/comments/${id}`)
+        dispatch(comments(response.data))
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const Vaciar= () => async (dispatch)=>{
+    dispatch(vaciarCommets())
+}
+export const UpdateComment=(id,payload) => async (dispatch)=>{
+    try {
+        console.log("payload",id,payload)
+        const response = await axios.put(REACT_APP_API +`/comments/${id}`,payload)
+        
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
