@@ -7,6 +7,7 @@ export const dataSlice = createSlice({
     initialState: {
         books: [],
         book: [],
+        details: [],
         Cart: [],
         Favs: [],
         allBooks: [],
