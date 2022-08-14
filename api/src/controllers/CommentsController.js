@@ -1,50 +1,86 @@
-const Comment = require("../models/Comment")
-const User = require("../models/User");
+const Book = require("../models/Book");
 
-async function getComments (req, res){
-    const Comments=await Comment.find()
-    res.json(Comments)
-}
-async function getOneComment (req, res){
-    const CommentsID=req.params.id
-    const Comments= await Comment.find(
-        {book:CommentsID}
-    ).catch(err =>{})
-    if(!Comments) res.status(404)
-    res.status(200).json(Comments)
-}
 
-async function postComments (req, res) {
+async function postComments(req, res) {
 
-    const comment=req.body
-    
-   const newComment= new Comment(comment)
-        await newComment.save()
-    res.status(200).json([{
-        _id: newComment._id,
-        content:newComment.content,
-        date: newComment.date,
-        user: newComment.user,
-        book: newComment.book,
-        parentId: newComment.parentId,
-        username: newComment.username,
-    }])
-}
-async function updateComments (req, res){
-    const { content }= req.body
-    const newComment= { content }
-    await Comment.findByIdAndUpdate(req.params.id,newComment)
-    res.status(200).json({status:"comment update"})   
-}
-async function deleteComments (req, res){
-    await Comment.findByIdAndRemove(req.params.id)
-    res.json("eliminado babe")
+    let idBook = req.params.id;
+
+    let { content, fecha, user } = req.body;
+    try {
+        let book = await Book.findOne({ isbn13: idBook });
+
+        book.comments.push({
+            date: fecha,
+            content: content,
+            user: user,
+        })
+
+        await book.save()
+        res.send("Cargado")
+
+    } catch (error) {
+        console.log(error)
+    }
 }
 
-module.exports={
+
+async function updateComments(req, res) {
+
+    let idBook = req.params.id;
+    let idComment = req.params.idcomment;
+
+    let { content, fecha } = req.body;
+
+    let date = fecha
+    try {
+
+        let encontrado = await Book.findOne({ isbn13: idBook });
+
+        encontrado.comments.forEach(c => {
+            if (c.id == idComment) {
+                c.content = content
+                c.date = date
+            }
+        })
+        await encontrado.save()
+        res.send("editado")
+
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+async function deleteComments(req, res) {
+
+    let idBook = req.params.id;
+
+    let idComment = req.params.idcomment;
+
+    try {
+
+        let encontrado = await Book.findOne({ isbn13: idBook })
+
+        if (encontrado.comments.length === 1) {
+            encontrado.comments.splice(0)
+            await encontrado.save()
+            return res.send("borrado")
+        } else {
+            let comment = encontrado.comments.filter(c => c.id !== idComment)
+            encontrado.comments.length = 0
+            encontrado.comments = comment;
+            await encontrado.save()
+            return res.send("borrado")
+        }
+    }
+    catch (error) {
+        console.log(error)
+    }
+
+}
+
+module.exports = {
     postComments,
-    getComments,
-    getOneComment,
     updateComments,
     deleteComments,
 }

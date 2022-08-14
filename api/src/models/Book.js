@@ -2,53 +2,64 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const BookSchema = new Schema({
-    title:{
+    title: {
         type: String,
         required: true,
         lowercase: true
     },
-    isbn13:{
+    isbn13: {
         type: String
     },
-    authors:{
+    authors: {
         type: String,
         required: false,
         lowercase: true
     },
-    publisher:{
+    publisher: {
         type: String,
         required: false,
         lowercase: true
     },
-    subtitle:{
+    subtitle: {
         type: String,
         required: false,
         lowercase: true
     },
-    language:{
+    language: {
         type: String,
         required: false,
         lowercase: true
     },
-    pages:{
+    pages: {
         type: Number
     },
-    year:{
+    year: {
         type: Number
     },
-    rating:{
+    rating: {
         type: Number
     },
-    desc:{
+    desc: {
         type: String
     },
-    price:{
+    price: {
         type: String,
         min: 0
     },
-    image:{
+    image: {
         type: String
     },
+    comments: [
+        {
+            content: {
+                type: String
+            },
+            date: {
+                type: String,
+            },
+            user: Array
+        }
+    ]
 })
 
 module.exports = mongoose.model('Book', BookSchema)
