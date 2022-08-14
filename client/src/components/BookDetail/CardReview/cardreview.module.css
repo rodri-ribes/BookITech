@@ -1,0 +1,31 @@
+.Container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: rgb(0, 50, 83);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.Container__Content{
+    width: 100%;
+}
+
+.Container__Content__NameAndRating{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+.Container img{
+    width: 65px;
+    height: 60px;
+    -moz-border-radius:50px;
+    -webkit-border-radius:50px;
+    border-radius:50px;
+    margin-right: 1rem;
+}
