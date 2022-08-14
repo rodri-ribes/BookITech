@@ -27,7 +27,7 @@ function Detail() {
   const [cart, setCart] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  const currentUserId=window.localStorage.getItem("user")?.slice(7,31)
+  const currentUserId=window.localStorage.getItem("user")?.slice(7,31) // el ? es para evitar que rompa cuando nadie esta logueado
 
   useEffect(() => {
     axios.get(REACT_APP_API + `/books/id/${id}`)
