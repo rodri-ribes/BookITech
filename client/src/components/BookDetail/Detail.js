@@ -39,7 +39,7 @@ function Detail() {
         publisher: capitalize(response.data.publisher)
       }))
       .then(() => setIsLoading(false))
-      .catch(err => alert(err))
+      .catch(err => console.error(err))
 
       
       dispatch(Comments(id))

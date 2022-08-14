@@ -9,8 +9,9 @@ async function getOneComment (req, res){
     const CommentsID=req.params.id
     const Comments= await Comment.find(
         {book:CommentsID}
-    )
-    res.json(Comments)
+    ).catch(err =>{})
+    if(!Comments) res.status(404)
+    res.status(200).json(Comments)
 }
 
 async function postComments (req, res) {

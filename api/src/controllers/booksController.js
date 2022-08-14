@@ -37,7 +37,8 @@ async function getBooksByName (req, res){
 async function getBooksById (req, res){
     const { id } = req.params
     try {
-        let book = await Book.findById(id)
+        let book = await Book.findById(id).catch((err)=>{})
+        if(!book) res.status(404)
         res.status(200).send(book) 
     } catch (error) {
         res.status(404).json({error: "An unexpected error occurred, please try again later"})

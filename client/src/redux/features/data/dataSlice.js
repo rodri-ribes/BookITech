@@ -263,7 +263,7 @@ export const getUserID=(id) => async (dispatch)=>{
 }
 export const Comments=(id) => async (dispatch)=>{
     try{
-        let komments= await axios.get(REACT_APP_API+`/comments/${id}`)
+        let komments= await axios.get(REACT_APP_API+`/comments/${id}`).catch((err)=>{})
         dispatch(comments(komments.data))
     }
     catch(error){
