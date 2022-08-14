@@ -21,18 +21,18 @@ const saveSignIn = async (req, res) => {
                 }
                 return min
             })
-        const  transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true, // true for 465, false for other ports
-            auth: {
-              user: 'luciano.diazocampo@gmail.com', // generated ethereal user
-              pass: 'xztlubimqzwdmzov', // generated ethereal password
-            },
-          });
+            const  transporter = nodemailer.createTransport({
+              host: "smtp.zoho.com",
+              port: 465,
+              secure: true, // true for 465, false for other ports
+              auth: {
+                user: 'ledobookitech@zohomail.com', // generated ethereal user
+                pass: 'frqGYjAbPUUR', // generated ethereal password
+              },
+            });
 
           await transporter.sendMail({
-            from: '"BookITech 📖"  <luciano.diazocampo@gmail.com>',
+            from:  '"BookITech 📖" <ledobookitech@zohomail.com> ',
             to: email,
             subject: "HELLOOO ",
             html:  `
