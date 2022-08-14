@@ -40,6 +40,7 @@ export const ContainerPanel = styled.div`
     position: absolute;
     right: 90px;
     top: 80px;
+    background-color: #0a1929;
     box-shadow: 0px 0px 15px black;
     ::-webkit-scrollbar{
         width: 10px;

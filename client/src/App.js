@@ -12,7 +12,6 @@ import { AuthContextProvider } from "./firebase/AuthContext.js";
 import Profile from "./components/Profile/Profile.js";
 import { Card404 } from "./components/404/Card404.js";
 
-
 function App() {
 
   return (
@@ -27,7 +26,7 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="*" element={<Card404/>}/>
+            <Route path="*" element={<Card404 />} />
           </Routes>
         </div>
         <Footer />

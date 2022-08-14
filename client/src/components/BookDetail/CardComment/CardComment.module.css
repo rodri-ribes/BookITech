@@ -1,0 +1,30 @@
+.Container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    background-color: #0a1a2a ;
+    margin-top: 1rem;
+    border-radius: 5px;
+}
+
+.Container img{
+    width: 65px;
+    height: 60px;
+    -moz-border-radius:50px;
+    -webkit-border-radius:50px;
+    border-radius:50px;
+    margin: 0 1rem;
+    pointer-events: none;
+}
+
+.Container__input{
+    padding: 1rem;
+    width: 100%;
+}
+
+.Container__input__NameAndDate{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}

@@ -1,0 +1,58 @@
+.Container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    /* outline: 1px solid green; */
+}
+
+.Container img{
+    width: 65px;
+    height: 60px;
+    -moz-border-radius:50px;
+    -webkit-border-radius:50px;
+    border-radius:50px;
+    margin: 0 1rem;
+    pointer-events: none;
+}
+
+.Container__input{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.Container__input h3{
+    font-family: sans-serif;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.Container__input textarea{
+    border: none;
+    outline: none;
+    padding: 10px 10px;
+    resize: none;
+    width: 100%;
+    border-radius: 3px;
+}
+
+.Container__input button{
+    align-self: flex-end;
+    margin-top: 0.5rem;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: none;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    /* transition: all 500ms; */
+}
+
+.Container__input button:active{
+    background-color: black;
+    color: white;
+    transform: scale(1.1);
+}

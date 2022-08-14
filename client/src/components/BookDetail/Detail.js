@@ -1,173 +1,356 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, Link } from "react-router-dom"
-import { GoSignIn } from 'react-icons/go'
+import { BiEdit } from 'react-icons/bi';
+import { BsCartCheck, BsFacebook, BsTwitter, BsLinkedin, BsGoogle } from 'react-icons/bs';
+import Rating from '@mui/material/Rating';
+import { Link, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { AddCart, deleteCart , Comments, getUserID , Vaciar} from '../../redux/features/data/dataSlice'
-import det from "./Detail.module.css"
-import { RiShoppingCart2Fill } from "react-icons/ri"
-import { FaStar } from "react-icons/fa"
-import ReviewCards from './ReviewCards'
-import { useLocation } from 'react-router-dom'
+import { AddCart, FilterTheme } from '../../redux/features/data/dataSlice'
+import style from "./Detail.module.css"
+import { RiShoppingCartLine } from "react-icons/ri"
 import axios from 'axios'
-import capitalize from '../auxiliar/capitalize'
-import { Card404 } from '../404/Card404'
+import Spinner from '../auxiliar/Spinner/Spinner';
+import CardReview from './CardReview/CardReview.js'
+import CommentBox from './CommentBox/CommentBox';
+import CardComment from './CardComment/CardComment';
+
+
+
 const { REACT_APP_API } = process.env
 
-const img = "https://www.collinsdictionary.com/images/full/book_181404689_1000.jpg"
-const addApostrophes = (string) => {
-  var newString = string.replace("&#039;", `'`)
-  return newString
-}
 function Detail() {
-  //nombre, autor, editorial, genero, idioma, formato, precio, stock, img
-  const location = useLocation()
+
+  let userr = useSelector(state => state.data.user)
+
   const dispatch = useDispatch()
   const { id } = useParams()
-  const [details, setDetails] = useState({})
-  const [cart, setCart] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [details, setDetails] = useState(false)
 
-  const currentUserId=window.localStorage.getItem("user")?.slice(7,31) // el ? es para evitar que rompa cuando nadie esta logueado
+  //------ STATE PARA LA APARICION DE ELEMENTOS EN EL DOM --------------------
+
+  const [viewEditComment, setViewEditComment] = useState(false)
+  const [cartCheck, setCartCheck] = useState(false)
+
+  //---------STATES PARA ACTUALIZAR Y RECIBIR LOS DATOS DE LA REVIEW DEL USUARIO
+
+  const [review, setReview] = useState("Aca va la review del usuario")
+  const [dateReview, setDateReview] = useState("Friday, August 8, 2021")
+  const [rating, setRating] = useState(3.5)
+
+  //---------STATE PARA CARGAR COMMENTARIO NUEVO A LA DB---------------------
+
+  const [commnet, setComment] = useState("Aca va el comentario del usuario")
+
+  //--------LOGICA PARA OBTENER LA INFORMACION DEL ARTICULO ---------------------
+
+  async function main() {
+    let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
+    setDetails(data.data)
+  }
 
   useEffect(() => {
-    axios.get(REACT_APP_API + `/books/id/${id}`)
-      .then((response) => setDetails({
-        ...response.data,
-        title: capitalize(response.data.title),
-        authors: capitalize(response.data.authors),
-        language: capitalize(response.data.language),
-        publisher: capitalize(response.data.publisher)
-      }))
-      .then(() => setIsLoading(false))
-      .catch(err => console.error(err))
+    main()
+  }, [])
 
-      
-      dispatch(Comments(id))
+  //----------LOGICA PARA AGREGAR EL LIBRO AL CARRITO------------------
 
-      dispatch(getUserID(currentUserId))
-      return ()=>dispatch(Vaciar())
+  let user = useSelector(state => state.data.user)
 
-    }, [])
-
-  //starts//
-
-  const colors = {
-    Blue: "#013B95",
-    grey: "#a9a9a9"
-  }
-  const starts = Array(5).fill(0)
-  const [currentValue, setCurrent] = useState([])
-  const [hover, setHover] = useState(undefined)
-
-  const { comments }=useSelector(state=> state.data)
-
-  function changeClick(value) {
-    setCurrent([value, ...currentValue])
-    //dispatch(setComent(currentValue))
-  }
-  function hoverStar(value) {
-    setHover(value)
-  }
-  function removeHover() {
-    setHover(undefined)
-  }
-  function prom() {
-    let sum = currentValue.reduce((prev, curr) => curr += prev)
-    let avg = sum / currentValue.length
-    let ceil = Math.ceil(avg)
-    return ceil
-  }
   const addToCart = () => {
     //Aca iria el dispatch de la actions que agregaria el item al carrito
-    if (id !== details._id) return
-    setCart(true)
-    dispatch(AddCart(id))
-  }
-  const RemoveToCart = () => {
-    //Aca iria el dispatch de la actions que quitaria el item al carrito
-    setCart(false)
-    dispatch(deleteCart(id))
-  }
-  
-  if(!comments[0]){
-    return <div><h1>loading...</h1></div>
+    setCartCheck(true)
+    if (user || window.localStorage.getItem("user")) {
+      let idBook = id;
+      let auxUser = JSON.parse(window.localStorage.getItem("user"))
+      let idUser = auxUser.id
+      axios.post(REACT_APP_API + '/cart/add', {
+        idUser, idBook
+      })
+    } else {
+      dispatch(AddCart(id))
+    }
+    setTimeout(() => {
+      setCartCheck(false)
+    }, 2000);
   }
 
-  //
+  //---------LOGICA PARA OBTENER LA FECHA ACTUAL PARA LA EDICION DE LA REVIEW
 
-  if (isLoading) return // así no renderiza el componente vacío mientras carga
-  if (id != details._id) return <Card404 />
+  let date = new Date();
+  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+  //---------LOGICA PARA EL CAMBIO DE LA REVIEW DEL USUARIO----------
+
+  const editReview = () => {
+    setViewEditComment(false)
+    setDateReview(date.toLocaleDateString('en-US', options))
+    //aca va la logica para actualizar la review del usuario
+    //despues colocar un get para que se actualicen los datos
+  }
+
+
+  //URL DEL ARTICULO PARA COMPARTIR EN REDES SOCIALES
+
+  let article_url = window.location.href;
+
+
+
+  //------------LOGICA PARA EL APARTADO DE RECOMENDADOS-------------
+
+  const tematica = [
+    'mongo',
+    'mongodb',
+    'mongoose',
+    'java',
+    'javascript',
+    ' html',
+    'css',
+    'python',
+    'php',
+    'react',
+    'redux',
+    'perl',
+    'swift',
+    'rust',
+    'sql',
+    'ruby',
+    'ajax',
+    'typescript',
+    'express.js',
+  ];
+
+  let existe;
+
+  tematica.forEach(e => {
+    if (details && details.title.indexOf(e) !== -1) {
+      console.log(e)
+      existe = e
+    }
+  })
+
+
+  async function filterTematica() {
+
+    try {
+      let data = await axios.get(REACT_APP_API + `/books/${existe}`);
+      dispatch(FilterTheme(data.data))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    details && filterTematica()
+  }, [details])
+
+  let theme = useSelector(state => state.data.Theme)
+
+  //-------------FUNCION QUE CARGA EL COMENTARIO A LA DB ---------------------
+
+  const handleComment = () => {
+
+  }
+
   return (
-    <>
-      { }
-      <div className={det.ContainerMaxDet}>
-        <div className={det.Container_Det2}>
-          <img src={details.image} alt={img} className={det.ImgRedonda1} />
-          {cart ?
-            <button className={`${det.Container__Information_btn} ${det.Container__Information_btnTrue}`} onClick={() => RemoveToCart()}>Remove From Cart <RiShoppingCart2Fill /> </button>
-            :
-            <button className={`${det.Container__Information_btn} ${det.Container__Information_btnFalse}`} onClick={() => addToCart()}>Add To Cart <RiShoppingCart2Fill /> </button>
-          }
-          {/* <button className={det.Container_Information_btn}>Buy me!! <RiShoppingCart2Fill/></button> */}
-        </div>
-        <div className={det.Container_Det1}>
-          <h1 className={det.Title}>{details.title}</h1>
-          <h3 className={det.subTitle}>{details.subtitle}</h3>
-          <h2 className={det.authors}>{details.authors}</h2>
-          <ul className={det.List}>
-            <li className={det.ListEle}>Subject</li>
-            <li className={det.ListEle}>{details.language}</li>
-          </ul>
-          <h2 className={det.Price}>{details.price}</h2>
-          <div className={det.ButtonRow}>
-            <h2>Rating</h2>
-            {window.localStorage.getItem("user") ?
-              <div className={det.StarButton}>
-                {starts.map((_, index) => {
+    <div className={style.Container}>
+      {details ?
+        <>
+          <div className={style.Container__Content}>
+            <head>
+              {/* estos metas tags son necesarios para compartir en las redes sociales las publicaciones */}
+              <meta name="description" content={details.desc} />
+              <meta name="author" content={details.authors} />
+              <meta property="og:locale" content="en_US" />
+              <meta property="og:type" content="article" />
+              <meta property="og:title" content={details.title} />
+              <meta property="og:description" content={details.desc} />
+              <meta property="og:url" content={`http://localhost:3000/book/${id}`} />
+              <meta property="og:site_name" content="BooksTech" />
+              <meta property="og:image" content={details.image} />
+              <meta name="twitter:title" content={details.title} />
+              <meta name="twitter:description" content={details.desc} />
+              <meta name="twitter:image" content={details.image} />
+              <meta name="twitter:card" content={details.image} />
+              <meta name="twitter:url" content={`http://localhost:3000/book/${id}`} />
+            </head>
+            <div className={style.Container__Content__Info}>
+              <div className={style.Container__Content__Info__Img}>
+                <img src={details.image} />
+
+                {cartCheck ?
+                  <button className={style.Container__Content__Info__Img_img} onClick={() => addToCart()}>Added to Cart <BsCartCheck /> </button>
+                  :
+                  <button className={style.Container__Content__Info__Img_img} onClick={() => addToCart()}>Add to Cart for {details.price}  <RiShoppingCartLine /> </button>
+                }
+
+              </div>
+              <div className={style.Container__Content__Info__details}>
+                <div className={style.Container__Content__Info__details_title}>
+                  <h1>{details.title.charAt(0).toUpperCase() + details.title.slice(1)}</h1>
+                  <h3>{details.subtitle.charAt(0).toUpperCase() + details.subtitle.slice(1)}</h3>
+                </div>
+                <div className={style.Container__Content__Info__details_author}>
+                  <h3>By {details.authors.toUpperCase()}</h3>
+                </div>
+                <div className={style.Container__Content__Info__details_rating}>
+                  <Rating name="half-rating-read" defaultValue={3.5} precision={0.5} readOnly />
+                  <p>3.5</p>
+                </div>
+                <div className={style.Container__Content__Info__details_description}>
+                  <p>{details.desc}</p>
+                </div>
+                <div className={style.Container__Content__Info__details_ficha}>
+                  <p>PaperBack: {details.pages} Pages</p>
+                  <p>Published: {details.publisher.charAt(0).toUpperCase() + details.publisher.slice(1)} {details.year}</p>
+                  <p>Lenguage: {details.language.charAt(0).toUpperCase() + details.language.slice(1)}</p>
+                </div>
+              </div>
+            </div>
+            <div className={style.Container__Content__Acitivity}>
+              {userr || window.localStorage.getItem("user") ?
+                <div className={style.Container__Content__Acitivity__Details}>
+                  <h4>MY ACITIVITY</h4>
+                  <hr />
+                  <div className={style.Container__Content__Acitivity__Details_element}>
+                    <p>Rating</p>
+                    {viewEditComment ?
+                      <Rating name="half-rating" defaultValue={rating} precision={0.5} onChange={e => setRating(e.target.value)} />
+                      :
+                      <Rating name="half-rating-read" defaultValue={rating} precision={0.5} readOnly />
+                    }
+                  </div>
+                  <div className={style.Container__Content__Acitivity__Details_element}>
+                    <p>Status</p>
+                    <p className={style.Container__Content__Acitivity__Details_element_info}>{dateReview}</p>
+                  </div>
+                  {viewEditComment ?
+                    <div className={style.Container__Content__Acitivity__Details_element}>
+                      <p>Review</p>
+                      <input type="text" value={review} name="content" onChange={e => setReview(e.target.value)} />
+                      <button onClick={() => editReview()}>Edit Review</button>
+                    </div>
+                    :
+                    <div className={style.Container__Content__Acitivity__Details_element}>
+                      <p>Review</p>
+                      <p className={style.Container__Content__Acitivity__Details_element_info}>{review.charAt(0).toUpperCase() + review.slice(1)}</p>
+                      <BiEdit onClick={() => setViewEditComment(true)} />
+                    </div>
+                  }
+                  <div className={style.Container__Content__Acitivity__Details}>
+                    <h4>FRIEND REVIEWS</h4>
+                    <hr />
+                    <div className={style.Container__Content__Acitivity__Details}>
+                      <CardReview
+                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmhFDiUUVWwUijxUlu0uKu5bH3J2ZvTb2zbmz1_YkK9DvaImQh8yGjxpyf8I8WJoapfHE&usqp=CAU"
+                        name="Hernan"
+                        content="I liked the book"
+                        rating={5}
+                      />
+                      <CardReview
+                        image="https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png"
+                        name="Rodrigo"
+                        content="i expected better"
+                        rating={3}
+                      />
+                    </div>
+                  </div>
+                  <div className={style.Container__Content__Acitivity__Details}>
+                    <h4>COMMENTS</h4>
+                    <hr />
+                    <div className={style.Container__Content__Acitivity__Details}>
+                      <CommentBox
+                        image="https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png"
+                        name="Rodrigo Ribes"
+                        setComment={setComment}
+                        handleComment={handleComment}
+                      />
+                      <CardComment
+                        name="Rodrigo"
+                        content="Este en mi comentario"
+                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmhFDiUUVWwUijxUlu0uKu5bH3J2ZvTb2zbmz1_YkK9DvaImQh8yGjxpyf8I8WJoapfHE&usqp=CAU"
+                        date="Friday, August 8, 2021"
+                      />
+                      <CardComment
+                        name="Rodrigo"
+                        content="Este en mi comentario"
+                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmhFDiUUVWwUijxUlu0uKu5bH3J2ZvTb2zbmz1_YkK9DvaImQh8yGjxpyf8I8WJoapfHE&usqp=CAU"
+                        date="Friday, August 8, 2021"
+                      />
+                    </div>
+                  </div>
+                </div>
+                :
+                <div className={style.Container__Content__Acitivity__Details}>
+                  <div className={style.Container__Content__Acitivity__Details}>
+                    <h4>FRIEND REVIEWS</h4>
+                    <hr />
+                    <p>To see what friends thought of this book, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
+                    <h4>READER Q&A</h4>
+                    <hr />
+                    <p>To ask other readers questions about {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
+                  </div>
+                  <div className={style.Container__Content__Acitivity__Details}>
+                    <h4>COMMENTS</h4>
+                    <hr />
+                    <p>To leave a comment on {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
+
+                    <div className={style.Container__Content__Acitivity__Details}>
+                      <CardComment
+                        name="Rodrigo"
+                        content="Este en mi comentario"
+                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmhFDiUUVWwUijxUlu0uKu5bH3J2ZvTb2zbmz1_YkK9DvaImQh8yGjxpyf8I8WJoapfHE&usqp=CAU"
+                        date="Friday, August 8, 2021"
+                      />
+                      <CardComment
+                        name="Rodrigo"
+                        content="Este en mi comentario"
+                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmhFDiUUVWwUijxUlu0uKu5bH3J2ZvTb2zbmz1_YkK9DvaImQh8yGjxpyf8I8WJoapfHE&usqp=CAU"
+                        date="Friday, August 8, 2021"
+                      />
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+          <div className={style.Container__BarRight}>
+            <div className={style.Container__BarRight__Apart}>
+              <div className={style.Container__BarRight__Apart_Title}>
+                <h1>Share</h1>
+              </div>
+              <div className={style.Container__BarRight__Apart__Redes}>
+                <div>
+                  <a href={`http://www.facebook.com/sharer.php?u=${article_url}`} target="_blanck"><BsFacebook /></a>
+                  <a href={`http://twitter.com/share?url='${article_url}`} target="_blanck"><BsTwitter /></a>
+                  <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${article_url}&title=${details.title}`} target="_blanck"><BsLinkedin /></a>
+                </div>
+              </div>
+            </div>
+            <div className={style.Container__BarRight__Apart}>
+              <div className={style.Container__BarRight__Apart_Title}>
+                <h1>Recommended</h1>
+              </div>
+              <div className={style.Container__BarRight__Apart__Container}>
+                {theme.length > 0 && theme.slice(1, 6).map(c => {
+                  console.log("mapsssssssss", c)
                   return (
-                    <FaStar
-                      key={index}
-                      style={{ marginRight: 10 }}
-                      color={(hover || currentValue) > index ? colors.Blue : colors.grey}
-                      onClick={() => changeClick(index + 1)}
-                      onMouseOver={() => hoverStar(index + 1)}
-                      onMouseLeave={removeHover}
-                    />
+                    <div className={style.Container__BarRight__Apart__Container__Card}>
+                      <img src={c.image} alt={c.title} />
+                      <div className={style.Container__BarRight__Apart__Container__Card__info}>
+                        <h3>{c.title.charAt(0).toUpperCase() + c.title.slice(1)}</h3>
+                        <h4>Author: {c.authors.charAt(0).toUpperCase() + c.authors.slice(1)}</h4>
+                        <p>{c.subtitle.charAt(0).toUpperCase() + c.subtitle.slice(1)}</p>
+                      </div>
+                    </div>
                   )
                 })}
-              </div> :
-              <div className={det.GoSignIn1}>
-                <GoSignIn />
-                <Link className={det.SignIn} to="/signin">leave a review</Link>
-              </div>}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className={det.ContainerSumm}>
-        <div className={det.Container_Det6}>
-          <h1 className={det.Summary}>Summary</h1>
-          <p>
-            {details.desc && addApostrophes(details.desc)}
-          </p>
-        </div>
-        <div className={det.Container_Det6}>
-          <h1 className={det.Summary}>Details</h1>
-          <h3>{(details.title)}</h3>
-          <p>Authors: {details.authors}</p>
-          <p>Publisher: {details.publisher}</p>
-          <p>language: {details.language}</p>
-          <p>Publication year: {details.year}</p>
-          <p>Total pages: {details.pages}</p>
-          <p>Average Rating: {currentValue.length > 0 && prom()} ⭐</p>
-        </div>
-      </div>
-
-      {window.localStorage.getItem("user") ? <ReviewCards id={id} /> :
-        <div className={det.GoSignIn}>
-          <GoSignIn />
-          <Link className={det.SignIn} to="/signin">leave a review</Link>
-        </div>}
-    </>
+        </>
+        :
+        <Spinner />
+      }
+    </div>
   )
 }
 
