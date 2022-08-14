@@ -10,7 +10,7 @@ import SignUp from './components/SignUp/SignUp.js'
 import Favorite from "./components/Favorites/Favorite";
 import { AuthContextProvider } from "./firebase/AuthContext.js";
 import Profile from "./components/Profile/Profile.js";
-
+import { Card404 } from "./components/404/Card404.js";
 
 function App() {
 
@@ -21,11 +21,12 @@ function App() {
         <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/:id" element={<Detail />} />
+            <Route path="/book/:id" element={<Detail />} />
             <Route path="/favorites" element={<Favorite />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="*" element={<Card404 />} />
           </Routes>
         </div>
         <Footer />
