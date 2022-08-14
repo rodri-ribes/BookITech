@@ -134,12 +134,12 @@ async function createUser(req, res) {
                 subject: "HELLOOO ",
                 html: `
                 <h1>Welcome to BookITech 📖</h1>
-                        <img src=${img[0]} alt='img not foun' width='100' heiht='100' />
-                        <img src=${img[1]} alt='img not foun' width='100' heiht='100'/>
-                        <img src=${img[2]} alt='img not foun' width='100' heiht='100'/>                      
-                        <img src=${img[3]} alt='img not foun' width='100' heiht='100'/>
-                        <img src=${img[4]} alt='img not foun' width='100' heiht='100'/>
-                        <img src=${img[5]} alt='img not foun' width='100' heiht='100'/>
+                        <img src=${img[0]} alt='img not foun' width='100' height='100' />
+                        <img src=${img[1]} alt='img not foun' width='100' height='100'/>
+                        <img src=${img[2]} alt='img not foun' width='100' height='100'/>                      
+                        <img src=${img[3]} alt='img not foun' width='100' height='100'/>
+                        <img src=${img[4]} alt='img not foun' width='100' height='100'/>
+                        <img src=${img[5]} alt='img not foun' width='100' height='100'/>
                     <h5>BUY HERE!</h5>
                     <h4>Link to the page</h4>
                 `
