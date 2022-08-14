@@ -64,7 +64,7 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
     return (
         <div className={style.Container}>
             <div className={style.Container__IMG}>
-                <Link to={`/${id}`}>
+                <Link to={`/book/${id}`}>
                     <img src={img} alt={name} />
                 </Link>
             </div>
@@ -76,7 +76,7 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
                         <AiOutlineHeart onClick={() => addToFav()} />
                     }
                 </div>
-                <Link className={style.Container__Information_title} to={`/${id}`}>{name}</Link>
+                <Link className={style.Container__Information_title} to={`/book/${id}`}>{name}</Link>
                 <div className={style.Container__Information__ContainerAuthorAndPrice}>
                     <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors}</p>
                     <h3 className={style.Container__Information__ContainerAuthorAndPrice_price}>{price}</h3>
