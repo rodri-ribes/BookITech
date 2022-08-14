@@ -49,6 +49,10 @@ const BookSchema = new Schema({
     image:{
         type: String
     },
+    delisted:{
+        type: Boolean,
+        default: false
+    }
 })
 
 module.exports = mongoose.model('Book', BookSchema)

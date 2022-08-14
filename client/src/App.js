@@ -10,6 +10,7 @@ import SignUp from './components/SignUp/SignUp.js'
 import Favorite from "./components/Favorites/Favorite";
 import { AuthContextProvider } from "./firebase/AuthContext.js";
 import Profile from "./components/Profile/Profile.js";
+import {AdminDashboard} from './components/AdminDashboard/AdminDashboard';
 import { Card404 } from "./components/404/Card404.js";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<Card404 />} />
+            <Route path='/admin' element={<AdminDashboard/>} />
           </Routes>
         </div>
         <Footer />

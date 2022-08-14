@@ -20,6 +20,7 @@ export const dataSlice = createSlice({
         user: [],
         userID: [],
         MinToMax: [],
+        dashboardState: ['CRUD']
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -151,7 +152,13 @@ export const dataSlice = createSlice({
         },
         vaciarCommets: (state, actions)=>{
             state.comments=[]
-        }
+        },
+        delistBook: (state, actions) =>{
+            return 
+        },
+        changeDashboardState: (state, actions) =>{
+            state.dashboardState = actions.payload;
+        },
     },
 });
 
@@ -170,7 +177,9 @@ export const {
     addUser,
     comments,
     addUserID,
-    vaciarCommets
+    vaciarCommets,
+    delistBook,
+    changeDashboardState
 
 } = dataSlice.actions;
 
@@ -298,6 +307,21 @@ export const UpdateComment=(id,payload) => async (dispatch)=>{
     } catch (error) {
         console.log(error)
     }
+};
+export const changeDashboard = (payload) => async (dispatch) =>{
+    dispatch(changeDashboardState(payload))
+};
+export const deleteBook = (id) => async (dispatch) =>{ 
+    try {
+    let success = await axios.put(
+        `http://localhost:3001/books/delist/${id}`
+    );
+    console.log(success);
+    if(success) dispatch(delistBook());
+} catch (error) {
+    alert('the books were not found');
+    console.log(error);
 }
+};
 
 
