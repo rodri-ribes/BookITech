@@ -66,7 +66,7 @@ const BookSchema = new Schema({
     delisted:{
         type: Boolean,
         default: false
-    }
+    },
     comments: [ 
         {
             content: {
