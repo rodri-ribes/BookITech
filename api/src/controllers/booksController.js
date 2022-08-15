@@ -1,6 +1,6 @@
 const axios = require ("axios")
 const Book = require('../models/Book')
-
+const User = require('../models/User')
 
 //ESTA FUNCIÓN TRAE TODOS LOS LIBROS Y SI SE LE MANDA UNA QUERY HACE EL FILTRO POR EL DETERMINADO TITLE O AUTHORS
 
@@ -87,7 +87,21 @@ async function deleteBook(req, res){
     await Book.findByIdAndRemove(req.params.id)
     res.json("eliminado babe")
 }
-
+//Review
+async function PostReview(req,res){
+    try{    
+        const {title,email,data,rating,content} = req.body
+        let book = await Book.findOne({title})
+        let user = await User.findOne({email})
+        const total = {user, data,rating,content}
+        book.ratings.push(total)
+        // console.log(book.rating)
+        await book.save()
+        res.status(200).send('Agregado rating')
+    } catch(err){
+        res.status(404).send('No se agrego el rating')
+    }
+}
 
 module.exports = {
     getBooks,
@@ -95,5 +109,6 @@ module.exports = {
     getBooksById,
     postBooks,
     updateBook,
-    deleteBook
+    deleteBook,
+    PostReview
 }
