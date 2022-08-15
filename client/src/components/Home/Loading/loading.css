@@ -1,0 +1,38 @@
+.container-skeleton{
+    display: flex;
+    flex-direction: column;
+}
+
+.container1c{
+    display: flex;
+    gap: 40px ;
+    place-content: center;
+    margin-bottom: 40px;
+}
+.container2c{
+    display: flex;
+    gap: 40px ;
+    place-content: center;
+}
+.single-skeleton{
+    display:flex;
+    flex-direction: column;
+}
+
+.skeleton-text{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.skeleton-price{
+    display:flex;
+    justify-content: start;
+    margin-bottom: 0;
+}
+
+.skeleton-heart{
+display: flex;
+justify-content: end;
+}
+
