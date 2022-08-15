@@ -20,7 +20,8 @@ export const dataSlice = createSlice({
         user: [],
         userID: [],
         MinToMax: [],
-        dashboardState: ['CRUD']
+        dashboardState: ['CRUD'],
+        id: ['']
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -164,6 +165,9 @@ export const dataSlice = createSlice({
         },
         newBook: (state, action) => {
             return
+        },
+        idForUpdate: (state, action) =>{
+            state.id = action.payload
         }
        
     },
@@ -188,7 +192,8 @@ export const {
     delistBook,
     changeDashboardState,
     putBook,
-    newBook
+    newBook,
+    idForUpdate
 
 } = dataSlice.actions;
 
@@ -327,19 +332,17 @@ export const deleteBook = (id) => async (dispatch) =>{
     console.log(success);
     if(success) dispatch(delistBook());
 } catch (error) {
-    alert('the books were not found');
     console.log(error);
 }
 };
 export const updateBook = (payload) => async (dispatch) =>{ 
     try {
     let success = await axios.put(
-        `http://localhost:3001/books/id/${payload.id}`,{...payload}
+        `http://localhost:3001/books/${payload.id}`,{...payload, delisted: false}
     );
     console.log(success);
     if(success) dispatch(updateBook());
 } catch (error) {
-    alert('the books were not found');
     console.log(error);
 }
 };
@@ -351,9 +354,10 @@ export const createBook = (payload) => async (dispatch) =>{
     console.log(success);
     if(success) dispatch(newBook());
 } catch (error) {
-    alert('the books were not found');
     console.log(error);
 }
 };
-
+export const setId = (payload) => async (dispatch) =>{
+   dispatch(idForUpdate(payload))
+}
 

@@ -10,7 +10,7 @@ export function CardsContainer(props){
     const {books} = props
     return (<>
         { books ? books.map(e=> <Box sx={{display:'flex'}}>
-            <BookCard title={capitalize(e.title)} id={e.id}></BookCard>
+            <BookCard title={capitalize(e.title)} id={e._id}></BookCard>
         </Box>) 
         : <h4>No books found</h4>}
     </>

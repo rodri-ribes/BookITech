@@ -7,16 +7,12 @@ export function Input(){
 
     const [input, setInput] = React.useState('')
     const dispatch = useDispatch()
-    const fetch = () =>{
-        dispatch(getSearch(input))
-    }
     useEffect(()=>{ 
-       fetch()
+      dispatch(getSearch(input))
     }, [input])
     const handleOnChange = (e)=>{
       e.preventDefault()
-      if(e.target.value === input) return
-      setInput(e.target.value)
+      setTimeout(()=> setInput(e.target.value),100)
     }
     return (
      <TextField onChange={e=> handleOnChange(e)} fullWidth label="Search books by name or subject" id="bookInput" />)

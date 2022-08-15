@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -22,15 +22,22 @@ export default function CRUD() {
   
 const [prompt, setPrompt] = React.useState(false)
 const books = useSelector((state) => state.data.books)
+const id = useSelector(state => state.data.id)
+useEffect(()=>{
+  setPrompt(false)
+}, [])
+useEffect(()=> {
+  setPrompt(!prompt)
+}, [id])
 
     return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth='md'>
         <Box sx={{ bgcolor: '#cfe8fc', height: 'auto'}}>
-          {prompt ? <FormInput id={'62eb7aeb4247774324cbfb94'}/> :
+          {prompt ? <FormInput id={id}/> :
           <>
-            <Input/>
+            <Input />
             <CardsContainer books={books.slice(0,9)}/>
             </>}
         <Button  variant="outlined" onClick={e => setPrompt(!prompt)}>{prompt ? <Typography variant='h6'>Go back</Typography> : <AddIcon fontSize='large'/>}</Button>
