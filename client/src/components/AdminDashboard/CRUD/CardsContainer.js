@@ -7,10 +7,11 @@ import { getLibros, getSearch } from '../../../redux/features/data/dataSlice';
 
 export function CardsContainer(props){
 
+    const {setDelisted} = props
     const {books} = props
     return (<>
         { books ? books.map(e=> <Box sx={{display:'flex'}}>
-            <BookCard title={capitalize(e.title)} id={e._id}></BookCard>
+            <BookCard delisted={setDelisted} title={capitalize(e.title)} id={e._id}></BookCard>
         </Box>) 
         : <h4>No books found</h4>}
     </>

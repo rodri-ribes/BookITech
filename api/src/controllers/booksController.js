@@ -10,7 +10,7 @@ async function getBooks (req, res){
         if (title){
             let search = await Book.find({title: { "$regex": `${title}`, "$options": "i" } })
             let searchAuthors = await Book.find({authors: { "$regex": `${title}`, "$options": "i" }})
-            res.status(200).send(search.concat(searchAuthors))
+            res.status(200).send(search.concat(searchAuthors).filter(e => !e.delisted))
         }else {
             let allBooks = await Book.find({})
             res.status(200).send(allBooks.filter(e => !e.delisted))
@@ -27,7 +27,7 @@ async function getBooksByName (req, res){
     try {
         let search = await Book.find({title: { "$regex": `${name}`, "$options": "i" }})
         let searchAuthors = await Book.find({authors: { "$regex": `${name}`, "$options": "i" }})
-        res.status(200).send(search.concat(searchAuthors))
+        res.status(200).send(search.concat(searchAuthors).filter(e => !e.delisted))
     } catch (error) {
         res.status(404).json({error: "An unexpected error occurred, please try again later"})
     }
@@ -57,7 +57,7 @@ async function postBooks(req, res){
                 return res.status(401).send("The Book is already registered");
             }
             const newBook= new Book({
-                title, authors, publisher, subtitle, 
+                title, authors, publisher, subtitle, isbn13,
                 language, pages, year, desc, price, image
             })
             await newBook.save()
@@ -67,6 +67,7 @@ async function postBooks(req, res){
                 publisher:newBook.publisher,
                 subtitle:newBook.subtitle,
                 language:newBook.language,
+                isbn13: newBook.isbn13,
                 pages:newBook.pages,
                 year:newBook.year,
                 desc:newBook.desc,

@@ -14,12 +14,14 @@ import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 
 export default function CRUD(props) {
   
-const {title, id} = props
+const {title, id, delisted} = props
 const dispatch = useDispatch()
 const handleDelete = (e)=>{
   e.preventDefault()
   setDeletePressed(false)
   dispatch(deleteBook(id))
+  delisted(true)
+  
   return
 }
 const handleOnUpdate = (e)=>{

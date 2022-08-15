@@ -6,14 +6,12 @@ import axios from 'axios'
 import { useDispatch } from "react-redux";
 import { updateBook , createBook} from "../../../redux/features/data/dataSlice";
 
-
-
-
 const {REACT_APP_API} = process.env
 
 
 export function FormInput(props) {
        
+  const {prompt} = props
     const dispatch = useDispatch()
     const {id} = props
     const [oldValues, setOldValues] = useState({ 
@@ -91,8 +89,12 @@ export function FormInput(props) {
       fetchData()
     },[])
     
-    function handleSubmit(){
-        id ? dispatch(updateBook({...formValues, id: id})) : dispatch(createBook({formValues}))
+    function handleOnClick(e){
+      
+      e.preventDefault()  
+      id ? dispatch(updateBook({...formValues, id: id})) : dispatch(createBook({...formValues}))
+      prompt(true)
+
 
     }
     function handleReset(){
@@ -100,7 +102,7 @@ export function FormInput(props) {
     }
       return (
 
-        <form onSubmit={handleSubmit}>
+        <form >
             {console.table({...oldValues})}
           <Grid container alignItems="center" justify="center" direction="column">
             <Grid item>
@@ -201,7 +203,7 @@ export function FormInput(props) {
                 onChange={handleInputChange}
               />
             </Grid>
-            <Button variant="contained" color="primary" type="submit">
+            <Button variant="contained" color="primary"onClick={e=>handleOnClick(e)}>
               Submit
             </Button> 
             <Button variant="outlined" color="primary" type="reset" onClick={handleReset}>
