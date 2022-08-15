@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { capitalize } from '../../../components/auxiliar/capitalize';
+
 
 const {REACT_APP_API} = process.env
 
@@ -20,6 +20,8 @@ export const dataSlice = createSlice({
         user: [],
         userID: [],
         MinToMax: [],
+        dashboardState: ['CRUD'],
+        id: ['']
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -151,7 +153,23 @@ export const dataSlice = createSlice({
         },
         vaciarCommets: (state, actions)=>{
             state.comments=[]
+        },
+        delistBook: (state, actions) =>{
+            return 
+        },
+        changeDashboardState: (state, actions) =>{
+            state.dashboardState = actions.payload;
+        },
+        putBook: (state, actions) =>{
+            return
+        },
+        newBook: (state, action) => {
+            return
+        },
+        idForUpdate: (state, action) =>{
+            state.id = action.payload
         }
+       
     },
 });
 
@@ -170,7 +188,12 @@ export const {
     addUser,
     comments,
     addUserID,
-    vaciarCommets
+    vaciarCommets,
+    delistBook,
+    changeDashboardState,
+    putBook,
+    newBook,
+    idForUpdate
 
 } = dataSlice.actions;
 
@@ -200,7 +223,6 @@ export const getSearch = (name) => async (dispatch) => {
             //URL PARA BUSCAR
             REACT_APP_API +`/books/${name}`
         );
-        console.log(buscar.data);
         dispatch(SearchTitle(buscar.data));
         // console.log(buscar.data);
     } catch (error) {
@@ -299,6 +321,44 @@ export const UpdateComment=(id,payload) => async (dispatch)=>{
     } catch (error) {
         console.log(error)
     }
+};
+export const changeDashboard = (payload) => async (dispatch) =>{
+    dispatch(changeDashboardState(payload))
+};
+export const deleteBook = (id) => async (dispatch) =>{ 
+    try {
+    let success = await axios.put(
+        `http://localhost:3001/books/delist/${id}`
+    );
+    console.log(success);
+    if(success) dispatch(delistBook());
+} catch (error) {
+    console.log(error);
 }
-
+};
+export const updateBook = (payload) => async (dispatch) =>{ 
+    try {
+    let success = await axios.put(
+        `http://localhost:3001/books/${payload.id}`,{...payload, delisted: false}
+    );
+    console.log(success);
+    if(success) dispatch(updateBook());
+} catch (error) {
+    console.log(error);
+}
+};
+export const createBook = (payload) => async (dispatch) =>{ 
+    try {
+    let success = await axios.post(
+        `http://localhost:3001/books/`,{...payload}
+    );
+    console.log(success);
+    if(success) dispatch(newBook());
+} catch (error) {
+    console.log(error);
+}
+};
+export const setId = (payload) => async (dispatch) =>{
+   dispatch(idForUpdate(payload))
+}
 

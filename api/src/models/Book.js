@@ -63,6 +63,10 @@ const BookSchema = new Schema({
     image:{
         type: String
     },
+    delisted:{
+        type: Boolean,
+        default: false
+    },
     comments: [ 
         {
             content: {
@@ -74,6 +78,7 @@ const BookSchema = new Schema({
             user: Array
         }
     ]
+
 })
 
 module.exports = mongoose.model('Book', BookSchema)
