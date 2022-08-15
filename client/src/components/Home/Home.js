@@ -6,13 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLibros } from '../../redux/features/data/dataSlice';
 import Search from '../Search/Search';
 import Filters from '../Filters/Filters';
-import Spinner from '../auxiliar/Spinner/Spinner';
+import Loading from './Loading/Loading.jsx';
 
 export default function Home() {
     let dispatch = useDispatch();
 
+    const [loading, setLoading] = useState(true)
+
     useEffect(() => {
-        dispatch(getLibros());
+        dispatch(getLibros(setLoading));
     }, [dispatch]);
 
     let books = useSelector((state) => state.data.books);
@@ -36,28 +38,28 @@ export default function Home() {
         }
     }, [setShow]);
     return (
-        <div className={style.Container}>
-            {books.length > 0 ?
+        <div className={style.Container}>         
                 <>
                     <Filters setPagina={setPagina} />
                     <div className={style.Container__Search}>{show && <Search />}</div>
                     <div className={style.Container__PanelCards}>
-                        {books && books
-                            .slice(
-                                (pagina - 1) * porPagina,
-                                (pagina - 1) * porPagina + porPagina
-                            )
-                            .map((l, i) => {
-                                return (
-                                    <CardBook
-                                        name={l.title}
-                                        id={l.isbn13}
-                                        price={l.price}
-                                        img={l.image}
-                                        authors={l.authors}
-                                        key={i}
-                                    />
-                                );
+                        {loading ? <Loading/> :
+                            books && books
+                                .slice(
+                                    (pagina - 1) * porPagina,
+                                    (pagina - 1) * porPagina + porPagina
+                                )
+                                .map((l, i) => {
+                                    return (
+                                        <CardBook
+                                            name={l.title}
+                                            id={l.isbn13}
+                                            price={l.price}
+                                            img={l.image}
+                                            authors={l.authors}
+                                            key={i}
+                                        />
+                                    );
                             })}
                     </div>
                     <div className={style.Container__Pagination}>
@@ -68,9 +70,6 @@ export default function Home() {
                         />
                     </div>
                 </>
-                :
-                <Spinner />
-            }
         </div>
     );
 }

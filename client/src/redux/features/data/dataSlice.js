@@ -180,10 +180,11 @@ export default dataSlice.reducer;
 
 //Aca irian las actions, dejo una como modo de ejemplo
 
-export const getLibros = () => async (dispatch) => {
+export const getLibros = (setLoading) => async (dispatch) => {
     try {
         const resp = await axios.get(REACT_APP_API + `/books`);
         dispatch(addLibro(resp.data));
+        setLoading(false)
     } catch (error) {
         console.log(error);
     }
