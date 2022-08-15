@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Book = require('../models/Book')
 const User = require("../models/User");
-const  nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer')
 
 async function GetUser(req, res) {
     try {
@@ -55,7 +55,7 @@ async function loginUser(req, res) {
             const token = jwt.sign({ _id: user.id }, 'secretKey')
             res.json({
                 id: user.id,
-                name: user.name,
+                name: user.fullName,
                 email: user.email,
                 token: token,
                 ban: user.ban,
@@ -113,22 +113,22 @@ async function createUser(req, res) {
             const book = await Book.find()
             let img = book.map(e => {
                 let min = []
-                if(min.length < 6){
+                if (min.length < 6) {
                     min.push(e.image)
                 }
                 return min
             })
-            const  transporter = nodemailer.createTransport({
+            const transporter = nodemailer.createTransport({
                 host: "smtp.zoho.com",
                 port: 465,
                 secure: true, // true for 465, false for other ports
                 auth: {
-                  user: 'ledobookitech@zohomail.com', // generated ethereal user
-                  pass: 'frqGYjAbPUUR', // generated ethereal password
+                    user: 'ledobookitech@zohomail.com', // generated ethereal user
+                    pass: 'frqGYjAbPUUR', // generated ethereal password
                 },
-              });
-    
-              const prueba =await transporter.sendMail({
+            });
+
+            const prueba = await transporter.sendMail({
                 from: '"BookITech 📖" <ledobookitech@zohomail.com> ',
                 to: email,
                 subject: "HELLOOO ",
@@ -143,8 +143,8 @@ async function createUser(req, res) {
                     <h5>BUY HERE!</h5>
                     <h4>Link to the page</h4>
                 `
-              })
-              console.log(prueba.messageId);
+            })
+            console.log(prueba.messageId);
             res.status(200).json({
                 id: newUser.id,
                 name: newUser.fullName,
@@ -156,61 +156,61 @@ async function createUser(req, res) {
                 // rrss: newUser.rrss,
                 option: newUser.option,
                 rol: newUser.rol,
-                buy:newUser.buy
+                buy: newUser.buy
             })
         }
     }
 }
-async function GetUser (req,res) {
-    try{
-        const {id} = req.params;
-       
-            // let _id = id
-            let user = await User.findById(id)
-            res.status(200).send(user)
-        
-    } catch(err){
+async function GetUser(req, res) {
+    try {
+        const { id } = req.params;
+
+        // let _id = id
+        let user = await User.findById(id)
+        res.status(200).send(user)
+
+    } catch (err) {
         res.status(404).send('Fallo en el id')
     }
-    
+
 }
-async function PutUser (req,res){
-    try{
-        const {fullName, img ,phone } = req.body
-        const{id}= req.params
-        
-            if(fullName && img && phone){
-                
-                let upDate = {fullName,img,phone}
-                 await User.findByIdAndUpdate(id,upDate)
-                return res.status(200).send('Actualizado')
-            }
-           return  res.status(404).send('falta el body')
-        
-    } catch(err){
+async function PutUser(req, res) {
+    try {
+        const { fullName, img, phone } = req.body
+        const { id } = req.params
+
+        if (fullName && img && phone) {
+
+            let upDate = { fullName, img, phone }
+            await User.findByIdAndUpdate(id, upDate)
+            return res.status(200).send('Actualizado')
+        }
+        return res.status(404).send('falta el body')
+
+    } catch (err) {
         res.status(404).send('Fallo en el PUT')
     }
 }
-async function PostBook (req,res){
+async function PostBook(req, res) {
     try {
-        const {email} = req.params;
-        const {id} = req.body ;
+        const { email } = req.params;
+        const { id } = req.body;
         // const nomb = await User.find()
         // let isbn13 = id
         // let _id = id
-        
 
-            const user = await Book.findById(id)
-        const nomb = await User.findOne({email})
+
+        const user = await Book.findById(id)
+        const nomb = await User.findOne({ email })
         // console.log(user)
-       nomb.buy.push(user)
+        nomb.buy.push(user)
         // console.log(nomb.option)
 
         await nomb.save()
         // console.log(user)
         res.status(200).send('actualizado')
-        
-    } catch(err){
+
+    } catch (err) {
         res.status(404).send('No pudimos comprar el libro')
     }
 }

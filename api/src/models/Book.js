@@ -64,18 +64,15 @@ const BookSchema = new Schema({
         type: String
     },
     comments: [ 
-        { 
-            content: { 
-                type: String 
-            }, 
-            date: { 
-                type: String, 
-            }, 
-            user: { 
-                type: Schema.Types.ObjectId, 
-                ref: 'User' 
-            } 
-        } 
+        {
+            content: {
+                type: String
+            },
+            date: {
+                type: String,
+            },
+            user: Array
+        }
     ]
 })
 
