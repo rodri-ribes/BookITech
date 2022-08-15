@@ -29,6 +29,7 @@ function Detail() {
 
   const [viewEditComment, setViewEditComment] = useState(false)
   const [cartCheck, setCartCheck] = useState(false)
+  const [cambios, setCambios] = useState(false)
 
   //---------STATES PARA ACTUALIZAR Y RECIBIR LOS DATOS DE LA REVIEW DEL USUARIO
 
@@ -38,7 +39,7 @@ function Detail() {
 
   //---------STATE PARA CARGAR COMMENTARIO NUEVO A LA DB---------------------
 
-  const [commnet, setComment] = useState("Aca va el comentario del usuario")
+  const [comment, setComment] = useState("Aca va el comentario del usuario")
 
   //--------LOGICA PARA OBTENER LA INFORMACION DEL ARTICULO ---------------------
 
@@ -143,11 +144,23 @@ function Detail() {
   }, [details])
 
   let theme = useSelector(state => state.data.Theme)
-
+  details && console.log("detalles ", details)
   //-------------FUNCION QUE CARGA EL COMENTARIO A LA DB ---------------------
 
-  const handleComment = () => {
+  const handleComment = async (setDetails) => {
+    let content = comment
+    let fecha = date.toLocaleDateString('en-US', options)
+    let usuario = JSON.parse(window.localStorage.getItem("user"))
+    let user = [usuario.id, usuario.img, usuario.name]
 
+
+
+    await axios.post(REACT_APP_API + `/comments/${id}`, {
+      content, fecha, user
+    })
+
+    let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
+    setDetails(data.data)
   }
 
   return (
@@ -262,19 +275,24 @@ function Detail() {
                         name="Rodrigo Ribes"
                         setComment={setComment}
                         handleComment={handleComment}
+                        setDetails={setDetails}
                       />
-                      <CardComment
-                        name="Rodrigo"
-                        content="Este en mi comentario"
-                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmhFDiUUVWwUijxUlu0uKu5bH3J2ZvTb2zbmz1_YkK9DvaImQh8yGjxpyf8I8WJoapfHE&usqp=CAU"
-                        date="Friday, August 8, 2021"
-                      />
-                      <CardComment
-                        name="Rodrigo"
-                        content="Este en mi comentario"
-                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmhFDiUUVWwUijxUlu0uKu5bH3J2ZvTb2zbmz1_YkK9DvaImQh8yGjxpyf8I8WJoapfHE&usqp=CAU"
-                        date="Friday, August 8, 2021"
-                      />
+                      {details.comments.map(c => {
+                        return (
+                          <CardComment
+                            name={c.user[2]}
+                            content={c.content.charAt(0).toUpperCase() + c.content.slice(1)}
+                            image={c.user[1]}
+                            date={c.date}
+                            iduser={c.user[0]}
+                            idBook={id}
+                            idComment={c._id}
+                            key={c._id}
+                            setCambios={setDetails}
+                          />
+                        )
+                      })}
+
                     </div>
                   </div>
                 </div>
@@ -333,16 +351,14 @@ function Detail() {
                 {theme.length > 0 && theme.slice(1, 6).map(c => {
 
                   return (
-                    <div className={style.Container__BarRight__Apart__Container__Card}>
-                      <Link to={`/book/${c._id}`} className={style.LinkStyle}>
-                        <img src={c.image} alt={c.title} />
-                        <div className={style.Container__BarRight__Apart__Container__Card__info}>
-                          <h3>{c.title.charAt(0).toUpperCase() + c.title.slice(1)}</h3>
-                          <h4>Author: {c.authors.charAt(0).toUpperCase() + c.authors.slice(1)}</h4>
-                          <p>{c.subtitle.charAt(0).toUpperCase() + c.subtitle.slice(1)}</p>
-                        </div>
-                      </Link>
-                    </div>
+                    <Link to={`/book/${c._id}`} className={style.Container__BarRight__Apart__Container__Card}>
+                      <img src={c.image} alt={c.title} />
+                      <div className={style.Container__BarRight__Apart__Container__Card__info}>
+                        <h3>{c.title.charAt(0).toUpperCase() + c.title.slice(1)}</h3>
+                        <h4>Author: {c.authors.charAt(0).toUpperCase() + c.authors.slice(1)}</h4>
+                        <p>{c.subtitle.charAt(0).toUpperCase() + c.subtitle.slice(1)}</p>
+                      </div>
+                    </Link>
                   )
                 })}
               </div>

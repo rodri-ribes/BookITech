@@ -307,6 +307,8 @@
     width: 100%;
     margin-bottom: 0.5rem;
     border-bottom: 1px solid black;
+    text-decoration: none;
+    color: white;
 }
 
 .Container__BarRight__Apart__Container__Card img{
@@ -324,17 +326,17 @@
 .Container__BarRight__Apart__Container__Card__info h3{
     font-family: arial;
     font-size: 0.8rem;
+    margin-bottom: 1rem;
 }
 
 .Container__BarRight__Apart__Container__Card__info h4{
     font-family: arial;
     font-size: 0.8rem;
-    margin-top: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .Container__BarRight__Apart__Container__Card__info p{
     font-family: arial;
     font-size: 0.8rem;
-    margin-top: 0.5rem;
 
 }

@@ -36,9 +36,23 @@ const BookSchema = new Schema({
     year:{
         type: Number
     },
-    rating:{
-        type: Number
-    },
+    ratings:[
+        {
+            user:{
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            },
+            rating:{
+                type: Number
+            },
+            data:{
+                type: String
+            },
+            content:{
+                type: String
+            }
+        }
+    ],
     desc:{
         type: String
     },
@@ -53,6 +67,18 @@ const BookSchema = new Schema({
         type: Boolean,
         default: false
     }
+    comments: [ 
+        {
+            content: {
+                type: String
+            },
+            date: {
+                type: String,
+            },
+            user: Array
+        }
+    ]
+
 })
 
 module.exports = mongoose.model('Book', BookSchema)
