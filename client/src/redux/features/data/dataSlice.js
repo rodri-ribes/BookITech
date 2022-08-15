@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { capitalize } from '../../../components/auxiliar/capitalize';
+
 
 const {REACT_APP_API} = process.env
 
@@ -159,6 +159,13 @@ export const dataSlice = createSlice({
         changeDashboardState: (state, actions) =>{
             state.dashboardState = actions.payload;
         },
+        putBook: (state, actions) =>{
+            return
+        },
+        newBook: (state, action) => {
+            return
+        }
+       
     },
 });
 
@@ -179,7 +186,9 @@ export const {
     addUserID,
     vaciarCommets,
     delistBook,
-    changeDashboardState
+    changeDashboardState,
+    putBook,
+    newBook
 
 } = dataSlice.actions;
 
@@ -208,7 +217,6 @@ export const getSearch = (name) => async (dispatch) => {
             //URL PARA BUSCAR
             REACT_APP_API +`/books/${name}`
         );
-        console.log(buscar.data);
         dispatch(SearchTitle(buscar.data));
         // console.log(buscar.data);
     } catch (error) {
@@ -318,6 +326,30 @@ export const deleteBook = (id) => async (dispatch) =>{
     );
     console.log(success);
     if(success) dispatch(delistBook());
+} catch (error) {
+    alert('the books were not found');
+    console.log(error);
+}
+};
+export const updateBook = (payload) => async (dispatch) =>{ 
+    try {
+    let success = await axios.put(
+        `http://localhost:3001/books/id/${payload.id}`,{...payload}
+    );
+    console.log(success);
+    if(success) dispatch(updateBook());
+} catch (error) {
+    alert('the books were not found');
+    console.log(error);
+}
+};
+export const createBook = (payload) => async (dispatch) =>{ 
+    try {
+    let success = await axios.post(
+        `http://localhost:3001/books/`,{...payload}
+    );
+    console.log(success);
+    if(success) dispatch(newBook());
 } catch (error) {
     alert('the books were not found');
     console.log(error);

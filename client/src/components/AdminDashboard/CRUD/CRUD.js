@@ -10,29 +10,31 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { getLibros, getSearch } from '../../../redux/features/data/dataSlice';
 import BookCard from './BookCard' 
 import capitalize from '../../auxiliar/capitalize';
+import AddIcon from '@mui/icons-material/Add';
+import { Button } from '@mui/material';
+import { alignProperty } from '@mui/material/styles/cssUtils';
+import { Typography } from '@mui/material';
+import { FormInput } from './FormInput';
+import { CardsContainer } from './CardsContainer';
+import {Input} from './Input'
 
 export default function CRUD() {
   
-const dispatch = useDispatch()
-const [input, setInput] = React.useState('')
-React.useEffect(()=>{
-  dispatch(getSearch(input))
-}, [input])
+const [prompt, setPrompt] = React.useState(false)
 const books = useSelector((state) => state.data.books)
-const booksForInput = books.map(e=>  {return {label: capitalize(e.title), id: e._id}})
-const handleOnChange = (e)=>{
-  e.preventDefault()
-  setInput(e.target.value)
-}
 
-  //React.useEffect(()=>{}, [dispatch])
     return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth='md'>
-        <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }}>
-        <TextField onChange={e=> handleOnChange(e)} fullWidth label="Search by book's name or subject" id="bookInput" />
-          {booksForInput&& booksForInput.slice(0,10).map(e=> <Box sx={{display:'flex'}}><BookCard title={capitalize(e.label)} id={e.id}></BookCard></Box>)}
+        <Box sx={{ bgcolor: '#cfe8fc', height: 'auto'}}>
+          {prompt ? <FormInput id={'62eb7aeb4247774324cbfb94'}/> :
+          <>
+            <Input/>
+            <CardsContainer books={books.slice(0,9)}/>
+            </>}
+        <Button  variant="outlined" onClick={e => setPrompt(!prompt)}>{prompt ? <Typography variant='h6'>Go back</Typography> : <AddIcon fontSize='large'/>}</Button>
+    
         </Box>
       </Container>
     </React.Fragment>

@@ -1,25 +1,23 @@
-import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import { useSelector, useDispatch } from 'react-redux';
-import { getLibros } from '../../../redux/features/data/dataSlice';
-import capitalize from '../../auxiliar/capitalize';
+import React, { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { TextField } from "@mui/material"
+import { getSearch } from '../../../redux/features/data/dataSlice';
 
+export function Input(){
 
-export default function Input() {
-const dispatch = useDispatch()
-    React.useEffect(() => {
-        dispatch(getLibros());
-    }, [dispatch]);
-const allBooks = useSelector((state) => state.data.books)
-const books = allBooks.map(e=>  {return {label: capitalize(e.title), id: e.id}})
-  return (
-    <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={books}
-      sx={{ width: 700, alignSelf: 'center' }}
-      renderInput={(params) => <TextField {...params} label="Books" />}
-    />
-  );
-}
+    const [input, setInput] = React.useState('')
+    const dispatch = useDispatch()
+    const fetch = () =>{
+        dispatch(getSearch(input))
+    }
+    useEffect(()=>{ 
+       fetch()
+    }, [input])
+    const handleOnChange = (e)=>{
+      e.preventDefault()
+      if(e.target.value === input) return
+      setInput(e.target.value)
+    }
+    return (
+     <TextField onChange={e=> handleOnChange(e)} fullWidth label="Search books by name or subject" id="bookInput" />)
+    }

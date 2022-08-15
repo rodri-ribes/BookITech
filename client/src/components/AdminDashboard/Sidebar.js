@@ -27,11 +27,8 @@ const categories = [
       id: 'Website',
       children: [
         { id: 'CRUD', icon: <BookmarkAddIcon />, active: true },
-        { id: 'Analytics', icon: <QueryStatsIcon />, active: false  },
         { id: 'Moderate Users', icon: <PeopleAltIcon/>, active: false },
         { id: 'Review Comments', icon: <CommentIcon />, active: false },
-        { id: 'Lorem Ipsum', icon: <MailIcon />, active: false },
-        { id: 'Lorem Ipsum', icon: <InboxIcon />, active: false },
       ],
     },
     {
@@ -39,7 +36,6 @@ const categories = [
       children: [
         { id: 'Sales History', icon: <MonetizationOnIcon />, active: false },
         { id: 'Analytics', icon: <QueryStatsIcon />, active: false },
-        { id: 'Lorem Ipsum', icon: <MailIcon />, active: true },
       ],
     },
   ];

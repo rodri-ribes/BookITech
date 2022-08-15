@@ -47,7 +47,7 @@ async function getBooksById (req, res){
 
 /// Admin roles
 async function postBooks(req, res){
-    const { title, authors, publisher, subtitle, 
+    const { title, authors, publisher, subtitle, isbn13,
             language, pages, year, desc, price, image }=req.body
         if( title && authors && publisher ){
             let existe=await Book.findOne({

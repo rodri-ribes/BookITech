@@ -48,13 +48,16 @@ export function AdminDashboard(){
 
   const dispatch = useDispatch()
   const state = useSelector((state) => state.data.dashboardState);
+  const componentReturn ={
+    'CRUD' : <CRUD/>,
+  }
 
-  useEffect(()=> {alert(state)}, [state, dispatch])
+  useEffect(()=> {}, [state])
   return (
     <ThemeProvider theme={theme}>
       <div sx={classes.dashboard}>
         <Sidebar ></Sidebar>
-        <CRUD/>
+        {componentReturn[state]}
 
       </div>
     </ThemeProvider>)

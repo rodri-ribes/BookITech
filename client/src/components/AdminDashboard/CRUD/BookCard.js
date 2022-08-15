@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -16,25 +16,39 @@ export default function CRUD(props) {
   
 const {title, id} = props
 const dispatch = useDispatch()
-const handleOnDelete = (e)=>{
-    e.preventDefault()
-    dispatch(deleteBook(id))
-    alert(id)
+const handleDelete = (e)=>{
+  e.preventDefault()
+  setDeletePressed(false)
+  dispatch(deleteBook(id))
+  return
 }
 const handleOnUpdate = (e)=>{
-    
+  
 }
-  React.useEffect(()=>{
+React.useEffect(()=>{
     dispatch(getLibros())
   }, [dispatch])
+
+  const [deletePressed, setDeletePressed] = useState(false)
+
     return (
     <React.Fragment>
       <CssBaseline />
       <Container>
         <Box sx={{ bgcolor: '#cfe8fc', height: '10vh' }}>
-            <Typography>{title}</Typography>
-            <IconButton onClick={e=>handleOnDelete(e)}><DeleteIcon/></IconButton>
-            <IconButton onClick={e=> handleOnUpdate(e)}><ModeEditOutlineIcon/></IconButton>
+          { deletePressed === false ? <>
+            <Typography sx={{color:'#173A5E'}}>{title}</Typography>
+            <IconButton onClick={e => setDeletePressed(true)}><DeleteIcon/></IconButton>
+            <IconButton onClick={e=> handleOnUpdate(e)}><ModeEditOutlineIcon/></IconButton></> :
+            <>
+              <Typography sx={{color:'#173A5E'}}>You want to delist this book?</Typography>
+              <h4>I'll still be in the database</h4>
+              <div>
+                <button onClick={e=>handleDelete(e)}>Confirm</button>
+                <button onClick={e=>setDeletePressed(false)}>Cancel</button>
+              </div>
+            </>
+          }
         </Box>
       </Container>
     </React.Fragment>
