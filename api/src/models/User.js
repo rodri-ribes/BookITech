@@ -9,7 +9,8 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId, //Para checkear
         ref: 'Comment'
     }],
-
+    realName: { type: String },
+    lastname: { type: String},
     ban: {type: Boolean,default:false},
     img:{type: String, default: random[0]},
     phone: {type: String},
