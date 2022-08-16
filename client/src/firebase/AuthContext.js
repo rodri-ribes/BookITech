@@ -22,8 +22,8 @@ export const AuthContextProvider = ({ children }) => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             dispatch(getUser(currentUser));
 
-            let displayName = currentUser.displayName;
-            let email = currentUser.email
+            let displayName = currentUser?.displayName;
+            let email = currentUser?.email
 
             try {
                 axios.post(`http://localhost:3001/save`,{

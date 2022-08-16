@@ -140,12 +140,12 @@ async function GetUser (req,res) {
 }
 async function PutUser (req,res){
     try{
-        const {fullName, img ,phone } = req.body
+        const {fullName, img, phone, address } = req.body
         const{id}= req.params
         
-            if(fullName && img && phone){
+            if(fullName || img || phone || address){
                 
-                let upDate = {fullName,img,phone}
+                let upDate = {fullName, img, phone, address}
                  await User.findByIdAndUpdate(id,upDate)
                 return res.status(200).send('Actualizado')
             }

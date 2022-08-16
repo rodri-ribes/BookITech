@@ -144,7 +144,7 @@ export const dataSlice = createSlice({
         },
         dataUser: (state, actions) => {
             state.dataUser = actions.payload
-        }
+        },
     },
 });
 
@@ -162,6 +162,7 @@ export const {
     MINtoMAX,
     addUser,
     dataUser,
+    updateUser,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -245,10 +246,21 @@ export const getUser = (data) => async (dispatch) => {
 
 export const getDataUser = (id) => async (dispatch) => {
     try {
-        const res = await axios(REACT_APP_API + `/user/${id}`);
+        const res = await axios.get(REACT_APP_API + `/user/${id}`);
+        console.log(res.data);
         dispatch(dataUser(res.data));
     } catch (error) {
         console.log(error);
     }
 };
+
+export const updateUserdata = (id, payload) => async (dispatch) => {
+    try {
+        console.log(payload);
+        const res = await axios.put(REACT_APP_API + `/user/${id}`, payload)
+        dispatch(dataUser(res.data))
+    } catch (error) {
+         console.log(error);
+    }
+}
 
