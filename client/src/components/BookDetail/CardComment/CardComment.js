@@ -8,7 +8,14 @@ const { REACT_APP_API } = process.env
 
 export default function CardComment({ iduser, image, name, content, date, idBook, idComment, setCambios }) {
 
-    let usuario = JSON.parse(window.localStorage.getItem("user"));
+    let user;
+
+    if (window.localStorage.getItem("user") === null) {
+        user = [0, "user.png", "user"]
+    } else {
+        let usuario = JSON.parse(window.localStorage.getItem("user"))
+        user = [usuario.id, usuario.img, usuario.name]
+    }
 
     const [showEdit, setshowEdit] = useState(false)
     const [editComment, setEditComment] = useState("")
@@ -17,7 +24,6 @@ export default function CardComment({ iduser, image, name, content, date, idBook
         const aux = window.confirm("Are you sure you want to delete the comment?")
         if (aux) {
             await axios.delete(REACT_APP_API + `/comments/delete/${idBook}/${idComment}`);
-
             let id = idBook;
             let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
             setCambios(data.data)
@@ -60,7 +66,7 @@ export default function CardComment({ iduser, image, name, content, date, idBook
                     <p className={style.Container__input_content}>{content}</p>
                 }
             </div>
-            {usuario.id === iduser ?
+            {user[0] === iduser ?
                 <>
                     {showEdit !== true && <BiEdit className={style.Container__Cross} onClick={() => setshowEdit(true)} />}
                     <ImCross className={style.Container__Cross} onClick={() => handleDelete()} />

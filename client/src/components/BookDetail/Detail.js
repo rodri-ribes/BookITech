@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { BiEdit } from 'react-icons/bi';
 import { BsCartCheck, BsFacebook, BsTwitter, BsLinkedin, BsGoogle } from 'react-icons/bs';
 import Rating from '@mui/material/Rating';
-import { Link, useParams } from "react-router-dom"
+import { Link, NavLink, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { AddCart, FilterTheme } from '../../redux/features/data/dataSlice'
 import style from "./Detail.module.css"
@@ -39,11 +39,14 @@ function Detail() {
 
   //---------STATE PARA CARGAR COMMENTARIO NUEVO A LA DB---------------------
 
-  const [comment, setComment] = useState("Aca va el comentario del usuario")
+  const [comment, setComment] = useState("")
 
   //--------LOGICA PARA OBTENER LA INFORMACION DEL ARTICULO ---------------------
 
+
+
   async function main() {
+    console.log("entro al main")
     let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
     setDetails(data.data)
   }
@@ -54,12 +57,11 @@ function Detail() {
 
   //----------LOGICA PARA AGREGAR EL LIBRO AL CARRITO------------------
 
-  let user = useSelector(state => state.data.user)
 
   const addToCart = () => {
     //Aca iria el dispatch de la actions que agregaria el item al carrito
     setCartCheck(true)
-    if (user || window.localStorage.getItem("user")) {
+    if (userr || window.localStorage.getItem("user")) {
       let idBook = id;
       let auxUser = JSON.parse(window.localStorage.getItem("user"))
       let idUser = auxUser.id
@@ -147,18 +149,38 @@ function Detail() {
   details && console.log("detalles ", details)
   //-------------FUNCION QUE CARGA EL COMENTARIO A LA DB ---------------------
 
+  let user;
+
+  if (!window.localStorage.getItem("user")) {
+    user = [0, "user.png", "user"]
+  } else {
+    let usuario = JSON.parse(window.localStorage.getItem("user"))
+    user = [usuario.id, usuario.img, usuario.name]
+  }
+  // let usuario = JSON.parse(window.localStorage.getItem("user"))
+  // let user = [usuario.id, usuario.img, usuario.name]
+
+
   const handleComment = async (setDetails) => {
     let content = comment
     let fecha = date.toLocaleDateString('en-US', options)
-    let usuario = JSON.parse(window.localStorage.getItem("user"))
-    let user = [usuario.id, usuario.img, usuario.name]
+    // let usuario = JSON.parse(window.localStorage.getItem("user"))
+    // let user = [usuario.id, usuario.img, usuario.name]
 
+    let user;
 
+    if (window.localStorage.getItem("user") === undefined) {
+      user = [0, "user.png", "user"]
+    } else {
+      let usuario = JSON.parse(window.localStorage.getItem("user"))
+      user = [usuario.id, usuario.img, usuario.name]
+    }
 
     await axios.post(REACT_APP_API + `/comments/${id}`, {
       content, fecha, user
     })
 
+    setComment("")
     let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
     setDetails(data.data)
   }
@@ -187,12 +209,12 @@ function Detail() {
             </head>
             <div className={style.Container__Content__Info}>
               <div className={style.Container__Content__Info__Img}>
-                <img src={details.image} />
+                <img src={details.image} className={style.Container__Content__Info_Img} />
 
                 {cartCheck ?
-                  <button className={style.Container__Content__Info__Img_img} onClick={() => addToCart()}>Added to Cart <BsCartCheck /> </button>
+                  <button className={style.Container__Content__Info__Img_button} onClick={() => addToCart()}>Added to Cart <BsCartCheck /> </button>
                   :
-                  <button className={style.Container__Content__Info__Img_img} onClick={() => addToCart()}>Add to Cart for {details.price}  <RiShoppingCartLine /> </button>
+                  <button className={style.Container__Content__Info__Img_button} onClick={() => addToCart()}>Add to Cart for {details.price}  <RiShoppingCartLine /> </button>
                 }
 
               </div>
@@ -221,7 +243,7 @@ function Detail() {
             <div className={style.Container__Content__Acitivity}>
               {userr || window.localStorage.getItem("user") ?
                 <div className={style.Container__Content__Acitivity__Details}>
-                  <h4>MY ACITIVITY</h4>
+                  {/* <h4>MY ACITIVITY</h4>
                   <hr />
                   <div className={style.Container__Content__Acitivity__Details_element}>
                     <p>Rating</p>
@@ -265,17 +287,16 @@ function Detail() {
                         rating={3}
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>COMMENTS</h4>
                     <hr />
                     <div className={style.Container__Content__Acitivity__Details}>
                       <CommentBox
-                        image="https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png"
-                        name="Rodrigo Ribes"
                         setComment={setComment}
                         handleComment={handleComment}
                         setDetails={setDetails}
+                        comment={comment}
                       />
                       {details.comments.map(c => {
                         return (
@@ -298,32 +319,36 @@ function Detail() {
                 </div>
                 :
                 <div className={style.Container__Content__Acitivity__Details}>
-                  <div className={style.Container__Content__Acitivity__Details}>
+                  {/* <div className={style.Container__Content__Acitivity__Details}>
                     <h4>FRIEND REVIEWS</h4>
                     <hr />
                     <p>To see what friends thought of this book, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
                     <h4>READER Q&A</h4>
                     <hr />
                     <p>To ask other readers questions about {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
-                  </div>
+                  </div> */}
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>COMMENTS</h4>
                     <hr />
                     <p>To leave a comment on {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
 
                     <div className={style.Container__Content__Acitivity__Details}>
-                      <CardComment
-                        name="Rodrigo"
-                        content="Este en mi comentario"
-                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmhFDiUUVWwUijxUlu0uKu5bH3J2ZvTb2zbmz1_YkK9DvaImQh8yGjxpyf8I8WJoapfHE&usqp=CAU"
-                        date="Friday, August 8, 2021"
-                      />
-                      <CardComment
-                        name="Rodrigo"
-                        content="Este en mi comentario"
-                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmhFDiUUVWwUijxUlu0uKu5bH3J2ZvTb2zbmz1_YkK9DvaImQh8yGjxpyf8I8WJoapfHE&usqp=CAU"
-                        date="Friday, August 8, 2021"
-                      />
+                      {
+                        details.comments.map(c => {
+                          return (
+                            <CardComment
+                              name={c.user[2]}
+                              content={c.content.charAt(0).toUpperCase() + c.content.slice(1)}
+                              image={c.user[1]}
+                              date={c.date}
+                              iduser={c.user[0]}
+                              idBook={id}
+                              idComment={c._id}
+                              key={c._id}
+                              setCambios={setDetails}
+                            />
+                          )
+                        })}
                     </div>
                   </div>
                 </div>
@@ -351,14 +376,14 @@ function Detail() {
                 {theme.length > 0 && theme.slice(1, 6).map(c => {
 
                   return (
-                    <Link to={`/book/${c._id}`} className={style.Container__BarRight__Apart__Container__Card}>
+                    <a href={`/book/${c.isbn13}`} className={style.Container__BarRight__Apart__Container__Card}>
                       <img src={c.image} alt={c.title} />
                       <div className={style.Container__BarRight__Apart__Container__Card__info}>
                         <h3>{c.title.charAt(0).toUpperCase() + c.title.slice(1)}</h3>
                         <h4>Author: {c.authors.charAt(0).toUpperCase() + c.authors.slice(1)}</h4>
                         <p>{c.subtitle.charAt(0).toUpperCase() + c.subtitle.slice(1)}</p>
                       </div>
-                    </Link>
+                    </a>
                   )
                 })}
               </div>
