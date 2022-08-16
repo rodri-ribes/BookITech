@@ -13,14 +13,18 @@ import Noresults from './NoResults/Noresults';
 export default function Home() {
     let dispatch = useDispatch();
 
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(false)
+    // const [loading, setLoading] = useState(true)
+    // const [error, setError] = useState(false)
+
+
 
     useEffect(() => {
-        dispatch(getLibros(setLoading, setError));
+        dispatch(getLibros());
     }, [dispatch]);
 
     let books = useSelector((state) => state.data.books);
+    let loading = useSelector((state) => state.data.loading);
+    let error = useSelector((state) => state.data.error);
 
     //logica de paginado
 
