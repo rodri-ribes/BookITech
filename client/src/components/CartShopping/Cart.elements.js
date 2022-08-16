@@ -25,7 +25,7 @@ export const Container = styled.div`
     }
 `;
 export const ContainerPanel = styled.div`
-    /* display: flex; */
+
     display: ${({ click }) => (click ? "flex" : "none")};
     justify-content: flex-start;
     align-items: center;
