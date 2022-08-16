@@ -1,27 +1,30 @@
 import React from 'react'
+import { useSelector } from 'react-redux';
 import det from "./Detail.module.css"
 import Review from './Review';
 
 function ReviewCard({comment,replies,currentUserId,updateComment,deleteComment,activeComment,setActiveComment,parentId= null,addComment}) {
+    const {userID}=useSelector(state => state.data)
     const fiveMinutes=300000;
-    const timePassed=new Date()- new Date(comment.createdAt)>fiveMinutes
+    const timePassed=new Date()- new Date(comment.date)>fiveMinutes
     const canReply=Boolean(currentUserId)
-    const canEdit =currentUserId===comment.userId && !timePassed
-    const canDelete =currentUserId ===comment.userId && !timePassed
-    const createdAt= new Date(comment.createdAt).toLocaleDateString();
+    const canEdit =currentUserId===comment.user && !timePassed
+    const canDelete =currentUserId ===comment.user && !timePassed
+    const createdAt= new Date(comment.date).toLocaleDateString();
     const isReplying =
     activeComment &&
-    activeComment.id === comment.id &&
+    activeComment.id === comment._id &&
     activeComment.type === "replying";
     const isEditing =
     activeComment &&
-    activeComment.id === comment.id &&
+    activeComment.id === comment._id &&
     activeComment.type === "editing";
-    const replyId= parentId?parentId:comment.id
+    const replyId= parentId ? parentId : comment._id
+
   return ( 
     <div className={det.comment}>
         <div>
-            <img src="https://play-lh.googleusercontent.com/xlnwmXFvzc9Avfl1ppJVURc7f3WynHvlA749D1lPjT-_bxycZIj3mODkNV_GfIKOYJmG" alt="not found" className={det.ImgRedonda}/>
+            <img src={userID.img} alt="avatar" className={det.ImgRedonda}/>
         </div>
         <div className={det.comment_right_part}>
             <div className={det.comment_content}>
@@ -34,13 +37,13 @@ function ReviewCard({comment,replies,currentUserId,updateComment,deleteComment,a
             </div>
 
             {!isEditing && <div className={det.comment_text}>
-                {comment.body}
+                {comment.content}
             </div>}
             {isEditing && (
                 <Review 
                     submitLabel="Edit" 
-                    hasCancelButt initialText={comment.body}
-                    handleSubmit={(text)=>updateComment(text,comment.id)}
+                    hasCancelButt initialText={comment.content}
+                    handleSubmit={(text)=>updateComment(text,comment._id)}
                     handleCancel={()=>setActiveComment(null)}
                     />
             )
@@ -49,12 +52,12 @@ function ReviewCard({comment,replies,currentUserId,updateComment,deleteComment,a
             <div className={det.Comment_actions}>
                 {canReply && 
                 <div className={det.Comment_action}
-                     onClick={() =>setActiveComment({id:comment.id, type:"replying"})}>Reply</div>}
-                {canEdit && 
+                     onClick={() =>setActiveComment({id:comment._id, type:"replying"})}>Reply</div>}
+                {canEdit &&
                 <div className={det.Comment_action}
-                     onClick={() =>setActiveComment({id:comment.id,type:"editing"})}>Edit</div>}
+                     onClick={() =>setActiveComment({id:comment._id,type:"editing"})}>Edit</div>}
                 {canDelete && 
-                <div className={det.Comment_action} onClick={() =>deleteComment(comment.id)}>Remove</div>}
+                <div className={det.Comment_action} onClick={() =>deleteComment(comment._id)}>Remove</div>}
             </div>
             {isReplying && (<Review submitLabel="Reply" handleSubmit={(text) => addComment(text, replyId)}/>)}
             {replies.length>0 &&(
@@ -69,7 +72,7 @@ function ReviewCard({comment,replies,currentUserId,updateComment,deleteComment,a
                         activeComment={activeComment}
                         updateComment={updateComment}
                         setActiveComment={setActiveComment}
-                        parentId={comment.id}
+                        parentId={comment._id}
                         addComment={addComment}/>
                     ))}
                 </div>

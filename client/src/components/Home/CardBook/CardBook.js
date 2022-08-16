@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AddCart, addFavs, deleteCart, deleteFavs } from '../../../redux/features/data/dataSlice'
 import axios from 'axios'
-const {REACT_APP_API} = process.env
+const { REACT_APP_API } = process.env
 
 export default function CardBook({ id, name, authors, img, subtitle, language, price }) {
 
@@ -40,7 +40,7 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
             let idBook = id;
             let auxUser = JSON.parse(window.localStorage.getItem("user"))
             let idUser = auxUser.id
-            await axios.put(REACT_APP_API+ '/cart/delete', {
+            await axios.put(REACT_APP_API + '/cart/delete', {
                 idUser, idBook
             })
         } else {
@@ -64,11 +64,12 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
     return (
         <div className={style.Container}>
             <div className={style.Container__IMG}>
-                <Link to={`/${id}`}>
+                <Link to={`/book/${id}`}>
                     <img src={img} alt={name} />
                 </Link>
             </div>
             <div className={style.Container__Information}>
+                <h3 className={style.Container__Information__ContainerAuthorAndPrice_price}>{price}</h3>
                 <div className={style.Container__Information__Heart}>
                     {heart ?
                         <AiFillHeart onClick={() => RemoveToFav()} />
@@ -76,16 +77,17 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
                         <AiOutlineHeart onClick={() => addToFav()} />
                     }
                 </div>
-                <Link className={style.Container__Information_title} to={`/${id}`}>{name}</Link>
+                <Link className={style.Container__Information_title} to={`/book/${id}`}>{name}</Link>
                 <div className={style.Container__Information__ContainerAuthorAndPrice}>
-                    <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors}</p>
-                    <h3 className={style.Container__Information__ContainerAuthorAndPrice_price}>{price}</h3>
+                    <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors.toUpperCase()}</p>
                 </div>
-                {cart ?
+            </div>
+            <div className={style.Container__btn}>
+                {/* {cart ?
                     <button className={`${style.Container__Information_btn} ${style.Container__Information_btnTrue}`} onClick={() => RemoveToCart()}>Remove From Cart <RiShoppingCartLine /> </button>
-                    :
-                    <button className={`${style.Container__Information_btn} ${style.Container__Information_btnFalse}`} onClick={() => addToCart()}>Add To Cart <RiShoppingCartLine /> </button>
-                }
+                    : */}
+                <button className={`${style.Container__Information_btn} ${style.Container__Information_btnFalse}`} onClick={() => addToCart()}>Add To Cart <RiShoppingCartLine /> </button>
+                {/* } */}
             </div>
         </div>
     )

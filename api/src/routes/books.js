@@ -1,5 +1,6 @@
 const { Router } = require('express');
-const { getBooks, getBooksByName, getBooksById ,postBooks, updateBook, deleteBook} = require('../controllers/booksController');
+const { getBooks, getBooksByName, getBooksById ,postBooks, updateBook, deleteBook, PostReview, delistBook} = require('../controllers/booksController');
+
 const router = Router()
 
 
@@ -15,9 +16,11 @@ router.post("/",postBooks)
 
 router.put("/:id",updateBook)
 
+router.put("/delist/:id", delistBook)
+
 router.delete("/:id",deleteBook)
 
-
+router.post('/review', PostReview)
 
 
 module.exports = router
