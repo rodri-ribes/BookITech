@@ -22,8 +22,10 @@ export const dataSlice = createSlice({
         MinToMax: [],
         dashboardState: ['CRUD'],
         id: [''],
+        nameSearch:'',
+        loading: true,
+        error: false,
         dataUser: [],
-
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -35,8 +37,9 @@ export const dataSlice = createSlice({
         SearchTitle: (state, actions) => {
             return {
                 ...state,
-                book: actions.payload,
-                books: actions.payload,
+                book: actions.payload.data,
+                books: actions.payload.data,
+                nameSearch: actions.payload.name
             };
         },
         addCart: (state, actions) => {
@@ -171,6 +174,15 @@ export const dataSlice = createSlice({
         idForUpdate: (state, action) =>{
             state.id = action.payload
         },
+        setLoadingFalse: (state, action) =>{
+            state.loading = false
+        }, 
+        setLoadingTrue: (state, action) =>{
+            state.loading = true
+        },
+        setErrorTrue:(state, action)=>{
+        state.error = true
+        },
         dataUser: (state, actions) => {
         state.dataUser = actions.payload
         },       
@@ -198,9 +210,11 @@ export const {
     putBook,
     newBook,
     idForUpdate,
+    setLoadingFalse,
+    setLoadingTrue,
+    setErrorTrue,
     dataUser,
     updateUser,
-
 
 } = dataSlice.actions;
 
@@ -210,13 +224,13 @@ export default dataSlice.reducer;
 
 //Aca irian las actions, dejo una como modo de ejemplo
 
-export const getLibros = (setLoading, setError) => async (dispatch) => {
+export const getLibros = () => async (dispatch) => {
     try {
         const resp = await axios.get(REACT_APP_API + `/books`);
+        dispatch(setLoadingFalse());
         dispatch(addLibro(resp.data));
-        setLoading(false)
     } catch (error) {
-        setError(true);
+        dispatch(setErrorTrue());
     }
 };
 
@@ -226,11 +240,13 @@ export const getLibros = (setLoading, setError) => async (dispatch) => {
 // };
 export const getSearch = (name) => async (dispatch) => {
     try {
+        dispatch(setLoadingTrue());
         let buscar = await axios.get(
             //URL PARA BUSCAR
             REACT_APP_API +`/books/${name}`
         );
-        dispatch(SearchTitle(buscar.data));
+        dispatch(SearchTitle({data: buscar.data,name: name }));
+        dispatch(setLoadingFalse());
         // console.log(buscar.data);
     } catch (error) {
         alert('the books were not found');
@@ -264,7 +280,7 @@ export const FilTheme = (payload) => async (dispatch) => {
         }
         // console.log(buscar.data);
     } catch (error) {
-        alert('the books were not found');
+        // alert('the books were not found');
         console.log(error);
     }
     // dispatch(FAuthor(payload));

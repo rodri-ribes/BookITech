@@ -9,6 +9,8 @@ import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom"
+
 
 const SearchUI = styled("div")(({ theme }) => ({
     position: "relative",
@@ -57,7 +59,7 @@ export default function Search() {
     const [option, setOption] = useState([]);
     const [name, setName] = useState("");
     const books = useSelector((state) => state.data.allBooks);
-
+    let navigate = useNavigate()
     const dispatch = useDispatch();
     useEffect(() => {
         let titulo = books.map((e) => e.title);
@@ -65,29 +67,37 @@ export default function Search() {
         // let obj = titulo.concat(autor);
         setOption(titulo);
     }, [books]);
-    // function handleChange(e) {
-    //     if (name.length >= 2) {
-    //         setName(e.target.value);
-    //         setDisplay(true);
-    //         // setOption(books.map((e) => e.title));
-    //     }
-    //     // if (!name) {
-    //     setName(e.target.value);
-    //     if (name.length < 1) {
-    //         setDisplay(false);
-    //         // setOption([]);
-    //     }
-    // }
+
+
+    
+    function handleChange2(e) {
+        // setName('');
+        // setName(e.target.value);
+        dispatch(getSearch(e.target.value))
+        // if (!name) {
+        // setName(e.target.value);
+        // if (name.length < 1) {
+        //     setDisplay(false);
+        //     // setOption([]);
+        // }
+    }
+
+    function redirect(){
+        if (window.location.pathname !== '/') {
+            navigate('/')
+        }
+    }
 
     function handleChange(e) {
         if (name.length >= 3) {
-            setName(e.target.value);
+            // setName(e.target.value);
             dispatch(getSearch(name))
             setDisplay(true);
             // setOption(books.map((e) => e.title));
         }
+        console.log(window.location.pathname)
         // if (!name) {
-        setName(e.target.value);
+        // setName(e.target.value);
         dispatch(getSearch(name))
         if (name.length < 2) {
             setDisplay(false);
@@ -112,10 +122,11 @@ export default function Search() {
         setName(val);
         setDisplay(false);
     }
-    //
+    //redirect
+    // 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <form onSubmit={(e) => handleSubmit(e)}>
+            <form >
                 <SearchUI >
                     <SearchIconWrapper>
                         <IconButton aria-label="search" color="inherit">
@@ -125,9 +136,10 @@ export default function Search() {
                     <StyledInputBase
                         placeholder="Search…"
                         inputProps={{ "aria-label": "search" }}
-                        onChange={(e) => handleChange(e)}
+                        onChange={(e) => handleChange2(e)}
+                        onClick={redirect}
                         type="text"
-                        value={name}
+                        // value={name}
                         sx={{
                             flexGrow: 1,
                             display: { md: "flex", xs: "none" }

@@ -8,18 +8,23 @@ import Search from '../Search/Search';
 import Filters from '../Filters/Filters';
 import Loading from './Loading/Loading.jsx';
 import { Card404 } from '../404/Card404';
+import Noresults from './NoResults/Noresults';
 
 export default function Home() {
     let dispatch = useDispatch();
 
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(false)
+    // const [loading, setLoading] = useState(true)
+    // const [error, setError] = useState(false)
+
+
 
     useEffect(() => {
-        dispatch(getLibros(setLoading, setError));
+        dispatch(getLibros());
     }, [dispatch]);
 
     let books = useSelector((state) => state.data.books);
+    let loading = useSelector((state) => state.data.loading);
+    let error = useSelector((state) => state.data.error);
 
     //logica de paginado
 
@@ -47,6 +52,7 @@ export default function Home() {
                     <div className={style.Container__PanelCards}>
                         {error ? <Card404/> :
                             loading ? <Loading/> :
+                                (books.length === 0) ? <Noresults/> :
                                 books && books
                                     .slice(
                                         (pagina - 1) * porPagina,
