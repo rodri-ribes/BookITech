@@ -126,7 +126,7 @@ export default function Search() {
     // 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <form onSubmit={(e) => handleSubmit(e)}>
+            <form >
                 <SearchUI >
                     <SearchIconWrapper>
                         <IconButton aria-label="search" color="inherit">
