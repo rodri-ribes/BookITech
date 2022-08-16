@@ -21,7 +21,9 @@ export const dataSlice = createSlice({
         userID: [],
         MinToMax: [],
         dashboardState: ['CRUD'],
-        id: ['']
+        id: [''],
+        dataUser: [],
+
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -168,8 +170,10 @@ export const dataSlice = createSlice({
         },
         idForUpdate: (state, action) =>{
             state.id = action.payload
-        }
-       
+        },
+        dataUser: (state, actions) => {
+        state.dataUser = actions.payload
+        },       
     },
 });
 
@@ -193,7 +197,10 @@ export const {
     changeDashboardState,
     putBook,
     newBook,
-    idForUpdate
+    idForUpdate,
+    dataUser,
+    updateUser,
+
 
 } = dataSlice.actions;
 
@@ -275,6 +282,7 @@ export const ChangeRange = (payload) => async (dispatch) => {
 export const getUser = (data) => async (dispatch) => {
     dispatch(addUser(data));
 };
+
 
 export const getUserID=(id) => async (dispatch)=>{
     try {
@@ -360,5 +368,25 @@ export const createBook = (payload) => async (dispatch) =>{
 };
 export const setId = (payload) => async (dispatch) =>{
    dispatch(idForUpdate(payload))
+}
+
+export const getDataUser = (id) => async (dispatch) => {
+    try {
+        const res = await axios.get(REACT_APP_API + `/user/${id}`);
+        console.log(res.data);
+        dispatch(dataUser(res.data));
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const updateUserdata = (id, payload) => async (dispatch) => {
+    try {
+        console.log(payload);
+        const res = await axios.put(REACT_APP_API + `/user/${id}`, payload)
+        dispatch(dataUser(res.data))
+    } catch (error) {
+         console.log(error);
+    }
 }
 

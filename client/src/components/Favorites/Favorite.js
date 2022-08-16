@@ -10,7 +10,6 @@ function Favorite() {
 
     let Favs = useSelector(state => state.data.Favs)
 
-    console.log(Favs)
     const [pagina, setPagina] = useState(1);
 
     const porPagina = 10;
