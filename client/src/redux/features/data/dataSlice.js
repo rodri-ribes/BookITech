@@ -21,7 +21,8 @@ export const dataSlice = createSlice({
         userID: [],
         MinToMax: [],
         dashboardState: ['CRUD'],
-        id: ['']
+        id: [''],
+        nameSearch:''
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -33,8 +34,9 @@ export const dataSlice = createSlice({
         SearchTitle: (state, actions) => {
             return {
                 ...state,
-                book: actions.payload,
-                books: actions.payload,
+                book: actions.payload.data,
+                books: actions.payload.data,
+                nameSearch: actions.payload.name
             };
         },
         addCart: (state, actions) => {
@@ -223,7 +225,7 @@ export const getSearch = (name) => async (dispatch) => {
             //URL PARA BUSCAR
             REACT_APP_API +`/books/${name}`
         );
-        dispatch(SearchTitle(buscar.data));
+        dispatch(SearchTitle({data: buscar.data,name: name }));
         // console.log(buscar.data);
     } catch (error) {
         alert('the books were not found');
@@ -257,7 +259,7 @@ export const FilTheme = (payload) => async (dispatch) => {
         }
         // console.log(buscar.data);
     } catch (error) {
-        alert('the books were not found');
+        // alert('the books were not found');
         console.log(error);
     }
     // dispatch(FAuthor(payload));
