@@ -25,28 +25,33 @@ const [prompt, setPrompt] = React.useState(false)
 const books = useSelector((state) => state.data.books)
 const id = useSelector(state => state.data.id)
 const [isDelisted, setIsDelisted] = useState(false)
+const [idState, setIdState] = useState(id)
+
+useEffect(()=>{
+  dispatch(setId(''))  
+  setPrompt(true)
+}, [dispatch])
 
 useEffect(()=> {
-  if(id)setPrompt(true)
-  if(!id)setPrompt(false)
+  if(!id)setPrompt(true)
+  if(id)setPrompt(false)
+  setIdState(id)
 }, [id])
 
 function handleOnClick(e){
   e.preventDefault()
   setPrompt(!prompt)
-  if(id)dispatch(setId(''))
-
 }
 
     return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth='md'>
-        <Box sx={{ bgcolor: '#cfe8fc', height: 'auto'}}>
-          {!prompt ? <FormInput id={id} prompt={setPrompt}/> :
+      <Container maxWidth='md' sx={{position: 'relative'}} >
+        <Box sx={{ bgcolor: '#0a1929', height: 'auto', width: '70vw'}}>
+          {!prompt ? <FormInput id={idState} prompt={setPrompt} /> :
           <>
             <Input delisted={isDelisted} setDelisted={setIsDelisted} />
-            <CardsContainer setDelisted={setIsDelisted} books={books.slice(0,9)}/>
+            <CardsContainer  setDelisted={setIsDelisted} books={books.slice(0,9)}/>
             </>}
         <Button  variant="outlined" onClick={e =>handleOnClick(e)}>{!prompt ? <Typography variant='h6'>Go back</Typography> : <AddIcon fontSize='large'/>}</Button>
     

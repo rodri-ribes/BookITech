@@ -11,7 +11,7 @@ export function CardsContainer(props){
     const {books} = props
     return (<>
         { books ? books.map(e=> <Box sx={{display:'flex'}}>
-            <BookCard delisted={setDelisted} title={capitalize(e.title)} id={e._id}></BookCard>
+            <BookCard sx={{display:'inline-block', backgroundColor:'#FFFFFF', width: '100%'}} delisted={setDelisted} title={capitalize(e.title)} id={e.isbn13}></BookCard>
         </Box>) 
         : <h4>No books found</h4>}
     </>
