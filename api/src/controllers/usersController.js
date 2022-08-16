@@ -153,6 +153,7 @@ async function createUser(req, res) {
                 ban: newUser.ban,
                 img: newUser.img,
                 phone: newUser.phone,
+                address: newUser.address,
                 // rrss: newUser.rrss,
                 option: newUser.option,
                 rol: newUser.rol,
@@ -174,20 +175,20 @@ async function GetUser(req, res) {
     }
 
 }
-async function PutUser(req, res) {
-    try {
-        const { fullName, img, phone } = req.body
-        const { id } = req.params
 
-        if (fullName && img && phone) {
-
-            let upDate = { fullName, img, phone }
-            await User.findByIdAndUpdate(id, upDate)
-            return res.status(200).send('Actualizado')
-        }
-        return res.status(404).send('falta el body')
-
-    } catch (err) {
+async function PutUser (req,res){
+    try{
+        const {fullName, img, phone, address } = req.body
+        const{id}= req.params
+        
+            if(fullName || img || phone || address){
+                
+                let upDate = {fullName, img, phone, address}
+                 await User.findByIdAndUpdate(id,upDate)
+                return res.status(200).send('Actualizado')
+            }
+           return  res.status(404).send('falta el body')        
+    } catch(err){
         res.status(404).send('Fallo en el PUT')
     }
 }

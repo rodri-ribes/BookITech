@@ -42,14 +42,18 @@
 .Container__Content__Info__Img{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 30%;
     height: 400px;
     /* outline: 1px solid purple; */
 }
 
-.Container__Content__Info__Img_img{
+.Container__Content__Info_Img{
+    margin-bottom: 1rem;
+}
+
+.Container__Content__Info__Img_button{
     align-self: center;
     padding: 5px 10px;
     border: none;
@@ -58,7 +62,6 @@
     font-weight: 600;
     color: white;
     background-color: green;
-    margin-top: -20px;
 }
 
 .Container__Content__Info__details{
