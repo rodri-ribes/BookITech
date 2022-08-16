@@ -23,7 +23,6 @@ import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import AdbIcon from "@mui/icons-material/Adb";
 import SearchIcon from "@mui/icons-material/Search";
 
-
 function NavBar({ user, setUser }) {
     const [click, setClick] = useState({});
 
@@ -48,7 +47,8 @@ function NavBar({ user, setUser }) {
         }
     };
 
-    const pagesLog = ["Favorites", "Profile", "SignIn", "SignUp"];
+    const pagesLog = ["Favorites", "Profile"];
+    const pagesNoLog = ["SignIn", "SignUp"];
 
     const settings = ["Profile", "Logout"];
 
@@ -72,12 +72,12 @@ function NavBar({ user, setUser }) {
 
     const textLink = {
         textDecoration: "none",
-        color: "#DADADA"
-    }
+        color: "#DADADA",
+    };
     const textLink2 = {
         textDecoration: "none",
-        color: "#0a1929"
-    }
+        color: "#0a1929",
+    };
 
     return (
         <>
@@ -105,7 +105,7 @@ function NavBar({ user, setUser }) {
                                     textDecoration: "none",
                                 }}
                             >
-                                LOGO/BookITech
+                                BookITech
                             </Typography>
                         </Link>
                         <Box
@@ -145,36 +145,51 @@ function NavBar({ user, setUser }) {
                                     },
                                 }}
                             >
-                                {pagesLog.map((page) => {
-                                    if (userr || window.localStorage.getItem("user")) {
-                                        if (page !== "SignUp" && page !== "SignIn") {
+                                {pagesNoLog.map((page) => {
+                                    if (
+                                        userr ||
+                                        window.localStorage.getItem("user")
+                                    ) {
+                                        if (
+                                            page !== "SignUp" &&
+                                            page !== "SignIn"
+                                        ) {
                                             return (
                                                 <MenuItem
                                                     key={page}
                                                     onClick={handleCloseNavMenu}
                                                 >
-                                                    <Link to={`/${page}`} style={textLink}>
+                                                    <Link
+                                                        to={`/${page}`}
+                                                        style={textLink}
+                                                    >
                                                         <Typography textAlign="center">
                                                             {page}
                                                         </Typography>
                                                     </Link>
                                                 </MenuItem>
-                                            )
+                                            );
                                         }
                                     } else {
-                                        if (page !== "Favorites" && page !== "Profile") {
+                                        if (
+                                            page !== "Favorites" &&
+                                            page !== "Profile"
+                                        ) {
                                             return (
                                                 <MenuItem
                                                     key={page}
                                                     onClick={handleCloseNavMenu}
                                                 >
-                                                    <Link to={`/${page}`} style={textLink}>
+                                                    <Link
+                                                        to={`/${page}`}
+                                                        style={textLink2}
+                                                    >
                                                         <Typography textAlign="center">
                                                             {page}
                                                         </Typography>
                                                     </Link>
                                                 </MenuItem>
-                                            )
+                                            );
                                         }
                                     }
                                 })}
@@ -202,7 +217,7 @@ function NavBar({ user, setUser }) {
                                     textDecoration: "none",
                                 }}
                             >
-                                LOGO
+                                BookITech
                             </Typography>
                         </Link>
                         <Box
@@ -212,8 +227,14 @@ function NavBar({ user, setUser }) {
                             }}
                         >
                             {pagesLog.map((page) => {
-                                if (userr || window.localStorage.getItem("user")) {
-                                    if (page !== "SignUp" && page !== "SignIn") {
+                                if (
+                                    userr ||
+                                    window.localStorage.getItem("user")
+                                ) {
+                                    if (
+                                        page !== "SignUp" &&
+                                        page !== "SignIn"
+                                    ) {
                                         return (
                                             <Button
                                                 key={page}
@@ -224,14 +245,20 @@ function NavBar({ user, setUser }) {
                                                     display: "block",
                                                 }}
                                             >
-                                                <Link to={`/${page}`} style={textLink}>
+                                                <Link
+                                                    to={`/${page}`}
+                                                    style={textLink}
+                                                >
                                                     {page}
                                                 </Link>
                                             </Button>
-                                        )
+                                        );
                                     }
                                 } else {
-                                    if (page !== "Favorites" && page !== "Profile") {
+                                    if (
+                                        page !== "Favorites" &&
+                                        page !== "Profile"
+                                    ) {
                                         return (
                                             <Button
                                                 key={page}
@@ -242,78 +269,137 @@ function NavBar({ user, setUser }) {
                                                     display: "block",
                                                 }}
                                             >
-                                                <Link to={`/${page}`} style={textLink}>
+                                                <Link
+                                                    to={`/${page}`}
+                                                    style={textLink}
+                                                >
                                                     {page}
                                                 </Link>
                                             </Button>
-                                        )
+                                        );
                                     }
                                 }
                             })}
                         </Box>
                         <Search />
                         <CartShopping />
-                        {
-                            userr || window.localStorage.getItem("user") ?
+                        {userr || window.localStorage.getItem("user") ? (
                             <>
-                            <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="Open settings">
-                                <IconButton
-                                    onClick={handleOpenUserMenu}
-                                    sx={{ p: 0 }}
-                                >
-                                    <Avatar
-                                        alt="Avatar"
-                                        src="https://getavataaars.com/?avatarStyle=Circle&clotheType=CollarSweater&eyeType=Hearts&eyebrowType=SadConcerned&facialHairType=MoustacheFancy&mouthType=Vomit&skinColor=Pale&topType=NoHair"
-                                    />
-                                </IconButton>
-                            </Tooltip>
-                            <Menu
-                                sx={{ mt: "45px" }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                            >
-                                {/* {settings.map((setting) => ( */}
-                                    <MenuItem
-                                        // key={setting}
-                                        onClick={handleCloseUserMenu}
+                                <Box sx={{ flexGrow: 0 }}>
+                                    <Tooltip title="Open settings">
+                                        <IconButton
+                                            onClick={handleOpenUserMenu}
+                                            sx={{ p: 0 }}
+                                        >
+                                            <Avatar
+                                                alt="Avatar"
+                                                src="https://getavataaars.com/?avatarStyle=Circle&clotheType=CollarSweater&eyeType=Hearts&eyebrowType=SadConcerned&facialHairType=MoustacheFancy&mouthType=Vomit&skinColor=Pale&topType=NoHair"
+                                            />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Menu
+                                        sx={{ mt: "45px" }}
+                                        id="menu-appbar"
+                                        anchorEl={anchorElUser}
+                                        anchorOrigin={{
+                                            vertical: "top",
+                                            horizontal: "right",
+                                        }}
+                                        keepMounted
+                                        transformOrigin={{
+                                            vertical: "top",
+                                            horizontal: "right",
+                                        }}
+                                        open={Boolean(anchorElUser)}
+                                        onClose={handleCloseUserMenu}
                                     >
-                                    <Link to="/profile" style={textLink2}>
-                                    <Typography textAlign="center">
-                                            Profile
-                                        </Typography>
-                                    </Link>
-                                    </MenuItem>
-                                    <MenuItem
-                                    onClick={handleCloseUserMenu}
-                                    >
-                                    <Link to="/" style={textLink2} onClick={() => handleLogout()}>
-                                        <Typography textAlign="center">
-                                            Logout
-                                        </Typography>
-                                    </Link>
-                                    </MenuItem>
-                                {/* ))} */}
-                            </Menu>
-                        </Box>
+                                        {/* {settings.map((setting) => ( */}
+                                        <MenuItem
+                                            // key={setting}
+                                            onClick={handleCloseUserMenu}
+                                        >
+                                            <Link
+                                                to="/profile"
+                                                style={textLink2}
+                                            >
+                                                <Typography textAlign="center">
+                                                    Profile
+                                                </Typography>
+                                            </Link>
+                                        </MenuItem>
+                                        <MenuItem onClick={handleCloseUserMenu}>
+                                            <Link
+                                                to="/"
+                                                style={textLink2}
+                                                onClick={() => handleLogout()}
+                                            >
+                                                <Typography textAlign="center">
+                                                    Logout
+                                                </Typography>
+                                            </Link>
+                                        </MenuItem>
+                                        {/* ))} */}
+                                    </Menu>
+                                </Box>
                             </>
-                            :
+                        ) : (
                             <>
-                                <h1> </h1>
+                                {pagesNoLog.map((page) => {
+                                    if (
+                                        userr ||
+                                        window.localStorage.getItem("user")
+                                    ) {
+                                        if (
+                                            page !== "SignUp" &&
+                                            page !== "SignIn"
+                                        ) {
+                                            return (
+                                                <MenuItem
+                                                    key={page}
+                                                    onClick={handleCloseNavMenu}
+                                                >
+                                                    <Link
+                                                        to={`/${page}`}
+                                                        style={textLink}
+                                                    >
+                                                        <Typography textAlign="center">
+                                                            {page}
+                                                        </Typography>
+                                                    </Link>
+                                                </MenuItem>
+                                            );
+                                        }
+                                    } else {
+                                        if (
+                                            page !== "Favorites" &&
+                                            page !== "Profile"
+                                        ) {
+                                            return (
+                                                <MenuItem
+                                                    key={page}
+                                                    onClick={handleCloseNavMenu}
+                                                    sx={{
+                                                        display: {
+                                                            xs: "none",
+                                                            md: "flex",
+                                                        },
+                                                    }}
+                                                >
+                                                    <Link
+                                                        to={`/${page}`}
+                                                        style={textLink}
+                                                    >
+                                                        <Typography textAlign="center">
+                                                            {page}
+                                                        </Typography>
+                                                    </Link>
+                                                </MenuItem>
+                                            );
+                                        }
+                                    }
+                                })}
                             </>
-                        }
-                        
+                        )}
                     </Toolbar>
                 </Container>
             </AppBar>

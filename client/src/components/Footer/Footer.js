@@ -7,7 +7,7 @@ function Footer() {
             <footer className={style.FooterContainer}>
                 <div className={style.Container}>
                     <div className={style.Terms}>
-                        <p>&copy;{new Date().getFullYear()} PF-LIBROS</p>
+                        <p>&copy;{new Date().getFullYear()} BookITech</p>
                     </div>
                     <div className={style.Social}>
                         <div>

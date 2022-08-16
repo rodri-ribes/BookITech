@@ -4,15 +4,16 @@ class PaymentService {
     async createPayment(req, res) {
         const url = "https://api.mercadopago.com/checkout/preferences";
         console.log("lo que llega por req", req.body.items)
+
         const body = {
             // payer: {
             //     email: "test_user_70262691@testuser.com"
             // },
             items: req.body.items,
             back_urls: {
-                failure: "http://localhost:3000/failure",
-                pending: "http://localhost:3000/pending",
-                success: "http://localhost:3000/success"
+                failure: "https://bookitech.netlify.app/failure",
+                pending: "https://bookitech.netlify.app/pending",
+                success: "https://bookitech.netlify.app/success"
             },
             auto_return: "approved"
         };

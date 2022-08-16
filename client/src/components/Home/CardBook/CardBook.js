@@ -64,8 +64,8 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
     return (
         <div className={style.Container}>
             <div className={style.Container__IMG}>
-                <Link to={`/book/${id}`}>
-                    <img src={img} alt={name} />
+                <Link to={`/book/${id}`} className={style.Container__IMG__Link}>
+                    <img src={img} alt={name} className={style.Container__IMG_IMG} />
                 </Link>
             </div>
             <div className={style.Container__Information}>
