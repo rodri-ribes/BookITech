@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import CardBook from "../Home/CardBook/CardBook";
-import { useNavigate } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import {
     Avatar,
@@ -27,88 +25,53 @@ import { motion } from "framer-motion";
 import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
 import styles from "./Profile.module.css";
-import { getDataUser, updateUserdata } from "../../redux/features/data/dataSlice";
-import axios from "axios"
+import { updateUserdata } from "../../redux/features/data/dataSlice";
+import axios from "axios";
 import Spinner from "../auxiliar/Spinner/Spinner";
-const { REACT_APP_API } = process.env
-
+const { REACT_APP_API } = process.env;
 
 function Profile() {
     let dispatch = useDispatch();
-    // let User = useSelector((state) => state.data.dataUser);
     let Favs = useSelector((state) => state.data.Favs);
     var favLength = Favs.length;
     var leftConstraints = favLength * -100;
     const [expanded, setExpanded] = useState(false);
 
-    const [User, setUser] = useState(false)
+    const [User, setUser] = useState(false);
 
     const [updateData, setUpdateData] = useState();
     const [modalUpdate, setModalUpdate] = useState(false);
     const [fieldSelected, setFieldSelected] = useState({
         fullName: "",
+        email: "",
         img: "",
+        realName: "",
+        lastname: "",
         phone: "",
         address: "",
     });
 
     let userId = JSON.parse(window.localStorage.getItem("user"));
     console.log(userId);
-    // useEffect(() => {
-    //     const getDataUser = async (id) => {
-    //         try {
-    //             axios.get(REACT_APP_API + `/user/${id}`)
-    //                 // console.log(res.data);
-    //                 // dispatch(dataUser(res.data));
-    //                 .then(res => setUser({ ...res.data }))
-    //             //    setUser({...res.data})
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     };
-    //     getDataUser(userId.id)
-    //     // dispatch(getDataUser(userId.id));
-    //     // algo()
-    //     // setUpdateData(User);
-    // }, []);
 
     const getdata = async () => {
         let userId = JSON.parse(window.localStorage.getItem("user"));
         try {
-            let data = await axios.get(REACT_APP_API + `/user/${userId.id}`)
-            setUser(data.data)
-            // getDataUser(data.data)
+            let data = await axios.get(REACT_APP_API + `/user/${userId.id}`);
+            setUser(data.data);
         } catch (error) {
             console.log(error);
         }
-
-    }
+    };
 
     useEffect(() => {
-        getdata()
-    }, [])
+        getdata();
+    });
 
+    const handleChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
 
-
-
-    //  const updateUserdata = (id, payload) => async (dispatch) => {
-    //     try {
-    //         console.log(payload);
-    //         const res = await axios.put(REACT_APP_API + `/user/${id}`, payload)
-    //         dispatch(dataUser(res.data))
-    //     } catch (error) {
-    //          console.log(error);
-    //     }
-    // }
-
-
-
-
-
-
-    const algo = async function () {
-        await dispatch(getDataUser(userId.id))
-    }
 
     // const rating = User.rating
     // const ratingAvg = function(rating) {
@@ -127,9 +90,6 @@ function Profile() {
     //   height: '1px',
     // };
 
-    const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-    };
 
     // const Img = styled('img')({
     //   margin: 'auto',
@@ -146,26 +106,30 @@ function Profile() {
         }));
     };
 
-    // var infoUpdated = updateData
-    // const newData = infoUpdated.map(data => (
-    //   data.fullname = selectField.fullname
-    //   data.email = selectField.email
-    // ))
+    const cleaner = () => {
+        setFieldSelected("");
+    };
+
     const pushNewData = () => {
         setUpdateData((prevState) => ({
             ...prevState,
             fullName: fieldSelected.fullName,
             email: fieldSelected.email,
+            img: fieldSelected.img,
+            realName: fieldSelected.realName,
+            lastname: fieldSelected.lastname,
+            phone: fieldSelected.phone,
+            address: fieldSelected.address,
         }));
         console.log(updateData);
         openCloseModal();
         dispatch(updateUserdata(User._id, fieldSelected));
-        // console.log(fieldSelected);
     };
     console.log(User.id);
 
     const openCloseModal = () => {
         setModalUpdate(!modalUpdate);
+        cleaner();
     };
 
     const modalStyles = {
@@ -180,6 +144,7 @@ function Profile() {
         left: "50%",
         transform: "translate(-50%, -50%)",
     };
+    console.log(User.img);
 
     const iconosStyles = {
         cursor: "pointer",
@@ -201,10 +166,31 @@ function Profile() {
             />
             <TextField
                 sx={inputMaterialStyles}
-                label="img"
+                label="email"
+                name="email"
+                onChange={(e) => handleChange2(e)}
+                value={fieldSelected && fieldSelected.email}
+            />
+            <TextField
+                sx={inputMaterialStyles}
+                label="avatar"
                 name="img"
                 onChange={(e) => handleChange2(e)}
                 value={fieldSelected && fieldSelected.img}
+            />
+            <TextField
+                sx={inputMaterialStyles}
+                label="Name"
+                name="realName"
+                onChange={(e) => handleChange2(e)}
+                value={fieldSelected && fieldSelected.realName}
+            />
+            <TextField
+                sx={inputMaterialStyles}
+                label="Lastname"
+                name="lastname"
+                onChange={(e) => handleChange2(e)}
+                value={fieldSelected && fieldSelected.lastname}
             />
             <TextField
                 sx={inputMaterialStyles}
@@ -233,27 +219,32 @@ function Profile() {
     );
     // if (!User.length) return
     return (
-
         <div className={styles.cont}>
             <CssBaseline />
-            {User ?
-
+            {User ? (
                 <Container maxWidth="xl">
                     <Grid container spacing={8}>
                         <Grid item>
-                            <ButtonBase>
-                                <Avatar
-                                    alt="avatar"
-                                    src={
-                                        User.img ||
-                                        "https://avataaars.io/?avatarStyle=Circle&topType=Eyepatch&facialHairType=BeardMagestic&clotheType=BlazerShirt&eyeType=WinkWacky&eyebrowType=RaisedExcitedNatural&mouthType=Serious&skinColor=Tanned"
-                                    }
-                                    sx={{ width: 250, height: 250 }}
-                                />
-                            </ButtonBase>
+                            <br /> <br />
+                            {/* <ButtonBase> */}
+                            <Avatar
+                                alt="avatar"
+                                src={
+                                    User.img ||
+                                    "https://avataaars.io/?avatarStyle=Circle&topType=Eyepatch&facialHairType=BeardMagestic&clotheType=BlazerShirt&eyeType=WinkWacky&eyebrowType=RaisedExcitedNatural&mouthType=Serious&skinColor=Tanned"
+                                }
+                                sx={{ width: 250, height: 250 }}
+                            />
+                            {/* </ButtonBase> */}
                         </Grid>
-                        <Grid item xs={12} sm container>
-                            <Grid item xs container direction="column" spacing={2}>
+                        <Grid item xs={8} sm container>
+                            <Grid
+                                item
+                                xs
+                                container
+                                direction="column"
+                                spacing={2}
+                            >
                                 <Grid item xs>
                                     <br />
 
@@ -270,7 +261,9 @@ function Profile() {
                                                         {User.fullName}
                                                     </TableCell>
                                                     <TableCell
-                                                        sx={{ color: "#DADADA" }}
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
                                                     >
                                                         <EditIcon
                                                             sx={iconosStyles}
@@ -284,118 +277,173 @@ function Profile() {
                                             <TableBody>
                                                 <TableRow key={User.id}>
                                                     <TableCell
-                                                        sx={{ color: "#DADADA" }}
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
                                                     >
-                                                        {User.email}
+                                                        <h2>{User.email}</h2>
                                                     </TableCell>
                                                     <TableCell
-                                                        sx={{ color: "#DADADA" }}
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
                                                     >
-                                                        <EditIcon
+                                                        {/* <EditIcon
                                                             sx={iconosStyles}
-                                                        />
+                                                        /> */}
                                                     </TableCell>
                                                 </TableRow>
                                             </TableBody>
                                             <TableBody>
                                                 <TableRow key={User.id}>
                                                     <TableCell
-                                                        sx={{ color: "#DADADA" }}
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
                                                     >
-                                                        {User.name
-                                                            ? User.name
-                                                            : "Name"}
+                                                        {User.realName ? (
+                                                            <h2>
+                                                                {User.realName}
+                                                            </h2>
+                                                        ) : (
+                                                            <h2>"Name"</h2>
+                                                        )}
                                                     </TableCell>
                                                     <TableCell
-                                                        sx={{ color: "#DADADA" }}
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
                                                     >
-                                                        <EditIcon
+                                                        {/* <EditIcon
                                                             sx={iconosStyles}
-                                                        />
+                                                        /> */}
                                                     </TableCell>
                                                 </TableRow>
                                             </TableBody>
                                             <TableBody>
                                                 <TableRow key={User.id}>
                                                     <TableCell
-                                                        sx={{ color: "#DADADA" }}
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
                                                     >
-                                                        {User.lastname
-                                                            ? User.lastname
-                                                            : "Lastname"}
+                                                        {User.lastname ? (
+                                                            <h2>
+                                                                {User.lastname}
+                                                            </h2>
+                                                        ) : (
+                                                            <h2>"Lastname"</h2>
+                                                        )}
                                                     </TableCell>
                                                     <TableCell
-                                                        sx={{ color: "#DADADA" }}
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
                                                     >
-                                                        <EditIcon
+                                                        {/* <EditIcon
                                                             sx={iconosStyles}
-                                                        />
+                                                        /> */}
                                                     </TableCell>
                                                 </TableRow>
                                             </TableBody>
                                             <TableBody>
                                                 <TableRow key={User.id}>
                                                     <TableCell
-                                                        sx={{ color: "#DADADA" }}
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
                                                     >
-                                                        {User.phone
-                                                            ? User.phone
-                                                            : "Phone"}
+                                                        {User.phone ? (
+                                                            <h2>
+                                                                {User.phone}
+                                                            </h2>
+                                                        ) : (
+                                                            <h2>"Phone"</h2>
+                                                        )}
                                                     </TableCell>
                                                     <TableCell
-                                                        sx={{ color: "#DADADA" }}
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
                                                     >
-                                                        <EditIcon
+                                                        {/* <EditIcon
                                                             sx={iconosStyles}
-                                                        />
+                                                        /> */}
                                                     </TableCell>
                                                 </TableRow>
                                             </TableBody>
                                             <TableBody>
                                                 <TableRow key={User.id}>
                                                     <TableCell
-                                                        sx={{ color: "#DADADA" }}
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
                                                     >
-                                                        {User.address
-                                                            ? User.address
-                                                            : "Address"}
+                                                        {User.address ? (
+                                                            <h2>
+                                                                {User.address}
+                                                            </h2>
+                                                        ) : (
+                                                            <h2>"Address"</h2>
+                                                        )}
                                                     </TableCell>
                                                     <TableCell
-                                                        sx={{ color: "#DADADA" }}
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
                                                     >
-                                                        <EditIcon
+                                                        {/* <EditIcon
                                                             sx={iconosStyles}
-                                                        />
+                                                        /> */}
                                                     </TableCell>
                                                 </TableRow>
                                             </TableBody>
                                         </TableContainer>
                                     </Stack>
+                                </Grid>
+                            </Grid>
+                        </Grid>
 
-                                    <br />
-                                    <Stack>
-                                        <Typography
-                                            gutterBottom
-                                            variant="subtitle1"
-                                            component="div"
-                                        >
-                                            Rating (4.5 avg)
-                                        </Typography>
-                                        <Typography
-                                            gutterBottom
-                                            variant="subtitle1"
-                                            component="div"
-                                        >
-                                            {User.comments?.length} reviews
-                                        </Typography>
-                                        <Typography
+                        <Grid item xs={12} sm container>
+                            <Grid
+                                item
+                                xs
+                                container
+                                direction="column"
+                                spacing={2}
+                            >
+                                <Grid item xs>
+                                    <br /> <br />
+                                    <Typography
+                                        sx={{
+                                            color: "#DADADA",
+                                            fontSize: "2rem",
+                                        }}
+                                        gutterBottom
+                                        variant="subtitle1"
+                                        component="div"
+                                    >
+                                        Rating (0 avg)
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            color: "#DADADA",
+                                            fontSize: "2rem",
+                                        }}
+                                        gutterBottom
+                                        variant="subtitle1"
+                                        component="div"
+                                    >
+                                        {User.comments?.length} reviews
+                                    </Typography>
+                                    {/* <Typography
                                             gutterBottom
                                             variant="subtitle1"
                                             component="div"
                                         >
                                             {User.email.length} favorites
-                                        </Typography>
-                                        <Typography
+                                        </Typography> */}
+                                    {/* <Typography
                                             gutterBottom
                                             variant="subtitle1"
                                             component="div"
@@ -404,18 +452,17 @@ function Profile() {
                                         </Typography>
                                         <Typography variant="body2" gutterBottom>
                                             Joined in {User.email.length}
-                                        </Typography>
-                                    </Stack>
-
-                                    <Modal
-                                        open={modalUpdate}
-                                    // onClose={openCloseModal()}
-                                    >
-                                        {bodyUpdate}
-                                    </Modal>
+                                        </Typography> */}
                                 </Grid>
                             </Grid>
                         </Grid>
+
+                        <Modal
+                            open={modalUpdate}
+                            // onClose={openCloseModal()}
+                        >
+                            {bodyUpdate}
+                        </Modal>
                     </Grid>
                     <br /> <br />
                     <Accordion
@@ -432,7 +479,7 @@ function Profile() {
                             }}
                         >
                             <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                                Shopping history
+                                <h2>Shopping history</h2>
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails
@@ -441,12 +488,7 @@ function Profile() {
                                 color: "#DADADA",
                             }}
                         >
-                            <Typography>
-                                Shopping data shopping data data shopping data
-                                shopping data shopping data shopping data shopping
-                                data shopping data shopping data shopping data
-                                shopping data shopping data
-                            </Typography>
+                            <Typography>Nothing here</Typography>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion
@@ -463,7 +505,7 @@ function Profile() {
                             }}
                         >
                             <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                                Reviews
+                                <h2>Reviews</h2>
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails
@@ -473,8 +515,8 @@ function Profile() {
                             }}
                         >
                             <Typography>
-                                Reviews reviews reviews reviews reviews reviews
-                                reviews
+                                Dare to write your review about the books you
+                                have read!
                             </Typography>
                         </AccordionDetails>
                     </Accordion>
@@ -492,7 +534,7 @@ function Profile() {
                             }}
                         >
                             <Typography sx={{ width: "33%", flexShrink: 0 }}>
-                                Favorites
+                                <h2>Favorites</h2>
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails
@@ -514,7 +556,9 @@ function Profile() {
                                         {Favs.map((l, i) => {
                                             return (
                                                 <motion.div
-                                                    className={styles.carouselItem}
+                                                    className={
+                                                        styles.carouselItem
+                                                    }
                                                 >
                                                     <CardBook
                                                         name={l.title}
@@ -531,7 +575,7 @@ function Profile() {
                             </Typography>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion
+                    {/* <Accordion
                         expanded={expanded === "panel4"}
                         onChange={handleChange("panel4")}
                     >
@@ -583,11 +627,11 @@ function Profile() {
                                 </motion.div>
                             </Typography>
                         </AccordionDetails>
-                    </Accordion>
+                    </Accordion> */}
                 </Container>
-                :
+            ) : (
                 <Spinner />
-            }
+            )}
         </div>
     );
 }

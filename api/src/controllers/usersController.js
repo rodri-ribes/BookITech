@@ -149,6 +149,8 @@ async function createUser(req, res) {
                 id: newUser.id,
                 name: newUser.fullName,
                 email: newUser.email,
+                realName: newUser.realName,
+                lastname: newUser.lastname,
                 token: token,
                 ban: newUser.ban,
                 img: newUser.img,
@@ -178,12 +180,12 @@ async function GetUser(req, res) {
 
 async function PutUser (req,res){
     try{
-        const {fullName, img, phone, address } = req.body
+        const {fullName, img, lastname, realName, email, phone, address } = req.body
         const{id}= req.params
         
-            if(fullName || img || phone || address){
+            if(fullName || img || phone || realName || lastname || email || address){
                 
-                let upDate = {fullName, img, phone, address}
+                let upDate = {fullName, img, email, realName, lastname, phone, address}
                  await User.findByIdAndUpdate(id,upDate)
                 return res.status(200).send('Actualizado')
             }

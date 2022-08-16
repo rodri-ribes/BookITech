@@ -7,6 +7,17 @@ import {
     ChangeRange,
 } from '../../redux/features/data/dataSlice';
 import style from './Filters.module.css';
+
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { Container, Stack } from '@mui/system';
+import { Grid } from '@mui/material';
+
 // usar  FilterAuthor , FilterGenre, FilterFormat , Rango de Precio
 export default function Filters({ setPagina, setOrden }) {
     const dispatch = useDispatch();
@@ -97,54 +108,150 @@ export default function Filters({ setPagina, setOrden }) {
 
     return (
         <div>
-            <div>
+        <Container>
+            {/* <div>
                 <table>
-                    <tbody>
-                        <tr>
-                            <th className={style.label}>Sort A-Z</th>
-                            <th className={style.label}>Subject</th>
-                            <th className={style.label}>
-                                Price
+                    <tbody> */}
+                        {/* <tr> */}
+                            {/* <th >Subject</th> */}
+                            <th >
+                                {/* Price */}
                                 {(errors.max || errors.min) && (
                                     <p className={style.error}>
                                         {errors.max || errors.min}
                                     </p>
                                 )}
                             </th>
-                            <th className={style.label}>Sort $</th>
-                        </tr>
-                        <tr>
-                            <th className={style.th}>
-                                <select
-                                    className={style.AZ}
-                                    onChange={(e) => handleOrden(e)}
-                                >
-                                    <option value="all">Sort</option>
-                                    <option value="A-Z">A-Z</option>
-                                    <option value="Z-A">Z-A</option>
-                                </select>
-                            </th>
-                            <th className={style.th}>
-                                <select
+                            {/* <th>Sort $</th> */}
+                        {/* </tr> */}
+                        <Grid display="flex" width="100%">
+                            {/* <th > */}
+                            <Box sx={{
+                                        '& > :not(style)': { m: 1, width: '17ch' },
+                                    }}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="sort">Sort</InputLabel>
+                                    <Select
+                                        sx={{backgroundColor: "#DADADA"}}
+                                        labelId="sort"
+                                        id="sort"
+                                        label="sort"
+                                        onChange={(e) => handleOrden(e)}
+                                    >
+                                        <MenuItem disabled value="all">Sort</MenuItem>
+                                        <MenuItem value="A-Z">A-Z</MenuItem>
+                                        <MenuItem value="Z-A">Z-A</MenuItem>
+                                        {/* <select
+                                            
+                                            onChange={(e) => handleOrden(e)}
+                                        > */}
+                                            {/* <option value="all">Sort</option>
+                                            <option value="A-Z">A-Z</option>
+                                            <option value="Z-A">Z-A</option> */}
+                                        {/* </select> */}
+                                        </Select>
+                                </FormControl>
+                            </Box>
+
+                            {/* </th> */}
+                            {/* <th > */}
+                            <Box sx={{
+                                        '& > :not(style)': { m: 1, width: '17ch' },
+                                    }}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="sort">Subject</InputLabel>
+                                    <Select
+                                        sx={{backgroundColor: "#DADADA"}}
+                                        labelId="subject"
+                                        id="subject"
+                                        label="subject"
+                                        onChange={(e) => handleTheme(e)}
+                                    >
+                                        <MenuItem disabled value="all">Subject</MenuItem>
+                                        {tematica?.map((e, k) => {
+                                        return (
+                                            <MenuItem key={k} value={e}>
+                                                {e.toUpperCase()}
+                                            </MenuItem>
+                                        );
+                                    })}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                                        
+                                {/* <select
                                     className={style.select}
                                     onChange={(e) => handleTheme(e)}
-                                >
-                                    <option value="all">Subject</option>
-                                    {tematica?.map((e, k) => {
+                                > */}
+                                    {/* <option value="all">Subject</option> */}
+                                    {/* {tematica?.map((e, k) => {
                                         return (
                                             <option key={k} value={e}>
                                                 {e.toUpperCase()}
                                             </option>
                                         );
-                                    })}
-                                </select>
-                            </th>
-                            <th className={style.th}>
+                                    })} */}
+                                {/* </select> */}
+                            {/* </th> */}
+                            <Box sx={{
+                                        '& > :not(style)': { m: 1, width: '17ch' },
+                                    }}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="minmax">Sort by price</InputLabel>
+                                    <Select
+                                        sx={{backgroundColor: "#DADADA"}}
+                                        labelId="minmax"
+                                        id="minmax"
+                                        label="Sort by price"
+                                        onChange={(e) => handleChangeRange(e)}
+                                    >
+                                        <MenuItem disabled value="all">Min & Max</MenuItem>
+                                        <MenuItem value="MintoMax">Min To Max</MenuItem>
+                                        <MenuItem value="MaxtoMin">Max To Min</MenuItem>
+                                        </Select>
+                                </FormControl>
+                            </Box>
+                            <Stack>
                                 <form
-                                    className={style.form}
+                                    // className={style.form}
                                     onSubmit={(e) => handleRange(e)}
                                 >
-                                    <input
+                                <Box
+                                    component="form"
+                                    display="flex"
+                                    sx={{
+                                        '& > :not(style)': { m: 1, width: '20ch' },
+                                    }}
+                                    noValidate
+                                    autoComplete="off"
+                                >
+                                <TextField 
+                                    id="outlined-basic" 
+                                    label="Min" 
+                                    variant="outlined" 
+                                    type="number"
+                                    name="min"
+                                    min={'0'}
+                                    value={range.min}
+                                    onChange={(e) => handleChange(e)}
+                                    sx={{backgroundColor: "#DADADA"}}
+
+                                />
+                                <TextField 
+                                    id="outlined-basic" 
+                                    label="Max" 
+                                    variant="outlined" 
+                                    type="number"
+                                    name="max"
+                                    min={"0"}
+                                    value={range.max}
+                                    onChange={(e) => handleChange(e)}
+                                    sx={{backgroundColor: "#DADADA"}}
+
+                                />
+                                    
+
+                                    {/* <input
                                         className={style.input}
                                         type="number"
                                         placeholder="Min"
@@ -152,9 +259,9 @@ export default function Filters({ setPagina, setOrden }) {
                                         min={'0'}
                                         value={range.min}
                                         onChange={(e) => handleChange(e)}
-                                    />
+                                    /> */}
 
-                                    <input
+                                    {/* <input
                                         className={style.input}
                                         type="number"
                                         placeholder="Max"
@@ -162,30 +269,36 @@ export default function Filters({ setPagina, setOrden }) {
                                         min="0"
                                         value={range.max}
                                         onChange={(e) => handleChange(e)}
-                                    />
+                                    /> */}
 
-                                    <button
+                                    <Button variant="outlined" type="submit">Filter by price</Button>
+
+                                    {/* <button
                                         className={style.input2}
                                         type="submit"
                                     >
                                         Filter
-                                    </button>
+                                    </button> */}
+                                    </Box>
                                 </form>
-                            </th>
-                            <th className={style.th}>
-                                <select
+                            </Stack>
+                            {/* <th > */}
+                            
+                            
+                                {/* <select
                                     className={style.select}
                                     onChange={(e) => handleChangeRange(e)}
-                                >
-                                    <option value="all">Min & Máx</option>
+                                > */}
+                                    {/* <option value="all">Min & Máx</option>
                                     <option value="MintoMax">Min To Máx</option>
                                     <option value="MaxtoMin">Máx To Min</option>
-                                </select>
-                            </th>
-                        </tr>
-                    </tbody>
+                                </select> */}
+                            {/* </th> */}
+                        </Grid>
+                    {/* </tbody>
                 </table>
-            </div>
+            </div> */}
+            </Container>
         </div>
     );
 }
