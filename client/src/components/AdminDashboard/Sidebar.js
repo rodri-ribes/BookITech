@@ -20,8 +20,9 @@ import CommentIcon from '@mui/icons-material/Comment';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeDashboard } from '../../redux/features/data/dataSlice';
+import {theme} from './theme'
 
-const drawerWidth = '20vw';
+const drawerWidth = '17vw';
 const categories = [
     {
       id: 'Website',
@@ -42,9 +43,9 @@ const categories = [
   const item = {
     py: '2px',
     px: 3,
-    color: 'rgba(010, 010, 010, 0.7)',
+    color: 'rgba(230, 230, 230, 0.85)',
     '&:hover, &:focus': {
-      bgcolor: 'rgba(010, 010, 010, 0.08)',
+      bgcolor:  'rgba(255, 255, 255, 0.08)',
     },
   };
   
@@ -71,7 +72,7 @@ const categories = [
     return (
     <Drawer
         sx={{
-          width: drawerWidth,
+          width: theme.drawerWidth,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
@@ -98,7 +99,7 @@ const categories = [
                 <ListItemIcon>
                     {e.icon }
                 </ListItemIcon>
-                <ListItemText  sx={{ color: '#101010' }} primary={e.id}/>
+                <ListItemText  sx={{ color: '#DDDDDD' }} primary={e.id}/>
               </ListItemButton>
             </ListItem>
             ))}

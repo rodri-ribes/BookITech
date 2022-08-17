@@ -360,36 +360,39 @@ export const changeDashboard = (payload) => async (dispatch) => {
 };
 export const deleteBook = (id) => async (dispatch) => {
     try {
-        let success = await axios.put(
-            `http://localhost:3001/books/delist/${id}`
-        );
-        console.log(success);
-        if (success) dispatch(delistBook());
-    } catch (error) {
-        console.log(error);
-    }
+    let success = await axios.put(
+        `${REACT_APP_API}/books/delist/${id}`
+    );
+    console.log(success);
+    if(success) dispatch(delistBook());
+} catch (error) {
+    console.log(error);
+}
+
 };
 export const updateBook = (payload) => async (dispatch) => {
     try {
-        let success = await axios.put(
-            `http://localhost:3001/books/${payload.id}`, { ...payload, delisted: false }
-        );
-        console.log(success);
-        if (success) dispatch(updateBook());
-    } catch (error) {
-        console.log(error);
-    }
+    let success = await axios.put(
+        `${REACT_APP_API}/books/${payload.id}`,{...payload, delisted: false}
+    );
+    console.log(success);
+    if(success) dispatch(updateBook());
+} catch (error) {
+    console.log(error);
+}
+
 };
 export const createBook = (payload) => async (dispatch) => {
     try {
-        let success = await axios.post(
-            `http://localhost:3001/books/`, { ...payload }
-        );
-        console.log(success);
-        if (success) dispatch(newBook());
-    } catch (error) {
-        console.log(error);
-    }
+    let success = await axios.post(
+        `${REACT_APP_API}/books/`,{...payload}
+    );
+    console.log(success);
+    if(success) dispatch(newBook());
+} catch (error) {
+    console.log(error);
+}
+
 };
 export const setId = (payload) => async (dispatch) => {
     dispatch(idForUpdate(payload))
