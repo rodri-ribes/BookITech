@@ -9,19 +9,15 @@ async function PostFav(req, res) {
    const {id} = req.body;
     try {
         if(email){
-            
+            console.log(email)
             if(id){
             let _id = id;
-            const book = await Books.findById({_id})
+            const book = await Books.findOne({isbn13:_id})
             const user = await Users.findOne({email}) 
             const all = new Favorite({book,user})
              await all.save()
             res.status(200).send('Agregado correctamente')
         }
-    // else{
-    //     let tod = await Favorite.find()
-    //     res.status(202).send(tod)
-    // }
         }
 
     } catch (err){
@@ -37,9 +33,10 @@ async function GetFav (req,res) {
         if(email){
             
             let user = await Users.findOne({email})
-            let fav = await Favorite.find({user})
+            let fav = await Favorite.find({user}).populate('book')
+            
             if(fav.length ===0){
-                return res.status(202).send('No tenes ningun libro favorito')
+                return res.status(202).send([])
             }
            return  res.status(200).send(fav)
         }

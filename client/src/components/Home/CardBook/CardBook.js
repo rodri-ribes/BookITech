@@ -10,6 +10,7 @@ import axios from 'axios'
 const { REACT_APP_API } = process.env
 
 export default function CardBook({ id, name, authors, img, subtitle, language, price }) {
+    
 
     const [cart, setCart] = useState(false)
     const [heart, setHeart] = useState(false)
@@ -49,10 +50,21 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
         setCart(false)
     }
 
-    const addToFav = () => {
-        //Aca iria el dispatch de la actions que agregaria el item al carrito
-        setHeart(true)
-        dispatch(addFavs(id))
+    const addToFav = async () => {
+            let auxUser = JSON.parse(window.localStorage.getItem("user"))
+            let idUser = auxUser.email
+            console.log("IDS", idUser, id)
+        if(user || window.localStorage.getItem("user")){
+            
+            await axios.post(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
+            dispatch(addFavs(id))
+            setHeart(true)
+
+        }else{
+            console.log("no se pudieron empujar")
+        }
+        
+        
     }
     const RemoveToFav = () => {
         //Aca iria el dispatch de la actions que quitaria el item al carrito

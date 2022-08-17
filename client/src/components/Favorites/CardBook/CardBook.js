@@ -3,12 +3,14 @@ import style from './cardbook.module.css'
 import { RiShoppingCartLine } from 'react-icons/ri'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { AddCart, addFavs, deleteCart, deleteFavs } from '../../../redux/features/data/dataSlice'
 
-export default function CardBook({ id, name, author, img, gender, idiom, format, price }) {
 
+export default function CardBook({ id, name, author, img, price }) {
+
+   
     const [cart, setCart] = useState(false)
     const [heart, setHeart] = useState(true)
 
