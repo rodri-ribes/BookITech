@@ -5,7 +5,7 @@ import { GrAddCircle, GrSubtractCircle } from 'react-icons/gr'
 import { IoIosAddCircle } from 'react-icons/io'
 import { GrSubtract } from 'react-icons/gr'
 import { useDispatch, useSelector } from 'react-redux'
-import { DeleteCart } from '../../../redux/features/data/dataSlice';
+import { DeleteCart, DeleteInCartUser } from '../../../redux/features/data/dataSlice';
 import axios from 'axios'
 const { REACT_APP_API } = process.env
 
@@ -28,6 +28,7 @@ export default function CardBooksInCart({ id, name, img, subtitle, price, state,
             })
 
             setStateUser(stateUser.filter(c => c.isbn13 !== id))
+            dispatch(DeleteInCartUser(id))
         }
         dispatch(DeleteCart(id))
     }

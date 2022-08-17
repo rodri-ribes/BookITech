@@ -10,6 +10,7 @@ import axios from 'axios';
 import filtrarBooksUser from './functions/filtrarBooksUser';
 const { REACT_APP_API } = process.env
 
+
 export default function CartShopping() {
 
     let user = useSelector(state => state.data.user)
@@ -19,8 +20,9 @@ export default function CartShopping() {
     const [cartUser, setcartUser] = useState([])
     const [cartFiltrado, setCartFiltrado] = useState([])
 
-
     const [click, setClick] = useState(false);
+
+    let CartUser = useSelector(state => state.data.CartUser)
 
     const changeClick = async () => {
         let idUser;
@@ -32,9 +34,15 @@ export default function CartShopping() {
                 setCartFiltrado(filtrarBooksUser(booksTotal, c.data[0].cart))
             })
         }
-
         setClick(!click);
     }
+
+    document.addEventListener("click", function (e) {
+
+        if (click === true && e.target.nodeName !== "svg" && e.target.nodeName !== "P" && e.target.nodeName !== "path") {
+            setClick(false)
+        }
+    })
 
     /**----------- Manejo de sumar elementos -------------------------- */
 
@@ -114,9 +122,14 @@ export default function CartShopping() {
     let total;
     let cantidad;
 
+    // useEffect(() => {
+    //     cantidad = CartUser.length;
+    // }, [cartUser])
+
+
     if (user || window.localStorage.getItem("user")) {
         total = calcularCarrito(contador, cartFiltrado)
-        cantidad = cartFiltrado.length;
+        cantidad = CartUser.length
     } else {
         total = calcularCarrito(contador, books)
         cantidad = books.length;
@@ -179,7 +192,7 @@ export default function CartShopping() {
                     <p>{cantidad}</p>
                 </div>
             </Container>
-            <ContainerPanel click={click}>
+            <ContainerPanel click={click} >
                 {user || window.localStorage.getItem("user") ?
                     cartFiltrado.length > 0 ?
                         <>
