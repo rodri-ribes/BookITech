@@ -352,7 +352,7 @@ export const changeDashboard = (payload) => async (dispatch) =>{
 export const deleteBook = (id) => async (dispatch) =>{ 
     try {
     let success = await axios.put(
-        `http://localhost:3001/books/delist/${id}`
+        `${REACT_APP_API}/books/delist/${id}`
     );
     console.log(success);
     if(success) dispatch(delistBook());
@@ -363,7 +363,7 @@ export const deleteBook = (id) => async (dispatch) =>{
 export const updateBook = (payload) => async (dispatch) =>{ 
     try {
     let success = await axios.put(
-        `http://localhost:3001/books/${payload.id}`,{...payload, delisted: false}
+        `${REACT_APP_API}/books/${payload.id}`,{...payload, delisted: false}
     );
     console.log(success);
     if(success) dispatch(updateBook());
@@ -374,7 +374,7 @@ export const updateBook = (payload) => async (dispatch) =>{
 export const createBook = (payload) => async (dispatch) =>{ 
     try {
     let success = await axios.post(
-        `http://localhost:3001/books/`,{...payload}
+        `${REACT_APP_API}/books/`,{...payload}
     );
     console.log(success);
     if(success) dispatch(newBook());

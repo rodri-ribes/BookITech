@@ -26,9 +26,9 @@ const handleDelete = (e)=>{
 }
 const handleOnUpdate = (e)=>{
   dispatch(setId(id))
-  return () =>{
-    dispatch(setId(''))
-  }
+  // return () =>{
+  //   dispatch(setId(''))
+  // }
 }
 
   const [deletePressed, setDeletePressed] = useState(false)
@@ -36,15 +36,20 @@ const handleOnUpdate = (e)=>{
     return (
     <React.Fragment>
       <CssBaseline />
-      <Container>
-        <Box sx={{ bgcolor: '#cfe8fc', height: '10vh' }}>
+      <Container sx={{display: "inline-block", zIndex:1, borderColor:'black', borderRadius:'10px', m:1, bgcolor: '#173A5E'}}>
+        <Box sx={{ position:'relative', bgcolor: '#173A5E',m: 1, borderRadius: '10px' ,padding:"5px", height: 'auto', width: '100%', alignItems:"center"}}>
           { deletePressed === false ? <>
-            <Typography sx={{color:'#173A5E'}}>{title}</Typography>
-            <IconButton onClick={e => setDeletePressed(true)}><DeleteIcon/></IconButton>
-            <IconButton onClick={e=> handleOnUpdate(e)}><ModeEditOutlineIcon/></IconButton></> :
+            <div>
+              <Typography sx={{color:'#FFFFFF', fontWeight:'bold'}}>{title}</Typography>
+            </div>
+            <div style={{float: 'right'}}>            
+              <IconButton  onClick={e => setDeletePressed(true)}><DeleteIcon color='primary' fontSize='large'/></IconButton>
+              <IconButton onClick={e=> handleOnUpdate(e)}><ModeEditOutlineIcon color='primary'  fontSize='large'/></IconButton> 
+            </div>
+            </> :
             <>
-              <Typography sx={{color:'#173A5E'}}>You want to delist this book?</Typography>
-              <h4>I'll still be in the database</h4>
+              <h4 >You want to delist "{title}"?</h4>
+              <Typography sx={{color:'#FFFFFF'}}>I'll still be in the database</Typography>
               <div>
                 <button onClick={e=>handleDelete(e)}>Confirm</button>
                 <button onClick={e=>setDeletePressed(false)}>Cancel</button>
