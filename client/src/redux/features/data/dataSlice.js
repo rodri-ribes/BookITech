@@ -82,8 +82,8 @@ export const dataSlice = createSlice({
                 // let copirange = state.allBooks.filte
                 let copirange = state.books.filter(
                     (e) =>
-                     Number(e.price.slice(1)) >= Number(payload.min) &&
-                     Number(payload.max) >= Number(e.price.slice(1)) 
+                        Number(e.price.slice(1)) >= Number(payload.min) &&
+                        Number(payload.max) >= Number(e.price.slice(1))
                 );
                 if (!copirange.length) {
                     state.books = [...state.books];
@@ -102,49 +102,49 @@ export const dataSlice = createSlice({
             let copiABC = [...state.books];
 
             let filterAZ;
-            if(actions.payload === 'A-Z'){
+            if (actions.payload === 'A-Z') {
                 filterAZ = copiABC.sort((a, b) => {
-                      if (a.title > b.title) {
-                     return 1;
-                  }
-                   if (b.title > a.title) {
-                         return -1;
-                      }
-                      return 0;
-                  })
+                    if (a.title > b.title) {
+                        return 1;
+                    }
+                    if (b.title > a.title) {
+                        return -1;
+                    }
+                    return 0;
+                })
             }
-            if(actions.payload === 'Z-A'){
-                 filterAZ = copiABC.sort((a, b) => {
-                              if (a.title > b.title) {
-                                  return -1;
-                              }
-                              if (b.title > a.title) {
-                                  return 1;
-                              }
-                              return 0;
-                          });
+            if (actions.payload === 'Z-A') {
+                filterAZ = copiABC.sort((a, b) => {
+                    if (a.title > b.title) {
+                        return -1;
+                    }
+                    if (b.title > a.title) {
+                        return 1;
+                    }
+                    return 0;
+                });
             }
 
-            let filterAZ =
-                actions.payload === 'A-Z'
-                    ? copiABC.sort((a, b) => {
-                        if (a.title > b.title) {
-                            return 1;
-                        }
-                        if (b.title > a.title) {
-                            return -1;
-                        }
-                        return 0;
-                    })
-                    : copiABC.sort((a, b) => {
-                        if (a.title > b.title) {
-                            return -1;
-                        }
-                        if (b.title > a.title) {
-                            return 1;
-                        }
-                        return 0;
-                    });
+            // let filterAZ =
+            //     actions.payload === 'A-Z'
+            //         ? copiABC.sort((a, b) => {
+            //             if (a.title > b.title) {
+            //                 return 1;
+            //             }
+            //             if (b.title > a.title) {
+            //                 return -1;
+            //             }
+            //             return 0;
+            //         })
+            //         : copiABC.sort((a, b) => {
+            //             if (a.title > b.title) {
+            //                 return -1;
+            //             }
+            //             if (b.title > a.title) {
+            //                 return 1;
+            //             }
+            //             return 0;
+            //         });
 
             return {
                 ...state,
@@ -157,15 +157,15 @@ export const dataSlice = createSlice({
             let filtrar;
             if (actions.payload === 'MintoMax') {
                 filtrar = cambiar.sort(
-                    (a, b) =>{
-                  return Number(a.price.slice(1)) - Number(b.price.slice(1))
-                });
+                    (a, b) => {
+                        return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                    });
             }
             if (actions.payload === 'MaxtoMin') {
                 filtrar = cambiar.sort(
-                    (a, b) =>{
-                   return Number(b.price.slice(1)) - Number(a.price.slice(1))
-                });
+                    (a, b) => {
+                        return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                    });
             }
             return {
                 ...state,
@@ -384,38 +384,38 @@ export const changeDashboard = (payload) => async (dispatch) => {
 };
 export const deleteBook = (id) => async (dispatch) => {
     try {
-    let success = await axios.put(
-        `${REACT_APP_API}/books/delist/${id}`
-    );
-    console.log(success);
-    if(success) dispatch(delistBook());
-} catch (error) {
-    console.log(error);
-}
+        let success = await axios.put(
+            `${REACT_APP_API}/books/delist/${id}`
+        );
+        console.log(success);
+        if (success) dispatch(delistBook());
+    } catch (error) {
+        console.log(error);
+    }
 
 };
 export const updateBook = (payload) => async (dispatch) => {
     try {
-    let success = await axios.put(
-        `${REACT_APP_API}/books/${payload.id}`,{...payload, delisted: false}
-    );
-    console.log(success);
-    if(success) dispatch(updateBook());
-} catch (error) {
-    console.log(error);
-}
+        let success = await axios.put(
+            `${REACT_APP_API}/books/${payload.id}`, { ...payload, delisted: false }
+        );
+        console.log(success);
+        if (success) dispatch(updateBook());
+    } catch (error) {
+        console.log(error);
+    }
 
 };
 export const createBook = (payload) => async (dispatch) => {
     try {
-    let success = await axios.post(
-        `${REACT_APP_API}/books/`,{...payload}
-    );
-    console.log(success);
-    if(success) dispatch(newBook());
-} catch (error) {
-    console.log(error);
-}
+        let success = await axios.post(
+            `${REACT_APP_API}/books/`, { ...payload }
+        );
+        console.log(success);
+        if (success) dispatch(newBook());
+    } catch (error) {
+        console.log(error);
+    }
 
 };
 export const setId = (payload) => async (dispatch) => {
