@@ -38,6 +38,10 @@ useEffect(()=> {
   setIdState(id)
 }, [id])
 
+useEffect(() =>{
+  dispatch(getLibros())
+}, [isDelisted])
+
 function handleOnClick(e){
   e.preventDefault()
   setPrompt(!prompt)
@@ -46,7 +50,7 @@ function handleOnClick(e){
     return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth='md' sx={{position: 'relative'}} >
+      <Container maxWidth='md' sx={{position: 'relative', display: 'flex'}} >
         <Box sx={{ bgcolor: '#0a1929', height: 'auto', width: '70vw'}}>
           {!prompt ? <FormInput id={idState} prompt={setPrompt} /> :
           <>
