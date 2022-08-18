@@ -1,14 +1,15 @@
-const { Router }= require('express');
-const { postComments, getComments, updateComments, deleteComments, getOneComment }=require("../controllers/CommentsController")
+
+const { Router } = require('express');
+const { postComments, updateComments, deleteComments } = require("../controllers/CommentsController")
 const router = Router()
 
 
+router.post("/:id", postComments)
 
-router.get("/",getComments)
-router.get("/:id",getOneComment)
-router.post("/",postComments)
-router.put("/:id",updateComments)
-router.delete("/:id",deleteComments)
+router.put("/edit/:id/:idcomment", updateComments)
+
+router.delete("/delete/:id/:idcomment", deleteComments)
+
 
 
 module.exports = router

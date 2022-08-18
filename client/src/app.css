@@ -1,9 +1,16 @@
 
+.container1{
+    background-color:#0a1929;
+    color: #DADADA;
+}
+
 .container{
+    text-decoration: none;
     min-height: calc(100vh - 13.14vh - 50px );
     width: 100%;
     max-width: 1300px;
     margin: auto;
+    padding-top: 30px;
 }
 
 @media screen and (max-width: 968px){

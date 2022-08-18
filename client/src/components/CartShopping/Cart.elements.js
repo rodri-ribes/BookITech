@@ -14,6 +14,8 @@ export const Container = styled.div`
             background-color: white;
             padding: 0 0.3rem;
             border-radius: 50%;
+            color: black;
+            font-weight: 600;
         }
     }
     
@@ -23,7 +25,7 @@ export const Container = styled.div`
     }
 `;
 export const ContainerPanel = styled.div`
-    /* display: flex; */
+
     display: ${({ click }) => (click ? "flex" : "none")};
     justify-content: flex-start;
     align-items: center;
@@ -38,6 +40,7 @@ export const ContainerPanel = styled.div`
     position: absolute;
     right: 90px;
     top: 80px;
+    background-color: #0a1929;
     box-shadow: 0px 0px 15px black;
     ::-webkit-scrollbar{
         width: 10px;

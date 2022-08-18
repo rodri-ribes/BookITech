@@ -6,8 +6,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
 import { getLibros, getUser } from '../../redux/features/data/dataSlice';
-import { GoogleButton } from 'react-google-button'
 import { UserAuth } from '../../firebase/AuthContext';
+import { FacebookLoginButton, GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
+import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider, onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../../firebase/index';
+const {REACT_APP_API} = process.env
+
 
 export default function SignUp() {
 
@@ -23,6 +27,18 @@ export default function SignUp() {
 
     const { googleSignIn } = UserAuth();
 
+    
+    
+        
+
+    
+
+
+
+
+
+
+
     const handleSubmitGoogle = async () => {
         try {
             await googleSignIn()
@@ -35,7 +51,42 @@ export default function SignUp() {
         }, 5000);
     }
 
-    //si el usuario no esta logueado no pueda acceder
+
+    const signInWithFacebook = () => {
+        const provider = new FacebookAuthProvider();
+        
+        signInWithPopup(auth, provider)
+         
+            .catch((err) => {
+                console.log(err.message);
+            })
+        setTimeout(() => {
+            dispatch(getLibros())
+            navigate("/")
+        }, 15000);
+
+    }
+  
+
+    const signInWithGithub = () => {
+        const provider = new GithubAuthProvider();
+        signInWithPopup(auth, provider)
+        
+            .catch((err) => {
+                console.log(err.message);
+            })
+        setTimeout(() => {
+            dispatch(getLibros())
+            navigate("/")
+        }, 15000);
+
+    }
+    const responseGithub = (response) => {
+        console.log(response);
+    }
+
+
+  
 
     let user = useSelector(state => state.data.user)
 
@@ -44,6 +95,7 @@ export default function SignUp() {
             navigate("/");
         }
     }, [])
+
 
 
     return (
@@ -63,7 +115,7 @@ export default function SignUp() {
                 fullName = name.charAt(0).toUpperCase() + name.slice(1)
                 console.log(fullName, email, password)
                 try {
-                    let resp = await axios.post(`http://localhost:3001/signup`, {
+                    let resp = await axios.post(REACT_APP_API+ `/signup`, {
                         fullName, email, password
                     })
                     window.localStorage.setItem("user", JSON.stringify(resp.data))
@@ -158,7 +210,18 @@ export default function SignUp() {
                         {confirm.visible ? <div className={`${confirm.error ? style.Container__Div_NotSucess : style.Container__Div_Sucess}`}><p>{confirm.message}</p></div> : null}
                         <p className={style.Container__Register}>You already have an account? <Link to="/signin" className={style.Container__Register_Link}>Sign In</Link></p>
                         <div className={style.Container__Google}>
-                            <GoogleButton onClick={() => handleSubmitGoogle()} />
+                            <GoogleLoginButton onClick={() => handleSubmitGoogle()} />
+                        </div>
+                        <div className='facebook'>
+                            <FacebookLoginButton
+                                onClick={signInWithFacebook}
+                               
+                               />
+                        </div>
+                        <div className='github'>
+                            <GithubLoginButton
+                                onClick={signInWithGithub}
+                                callback={responseGithub} />
                         </div>
                     </Form>
                 </div>

@@ -1,30 +1,105 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getSearch } from '../../redux/features/data/dataSlice';
-import { AiOutlineSearch } from 'react-icons/ai';
-import style from './Search.module.css';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getSearch } from "../../redux/features/data/dataSlice";
+import { AiOutlineSearch } from "react-icons/ai";
+// import style from './Search.module.css';
+import { styled, alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import InputBase from "@mui/material/InputBase";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom"
+
+
+const SearchUI = styled("div")(({ theme }) => ({
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    "&:hover": {
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
+    },
+    marginLeft: 0,
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+        marginLeft: theme.spacing(1),
+        width: "auto",
+    },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+    color: "inherit",
+    "& .MuiInputBase-input": {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create("width"),
+        width: "100%",
+        [theme.breakpoints.up("sm")]: {
+            width: "15ch",
+            "&:focus": {
+                width: "30ch",
+            },
+        },
+    },
+}));
+
 export default function Search() {
     const [display, setDisplay] = useState(false);
     const [option, setOption] = useState([]);
-    const [name, setName] = useState('');
+    const [name, setName] = useState("");
     const books = useSelector((state) => state.data.allBooks);
-
+    let navigate = useNavigate()
     const dispatch = useDispatch();
     useEffect(() => {
         let titulo = books.map((e) => e.title);
-        let autor = books.map((e) => e.authors);
-        let obj = titulo.concat(autor);
-        setOption(obj);
+        // let autor = books.map((e) => e.authors);
+        // let obj = titulo.concat(autor);
+        setOption(titulo);
     }, [books]);
+
+
+    
+    function handleChange2(e) {
+        // setName('');
+        // setName(e.target.value);
+        dispatch(getSearch(e.target.value))
+        // if (!name) {
+        // setName(e.target.value);
+        // if (name.length < 1) {
+        //     setDisplay(false);
+        //     // setOption([]);
+        // }
+    }
+
+    function redirect(){
+        if (window.location.pathname !== '/') {
+            navigate('/')
+        }
+    }
+
     function handleChange(e) {
-        if (name.length >= 2) {
-            setName(e.target.value);
+        if (name.length >= 3) {
+            // setName(e.target.value);
+            dispatch(getSearch(name))
             setDisplay(true);
             // setOption(books.map((e) => e.title));
         }
+        console.log(window.location.pathname)
         // if (!name) {
-        setName(e.target.value);
-        if (name.length < 1) {
+        // setName(e.target.value);
+        dispatch(getSearch(name))
+        if (name.length < 2) {
             setDisplay(false);
             // setOption([]);
         }
@@ -33,56 +108,102 @@ export default function Search() {
     function handleSubmit(e) {
         e.preventDefault();
         if (!name) {
-            alert('failed search');
-            setName('');
-            setDisplay(false);
+            alert("failed search");
+            setName("");
+            // setDisplay(false);
             // setOption([]);
         } else {
             dispatch(getSearch(name));
-            setName('');
-            setDisplay(false);
+            setName("");
+            // setDisplay(false);
         }
     }
     function setClick(val) {
         setName(val);
         setDisplay(false);
     }
-    //
+    //redirect
+    // 
     return (
-        <div>
-            <div className={style.wrapper}>
+        <Box sx={{ flexGrow: 1 }}>
+
+                <SearchUI >
+                    <SearchIconWrapper>
+                        <IconButton aria-label="search" color="inherit">
+                            <SearchIcon />
+                        </IconButton>
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                        placeholder="Search…"
+                        inputProps={{ "aria-label": "search" }}
+                        onChange={(e) => handleChange2(e)}
+                        onClick={redirect}
+                        type="text"
+                        // value={name}
+                        sx={{
+                            flexGrow: 1,
+                            display: { md: "flex", xs: "none" }
+                            }}
+                    />
+                    <div>
+                        {/* <div>
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <input
-                        className={style.input}
                         onChange={(e) => handleChange(e)}
                         type="text"
                         placeholder="Search..."
                         value={name}
                         list="form"
                     />
-                    <button type="submit" className={style.btn}>
+                    <button type="submit">
                         <AiOutlineSearch />
                     </button>
                 </form>
-            </div>
-            <datalist className={style.dentro} id="form">
-                {display &&
-                    option
-                        ?.filter((e) =>
-                            e.toLowerCase().includes(name.toLowerCase())
-                        )
-                        .map((e, k) => {
-                            return (
-                                <option
-                                    key={k}
-                                    onClick={() => setClick(e)}
-                                    value={e}
-                                >
-                                    {e}
-                                </option>
-                            );
-                        })}
-            </datalist>
-        </div>
+<<<<<<< HEAD
+            </div> */}
+                        {/* <datalist id="form">
+                        {display &&
+                            option
+                                ?.filter((e) =>
+                                    e.toLowerCase().includes(name.toLowerCase())
+                                )
+                                .map((e, k) => {
+                                    return (
+                                        <option
+                                            key={k}
+                                            onClick={() => setClick(e)}
+                                            value={e}
+                                        >
+                                            {e}
+                                        </option>
+                                    );
+                                })}
+                    </datalist> */}
+                    </div>
+                </SearchUI>
+            
+        </Box>
+// =======
+//             </div>
+//             <datalist className={style.dentro} id="form">
+//                 {display &&
+//                     option
+//                         ?.filter((e) =>
+//                             e.includes(name)
+//                         )
+//                         .map((e, k) => {
+//                             return (
+//                                 <option
+//                                     key={k}
+//                                     onClick={() => setClick(e)}
+//                                     value={e}
+//                                 >
+//                                     {e}
+//                                 </option>
+//                             );
+//                         })}
+//             </datalist>
+//         </div>
+// >>>>>>> Development
     );
 }

@@ -1,0 +1,102 @@
+.Container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    background-color: #0a1a2a ;
+    margin-top: 1rem;
+    border-radius: 5px;
+    padding: 0;
+    position: relative;
+}
+
+.Container img{
+    width: 65px;
+    height: 60px;
+    -moz-border-radius:50px;
+    -webkit-border-radius:50px;
+    border-radius:50px;
+    margin: 0 1rem;
+    pointer-events: none;
+}
+
+
+.Container__input{
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    flex-direction: column;
+    width: 100%;
+    word-wrap: break-word;
+}
+
+.Container__input_content{
+    word-wrap: break-word;
+    width: 95%;
+}
+
+.Container__v2{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    word-break: break-all;
+    padding: 1rem;
+}
+
+.Container__input__NameAndDate{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.Container__input__NameAndDate h3{
+    font-family: sans-serif;
+}
+
+.Container__Cross{
+    align-self: flex-start;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.Container__v2__divEdit{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+
+}
+
+.Container__v2__divEdit textarea{
+    background-color: rgba(250, 247, 247, 0.077);
+    border: none;
+    outline: none;
+    color: white;
+    resize: none;
+    width: 100%;
+    padding: 3px 10px;
+}
+
+.Container__v2__divEdit button{
+    align-self: flex-end;
+    padding: 5px 10px;
+    outline: none;
+    border: none;
+    margin-top: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    color: white;
+    background-color: #13304d;
+    transition: all 1s;
+}
+
+.Container__v2__divEdit button:hover{
+    background-color: #0f253d;
+}
