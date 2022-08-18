@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Book = require('../models/Book')
 const User = require("../models/User");
+const Cart = require("../models/Cart");
 const nodemailer = require('nodemailer')
 
 async function GetUser(req, res) {
@@ -182,39 +183,121 @@ async function GetUser(req, res) {
 
 }
 
-async function PutUser (req,res){
-    try{
-        const {fullName, img, lastname, realName, email, phone, address } = req.body
-        const{id}= req.params
-        
-            if(fullName || img || phone || realName || lastname || email || address){
-                
-                let upDate = {fullName, img, email, realName, lastname, phone, address}
-                 await User.findByIdAndUpdate(id,upDate)
-                return res.status(200).send('Actualizado')
-            }
-           return  res.status(404).send('falta el body')        
-    } catch(err){
+async function PutUser(req, res) {
+    try {
+        const { fullName, img, lastname, realName, email, phone, address } = req.body
+        const { id } = req.params
+
+        if (fullName || img || phone || realName || lastname || email || address) {
+
+            let upDate = { fullName, img, email, realName, lastname, phone, address }
+            await User.findByIdAndUpdate(id, upDate)
+            return res.status(200).send('Actualizado')
+        }
+        return res.status(404).send('falta el body')
+    } catch (err) {
         res.status(404).send('Fallo en el PUT')
     }
 }
+
 async function PostBook(req, res) {
     try {
         const { email } = req.params;
-        const { id } = req.body;
+        const { items } = req.body;
         // const nomb = await User.find()
         // let isbn13 = id
         // let _id = id
 
+        const usuario = await User.findOne({ email })
 
-        const user = await Book.findById(id)
-        const nomb = await User.findOne({ email })
-        // console.log(user)
-        nomb.buy.push(user)
-        // console.log(nomb.option)
+        let cart = await Cart.findOne({ user: usuario.id })
 
-        await nomb.save()
-        // console.log(user)
+        cart.cart.splice(0, cart.cart.length)
+
+        await cart.save()
+
+        items.forEach(e => {
+            usuario.buy.push(e)
+        });
+
+        await usuario.save()
+
+        res.status(200).send('actualizado')
+
+    } catch (err) {
+        res.status(404).send('No pudimos comprar el libro')
+    }
+}
+
+async function createReview(req, res) {
+    try {
+        const { id } = req.params;
+        const { book, bookImg, bookTitle, bookAuthor, rating, status, review } = req.body;
+
+        const usuario = await User.findOne({ _id: id })
+
+        const bookEncontrado = await Book.findOne({ isbn13: book })
+
+        bookEncontrado.reviews.push({
+            book: book,
+            bookImg: bookImg,
+            bookTitle: bookTitle,
+            bookAuthor: bookAuthor,
+            userId: usuario.id,
+            userImg: usuario.img,
+            userName: usuario.fullName,
+            rating: rating,
+            status: status,
+            review: review
+        })
+
+        usuario.reviews.push({
+            book: book,
+            bookImg: bookImg,
+            bookTitle: bookTitle,
+            bookAuthor: bookAuthor,
+            rating: rating,
+            status: status,
+            review: review
+        })
+
+        await bookEncontrado.save()
+        await usuario.save()
+        res.status(200).send('actualizado')
+
+    } catch (err) {
+        res.status(404).send('No pudimos comprar el libro')
+    }
+}
+
+async function editReview(req, res) {
+    try {
+        const { id } = req.params;
+        const { book, rating, status, review } = req.body;
+
+        const usuario = await User.findOne({ _id: id })
+
+        const bookEncontrado = await Book.findOne({ isbn13: book })
+
+        bookEncontrado.reviews.forEach(c => {
+            if (c.userId === id && c.book === book) {
+                c.rating = rating
+                c.status = status
+                c.review = review
+            }
+        })
+
+
+        usuario.reviews.forEach(c => {
+            if (c.book === book) {
+                c.rating = rating
+                c.status = status
+                c.review = review
+            }
+        })
+
+        await bookEncontrado.save()
+        await usuario.save()
         res.status(200).send('actualizado')
 
     } catch (err) {
@@ -229,5 +312,7 @@ module.exports = {
     createUser,
     GetUser,
     PutUser,
-    PostBook
+    PostBook,
+    editReview,
+    createReview,
 }

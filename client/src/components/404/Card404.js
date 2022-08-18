@@ -5,7 +5,8 @@ import Payment from './Payment/Payment.js'
 
 import successImg from './img/success.png'
 import deniedImg from './img/denied.png'
-
+import axios from "axios";
+const { REACT_APP_API } = process.env
 
 export function Card404() {
 
@@ -13,13 +14,30 @@ export function Card404() {
 
     let navigate = useNavigate()
 
+    const finishCompra = async () => {
+        let items = JSON.parse(window.localStorage.getItem("buy"))
+        let user = JSON.parse(window.localStorage.getItem("user"))
+        try {
+            await axios.post(REACT_APP_API + `/user/${user.email}`, {
+                items
+            })
+            window.localStorage.removeItem("buy")
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     if (window.location.pathname.slice(0, 8) === "/success") {
         mostrar = "success"
+        finishCompra()
     } else if (window.location.pathname.slice(0, 8) === "/failure") {
         mostrar = "failure"
     } else {
         mostrar = "404"
     }
+
+
 
     setTimeout(() => {
         navigate('/')

@@ -35,6 +35,7 @@ function NavBar({ user, setUser }) {
 
     const logOut = () => {
         signOut(auth);
+        window.localStorage.removeItem("user");
     };
 
     const handleLogout = async () => {

@@ -1,7 +1,7 @@
 import React from 'react'
 import style from './CommentBox.module.css'
 
-export default function CommentBox({ setComment, handleComment, setDetails, comment }) {
+export default function CommentBox({ setComment, handleComment, setDetails, comment, error }) {
 
     let user;
 
@@ -18,6 +18,7 @@ export default function CommentBox({ setComment, handleComment, setDetails, comm
             <div className={style.Container__input}>
                 <h3>{user[2]}</h3>
                 <textarea type="text" value={comment} onChange={e => setComment(e.target.value)} />
+                {error.error === "comment" ? <p className={style.error}>{error.content}</p> : null}
                 <button onClick={() => handleComment(setDetails)}>Comment</button>
             </div>
         </div>

@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { deleteBook, setId } from '../../../redux/features/data/dataSlice';
+import { deleteBook, setId, getLibros, getSearch } from '../../../redux/features/data/dataSlice';
 import capitalize from '../../auxiliar/capitalize';
 import { Typography } from '@mui/material';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';

@@ -6,6 +6,11 @@
     /* outline: 1px solid green; */
 }
 
+.error{
+    color: red;
+    margin-top: 0.5rem;
+}
+
 .Container img{
     width: 65px;
     height: 60px;

@@ -4,7 +4,7 @@ import { BsCartCheck, BsFacebook, BsTwitter, BsLinkedin, BsGoogle } from 'react-
 import Rating from '@mui/material/Rating';
 import { Link, NavLink, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { AddCart, FilterTheme } from '../../redux/features/data/dataSlice'
+import { AddCart, dataUser, FilterTheme } from '../../redux/features/data/dataSlice'
 import style from "./Detail.module.css"
 import { RiShoppingCartLine } from "react-icons/ri"
 import axios from 'axios'
@@ -12,6 +12,7 @@ import Spinner from '../auxiliar/Spinner/Spinner';
 import CardReview from './CardReview/CardReview.js'
 import CommentBox from './CommentBox/CommentBox';
 import CardComment from './CardComment/CardComment';
+import { fabClasses } from '@mui/material';
 
 
 
@@ -20,6 +21,7 @@ const { REACT_APP_API } = process.env
 function Detail() {
 
   let userr = useSelector(state => state.data.user)
+  const [userData, setUserData] = useState(false)
 
   const dispatch = useDispatch()
   const { id } = useParams()
@@ -27,15 +29,20 @@ function Detail() {
 
   //------ STATE PARA LA APARICION DE ELEMENTOS EN EL DOM --------------------
 
+  const [error, setError] = useState({
+    error: false,
+    content: ""
+  })
+
+
+  //------ STATE PARA LA APARICION DE ELEMENTOS EN EL DOM --------------------
+
+
   const [viewEditComment, setViewEditComment] = useState(false)
   const [cartCheck, setCartCheck] = useState(false)
   const [cambios, setCambios] = useState(false)
 
-  //---------STATES PARA ACTUALIZAR Y RECIBIR LOS DATOS DE LA REVIEW DEL USUARIO
 
-  const [review, setReview] = useState("Aca va la review del usuario")
-  const [dateReview, setDateReview] = useState("Friday, August 8, 2021")
-  const [rating, setRating] = useState(3.5)
 
   //---------STATE PARA CARGAR COMMENTARIO NUEVO A LA DB---------------------
 
@@ -46,9 +53,13 @@ function Detail() {
 
 
   async function main() {
-    console.log("entro al main")
+    let user = JSON.parse(window.localStorage.getItem("user"));
+
     let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
     setDetails(data.data)
+
+    let dataUsuario = await axios.get(REACT_APP_API + `/user/${user.id}`);
+    setUserData(dataUsuario.data)
   }
 
   useEffect(() => {
@@ -81,20 +92,10 @@ function Detail() {
   let date = new Date();
   let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
-  //---------LOGICA PARA EL CAMBIO DE LA REVIEW DEL USUARIO----------
-
-  const editReview = () => {
-    setViewEditComment(false)
-    setDateReview(date.toLocaleDateString('en-US', options))
-    //aca va la logica para actualizar la review del usuario
-    //despues colocar un get para que se actualicen los datos
-  }
-
 
   //URL DEL ARTICULO PARA COMPARTIR EN REDES SOCIALES
 
   let article_url = window.location.href;
-
 
 
   //------------LOGICA PARA EL APARTADO DE RECOMENDADOS-------------
@@ -130,7 +131,6 @@ function Detail() {
     }
   })
 
-
   async function filterTematica() {
 
     try {
@@ -164,26 +164,139 @@ function Detail() {
   const handleComment = async (setDetails) => {
     let content = comment
     let fecha = date.toLocaleDateString('en-US', options)
-    // let usuario = JSON.parse(window.localStorage.getItem("user"))
-    // let user = [usuario.id, usuario.img, usuario.name]
 
-    let user;
+    if (comment.length >= 10) {
+      setError({
+        error: "",
+        content: ""
+      })
+      let user;
 
-    if (window.localStorage.getItem("user") === undefined) {
-      user = [0, "user.png", "user"]
+      if (window.localStorage.getItem("user") === undefined) {
+        user = [0, "user.png", "user"]
+      } else {
+        let usuario = JSON.parse(window.localStorage.getItem("user"))
+        user = [usuario.id, usuario.img, usuario.name]
+      }
+
+      await axios.post(REACT_APP_API + `/comments/${id}`, {
+        content, fecha, user
+      })
+
+      setComment("")
+      let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
+      setDetails(data.data)
     } else {
-      let usuario = JSON.parse(window.localStorage.getItem("user"))
-      user = [usuario.id, usuario.img, usuario.name]
+      setError({
+        error: "comment",
+        content: "If you want to leave a comment, containing more than 10 characters"
+      })
+    }
+  }
+
+
+  // ---------- LOGICA PARA SABER SI EL USUARIO PUEDE DEJAR SU REVIEW EN ESTE POST
+
+  const [reviewUser, setReviewUser] = useState(false)
+  const [existeReview, setExisteReview] = useState(false)
+  const [unicaReview, setUnicaReview] = useState(false)
+
+  const [review, setReview] = useState("")
+  const [dateReview, setDateReview] = useState(date.toLocaleDateString('en-US', options))
+  const [rating, setRating] = useState(0)
+
+  useEffect(() => {
+    if (userData) {
+      userData.buy.forEach(c => {
+        if (c.isbn13 === id) {
+          setReviewUser(true)
+        }
+      })
+      userData.reviews.forEach(c => {
+        if (c.book === id) {
+          setExisteReview(true)
+          setReview(c.review)
+          setDateReview(c.status)
+          setRating(c.rating)
+          console.log("entro a las review", c)
+        }
+      })
     }
 
-    await axios.post(REACT_APP_API + `/comments/${id}`, {
-      content, fecha, user
+  }, [userData])
+
+  //---------LOGICA PARA AGREGAR REVIEW DEL USUARIO ----------
+
+  const addReview = async () => {
+    if (review.length >= 10) {
+      setError({
+        error: "",
+        content: ""
+      })
+      setExisteReview(true);
+
+      let date = new Date();
+      let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+      setDateReview(date.toLocaleDateString('en-US', options))
+
+      let usuario = JSON.parse(window.localStorage.getItem("user"))
+
+      await axios.post(REACT_APP_API + `/review/${usuario.id}`, {
+        book: id, bookImg: details.image, bookTitle: details.title, bookAuthor: details.authors, rating, status: dateReview, review
+      })
+
+      let dataUsuario = await axios.get(REACT_APP_API + `/user/${usuario.id}`);
+      setUserData(dataUsuario.data)
+
+    } else if (review.length < 10) {
+      setError({
+        error: "review",
+        content: "The minimum character to leave a review is 10"
+      })
+    }
+
+  }
+
+  //---------LOGICA PARA EL CAMBIO DE LA REVIEW DEL USUARIO----------
+
+  const editReview = async () => {
+    if (review.length >= 10) {
+      setViewEditComment(false)
+
+      setDateReview(date.toLocaleDateString('en-US', options))
+      await axios.put(REACT_APP_API + `/review/edit/${usuario.id}`, {
+        book: id, rating, status: dateReview, review
+      })
+
+      let dataUsuario = await axios.get(REACT_APP_API + `/user/${usuario.id}`);
+      setUserData(dataUsuario.data)
+    } else {
+      setError({
+        error: "review",
+        content: "The minimum character to leave a review is 10"
+      })
+    }
+
+  }
+
+  //---------LOGICA PARA SABER SI LA UNICA REVIEW QUE HAY ES DEL USUARIO ----------
+  let usuario = JSON.parse(window.localStorage.getItem("user"))
+
+  useEffect(() => {
+    details && details.reviews.forEach(r => {
+      if (details.reviews.length === 1) {
+        if (r.userId !== undefined) {
+          if (r.userId === usuario.id) {
+            setUnicaReview(true)
+          }
+        }
+      }
     })
 
-    setComment("")
-    let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
-    setDetails(data.data)
-  }
+  }, [details, dataUser])
+
+
 
   return (
     <div className={style.Container}>
@@ -243,51 +356,83 @@ function Detail() {
             <div className={style.Container__Content__Acitivity}>
               {userr || window.localStorage.getItem("user") ?
                 <div className={style.Container__Content__Acitivity__Details}>
-                  {/* <h4>MY ACITIVITY</h4>
+                  <h4>MY ACITIVITY</h4>
                   <hr />
-                  <div className={style.Container__Content__Acitivity__Details_element}>
-                    <p>Rating</p>
-                    {viewEditComment ?
-                      <Rating name="half-rating" defaultValue={rating} precision={0.5} onChange={e => setRating(e.target.value)} />
+                  {reviewUser ?
+                    existeReview ?
+                      <>
+                        <div className={style.Container__Content__Acitivity__Details_element}>
+                          <p>Rating</p>
+                          {viewEditComment ?
+                            <Rating name="half-rating" defaultValue={rating} precision={0.5} onChange={e => setRating(e.target.value)} />
+                            :
+                            <Rating name="half-rating-read" defaultValue={rating} precision={0.5} readOnly />
+                          }
+                          <p> {rating}</p>
+                        </div>
+                        <div className={style.Container__Content__Acitivity__Details_element}>
+                          <p>Status</p>
+                          <p className={style.Container__Content__Acitivity__Details_element_info}>{dateReview}</p>
+                        </div>
+                        {viewEditComment ?
+                          <div className={style.Container__Content__Acitivity__Details_element}>
+                            <p>Review</p>
+                            <input type="text" value={review} name="content" onChange={e => setReview(e.target.value)} />
+                            <button onClick={() => editReview()}>Edit Review</button>
+                          </div>
+                          :
+                          <>
+                            <div className={style.Container__Content__Acitivity__Details_element}>
+                              <p>Review</p>
+                              <p className={style.Container__Content__Acitivity__Details_element_info}>{review.charAt(0).toUpperCase() + review.slice(1)}</p>
+                              <BiEdit onClick={() => setViewEditComment(true)} />
+                            </div>
+                            {error.error === "review" ? <p className={style.Container__Error}>{error.content}</p> : null}
+                          </>
+                        }
+                      </>
                       :
-                      <Rating name="half-rating-read" defaultValue={rating} precision={0.5} readOnly />
-                    }
-                  </div>
-                  <div className={style.Container__Content__Acitivity__Details_element}>
-                    <p>Status</p>
-                    <p className={style.Container__Content__Acitivity__Details_element_info}>{dateReview}</p>
-                  </div>
-                  {viewEditComment ?
-                    <div className={style.Container__Content__Acitivity__Details_element}>
-                      <p>Review</p>
-                      <input type="text" value={review} name="content" onChange={e => setReview(e.target.value)} />
-                      <button onClick={() => editReview()}>Edit Review</button>
-                    </div>
+                      <>
+                        <div className={style.Container__Content__Acitivity__Details_element}>
+                          <p>Rating</p>
+                          <Rating name="half-rating" defaultValue={rating} precision={0.5} onChange={e => setRating(e.target.value)} />
+
+                        </div>
+                        <div className={style.Container__Content__Acitivity__Details_element}>
+                          <p>Review</p>
+                          <input type="text" value={review} name="content" onChange={e => setReview(e.target.value)} />
+                          <button onClick={() => addReview()}>Enter the review</button>
+                        </div>
+                        {error.error === "review" ? <p className={style.Container__Error}>{error.content}</p> : null}
+                      </>
                     :
-                    <div className={style.Container__Content__Acitivity__Details_element}>
-                      <p>Review</p>
-                      <p className={style.Container__Content__Acitivity__Details_element_info}>{review.charAt(0).toUpperCase() + review.slice(1)}</p>
-                      <BiEdit onClick={() => setViewEditComment(true)} />
-                    </div>
+                    <p>To leave your review, you first have to buy it</p>
                   }
                   <div className={style.Container__Content__Acitivity__Details}>
-                    <h4>FRIEND REVIEWS</h4>
+                    <h4>MORE REVIEWS</h4>
                     <hr />
                     <div className={style.Container__Content__Acitivity__Details}>
-                      <CardReview
-                        image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmhFDiUUVWwUijxUlu0uKu5bH3J2ZvTb2zbmz1_YkK9DvaImQh8yGjxpyf8I8WJoapfHE&usqp=CAU"
-                        name="Hernan"
-                        content="I liked the book"
-                        rating={5}
-                      />
-                      <CardReview
-                        image="https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png"
-                        name="Rodrigo"
-                        content="i expected better"
-                        rating={3}
-                      />
+                      {unicaReview ?
+                        <p>There are no reviews for this book</p>
+                        :
+                        details.reviews.length > 0 ?
+                          details.reviews.map(c => {
+                            if (c.userId !== userData._id) {
+                              return (
+                                <CardReview
+                                  image={c.userImg}
+                                  name={c.userName}
+                                  content={c.review}
+                                  rating={c.rating}
+                                />
+                              )
+                            }
+                          })
+                          :
+                          <p>There are no reviews for this book</p>
+                      }
                     </div>
-                  </div> */}
+                  </div>
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>COMMENTS</h4>
                     <hr />
@@ -297,6 +442,7 @@ function Detail() {
                         handleComment={handleComment}
                         setDetails={setDetails}
                         comment={comment}
+                        error={error}
                       />
                       {details.comments.map(c => {
                         return (
@@ -319,14 +465,14 @@ function Detail() {
                 </div>
                 :
                 <div className={style.Container__Content__Acitivity__Details}>
-                  {/* <div className={style.Container__Content__Acitivity__Details}>
-                    <h4>FRIEND REVIEWS</h4>
+                  <div className={style.Container__Content__Acitivity__Details}>
+                    <h4>MORE REVIEWS</h4>
                     <hr />
                     <p>To see what friends thought of this book, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
                     <h4>READER Q&A</h4>
                     <hr />
                     <p>To ask other readers questions about {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
-                  </div> */}
+                  </div>
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>COMMENTS</h4>
                     <hr />
