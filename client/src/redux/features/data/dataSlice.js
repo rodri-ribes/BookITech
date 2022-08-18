@@ -26,6 +26,7 @@ export const dataSlice = createSlice({
         loading: true,
         error: false,
         dataUser: [],
+        CartUser:[]
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -51,15 +52,8 @@ export const dataSlice = createSlice({
             state.Cart = state.Cart.filter((l) => l.isbn13 !== actions.payload);
         },
         FilterTheme: (state, actions) => {
-            let copiaA =
-                actions.payload === 'all'
-                    ? [...state.allBooks]
-                    : actions.payload;
-            return {
-                ...state,
-                Theme: copiaA,
-                books: copiaA,
-            };
+            state.Theme = actions.payload
+            state.books = actions.payload
         },
 
         addFav: (state, actions) => {
@@ -72,19 +66,24 @@ export const dataSlice = createSlice({
         },
 
         Range: (state, { payload }) => {
-            if (payload.min === payload.max) {
+            if (Number(payload.min) === Number(payload.max)) {
                 state.books = [...state.books];
                 state.range = [...state.books];
                 alert('Max and Min are the same, please make them different');
-            } else if (payload.min > payload.max) {
+            } else if (Number(payload.min) > Number(payload.max)) {
                 state.books = [...state.books];
                 state.range = [...state.books];
                 alert('Min is greater than Max');
+            } else if (Number(payload.min) < 0 || Number(payload.max) < 0) {
+                state.books = [...state.books];
+                state.range = [...state.books];
+                alert('Min or Máx are less than 0');
             } else {
+                // let copirange = state.allBooks.filte
                 let copirange = state.books.filter(
                     (e) =>
-                        Number(e.price.slice(1)) >= Number(payload.min) &&
-                        Number(payload.max) >= Number(e.price.slice(1))
+                     Number(e.price.slice(1)) >= Number(payload.min) &&
+                     Number(payload.max) >= Number(e.price.slice(1)) 
                 );
                 if (!copirange.length) {
                     state.books = [...state.books];
@@ -101,30 +100,33 @@ export const dataSlice = createSlice({
         },
         ORDEN: (state, actions) => {
             let copiABC = [...state.books];
-            let filterAZ =
-                actions.payload === 'A-Z'
-                    ? copiABC.sort((a, b) => {
-                          if (a.title > b.title) {
-                              return 1;
-                          }
-                          if (b.title > a.title) {
-                              return -1;
-                          }
-                          return 0;
-                      })
-                    : copiABC.sort((a, b) => {
-                          if (a.title > b.title) {
-                              return -1;
-                          }
-                          if (b.title > a.title) {
-                              return 1;
-                          }
-                          return 0;
-                      });
+            let filterAZ;
+            if(actions.payload === 'A-Z'){
+                filterAZ = copiABC.sort((a, b) => {
+                      if (a.title > b.title) {
+                     return 1;
+                  }
+                   if (b.title > a.title) {
+                         return -1;
+                      }
+                      return 0;
+                  })
+            }
+            if(actions.payload === 'Z-A'){
+                 filterAZ = copiABC.sort((a, b) => {
+                              if (a.title > b.title) {
+                                  return -1;
+                              }
+                              if (b.title > a.title) {
+                                  return 1;
+                              }
+                              return 0;
+                          });
+            }
             return {
                 ...state,
                 A_Z: actions.payload === 'all' ? [...state.books] : filterAZ,
-                books: actions.payload === 'all' ? [...state.A_Z] : filterAZ,
+                books: actions.payload === 'all' ? [...state.allBooks] : filterAZ,
             };
         },
         MINtoMAX: (state, actions) => {
@@ -132,15 +134,15 @@ export const dataSlice = createSlice({
             let filtrar;
             if (actions.payload === 'MintoMax') {
                 filtrar = cambiar.sort(
-                    (a, b) =>
-                        Number(a.price.slice(1)) - Number(b.price.slice(1))
-                );
+                    (a, b) =>{
+                  return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                });
             }
             if (actions.payload === 'MaxtoMin') {
                 filtrar = cambiar.sort(
-                    (a, b) =>
-                        Number(b.price.slice(1)) - Number(a.price.slice(1))
-                );
+                    (a, b) =>{
+                   return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                });
             }
             return {
                 ...state,
@@ -185,6 +187,12 @@ export const dataSlice = createSlice({
         },
         dataUser: (state, actions) => {
         state.dataUser = actions.payload
+        },
+        CartUser: (state, actions) => {
+            state.CartUser = actions.payload
+        },
+        DeleteCartUser: (state, actions) => {
+            state.CartUser = state.CartUser.filter(c => c._id !== actions.payload)
         },       
     },
 });
@@ -215,6 +223,8 @@ export const {
     setErrorTrue,
     dataUser,
     updateUser,
+    CartUser,
+    DeleteCartUser
 
 } = dataSlice.actions;
 
@@ -406,3 +416,18 @@ export const updateUserdata = (id, payload) => async (dispatch) => {
     }
 }
 
+export const getCartUser = (idUser) => async (dispatch) => {
+    try {
+        let res = await axios.get(REACT_APP_API + '/cart/' + idUser)
+        console.log(idUser)
+        dispatch(CartUser(res.data[0].cart))
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const DeleteInCartUser = (id) => (dispatch) => {
+
+    dispatch(DeleteCartUser(id))
+
+}
