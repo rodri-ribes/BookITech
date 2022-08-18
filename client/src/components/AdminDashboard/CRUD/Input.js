@@ -5,23 +5,15 @@ import { getSearch } from '../../../redux/features/data/dataSlice';
 
 export function Input(props){
 
-    const {delisted, setDelisted} = props
-    const [input, setInput] = React.useState('')
+    const {inputCallback, value} = props
     const dispatch = useDispatch()
-    useEffect(()=>{ 
-      dispatch(getSearch(input))
-    }, [input])
-    // useEffect(()=>{
-    //  if(delisted){
-    //     dispatch(getSearch(input))
-    //   setDelisted(false)}
-    // }, [delisted])
     const handleOnChange = (e)=>{
       e.preventDefault()
-      setTimeout(()=>(setInput(e.target.value)), 10)
+      inputCallback(e.target.value)
+
     }
     return (
       <>
-     <TextField sx={{backgroundColor:'#ffffff', borderRadius:'10px'}}onChange={e=> handleOnChange(e)} fullWidth label="Search books by name or subject" id="bookInput" />
-     </>)
+        <TextField sx={{backgroundColor:'#ffffff', borderRadius:'10px'}}onChange={e=> handleOnChange(e)} value={value} fullWidth label="Search books by name or subject" id="bookInput" />
+      </>)
     }
