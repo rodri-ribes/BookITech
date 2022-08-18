@@ -26,7 +26,7 @@ export const dataSlice = createSlice({
         loading: true,
         error: false,
         dataUser: [],
-        CartUser:[]
+        CartUser: [],
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
