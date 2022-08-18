@@ -78,9 +78,9 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
                         <AiOutlineHeart onClick={() => addToFav()} />
                     }
                 </div>
-                <Link className={style.Container__Information_title} to={`/book/${id}`}>{name}</Link>
+                <Link className={style.Container__Information_title} to={`/book/${id}`}>{name.charAt(0).toUpperCase() + name.slice(1, 30)} (...)</Link>
                 <div className={style.Container__Information__ContainerAuthorAndPrice}>
-                    <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors ? authors.toUpperCase() : 'has no author'}</p>
+                    <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors.toUpperCase().slice(1, 25)} . . .</p>
                 </div>
             </div>
             <div className={style.Container__btn}>

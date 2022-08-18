@@ -162,12 +162,11 @@ export default function CartShopping() {
                     unit_price: parseFloat(e.price.slice(1))
                 })
             })
-            console.log(items)
+            window.localStorage.setItem("buy", JSON.stringify(cartFiltrado))
             try {
                 let resp = await axios.post(REACT_APP_API + '/payment', {
                     items
                 })
-
                 // console.log(resp.data.init_point)
                 window.location.href = resp.data.init_point
                 // window.location.href = resp.data.sandbox_init_point
