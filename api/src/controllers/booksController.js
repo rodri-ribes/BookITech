@@ -82,11 +82,11 @@ async function postBooks(req, res){
 async function updateBook(req, res) {
     const { title, authors, publisher, subtitle,
         language, pages, year, desc, price, image } = req.body
-    const updateBook = {
+    const newBook = {
         title, authors, publisher, subtitle,
         language, pages, year, desc, price, image
     }
-    await Book.findByIdAndUpdate(req.params.id, updateBook)
+    await Book.findByIdAndUpdate(req.params.id, newBook)
     res.status(200).json({ status: "Book update" })
 }
 async function deleteBook(req, res) {
@@ -96,7 +96,7 @@ async function deleteBook(req, res) {
 
 async function delistBook(req, res){
     const {id} = req.params
-    const success = await Book.findByIdAndUpdate( id, {delisted: true})
+    const success = await Book.findOneAndUpdate( {isbn13: id}, {delisted: true})
     if(!success) return res.status(400)
     return res.status(200)
 }
