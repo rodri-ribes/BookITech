@@ -182,7 +182,7 @@ export const dataSlice = createSlice({
         setLoadingTrue: (state, action) =>{
             state.loading = true
         },
-        setErrorTrue:(state, action)=>{
+        setErrorTrue: (state, action) => {
             state.error = true
         },
         dataUser: (state, actions) => {
