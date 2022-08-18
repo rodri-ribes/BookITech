@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 
-const {REACT_APP_API} = process.env
+const { REACT_APP_API } = process.env
 
 export const dataSlice = createSlice({
     name: 'data',
@@ -22,7 +22,7 @@ export const dataSlice = createSlice({
         MinToMax: [],
         dashboardState: ['CRUD'],
         id: [''],
-        nameSearch:'',
+        nameSearch: '',
         loading: true,
         error: false,
         dataUser: [],
@@ -100,6 +100,7 @@ export const dataSlice = createSlice({
         },
         ORDEN: (state, actions) => {
             let copiABC = [...state.books];
+
             let filterAZ;
             if(actions.payload === 'A-Z'){
                 filterAZ = copiABC.sort((a, b) => {
@@ -123,6 +124,28 @@ export const dataSlice = createSlice({
                               return 0;
                           });
             }
+
+            let filterAZ =
+                actions.payload === 'A-Z'
+                    ? copiABC.sort((a, b) => {
+                        if (a.title > b.title) {
+                            return 1;
+                        }
+                        if (b.title > a.title) {
+                            return -1;
+                        }
+                        return 0;
+                    })
+                    : copiABC.sort((a, b) => {
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (b.title > a.title) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+
             return {
                 ...state,
                 A_Z: actions.payload === 'all' ? [...state.books] : filterAZ,
@@ -156,30 +179,30 @@ export const dataSlice = createSlice({
             state.userID = actions.payload;
         },
         comments: (state, actions) => {
-            state.comments=[actions.payload]
+            state.comments = [actions.payload]
         },
-        vaciarCommets: (state, actions)=>{
-            state.comments=[]
+        vaciarCommets: (state, actions) => {
+            state.comments = []
         },
-        delistBook: (state, actions) =>{
-            return 
+        delistBook: (state, actions) => {
+            return
         },
-        changeDashboardState: (state, actions) =>{
+        changeDashboardState: (state, actions) => {
             state.dashboardState = actions.payload;
         },
-        putBook: (state, actions) =>{
+        putBook: (state, actions) => {
             return
         },
         newBook: (state, action) => {
             return
         },
-        idForUpdate: (state, action) =>{
+        idForUpdate: (state, action) => {
             state.id = action.payload
         },
-        setLoadingFalse: (state, action) =>{
+        setLoadingFalse: (state, action) => {
             state.loading = false
-        }, 
-        setLoadingTrue: (state, action) =>{
+        },
+        setLoadingTrue: (state, action) => {
             state.loading = true
         },
         setErrorTrue: (state, action) => {
@@ -203,7 +226,7 @@ export const {
     addLibro,
     SearchTitle,
     addCart,
-    addFav,deleteFav,
+    addFav, deleteFav,
     deleteCart,
     FilterTheme,
     Range,
@@ -253,9 +276,9 @@ export const getSearch = (name) => async (dispatch) => {
         dispatch(setLoadingTrue());
         let buscar = await axios.get(
             //URL PARA BUSCAR
-            REACT_APP_API +`/books/${name}`
+            REACT_APP_API + `/books/${name}`
         );
-        dispatch(SearchTitle({data: buscar.data,name: name }));
+        dispatch(SearchTitle({ data: buscar.data, name: name }));
         dispatch(setLoadingFalse());
         // console.log(buscar.data);
     } catch (error) {
@@ -310,33 +333,33 @@ export const getUser = (data) => async (dispatch) => {
 };
 
 
-export const getUserID=(id) => async (dispatch)=>{
+export const getUserID = (id) => async (dispatch) => {
     try {
-        let uzer= await axios.get(REACT_APP_API +`/user/${id}`)
+        let uzer = await axios.get(REACT_APP_API + `/user/${id}`)
         dispatch(addUserID(uzer.data))
     } catch (error) {
         console.log(error)
     }
 }
-export const Comments=(id) => async (dispatch)=>{
-    try{
-        let komments= await axios.get(REACT_APP_API+`/comments/${id}`).catch((err)=>{})
+export const Comments = (id) => async (dispatch) => {
+    try {
+        let komments = await axios.get(REACT_APP_API + `/comments/${id}`).catch((err) => { })
         dispatch(comments(komments.data))
     }
-    catch(error){
+    catch (error) {
         console.log(error)
     }
 }
-export const postComments=(payload) => async (dispatch)=>{
-    try{
-        const response= await axios.post(REACT_APP_API +`/comments/`,payload)
+export const postComments = (payload) => async (dispatch) => {
+    try {
+        const response = await axios.post(REACT_APP_API + `/comments/`, payload)
         dispatch(comments(response.data))
     }
-    catch(error){
+    catch (error) {
         console.log(error)
     }
 }
-export const DeleteComment=(id)=> async (dispatch) => {
+export const DeleteComment = (id) => async (dispatch) => {
     try {
         const response = await axios.delete(REACT_APP_API + `/comments/${id}`)
         dispatch(comments(response.data))
@@ -344,56 +367,59 @@ export const DeleteComment=(id)=> async (dispatch) => {
         console.log(error)
     }
 }
-export const Vaciar= () => async (dispatch)=>{
+export const Vaciar = () => async (dispatch) => {
     dispatch(vaciarCommets())
 }
-export const UpdateComment=(id,payload) => async (dispatch)=>{
+export const UpdateComment = (id, payload) => async (dispatch) => {
     try {
-        console.log("payload",id,payload)
-        const response = await axios.put(REACT_APP_API +`/comments/${id}`,payload)
-        
+        console.log("payload", id, payload)
+        const response = await axios.put(REACT_APP_API + `/comments/${id}`, payload)
+
     } catch (error) {
         console.log(error)
     }
 };
-export const changeDashboard = (payload) => async (dispatch) =>{
+export const changeDashboard = (payload) => async (dispatch) => {
     dispatch(changeDashboardState(payload))
 };
-export const deleteBook = (id) => async (dispatch) =>{ 
+export const deleteBook = (id) => async (dispatch) => {
     try {
     let success = await axios.put(
-        `http://localhost:3001/books/delist/${id}`
+        `${REACT_APP_API}/books/delist/${id}`
     );
     console.log(success);
     if(success) dispatch(delistBook());
 } catch (error) {
     console.log(error);
 }
+
 };
-export const updateBook = (payload) => async (dispatch) =>{ 
+export const updateBook = (payload) => async (dispatch) => {
     try {
     let success = await axios.put(
-        `http://localhost:3001/books/${payload.id}`,{...payload, delisted: false}
+        `${REACT_APP_API}/books/${payload.id}`,{...payload, delisted: false}
     );
     console.log(success);
     if(success) dispatch(updateBook());
 } catch (error) {
     console.log(error);
 }
+
 };
-export const createBook = (payload) => async (dispatch) =>{ 
+export const createBook = (payload) => async (dispatch) => {
     try {
     let success = await axios.post(
-        `http://localhost:3001/books/`,{...payload}
+        `${REACT_APP_API}/books/`,{...payload}
     );
     console.log(success);
     if(success) dispatch(newBook());
 } catch (error) {
     console.log(error);
 }
+
 };
-export const setId = (payload) => async (dispatch) =>{
-   dispatch(idForUpdate(payload))
+export const setId = (payload) => async (dispatch) => {
+    dispatch(idForUpdate(payload))
 }
 
 export const getDataUser = (id) => async (dispatch) => {
@@ -412,7 +438,7 @@ export const updateUserdata = (id, payload) => async (dispatch) => {
         const res = await axios.put(REACT_APP_API + `/user/${id}`, payload)
         dispatch(dataUser(res.data))
     } catch (error) {
-         console.log(error);
+        console.log(error);
     }
 }
 
@@ -431,3 +457,4 @@ export const DeleteInCartUser = (id) => (dispatch) => {
     dispatch(DeleteCartUser(id))
 
 }
+
