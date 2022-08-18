@@ -183,17 +183,17 @@ export const dataSlice = createSlice({
             state.loading = true
         },
         setErrorTrue:(state, action)=>{
-        state.error = true
+            state.error = true
         },
         dataUser: (state, actions) => {
-        state.dataUser = actions.payload
+            state.dataUser = actions.payload
         },
         CartUser: (state, actions) => {
             state.CartUser = actions.payload
         },
         DeleteCartUser: (state, actions) => {
             state.CartUser = state.CartUser.filter(c => c._id !== actions.payload)
-        },       
+        },
     },
 });
 
