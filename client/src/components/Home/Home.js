@@ -9,6 +9,8 @@ import Filters from '../Filters/Filters';
 import Loading from './Loading/Loading.jsx';
 import { Card404 } from '../404/Card404';
 import Noresults from './NoResults/Noresults';
+import { Grid } from '@mui/material';
+import FiltersSidebar from "../Filters/FiltersSidebar"
 
 export default function Home() {
     let dispatch = useDispatch();
@@ -38,17 +40,38 @@ export default function Home() {
     //logica para mostrar el search en home en modo responsive
 
     const [show, setShow] = useState(false);
+    const [sizeGrid, setSizeGrid] = useState("")
 
+    const drawerWidth = 240;
+    const sizeG = {
+        width: { sm: `calc(100% - ${drawerWidth}px)` },
+        ml: { sm: `${drawerWidth}px` },
+    }
+    const sizeGxl = {
+        width: "100%"
+    }
     useEffect(() => {
         if (window.innerWidth < 600) {
             setShow(true);
         }
-    }, [setShow]);
+        if (window.innerWidth < 1740) {
+            setSizeGrid(sizeG)
+        }
+        if (window.innerWidth > 1739) {
+            setSizeGrid(sizeGxl)
+        }
+    }, [setSizeGrid]);
+
+
+    
     return (
         <div className={style.Container}>         
-                <>
-                    <Filters setPagina={setPagina} />
-                    <div className={style.Container__Search}>{show && <Search />}</div>
+                <FiltersSidebar />
+                <Grid
+                   sx={sizeGrid}
+                >
+                    {/* <Filters setPagina={setPagina} /> */}
+                    {/* <div className={style.Container__Search}>{show && <Search />}</div> */}
                     <div className={style.Container__PanelCards}>
                         {error ? <Card404/> :
                             loading ? <Loading/> :
@@ -78,7 +101,7 @@ export default function Home() {
                             maximo={maximo}
                         />
                     </div>
-                </>
+                </Grid>
         </div>
     );
 }

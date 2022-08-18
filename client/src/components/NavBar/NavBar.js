@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 import Search from "../Search/Search";
@@ -19,11 +19,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import BookOnlineIcon from "@mui/icons-material/BookOnline";
 import AdbIcon from "@mui/icons-material/Adb";
-import SearchIcon from "@mui/icons-material/Search";
 
 function NavBar({ user, setUser }) {
+    const drawerWidth = 240;
+
     const [click, setClick] = useState({});
 
     const changeClick = () => {
@@ -55,6 +55,30 @@ function NavBar({ user, setUser }) {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
 
+    const [sizeNav, setSizeNav] = useState("")
+
+    const sizeH = {
+        width: { sm: `calc(100% - ${drawerWidth}px)` },
+        ml: { sm: `${drawerWidth}px` },
+        backgroundColor: "#0f243b",
+        color: "#DADADA" 
+    }
+
+    const sizeOthers = {
+        backgroundColor: "#0f243b",
+        color: "#DADADA"
+    }
+
+    useEffect(() => {
+        if (window.location.pathname === "/") {
+            setSizeNav(sizeH)
+        }else{
+            setSizeNav(sizeOthers)
+        }
+    }, [setSizeNav])
+    
+
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -79,17 +103,20 @@ function NavBar({ user, setUser }) {
         color: "#0a1929",
     };
 
+
+
     return (
         <>
             <AppBar
+                sx={sizeNav}
                 position="sticky"
-                sx={{ backgroundColor: "#0f243b", color: "#DADADA" }}
+                // sx={{ backgroundColor: "#0f243b", color: "#DADADA" }}
             >
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
-                        <BookOnlineIcon
+                        {/* <BookOnlineIcon
                             sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}
-                        />
+                        /> */}
                         <Link to="/" style={textLink}>
                             <Typography
                                 variant="h6"
@@ -99,7 +126,7 @@ function NavBar({ user, setUser }) {
                                     mr: 2,
                                     display: { xs: "none", md: "flex" },
                                     fontFamily: "monospace",
-                                    fontWeight: 700,
+                                    fontWeight: 800,
                                     letterSpacing: ".3rem",
                                     color: "inherit",
                                     textDecoration: "none",
@@ -195,12 +222,12 @@ function NavBar({ user, setUser }) {
                                 })}
                             </Menu>
                         </Box>
-                        <AdbIcon
+                        {/* <AdbIcon
                             sx={{
                                 display: { xs: "flex", md: "none" },
                                 mr: 1,
                             }}
-                        />
+                        /> */}
                         <Link to="/" style={textLink}>
                             <Typography
                                 variant="h5"
