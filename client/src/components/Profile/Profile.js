@@ -66,7 +66,7 @@ function Profile() {
 
     useEffect(() => {
         getdata();
-    });
+    },[]);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);

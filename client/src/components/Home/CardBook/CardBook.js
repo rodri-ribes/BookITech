@@ -58,18 +58,25 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
             
             await axios.post(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
             dispatch(addFavs(id))
-            setHeart(true)
-
         }else{
             console.log("no se pudieron empujar")
         }
-        
+        setHeart(true)
         
     }
-    const RemoveToFav = () => {
-        //Aca iria el dispatch de la actions que quitaria el item al carrito
+    const RemoveToFav = async() => {
+        //Aca iria el dispatch de la actions que quitaria el favorito
+        let auxUser = JSON.parse(window.localStorage.getItem("user"))
+        let idUser = auxUser.email
+        if(user || window.localStorage.getItem("user")){
+            
+            await axios.delete(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
+            dispatch(deleteFavs(id))
+        }else{
+            console.log("no se pudieron empujar")
+        }
         setHeart(false)
-        dispatch(deleteFavs(id))
+        
     }
 
 
