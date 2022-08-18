@@ -1,7 +1,7 @@
 const axios = require("axios")
 const Book = require('../models/Book')
 const User = require('../models/User')
-
+const nodemailer = require('nodemailer')
 //ESTA FUNCIÓN TRAE TODOS LOS LIBROS Y SI SE LE MANDA UNA QUERY HACE EL FILTRO POR EL DETERMINADO TITLE O AUTHORS
 
 async function getBooks(req, res) {
@@ -62,6 +62,37 @@ async function postBooks(req, res){
                 language, pages, year, desc, price, image
             })
             await newBook.save()
+            const user = await User.find()
+            const transporter = nodemailer.createTransport({
+                host: "smtp.zoho.com",
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                    user: 'ledobookitech@zohomail.com', // generated ethereal user
+                    pass: 'frqGYjAbPUUR', // generated ethereal password
+                },
+            });
+            
+            user.forEach(async(e) => {
+                 await transporter.sendMail({
+                    from: '"BookITech 📖" <ledobookitech@zohomail.com> ',
+                to: e.email,
+                subject: "NEW BOOKS",
+                html: `
+                <div style="background-color:#DCDCDC; border-radius:20px">
+                    <h1  style="text-align:center; padding:10px">We have New Books 📚</h1>
+                        <div style="text-align:center">
+                            <img src=${newBook.image} alt='img not foun' width='100' height='100' />
+                        </div>
+                         <div style="text-align:center; padding:10px">
+                         <h5>↓BUY HERE!↓</h5>
+                         <a href="https://bookitech-olive.vercel.app/">📚BookITech 📗</a>
+                         </div>
+                </div>
+                `
+            })
+        })
+            console.log(prueba.messageId)
             res.status(200).json({
                 title:newBook.title,
                 authors:newBook.authors,
@@ -82,11 +113,11 @@ async function postBooks(req, res){
 async function updateBook(req, res) {
     const { title, authors, publisher, subtitle,
         language, pages, year, desc, price, image } = req.body
-    const updateBook = {
+    const newBook = {
         title, authors, publisher, subtitle,
         language, pages, year, desc, price, image
     }
-    await Book.findByIdAndUpdate(req.params.id, updateBook)
+    await Book.findByIdAndUpdate(req.params.id, newBook)
     res.status(200).json({ status: "Book update" })
 }
 async function deleteBook(req, res) {
@@ -96,7 +127,7 @@ async function deleteBook(req, res) {
 
 async function delistBook(req, res){
     const {id} = req.params
-    const success = await Book.findByIdAndUpdate( id, {delisted: true})
+    const success = await Book.findOneAndUpdate( {isbn13: id}, {delisted: true})
     if(!success) return res.status(400)
     return res.status(200)
 }

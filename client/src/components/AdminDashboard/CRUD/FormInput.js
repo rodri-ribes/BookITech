@@ -6,6 +6,7 @@ import {Button, Box} from "@mui/material";
 import axios from 'axios'
 import { useDispatch } from "react-redux";
 import { updateBook , createBook, setId} from "../../../redux/features/data/dataSlice";
+import Confirmation from "./Confirmation";
 
 
 const {REACT_APP_API} = process.env
@@ -13,7 +14,7 @@ const color = '#173A5E'
 export function FormInput(props) {
   
   const {prompt, id} = props
-    const dispatch = useDispatch()
+    const [confirmation, setConfirmation] = useState(false)
     const [oldValues, setOldValues] = useState({ 
         _id:"",
         title: "",
@@ -100,19 +101,17 @@ export function FormInput(props) {
       
       function handleOnClick(e){
         
-        e.preventDefault()  
-        id ? dispatch(updateBook({...formValues, id: formValues._id })) : dispatch(createBook({...formValues}))
-        dispatch(setId(''))
-        prompt(true)
-        
+        e.preventDefault()
+        setConfirmation(true) 
         
       }
       function handleReset(){
         fetchData()
       }
-      return (
+      return (<>
+      {confirmation && <Confirmation id={id} data={formValues} confirmation={setConfirmation} prompt={prompt}/>} 
         <form style={{ minWidth:'60vw', color:'white'}} >
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ flexGrow: 1, opacity:  confirmation ? 0.3 : 1 }}>
           <Grid sx={{minWidth:'100%'}} container columns={12} padding={2}
           direction="row"
           justifyContent=""
@@ -120,6 +119,7 @@ export function FormInput(props) {
             <Grid item xs={12}>
               <h5>Title</h5>
               <TextField
+              disabled = {confirmation}
               sx={{backgroundColor: color, minWidth: '85%', color: 'white', borderRadius: '10px', color:'#EEEEEE'}}
                 id="title-input"
                 name="title"
@@ -131,6 +131,7 @@ export function FormInput(props) {
             <Grid xs={12} item>
             <h5>Subtitle</h5>
               <TextField
+              disabled = {confirmation}
               sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
                 id="subtitle-input"
                 name="subtitle"
@@ -142,6 +143,7 @@ export function FormInput(props) {
             <Grid xs={12} item>
             <h5>Authors</h5>
               <TextField
+              disabled = {confirmation}
               sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
                 id="authors-input"
                 name="authors"
@@ -157,6 +159,7 @@ export function FormInput(props) {
             <Grid xs={4} item>
             <h5>ISBN13</h5>
               <TextField
+              disabled = {confirmation}
               sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
               id="isbn13-input"
               name="isbn13"
@@ -168,6 +171,7 @@ export function FormInput(props) {
             <Grid xs={3} item>
             <h5>Pages</h5>
               <TextField
+              disabled = {confirmation}
               sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
                 id="pages-input"
                 name="pages"
@@ -179,6 +183,7 @@ export function FormInput(props) {
              <Grid xs={3} item>
              <h5>Year</h5>
               <TextField
+              disabled = {confirmation}
               sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
               id="year-input"
               name="year"
@@ -191,6 +196,7 @@ export function FormInput(props) {
             <Grid xs={12} item>
             <h5>Summary</h5>
               <TextField
+              disabled = {confirmation}
               sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
                 id="desc-input"
                 name="desc"
@@ -204,6 +210,7 @@ export function FormInput(props) {
             <Grid xs={6} item>
             <h5>Language</h5>
               <TextField
+              disabled = {confirmation}
               sx={{backgroundColor: color, minWidth:'85%', borderRadius: '10px'}}
                 id="language-input"
                 name="language"
@@ -215,6 +222,7 @@ export function FormInput(props) {
             <Grid xs={4} item>
             <h5>Price</h5>
               <TextField
+              disabled = {confirmation}
               sx={{backgroundColor: color, color:'white', minWidth:'40%', borderRadius: '10px'}}
                 id="price-input"
                 name="price"
@@ -226,6 +234,7 @@ export function FormInput(props) {
             <Grid xs={8} item>
             <h5>Publisher</h5>
               <TextField
+              disabled = {confirmation}
               sx={{backgroundColor: color, minWidth:'90%', borderRadius: '10px'}}
                 id="publisher-input"
                 name="publisher"
@@ -237,6 +246,7 @@ export function FormInput(props) {
             <Grid xs={12} item>
             <h5>Image URL</h5>
               <TextField
+              disabled = {confirmation}
               sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
                 id="image-input"
                 name="image"
@@ -246,15 +256,18 @@ export function FormInput(props) {
               />
             </Grid>
             <Grid item xs={12} alignItems="center">
-            <Button variant="contained" color="primary"onClick={e=>handleOnClick(e)}>
+            <Button variant="contained" color="primary"onClick={e=>handleOnClick(e)}
+              disabled = {confirmation}>
               Submit
             </Button> 
-            <Button variant="outlined" color="primary" type="reset" onClick={handleReset}>
+            <Button variant="outlined" color="primary" type="reset" onClick={handleReset}
+              disabled = {confirmation}>
                 Reset
             </Button>
           </Grid>
           </Grid>
         </Box>
         </form>
+        </>
       );
     };
