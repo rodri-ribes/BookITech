@@ -5,7 +5,7 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AddCart, addFavs, deleteCart, deleteFavs } from '../../../redux/features/data/dataSlice'
+import { AddCart, addFavs, deleteCart, deleteFavs, getCartUser } from '../../../redux/features/data/dataSlice'
 import axios from 'axios'
 const { REACT_APP_API } = process.env
 
@@ -26,9 +26,10 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
             let idBook = id;
             let auxUser = JSON.parse(window.localStorage.getItem("user"))
             let idUser = auxUser.id
-            axios.post(REACT_APP_API + '/cart/add', {
+            await axios.post(REACT_APP_API + '/cart/add', {
                 idUser, idBook
             })
+            dispatch(getCartUser(idUser))
         } else {
             dispatch(AddCart(id))
         }
@@ -98,7 +99,7 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
                 </div>
                 <Link className={style.Container__Information_title} to={`/book/${id}`}>{name}</Link>
                 <div className={style.Container__Information__ContainerAuthorAndPrice}>
-                    <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors.toUpperCase()}</p>
+                    <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors ? authors.toUpperCase() : 'has no author'}</p>
                 </div>
             </div>
             <div className={style.Container__btn}>
