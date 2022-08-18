@@ -5,16 +5,19 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AddCart, addFavs, deleteCart, deleteFavs, getCartUser } from '../../../redux/features/data/dataSlice'
+import { AddCart, addFavs, deleteCart, deleteFavs, getCartUser,getFav } from '../../../redux/features/data/dataSlice'
 import axios from 'axios'
 const { REACT_APP_API } = process.env
 
-export default function CardBook({ id, name, authors, img, subtitle, language, price }) {
+export default function CardBook({ id, name, authors, img, price, heart }) {
+    
+    let books = useSelector(state => state.data.books) 
     
 
     const [cart, setCart] = useState(false)
-    const [heart, setHeart] = useState(false)
-
+    // const [heart, setHeart] = useState(false)
+    const cora=books.filter(m=>m.heart===true)
+    console.log(cora)
 
     let user = useSelector(state => state.data.user)
 
@@ -54,29 +57,33 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
     const addToFav = async () => {
             let auxUser = JSON.parse(window.localStorage.getItem("user"))
             let idUser = auxUser.email
+            let t= !heart
+            console.log(t)
             console.log("IDS", idUser, id)
         if(user || window.localStorage.getItem("user")){
-            
+            await axios.put(REACT_APP_API + `/books/id/${id}`,{t})
             await axios.post(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
-            dispatch(addFavs(id))
+            dispatch(getFav(idUser))
         }else{
-            console.log("no se pudieron empujar")
+            dispatch(addFavs(id))
         }
-        setHeart(true)
+        
         
     }
     const RemoveToFav = async() => {
         //Aca iria el dispatch de la actions que quitaria el favorito
         let auxUser = JSON.parse(window.localStorage.getItem("user"))
         let idUser = auxUser.email
+        let t=!heart
         if(user || window.localStorage.getItem("user")){
-            
-            await axios.delete(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
+            await axios.put(REACT_APP_API + `/books/id/${id}`,{t})
+            const res= await axios.put(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
+            console.log(res.data)
             dispatch(deleteFavs(id))
         }else{
             console.log("no se pudieron empujar")
         }
-        setHeart(false)
+        // setHeart(false)
         
     }
 

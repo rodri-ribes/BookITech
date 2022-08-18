@@ -36,12 +36,13 @@ export default function CardBook({ id, name, author, img, price }) {
           //Aca iria el dispatch de la actions que quitaria el item al carrito
           let auxUser = JSON.parse(window.localStorage.getItem("user"))
           let idUser = auxUser.email
-          console.log("IDS", idUser, id)
+          let t=!heart
           if(user || window.localStorage.getItem("user")){
-              
-             const res= await axios.delete(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
+            console.log("IDS", idUser, id)
+                await axios.put(REACT_APP_API + `/books/id/${id}`,{t})
+             const res= await axios.put(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
              console.log(res.data)
-              dispatch(deleteFavs(id))
+             dispatch(deleteFavs(id))
           }else{
               console.log("no se pudieron empujar")
           }

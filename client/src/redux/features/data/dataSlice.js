@@ -12,6 +12,7 @@ export const dataSlice = createSlice({
         details: [],
         Cart: [],
         Favs: [],
+        Favo:[],
         allBooks: [],
         Theme: [],
         range: [],
@@ -57,12 +58,18 @@ export const dataSlice = createSlice({
         },
 
         addFav: (state, actions) => {
-            state.Favs = actions.payload
-           
+             state.Favs = state.Favs.concat(state.books.filter((l) => l.isbn13 === actions.payload))
+        },
+        addFav2:(state, actions)=> {
+            state.Favo=actions.payload
         },
         deleteFav: (state, actions) => {
+            
             state.Favs = state.Favs.filter((l) => l.isbn13 !== actions.payload);
         },
+        // deleteFav2: (state,actions)=>{
+        //     state.Favo=
+        // }
 
         Range: (state, { payload }) => {
             if (Number(payload.min) === Number(payload.max)) {
@@ -124,26 +131,6 @@ export const dataSlice = createSlice({
                           });
             }
 
-            let filterAZ =
-                actions.payload === 'A-Z'
-                    ? copiABC.sort((a, b) => {
-                        if (a.title > b.title) {
-                            return 1;
-                        }
-                        if (b.title > a.title) {
-                            return -1;
-                        }
-                        return 0;
-                    })
-                    : copiABC.sort((a, b) => {
-                        if (a.title > b.title) {
-                            return -1;
-                        }
-                        if (b.title > a.title) {
-                            return 1;
-                        }
-                        return 0;
-                    });
 
             return {
                 ...state,
@@ -225,7 +212,7 @@ export const {
     addLibro,
     SearchTitle,
     addCart,
-    addFav, deleteFav,
+    addFav,addFav2, deleteFav,
     deleteCart,
     FilterTheme,
     Range,
@@ -294,7 +281,8 @@ export const DeleteCart = (id) => async (dispatch) => {
 };
 export const getFav =(idUser) => async (dispatch) => {
     const res = await axios.get(REACT_APP_API+ `/favorite`,{params:{email:idUser}})
-    dispatch(addFav(res.data))
+    //let filter=res.data.map(m=>m.book.isbn13)
+    dispatch(addFav2(res.data))
 }
 export const addFavs = (id) => async (dispatch) => {
     dispatch(addFav(id));

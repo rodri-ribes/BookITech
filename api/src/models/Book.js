@@ -77,7 +77,11 @@ const BookSchema = new Schema({
             },
             user: Array
         }
-    ]
+    ],
+    heart:{
+        type: Boolean,
+        default: false
+    }
 
 })
 

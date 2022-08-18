@@ -6,14 +6,14 @@ const Users = require('../models/User')
 //Post agregar libros en fav
 async function PostFav(req, res) {
     const {email} = req.query;
-   const {id} = req.body;   
+   const {id} = req.body;    
     try {
         if(email){
             if(id){
             let _id = id;
             const book = await Books.findOne({isbn13:_id})
             const user = await Users.findOne({email}) 
-            const all = new Favorite({book,user})
+            const all = new Favorite({book,user,heart:true})
             const doc = await Favorite.findOne({book:book}) || await Favorite.create(all)
              await doc.save()
             res.status(200).send('Agregado correctamente')
@@ -97,7 +97,7 @@ async function DeleteFav(req,res) {
                
             }
             else {
-                res.status(202).send('Falta el libro para eliminar o email')
+                res.status(202).send(console.log(email,id))
             }
         
     } catch(err){
