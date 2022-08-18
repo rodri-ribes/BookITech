@@ -16,7 +16,7 @@ const saveSignIn = async (req, res) => {
         const book = await Book.find()
             let img = book.map(e => {
                 let min = []
-                if(min.length < 6){
+                if(min.length < 4){
                     min.push(e.image)
                 }
                 return min
@@ -35,16 +35,20 @@ const saveSignIn = async (req, res) => {
             from:  '"BookITech 📖" <ledobookitech@zohomail.com> ',
             to: email,
             subject: "HELLOOO ",
-            html:  `
-            <h1>Welcome to BookITech 📖</h1>
-                    <img src=${img[0]} alt='img not foun' width='100' height='100' />
-                    <img src=${img[1]} alt='img not foun' width='100' height='100'/>
-                    <img src=${img[2]} alt='img not foun' width='100' height='100'/>                      
-                    <img src=${img[3]} alt='img not foun' width='100' height='100'/>
-                    <img src=${img[4]} alt='img not foun' width='100' height='100'/>
-                    <img src=${img[5]} alt='img not foun' width='100' height='100'/>
-                <h5>BUY HERE!</h5>
-                <h4>Link to the page</h4>
+            html: `
+            <div style="background-color:#DCDCDC; border-radius:20px">
+            <h1 style="text-align:center; padding:10px">Welcome to BookITech 📖</h1>
+            <div style="text-align:center">
+            <img src=${img[0]} alt='img not foun' width='150' height='150' />
+            <img src=${img[1]} alt='img not foun' width='150' height='150'/>
+                    <img src=${img[2]} alt='img not foun' width='150' height='150'/>                      
+                    <img src=${img[3]} alt='img not foun' width='150' height='150'/>
+            </div>
+            <div style="text-align:center; padding:10px">
+            <h5>↓BUY HERE!↓</h5>
+            <a href="https://bookitech-olive.vercel.app/">📚BookITech 📗</a>
+            </div>
+            </div>
             `
           })
         return res.send("creado");
