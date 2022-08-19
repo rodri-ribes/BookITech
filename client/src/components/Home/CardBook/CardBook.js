@@ -79,7 +79,7 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
                 </div>
                 <Link className={style.Container__Information_title} to={`/book/${id}`}>{name}</Link>
                 <div className={style.Container__Information__ContainerAuthorAndPrice}>
-                    <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors.toUpperCase()}</p>
+                <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors ? authors.toUpperCase() : 'has no author'}</p>
                 </div>
             </div>
             <div className={style.Container__btn}>

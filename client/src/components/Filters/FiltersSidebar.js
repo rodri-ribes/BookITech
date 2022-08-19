@@ -44,7 +44,7 @@ import { Grid } from "@mui/material";
 
 const drawerWidth = 240;
 
-function FiltersSidebar(props, { setPagina, setOrden }) {
+function FiltersSidebar(props, { setPagina }) {
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -81,14 +81,12 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
         e.preventDefault();
         dispatch(ChangeRange("MintoMax"));
         setPagina(1);
-        setOrden(e.target.value);
     }
 
     function handleChangeRangeMax(e) {
         e.preventDefault();
         dispatch(ChangeRange("MaxtoMin"));
         setPagina(1);
-        setOrden(e.target.value);
     }
 
     function validate() {
@@ -103,10 +101,9 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
     }
     function handleTheme(e) {
         // e.preventDefault();
-        console.log(e.target.value);
-        dispatch(FilTheme(e.target.value));
+        console.log(e.target.textContent);
+        dispatch(FilTheme(e.target.textContent));
         setPagina(1);
-        // setOrden(e.target.value);
     }
 
     function handleRange(e) {
@@ -118,7 +115,6 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
             setRange({ max: "", min: "" });
             // console.log('holaaa');
             setPagina(1);
-            setOrden(e.target.value);
         }
     }
     function handleChange(e) {
@@ -132,16 +128,17 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
                 [e.target.name]: e.target.value,
             })
         );
-        setOrden(e.target.value);
     }
     function handleOrdenAZ(e) {
         e.preventDefault();
+        console.log(e.target.value);
         dispatch(ORdenAZ("A-Z"));
         setPagina(1);
     }
 
     function handleOrdenZA(e) {
         e.preventDefault();
+        console.log(e.target.value);
         dispatch(ORdenAZ("Z-A"));
         setPagina(1);
     }
@@ -209,7 +206,7 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
                 </ListItem>
                 <ListItem disablePadding sx={{ fontSize: "22px" }}>
                     <ListItemButton
-                        onCclick={(e) => handleOrdenZA(e)}
+                        onClick={(e) => handleOrdenZA(e)}
                         value="Z-A"
                         sx={{ fontSize: "22px" }}
                     >
@@ -269,7 +266,7 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
                 >
                     Filter by price
                 </Typography>
-                <form onSubmit={(e) => handleRange(e)}>
+                {/* <form onSubmit={(e) => handleRange(e)}> */}
                     <Box
                         component="form"
                         display="grid"
@@ -313,12 +310,13 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
                                 }}
                                 variant="outlined"
                                 type="submit"
+                                onClick={(e) => handleRange(e)}
                             >
                                 Filter by price
                             </Button>
                         </ListItem>
                     </Box>
-                </form>
+                {/* </form> */}
             </List>
             <List>
                 <Typography
@@ -343,14 +341,14 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
                     {tematica?.map((e, k) => {
                         return (
                             <ListItem disablePadding>
-                                <MenuItem
+                                <ListItemButton
                                     key={k}
                                     value={e}
-                                    sx={{ width: "100%" }}
+                                    sx={{ width: "100%", color: "#DADADA" }}
                                     onClick={(e) => handleTheme(e)}
                                 >
                                     {e.toUpperCase()}
-                                </MenuItem>
+                                </ListItemButton>
                             </ListItem>
                         );
                     })}

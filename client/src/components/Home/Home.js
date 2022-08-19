@@ -66,7 +66,7 @@ export default function Home() {
     
     return (
         <div className={style.Container}>         
-                <FiltersSidebar />
+                <FiltersSidebar setPagina= {setPagina} />
                 <Grid
                    sx={sizeGrid}
                 >
