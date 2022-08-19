@@ -1,21 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from "react-redux"
+import { useSelector ,useDispatch} from "react-redux"
+import {Card404} from "../404/Card404"
 import fav from "./Fav.module.css"
 import CardBook from "./CardBook/CardBook"
 import { Paginacion } from '../Home/Pagination/Pagination'
 import { GiBookmarklet } from "react-icons/gi"
 import { useNavigate } from 'react-router-dom'
+import {getFav} from '../../redux/features/data/dataSlice'
 
 function Favorite() {
 
-    let Favs = useSelector(state => state.data.Favs)
+    let Favo = useSelector(state => state.data.Favo)
+    let user = useSelector(state => state.data.user)
+    const [Favos,setFavos]= useState([])
+    const Favorites=Favo?.map(l=>l.book)    
+
+    const dispatch = useDispatch()
+    useEffect(() => {  
+            if(user || window.localStorage.getItem("user")){
+            let auxUser = JSON.parse(window.localStorage.getItem("user"))
+            let idUser = auxUser.email
+                dispatch(getFav(idUser))
+        }
+    })
+    useEffect(() => {
+        setFavos(Favorites)
+      },[])
 
     const [pagina, setPagina] = useState(1);
 
     const porPagina = 10;
+    
 
-
-    const ceil = Favs.length / porPagina;
+   
+    const ceil = Favos.length / porPagina;
     let maximo = Math.ceil(ceil)
 
 
@@ -42,7 +60,7 @@ function Favorite() {
 
             <div className={fav.Container__PanelCards} >
                 {
-                    Favs.slice(
+                    Favos.slice(
                         (pagina - 1) * porPagina,
                         (pagina - 1) * porPagina + porPagina
                     ).map((l, i) => {
