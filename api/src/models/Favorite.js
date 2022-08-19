@@ -9,6 +9,10 @@ const FavoriteSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    heart:{
+        type: Boolean,
+        default: false
     }
 })
 

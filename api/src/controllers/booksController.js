@@ -112,6 +112,7 @@ async function postBooks(req, res){
 
 async function updateBook(req, res) {
     const { title, authors, publisher, subtitle,
+
         language, pages, year, desc, price, image } = req.body
     const newBook = {
         title, authors, publisher, subtitle,

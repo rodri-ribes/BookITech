@@ -6,7 +6,7 @@ const router = Router()
 
 router.get('/',GetFav)
 router.post("/", PostFav)
-router.delete('/', DeleteFav)
+router.put('/', DeleteFav)
 
 
 

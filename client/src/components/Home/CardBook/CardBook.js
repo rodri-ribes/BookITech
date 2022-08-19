@@ -5,14 +5,18 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AddCart, addFavs, deleteCart, deleteFavs, getCartUser } from '../../../redux/features/data/dataSlice'
+import { AddCart, addFavs, deleteCart, deleteFavs, getCartUser,getFav } from '../../../redux/features/data/dataSlice'
 import axios from 'axios'
 const { REACT_APP_API } = process.env
 
-export default function CardBook({ id, name, authors, img, subtitle, language, price }) {
+export default function CardBook({ id, name, authors, img, price, heart }) {
+    
+    
 
     const [cart, setCart] = useState(false)
+
     const [heart, setHeart] = useState(false)
+    
     let user = useSelector(state => state.data.user)
 
     const [existUser, setexistUser] = useState(false)
@@ -25,8 +29,6 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
             setexistUser(false)
         }
     }, [user, window.localStorage.getItem("user")])
-
-
 
     let dispatch = useDispatch();
 
@@ -61,15 +63,32 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
         setCart(false)
     }
 
-    const addToFav = () => {
-        //Aca iria el dispatch de la actions que agregaria el item al carrito
-        setHeart(true)
-        dispatch(addFavs(id))
+    const addToFav = async () => {
+            let auxUser = JSON.parse(window.localStorage.getItem("user"))
+            let idUser = auxUser.email
+            console.log("IDS", idUser, id)
+        if(user || window.localStorage.getItem("user")){
+            await axios.post(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
+            dispatch(getFav(idUser))
+        }else{
+            dispatch(addFavs(id))
+        }
+        
+        
     }
-    const RemoveToFav = () => {
-        //Aca iria el dispatch de la actions que quitaria el item al carrito
-        setHeart(false)
-        dispatch(deleteFavs(id))
+    const RemoveToFav = async() => {
+        //Aca iria el dispatch de la actions que quitaria el favorito
+        let auxUser = JSON.parse(window.localStorage.getItem("user"))
+        let idUser = auxUser.email
+        if(user || window.localStorage.getItem("user")){
+            const res= await axios.put(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
+            console.log(res.data)
+            dispatch(deleteFavs(id))
+        }else{
+            console.log("no se pudieron empujar")
+        }
+        // setHeart(false)
+        
     }
 
     //LOGICA PARA OCULTAR
@@ -84,6 +103,7 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
             </div>
             <div className={style.Container__Information}>
                 <h3 className={style.Container__Information__ContainerAuthorAndPrice_price}>{price}</h3>
+
                 {existUser ?
                     <div className={style.Container__Information__Heart}>
                         {heart ?
@@ -95,6 +115,7 @@ export default function CardBook({ id, name, authors, img, subtitle, language, p
                     :
                     null
                 }
+
                 <Link className={style.Container__Information_title} to={`/book/${id}`}>{name.charAt(0).toUpperCase() + name.slice(1, 30)} (...)</Link>
                 <div className={style.Container__Information__ContainerAuthorAndPrice}>
                     <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors ? authors.toUpperCase().slice(1, 25) : 'has no author'}</p>
