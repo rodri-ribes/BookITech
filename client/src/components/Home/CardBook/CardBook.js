@@ -11,15 +11,13 @@ const { REACT_APP_API } = process.env
 
 export default function CardBook({ id, name, authors, img, price, heart }) {
     
-    let books = useSelector(state => state.data.books) 
     
 
     const [cart, setCart] = useState(false)
     // const [heart, setHeart] = useState(false)
-    const cora=books.filter(m=>m.heart===true)
-    console.log(cora)
-
     let user = useSelector(state => state.data.user)
+    
+    
 
     let dispatch = useDispatch();
 
@@ -57,11 +55,8 @@ export default function CardBook({ id, name, authors, img, price, heart }) {
     const addToFav = async () => {
             let auxUser = JSON.parse(window.localStorage.getItem("user"))
             let idUser = auxUser.email
-            let t= !heart
-            console.log(t)
             console.log("IDS", idUser, id)
         if(user || window.localStorage.getItem("user")){
-            await axios.put(REACT_APP_API + `/books/id/${id}`,{t})
             await axios.post(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
             dispatch(getFav(idUser))
         }else{
@@ -74,9 +69,7 @@ export default function CardBook({ id, name, authors, img, price, heart }) {
         //Aca iria el dispatch de la actions que quitaria el favorito
         let auxUser = JSON.parse(window.localStorage.getItem("user"))
         let idUser = auxUser.email
-        let t=!heart
         if(user || window.localStorage.getItem("user")){
-            await axios.put(REACT_APP_API + `/books/id/${id}`,{t})
             const res= await axios.put(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
             console.log(res.data)
             dispatch(deleteFavs(id))
@@ -97,13 +90,13 @@ export default function CardBook({ id, name, authors, img, price, heart }) {
             </div>
             <div className={style.Container__Information}>
                 <h3 className={style.Container__Information__ContainerAuthorAndPrice_price}>{price}</h3>
-                <div className={style.Container__Information__Heart}>
+                 <div className={style.Container__Information__Heart}>
                     {heart ?
                         <AiFillHeart onClick={() => RemoveToFav()} />
                         :
                         <AiOutlineHeart onClick={() => addToFav()} />
                     }
-                </div>
+                </div> 
                 <Link className={style.Container__Information_title} to={`/book/${id}`}>{name.charAt(0).toUpperCase() + name.slice(1, 30)} (...)</Link>
                 <div className={style.Container__Information__ContainerAuthorAndPrice}>
                     <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors ? authors.toUpperCase().slice(1, 25) : 'has no author'}</p>

@@ -11,10 +11,18 @@ import {getFav} from '../../redux/features/data/dataSlice'
 function Favorite() {
 
     let Favo = useSelector(state => state.data.Favo)
+    let user = useSelector(state => state.data.user)
     const [Favos,setFavos]= useState([])
     const Favorites=Favo?.map(l=>l.book)    
 
     const dispatch = useDispatch()
+    useEffect(() => {  
+            if(user || window.localStorage.getItem("user")){
+            let auxUser = JSON.parse(window.localStorage.getItem("user"))
+            let idUser = auxUser.email
+                dispatch(getFav(idUser))
+        }
+    })
     useEffect(() => {
         setFavos(Favorites)
       },[])

@@ -121,13 +121,6 @@ async function updateBook(req, res) {
     await Book.findByIdAndUpdate(req.params.id, newBook)
     res.status(200).json({ status: "Book update" })
 }
-async function updateHeart(req, res) {
-    const {t}=req.body
-    let heart=t
-    const update={ heart }
-    await Book.findOneAndUpdate({isbn13:req.params.id}, update)
-    res.status(200).send("update")
-}
 async function deleteBook(req, res) {
     await Book.findByIdAndRemove(req.params.id)
     res.json("eliminado babe")
@@ -162,7 +155,6 @@ module.exports = {
     getBooksByName,
     getBooksById,
     postBooks,
-    updateHeart,
     updateBook,
     deleteBook,
     delistBook,

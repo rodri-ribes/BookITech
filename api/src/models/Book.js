@@ -80,10 +80,6 @@ const BookSchema = new Schema({
         }
     ],
 
-    heart:{
-        type: Boolean,
-        default: false
-    },
 
     reviews: [
         {

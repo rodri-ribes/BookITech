@@ -14,8 +14,6 @@ router.get("/id/:id", getBooksById)
 
 router.post("/",postBooks)
 
-router.put("/id/:id",updateHeart)
-
 router.put("/:id",updateBook)
 
 router.put("/delist/:id", delistBook)
