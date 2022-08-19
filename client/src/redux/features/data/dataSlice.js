@@ -269,15 +269,15 @@ export const deleteFavs = (id) => async (dispatch) => {
 
 export const FilTheme = (payload) => async (dispatch) => {
     try {
-        if (payload === 'all') {
-            dispatch(FilterTheme(payload));
-        } else {
+        // if (payload === 'all') {
+        //     dispatch(FilterTheme(payload));
+        // } else {
             let buscar = await axios.get(
                 //URL PARA BUSCAR
                 REACT_APP_API + `/books/${payload}`
             );
             dispatch(FilterTheme(buscar.data));
-        }
+        // }
         // console.log(buscar.data);
     } catch (error) {
         // alert('the books were not found');

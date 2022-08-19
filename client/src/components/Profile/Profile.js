@@ -15,6 +15,7 @@ import {
     Button,
     TextField,
     TableBody,
+    Box,
 } from "@mui/material";
 import styled from "@emotion/styled";
 import Accordion from "@mui/material/Accordion";
@@ -66,12 +67,11 @@ function Profile() {
 
     useEffect(() => {
         getdata();
-    },[]);
+    }, [updateData]);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
-
 
     // const rating = User.rating
     // const ratingAvg = function(rating) {
@@ -89,7 +89,6 @@ function Profile() {
     //   width: '30rem',
     //   height: '1px',
     // };
-
 
     // const Img = styled('img')({
     //   margin: 'auto',
@@ -135,7 +134,8 @@ function Profile() {
     const modalStyles = {
         position: "absolute",
         width: 400,
-        backgroundColor: "#0f243b",
+        backgroundColor: "#0a1929",
+        opacity: "90%",
         color: "#DADADA",
         border: "2px solid #000",
         // boxShadow: theme.shadow[5],
@@ -143,6 +143,7 @@ function Profile() {
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
+        borderRadius: "2%",
     };
     console.log(User.img);
 
@@ -150,62 +151,91 @@ function Profile() {
         cursor: "pointer",
     };
 
-    const inputMaterialStyles = {
-        width: "100%",
-        color: "#DADADA",
-    };
+    const cssTextField = {
+            width: "100%",
+            mb: 1.5,
+            "& .MuiInputBase-root": {
+                color: "#DADADA",
+            },
+            "& .MuiFormLabel-root": {
+                color: "#818181",
+            },
+            "& .MuiFormLabel-root.Mui-focused": {
+                color: "#DADADA",
+            },
+            "& .MuiOutlinedInput-root": {
+                "& > fieldset": { borderColor: "#818181" },
+            },
+            "& .MuiOutlinedInput-root.Mui-focused": {
+                "& > fieldset": {
+                    borderColor: "primary.main",
+                },
+            },
+            "& .MuiOutlinedInput-root:hover": {
+                "& > fieldset": {
+                    borderColor: "#DADADA",
+                },
+            },
+            "& .MuiOutlinedInput-root.Mui-focused fieldset": {
+                borderColor: "primary.main",
+            }
+        }
 
     const bodyUpdate = (
         <Grid sx={modalStyles}>
-            <TextField
-                sx={inputMaterialStyles}
-                label="Username"
-                name="fullName"
-                onChange={(e) => handleChange2(e)}
-                value={fieldSelected && fieldSelected.fullName}
-            />
-            <TextField
-                sx={inputMaterialStyles}
-                label="email"
-                name="email"
-                onChange={(e) => handleChange2(e)}
-                value={fieldSelected && fieldSelected.email}
-            />
-            <TextField
-                sx={inputMaterialStyles}
-                label="avatar"
-                name="img"
-                onChange={(e) => handleChange2(e)}
-                value={fieldSelected && fieldSelected.img}
-            />
-            <TextField
-                sx={inputMaterialStyles}
-                label="Name"
-                name="realName"
-                onChange={(e) => handleChange2(e)}
-                value={fieldSelected && fieldSelected.realName}
-            />
-            <TextField
-                sx={inputMaterialStyles}
-                label="Lastname"
-                name="lastname"
-                onChange={(e) => handleChange2(e)}
-                value={fieldSelected && fieldSelected.lastname}
-            />
-            <TextField
-                sx={inputMaterialStyles}
-                label="phone"
-                name="phone"
-                onChange={(e) => handleChange2(e)}
-                value={fieldSelected && fieldSelected.phone}
-            />
-            <TextField
-                sx={inputMaterialStyles}
-                label="address"
-                name="address"
-                onChange={(e) => handleChange2(e)}
-                value={fieldSelected && fieldSelected.address}
-            />
+            <Box component="form" noValidate>
+                <TextField
+                    id="custom-css-outlined-input"
+                    sx={cssTextField}
+                    label="Username"
+                    name="fullName"
+                    onChange={(e) => handleChange2(e)}
+                    value={fieldSelected && fieldSelected.fullName}
+                />
+                <TextField
+                    sx={cssTextField}
+                    label="Email"
+                    name="email"
+                    onChange={(e) => handleChange2(e)}
+                    value={fieldSelected && fieldSelected.email}
+                />
+                <TextField
+                    sx={cssTextField}
+                    label="Avatar"
+                    name="img"
+                    onChange={(e) => handleChange2(e)}
+                    value={fieldSelected && fieldSelected.img}
+                />
+                <TextField
+                    sx={cssTextField}
+                    label="Name"
+                    name="realName"
+                    onChange={(e) => handleChange2(e)}
+                    value={fieldSelected && fieldSelected.realName}
+                />
+                <TextField
+                    sx={cssTextField}
+                    label="Lastname"
+                    name="lastname"
+                    onChange={(e) => handleChange2(e)}
+                    value={fieldSelected && fieldSelected.lastname}
+                />
+                <TextField
+                    sx={cssTextField}
+                    label="Phone"
+                    name="phone"
+                    onChange={(e) => handleChange2(e)}
+                    value={fieldSelected && fieldSelected.phone}
+                />
+                <TextField
+                    sx={cssTextField}
+                    label="Address"
+                    name="address"
+                    onChange={(e) => handleChange2(e)}
+                    value={fieldSelected && fieldSelected.address}
+                />
+            </Box>
+
             <br />
             <div align="right">
                 <Button color="primary" onClick={() => pushNewData()}>

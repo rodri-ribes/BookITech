@@ -77,10 +77,16 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
         "express.js",
     ];
 
-    function handleChangeRange(e) {
+    function handleChangeRangeMin(e) {
         e.preventDefault();
-        console.log(e.target.value);
-        dispatch(ChangeRange(e.target.value));
+        dispatch(ChangeRange("MintoMax"));
+        setPagina(1);
+        setOrden(e.target.value);
+    }
+
+    function handleChangeRangeMax(e) {
+        e.preventDefault();
+        dispatch(ChangeRange("MaxtoMin"));
         setPagina(1);
         setOrden(e.target.value);
     }
@@ -96,11 +102,11 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
         return err;
     }
     function handleTheme(e) {
-        e.preventDefault();
+        // e.preventDefault();
         console.log(e.target.value);
         dispatch(FilTheme(e.target.value));
         setPagina(1);
-        setOrden(e.target.value);
+        // setOrden(e.target.value);
     }
 
     function handleRange(e) {
@@ -128,9 +134,15 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
         );
         setOrden(e.target.value);
     }
-    function handleOrden(e) {
+    function handleOrdenAZ(e) {
         e.preventDefault();
-        dispatch(ORdenAZ(e.target.value));
+        dispatch(ORdenAZ("A-Z"));
+        setPagina(1);
+    }
+
+    function handleOrdenZA(e) {
+        e.preventDefault();
+        dispatch(ORdenAZ("Z-A"));
         setPagina(1);
     }
 
@@ -138,28 +150,34 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
         setMobileOpen(!mobileOpen);
     };
 
-    const CssTextField = styled(TextField)({
-        // "& label.Mui-focused": {
-        //     color: "#DADADA",
-        // },
-        "& label": {
+    const cssTextField = {
+        mr: 1,
+        "& .MuiInputBase-root": {
+            color: "#DADADA",
+        },
+        "& .MuiFormLabel-root": {
             color: "#818181",
         },
-        "& .MuiInput-underline:after": {
-            borderBottomColor: "#DADADA",
+        "& .MuiFormLabel-root.Mui-focused": {
+            color: "#DADADA",
         },
         "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-                borderColor: "#818181",
-            },
-            "&:hover fieldset": {
-                borderColor: "#DADADA",
-            },
-            "&.Mui-focused fieldset": {
-                borderColor: "green",
+            "& > fieldset": { borderColor: "#818181" },
+        },
+        "& .MuiOutlinedInput-root.Mui-focused": {
+            "& > fieldset": {
+                borderColor: "primary.main",
             },
         },
-    });
+        "& .MuiOutlinedInput-root:hover": {
+            "& > fieldset": {
+                borderColor: "#DADADA",
+            },
+        },
+        "& .MuiOutlinedInput-root.Mui-focused fieldset": {
+            borderColor: "primary.main",
+        },
+    };
 
     const drawer = (
         <div>
@@ -172,31 +190,33 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
                         mb: 1,
                         // fontFamily: "monospace",
                         fontWeight: 800,
-                        letterSpacing: ".3rem",
+                        letterSpacing: ".2rem",
                         color: "inherit",
                         textDecoration: "none",
                     }}
                 >
                     Sort by name
                 </Typography>
-                {["A to Z", "Z to A"].map((text, index) => (
-                    <ListItem
-                        key={text}
-                        disablePadding
+                <ListItem disablePadding sx={{ fontSize: "22px" }}>
+                    <ListItemButton
+                        onClick={(e) => handleOrdenAZ(e)}
+                        value="A-Z"
                         sx={{ fontSize: "22px" }}
                     >
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? (
-                                    <BsSortAlphaDown color="#DADADA" />
-                                ) : (
-                                    <BsSortAlphaUp color="#DADADA" />
-                                )}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+                        <BsSortAlphaDown color="#DADADA" />
+                        <ListItemText primary={"A to Z"} sx={{ ml: 4 }} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ fontSize: "22px" }}>
+                    <ListItemButton
+                        onCclick={(e) => handleOrdenZA(e)}
+                        value="Z-A"
+                        sx={{ fontSize: "22px" }}
+                    >
+                        <BsSortAlphaUp color="#DADADA" />
+                        <ListItemText primary={"Z to A"} sx={{ ml: 4 }} />
+                    </ListItemButton>
+                </ListItem>
             </List>
             <Divider />
             <List>
@@ -206,31 +226,33 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
                         mb: 1,
                         // fontFamily: "monospace",
                         fontWeight: 800,
-                        letterSpacing: ".3rem",
+                        letterSpacing: ".2rem",
                         color: "inherit",
                         textDecoration: "none",
                     }}
                 >
                     Sort by price
                 </Typography>
-                {["Low to High", "High to Low"].map((text, index) => (
-                    <ListItem
-                        key={text}
-                        disablePadding
+                <ListItem disablePadding sx={{ fontSize: "22px" }}>
+                    <ListItemButton
+                        onClick={(e) => handleChangeRangeMin(e)}
+                        value="MintoMax"
                         sx={{ fontSize: "22px" }}
                     >
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? (
-                                    <BsSortDownAlt color="#DADADA" />
-                                ) : (
-                                    <BsSortUpAlt color="#DADADA" />
-                                )}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+                        <BsSortDownAlt color="#DADADA" />
+                        <ListItemText primary={"Low to High"} sx={{ ml: 4 }} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding sx={{ fontSize: "22px" }}>
+                    <ListItemButton
+                        onClick={(e) => handleChangeRangeMax(e)}
+                        value="MaxtoMin"
+                        sx={{ fontSize: "22px" }}
+                    >
+                        <BsSortUpAlt color="#DADADA" />
+                        <ListItemText primary={"High to Low"} sx={{ ml: 4 }} />
+                    </ListItemButton>
+                </ListItem>
             </List>
             <Divider />
             <List>
@@ -240,60 +262,72 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
                         mb: 3,
                         // fontFamily: "monospace",
                         fontWeight: 800,
-                        letterSpacing: ".3rem",
+                        letterSpacing: ".2rem",
                         color: "inherit",
                         textDecoration: "none",
                     }}
                 >
                     Filter by price
                 </Typography>
-                <ListItem disablePadding>
-                    {/* <ListItemIcon> */}
-                    {/* <PriceChangeIcon
+                <form onSubmit={(e) => handleRange(e)}>
+                    <Box
+                        component="form"
+                        display="grid"
                         sx={{
-                            color: "#DADADA",
-                            ml: 2,
-                            mr: 1,
-                            fontSize: "30px",
+                            "& > :not(style)": { m: 1, width: "90%" },
                         }}
-                    /> */}
-                    {/* </ListItemIcon> */}
-                    <CssTextField
-                        sx={{ mr: 1 }}
-                        label="Min"
-                        id="custom-css-outlined-input"
-                    />
-                    <CssTextField
-                        sx={{ mr: 1 }}
-                        label="Max"
-                        id="custom-css-outlined-input"
-                    />
-                </ListItem>
-                <ListItem disablePadding>
-                    {/* <ListItemIcon> */}
-                    {/* </ListItemIcon> */}
-                    <Button
-                        sx={{
-                            // color: "#DADADA",
-                            mt: 1,
-                            ml: 0,
-                            mb: 3,
-                            mr: 1,
-                            width: "100%",
-                        }}
-                        variant="outlined"
-                        type="submit"
+                        noValidate
+                        autoComplete="off"
                     >
-                        Filter by price
-                    </Button>
-                </ListItem>
+                        <ListItem disablePadding>
+                            <TextField
+                                sx={cssTextField}
+                                label="Min"
+                                id="custom-css-outlined-input"
+                                type="number"
+                                name="min"
+                                min={"0"}
+                                value={range.min}
+                                onChange={(e) => handleChange(e)}
+                            />
+                            <TextField
+                                sx={cssTextField}
+                                label="Max"
+                                id="custom-css-outlined-input"
+                                type="number"
+                                name="max"
+                                min={"0"}
+                                value={range.max}
+                                onChange={(e) => handleChange(e)}
+                            />
+                        </ListItem>
+                        <ListItem disablePadding>
+                            <Button
+                                sx={{
+                                    // color: "#DADADA",
+                                    mt: 1,
+                                    ml: 0,
+                                    mb: 3,
+                                    mr: 1,
+                                    width: "100%",
+                                }}
+                                variant="outlined"
+                                type="submit"
+                            >
+                                Filter by price
+                            </Button>
+                        </ListItem>
+                    </Box>
+                </form>
+            </List>
+            <List>
                 <Typography
                     sx={{
                         ml: 2,
                         mb: 3,
                         // fontFamily: "monospace",
                         fontWeight: 800,
-                        letterSpacing: ".3rem",
+                        letterSpacing: ".2rem",
                         color: "inherit",
                         textDecoration: "none",
                     }}
@@ -305,7 +339,6 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
                     sx={{ display: "flex", flexDirection: "column", ml: 3 }}
                     // onClick={(e) => handleTheme(e)}
                     onClick={handleDrawerToggle}
-
                 >
                     {tematica?.map((e, k) => {
                         return (
@@ -313,6 +346,7 @@ function FiltersSidebar(props, { setPagina, setOrden }) {
                                 <MenuItem
                                     key={k}
                                     value={e}
+                                    sx={{ width: "100%" }}
                                     onClick={(e) => handleTheme(e)}
                                 >
                                     {e.toUpperCase()}
