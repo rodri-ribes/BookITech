@@ -4,7 +4,7 @@ import { BsCartCheck, BsFacebook, BsTwitter, BsLinkedin, BsGoogle } from 'react-
 import Rating from '@mui/material/Rating';
 import { Link, NavLink, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { AddCart, dataUser, FilterTheme } from '../../redux/features/data/dataSlice'
+import { AddCart, dataUser, FilterTheme, getCartUser } from '../../redux/features/data/dataSlice'
 import style from "./Detail.module.css"
 import { RiShoppingCartLine } from "react-icons/ri"
 import axios from 'axios'
@@ -13,6 +13,7 @@ import CardReview from './CardReview/CardReview.js'
 import CommentBox from './CommentBox/CommentBox';
 import CardComment from './CardComment/CardComment';
 import { fabClasses } from '@mui/material';
+import { Paginacion } from '../Home/Pagination/Pagination';
 
 
 
@@ -58,8 +59,10 @@ function Detail() {
     let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
     setDetails(data.data)
 
-    let dataUsuario = await axios.get(REACT_APP_API + `/user/${user.id}`);
-    setUserData(dataUsuario.data)
+    if (user !== null) {
+      let dataUsuario = await axios.get(REACT_APP_API + `/user/${user.id}`);
+      setUserData(dataUsuario.data)
+    }
   }
 
   useEffect(() => {
@@ -69,16 +72,17 @@ function Detail() {
   //----------LOGICA PARA AGREGAR EL LIBRO AL CARRITO------------------
 
 
-  const addToCart = () => {
+  const addToCart = async () => {
     //Aca iria el dispatch de la actions que agregaria el item al carrito
     setCartCheck(true)
     if (userr || window.localStorage.getItem("user")) {
       let idBook = id;
       let auxUser = JSON.parse(window.localStorage.getItem("user"))
       let idUser = auxUser.id
-      axios.post(REACT_APP_API + '/cart/add', {
+      await axios.post(REACT_APP_API + '/cart/add', {
         idUser, idBook
       })
+      dispatch(getCartUser(idUser))
     } else {
       dispatch(AddCart(id))
     }
@@ -126,7 +130,6 @@ function Detail() {
 
   tematica.forEach(e => {
     if (details && details.title.indexOf(e) !== -1) {
-      console.log(e)
       existe = e
     }
   })
@@ -283,19 +286,53 @@ function Detail() {
   //---------LOGICA PARA SABER SI LA UNICA REVIEW QUE HAY ES DEL USUARIO ----------
   let usuario = JSON.parse(window.localStorage.getItem("user"))
 
+  // const [sumaRating, setSumaRating] = useState(0)
+
+
   useEffect(() => {
     details && details.reviews.forEach(r => {
-      if (details.reviews.length === 1) {
-        if (r.userId !== undefined) {
-          if (r.userId === usuario.id) {
-            setUnicaReview(true)
+      // setSumaRating(sumaRating + r.rating)
+      if (usuario !== null) {
+        if (details.reviews.length === 1) {
+          if (r.userId !== undefined) {
+            if (r.userId === usuario.id) {
+              setUnicaReview(true)
+            }
           }
         }
       }
     })
-
   }, [details, dataUser])
 
+  //---------LOGICA PARA CALCULAR LA PUNTUACION DEL POST ----------
+
+  const [total, setTotal] = useState(Math.random() * 5)
+
+  //---------LOGICA PARA EL PAGINADO DE COMENTARIOS ----------
+
+  const [pagina, setPagina] = useState(1);
+
+  const porPagina = 5;
+  let maximo;
+  let ceil;
+
+  if (details) {
+    ceil = details.comments.length / porPagina;
+    maximo = Math.ceil(ceil)
+  }
+
+  //---------LOGICA PARA EL PAGINADO DE COMENTARIOS ----------
+
+  const [paginadoReview, setPaginadoReview] = useState(1);
+
+  const porPaginaReview = 5;
+  let maximoReview;
+  let ceilReview;
+
+  if (details) {
+    ceilReview = details.reviews.length / porPaginaReview;
+    maximoReview = Math.ceil(ceilReview)
+  }
 
 
   return (
@@ -340,8 +377,8 @@ function Detail() {
                   <h3>By {details.authors.toUpperCase()}</h3>
                 </div>
                 <div className={style.Container__Content__Info__details_rating}>
-                  <Rating name="half-rating-read" defaultValue={3.5} precision={0.5} readOnly />
-                  <p>3.5</p>
+                  <Rating name="half-rating-read" defaultValue={total} precision={0.5} readOnly />
+                  <p>{total.toFixed(1)}</p>
                 </div>
                 <div className={style.Container__Content__Info__details_description}>
                   <p>{details.desc}</p>
@@ -406,36 +443,66 @@ function Detail() {
                         {error.error === "review" ? <p className={style.Container__Error}>{error.content}</p> : null}
                       </>
                     :
-                    <p>To leave your review, you first have to buy it</p>
+                    <>
+                      <p>To leave your review, you first have to buy it</p>
+                      <div className={style.Container__Separador} />
+                    </>
+
                   }
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>MORE REVIEWS</h4>
                     <hr />
                     <div className={style.Container__Content__Acitivity__Details}>
                       {unicaReview ?
-                        <p>There are no reviews for this book</p>
-                        :
-                        details.reviews.length > 0 ?
-                          details.reviews.map(c => {
-                            if (c.userId !== userData._id) {
-                              return (
-                                <CardReview
-                                  image={c.userImg}
-                                  name={c.userName}
-                                  content={c.review}
-                                  rating={c.rating}
-                                />
-                              )
-                            }
-                          })
-                          :
+                        <>
                           <p>There are no reviews for this book</p>
+                          <div className={style.Container__Separador} />
+
+                        </>
+                        :
+
+                        details.reviews.length > 0 ?
+                          <>
+                            {details.reviews.slice(
+                              (paginadoReview - 1) * porPaginaReview,
+                              (paginadoReview - 1) * porPaginaReview + porPaginaReview
+                            ).map(c => {
+                              if (c.userId !== userData._id) {
+                                return (
+                                  <CardReview
+                                    image={c.userImg}
+                                    name={c.userName}
+                                    content={c.review}
+                                    rating={c.rating}
+                                  />
+                                )
+                              }
+                            })}
+                            <div className={style.Container__Centrar}>
+                              {details.reviews.length > 5 ?
+                                <Paginacion
+                                  pagina={paginadoReview}
+                                  setPagina={setPaginadoReview}
+                                  maximo={maximoReview}
+                                />
+                                :
+                                null
+                              }
+                            </div>
+                          </>
+                          :
+                          <>
+                            <p>There are no reviews for this book</p>
+                            <div className={style.Container__Separador} />
+
+                          </>
                       }
                     </div>
                   </div>
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>COMMENTS</h4>
                     <hr />
+
                     <div className={style.Container__Content__Acitivity__Details}>
                       <CommentBox
                         setComment={setComment}
@@ -444,7 +511,10 @@ function Detail() {
                         comment={comment}
                         error={error}
                       />
-                      {details.comments.map(c => {
+                      {details.comments.slice(
+                        (pagina - 1) * porPagina,
+                        (pagina - 1) * porPagina + porPagina
+                      ).map(c => {
                         return (
                           <CardComment
                             name={c.user[2]}
@@ -459,7 +529,17 @@ function Detail() {
                           />
                         )
                       })}
-
+                      <div className={style.Container__Centrar}>
+                        {details.comments.length > 5 ?
+                          <Paginacion
+                            pagina={pagina}
+                            setPagina={setPagina}
+                            maximo={maximo}
+                          />
+                          :
+                          null
+                        }
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -469,15 +549,18 @@ function Detail() {
                     <h4>MORE REVIEWS</h4>
                     <hr />
                     <p>To see what friends thought of this book, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
+                    <div className={style.Container__Separador} />
                     <h4>READER Q&A</h4>
                     <hr />
                     <p>To ask other readers questions about {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
+                    <div className={style.Container__Separador} />
+
                   </div>
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>COMMENTS</h4>
                     <hr />
                     <p>To leave a comment on {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
-
+                    <div className={style.Container__Separador} />
                     <div className={style.Container__Content__Acitivity__Details}>
                       {
                         details.comments.map(c => {
@@ -520,7 +603,6 @@ function Detail() {
               </div>
               <div className={style.Container__BarRight__Apart__Container}>
                 {theme.length > 0 && theme.slice(1, 6).map(c => {
-
                   return (
                     <a href={`/book/${c.isbn13}`} className={style.Container__BarRight__Apart__Container__Card}>
                       <img src={c.image} alt={c.title} />

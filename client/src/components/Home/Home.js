@@ -46,14 +46,14 @@ export default function Home() {
         }
     }, [setShow]);
     return (
-        <div className={style.Container}>         
-                <>
-                    <Filters setPagina={setPagina} />
-                    <div className={style.Container__Search}>{show && <Search />}</div>
-                    <div className={style.Container__PanelCards}>
-                        {error ? <Card404/> :
-                            loading ? <Loading/> :
-                                (books.length === 0) ? <Noresults/> :
+        <div className={style.Container}>
+            <>
+                <Filters setPagina={setPagina} />
+                <div className={style.Container__Search}>{show && <Search />}</div>
+                <div className={style.Container__PanelCards}>
+                    {error ? <Card404 /> :
+                        loading ? <Loading /> :
+                            (books.length === 0) ? <Noresults /> :
                                 books && books
                                     .slice(
                                         (pagina - 1) * porPagina,
@@ -71,16 +71,16 @@ export default function Home() {
                                                 key={i}
                                             />
                                         );
-                                })}
-                    </div>
-                    <div className={style.Container__Pagination}>
-                        <Paginacion
-                            pagina={pagina}
-                            setPagina={setPagina}
-                            maximo={maximo}
-                        />
-                    </div>
-                </>
+                                    })}
+                </div>
+                <div className={style.Container__Pagination}>
+                    <Paginacion
+                        pagina={pagina}
+                        setPagina={setPagina}
+                        maximo={maximo}
+                    />
+                </div>
+            </>
         </div>
     );
 }
