@@ -12,7 +12,6 @@ import { AuthContextProvider } from "./firebase/AuthContext.js";
 import Profile from "./components/Profile/Profile.js";
 import { AdminDashboard } from './components/AdminDashboard/AdminDashboard';
 import { Card404 } from "./components/404/Card404.js";
-import ResponsiveDrawer from "./components/Filters/FiltersSidebar.js";
 
 function App() {
 
@@ -20,7 +19,6 @@ function App() {
     <div className="container1">
       <AuthContextProvider>
         <NavBar />
-        {/* <ResponsiveDrawer /> */}
         <div className="container">
           <Routes>
             <Route path="/book/:id" element={<Detail />} />
