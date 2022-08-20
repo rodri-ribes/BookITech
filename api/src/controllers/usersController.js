@@ -49,28 +49,30 @@ async function loginUser(req, res) {
 
     if (user) {
 
-        const pass = bcrypt.compare(password, user.passwordHash)
+         bcrypt.compare(password, user.passwordHash,function(err,pass){
+            if (pass) {
 
-        if (pass) {
+                const token = jwt.sign({ _id: user.id }, 'secretKey')
+                res.json({
+                    id: user.id,
+                    name: user.fullName,
+                    email: user.email,
+                    token: token,
+                    ban: user.ban,
+                    img: user.img,
+                    phone: user.phone,
+                    // rrss: user.rrss,
+                    option: user.option,
+                    rol: user.rol,
+                    buy: user.buy
+                })
+            } else {
+    
+                res.status(401).send("invalid user or password")
+            }
+         })
 
-            const token = jwt.sign({ _id: user.id }, 'secretKey')
-            res.json({
-                id: user.id,
-                name: user.fullName,
-                email: user.email,
-                token: token,
-                ban: user.ban,
-                img: user.img,
-                phone: user.phone,
-                // rrss: user.rrss,
-                option: user.option,
-                rol: user.rol,
-                buy: user.buy
-            })
-        } else {
-
-            res.status(401).send("invalid user or password")
-        }
+        
     } else {
         res.status(401).send("invalid user or password")
     }
@@ -169,6 +171,36 @@ async function createUser(req, res) {
         }
     }
 }
+
+async function ChangePass(req,res){
+    const { id }=req.params
+    const { current, password }=req.body
+
+    const _id= await User.findById(id)
+   if(current === password){
+    res.status(400).send("new password can't be equal than last")
+   }
+   try{
+       bcrypt.compare(current, _id.passwordHash,async function (err,pass){
+        if(pass){
+            let passwordHash= await bcrypt.hash(password, 10 )
+            await User.findByIdAndUpdate(_id,{passwordHash:passwordHash})
+              res.status(200).send("cambiado")
+        }
+        else{
+            res.status(401).send("invalid current Password")
+        }
+       })
+     
+        }
+
+
+   catch(error){
+    console.log(error)
+   }
+
+}
+
 async function GetUser(req, res) {
     try {
         const { id } = req.params;
@@ -312,6 +344,7 @@ module.exports = {
     createUser,
     GetUser,
     PutUser,
+    ChangePass,
     PostBook,
     editReview,
     createReview,
