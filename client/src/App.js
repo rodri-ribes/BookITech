@@ -8,8 +8,9 @@ import Detail from "./components/BookDetail/Detail"
 import SignIn from './components/SignIn/SignIn.js'
 import SignUp from './components/SignUp/SignUp.js'
 import Favorite from "./components/Favorites/Favorite";
-import { AuthContextProvider } from "./firebase/AuthContext.js";
+import Landing from "./components/Landing/Landing.jsx";
 import Profile from "./components/Profile/Profile.js";
+import { AuthContextProvider } from "./firebase/AuthContext.js";
 import { AdminDashboard } from './components/AdminDashboard/AdminDashboard';
 import { Card404 } from "./components/404/Card404.js";
 
@@ -28,6 +29,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
             <Route path='/admin' element={<AdminDashboard />} />
+            <Route path='/home' element={<Landing />} />
             <Route path="*" element={<Card404 />} />
           </Routes>
         </div>

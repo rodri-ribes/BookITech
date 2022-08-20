@@ -1,0 +1,65 @@
+.swiper {
+    width: 100%;
+    max-width: 1600px;
+    position: relative;
+  }
+
+  .swiper .swiper-slide {
+    width: 250px;
+  }
+
+  .swiper img {
+    height: 255px;
+    width: 100%;
+    object-fit: cover;
+
+  }
+
+  @media (min-width: 1024px) {
+    .swiper img {
+      height: 344px;
+    }
+  }
+
+  .swiper .swiper-button-prev,
+  .swiper .swiper-button-next {
+    --swiper-navigation-size: 20px;
+    background-color: white;
+    height: 70px;
+    width: 50px;
+    margin-top: -35px;
+
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .swiper .swiper-button-prev {
+    border-radius: 0 65px 65px 0;
+    left: -10px;
+  }
+  .swiper .swiper-button-next {
+    border-radius: 65px 0 0 65px;
+    right: -10px;
+  }
+
+  .swiper:hover .swiper-button-prev,
+  .swiper:hover .swiper-button-next {
+    opacity: 1;
+  }
+
+  .swiper .swiper-pagination {
+    --swiper-pagination-color: white;
+    --swiper-pagination-bullet-size: 6px;
+    --swiper-pagination-bullet-inactive-color: #000;
+    --swiper-pagination-bullet-inactive-opacity: 0.25;
+    --swiper-pagination-bullet-opacity: 1;
+    --swiper-pagination-bullet-horizontal-gap: 2px;
+  }
+
+  .swiper .swiper-pagination-bullet {
+    box-shadow: inset 0 0 0 1px #fff;
+  }
+
+  .swiper .swiper-pagination-bullet-active {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  }
