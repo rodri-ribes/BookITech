@@ -15,9 +15,6 @@ const { REACT_APP_API } = process.env
 
 export default function CartShopping() {
 
-    const [showModal, setShowModal] = useState(false);
-
-
     let user = useSelector(state => state.data.user)
     let books = useSelector(state => state.data.Cart)
     let booksTotal = useSelector(state => state.data.books)
