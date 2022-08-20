@@ -22,7 +22,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 
 function NavBar({ user, setUser }) {
-    const drawerWidth = 240;
+    const drawerWidth = "17vh";
 
     const [click, setClick] = useState({});
 
@@ -51,34 +51,32 @@ function NavBar({ user, setUser }) {
     const pagesLog = ["Favorites", "Profile"];
     const pagesNoLog = ["SignIn", "SignUp"];
 
-    const settings = ["Profile", "Logout"];
+    const settings = ["Profile", "Favorites", "Logout"];
 
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
 
-    const [sizeNav, setSizeNav] = useState("")
+    // const [sizeNav, setSizeNav] = useState("");
 
-    const sizeH = {
-        width: { sm: `calc(100% - ${drawerWidth}px)` },
-        ml: { sm: `${drawerWidth}px` },
-        backgroundColor: "#0f243b",
-        color: "#DADADA" 
-    }
+    // const sizeH = {
+    //     width: { sm: `calc(100% - ${drawerWidth}px)` },
+    //     ml: { sm: `${drawerWidth}px` },
+    //     backgroundColor: "#0f243b",
+    //     color: "#DADADA",
+    // };
 
-    const sizeOthers = {
-        backgroundColor: "#0f243b",
-        color: "#DADADA"
-    }
+    // const sizeOthers = {
+    //     backgroundColor: "#0f243b",
+    //     color: "#DADADA",
+    // };
 
-    useEffect(() => {
-        if (window.location.pathname === "/") {
-            setSizeNav(sizeH)
-        }else{
-            setSizeNav(sizeOthers)
-        }
-    }, [setSizeNav])
-    
-
+    // useEffect(() => {
+    //     if (window.location.pathname === "/") {
+    //         setSizeNav(sizeH);
+    //     } else {
+    //         setSizeNav(sizeOthers);
+    //     }
+    // }, [setSizeNav]);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -98,18 +96,22 @@ function NavBar({ user, setUser }) {
     const textLink = {
         textDecoration: "none",
         color: "#DADADA",
+        fontFamily:"monospace"
     };
     const textLink2 = {
         textDecoration: "none",
         color: "#0a1929",
+        fontFamily:"monospace"
     };
-
-
 
     return (
         <>
             <AppBar
-                sx={sizeNav}
+                sx={{
+                    backgroundColor: "#0f243b",
+                    color: "#DADADA",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                }}
                 position="sticky"
                 // sx={{ backgroundColor: "#0f243b", color: "#DADADA" }}
             >
@@ -118,6 +120,11 @@ function NavBar({ user, setUser }) {
                         {/* <BookOnlineIcon
                             sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}
                         /> */}
+                        <Link to="/" style={textLink}>
+                            <IconButton sx={{ display:{xs: "none", md: "flex"}, color: "#DADADA", mr: 2}}>
+                                <AdbIcon />
+                            </IconButton>
+                        </Link>
                         <Link to="/" style={textLink}>
                             <Typography
                                 variant="h6"
@@ -142,16 +149,6 @@ function NavBar({ user, setUser }) {
                                 display: { xs: "flex", md: "none" },
                             }}
                         >
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleOpenNavMenu}
-                                color="inherit"
-                            >
-                                <MenuIcon />
-                            </IconButton>
                             <Menu
                                 id="menu-appbar"
                                 anchorEl={anchorElNav}
@@ -229,14 +226,18 @@ function NavBar({ user, setUser }) {
                                 mr: 1,
                             }}
                         /> */}
+
                         <Link to="/" style={textLink}>
-                            <Typography
+                            <IconButton sx={{ display: {md: "none"}, color: "#DADADA", mr: 1 }}>
+                                <AdbIcon />
+                            </IconButton>
+                            {/* <Typography
                                 variant="h5"
                                 noWrap
                                 component="a"
                                 sx={{
                                     mr: 2,
-                                    display: { xs: "flex", md: "none" },
+                                    display: { xs: "flex", sm: "none" },
                                     flexGrow: 1,
                                     fontFamily: "monospace",
                                     fontWeight: 700,
@@ -246,7 +247,7 @@ function NavBar({ user, setUser }) {
                                 }}
                             >
                                 BookITech
-                            </Typography>
+                            </Typography> */}
                         </Link>
                         <Box
                             sx={{
@@ -312,12 +313,27 @@ function NavBar({ user, setUser }) {
                         <Search />
                         <CartShopping />
                         {userr || window.localStorage.getItem("user") ? (
+                            <h1> </h1>
+                        ) : (
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleOpenNavMenu}
+                                color="inherit"
+                                sx={{ display: { md: "none" } }}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                        )}
+                        {userr || window.localStorage.getItem("user") ? (
                             <>
                                 <Box sx={{ flexGrow: 0 }}>
                                     <Tooltip title="Open settings">
                                         <IconButton
                                             onClick={handleOpenUserMenu}
-                                            sx={{ p: 0 }}
+                                            sx={{ p: 0, mr: 1 }}
                                         >
                                             <Avatar
                                                 alt="Avatar"
@@ -352,6 +368,16 @@ function NavBar({ user, setUser }) {
                                             >
                                                 <Typography textAlign="center">
                                                     Profile
+                                                </Typography>
+                                            </Link>
+                                        </MenuItem>
+                                        <MenuItem onClick={handleCloseUserMenu}>
+                                            <Link
+                                                to="/favorites"
+                                                style={textLink2}
+                                            >
+                                                <Typography textAlign="center">
+                                                    Favorites
                                                 </Typography>
                                             </Link>
                                         </MenuItem>
