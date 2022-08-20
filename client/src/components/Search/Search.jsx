@@ -110,12 +110,12 @@ export default function Search() {
         if (!name) {
             alert("failed search");
             setName("");
-            setDisplay(false);
+            // setDisplay(false);
             // setOption([]);
         } else {
             dispatch(getSearch(name));
             setName("");
-            setDisplay(false);
+            // setDisplay(false);
         }
     }
     function setClick(val) {
@@ -126,7 +126,7 @@ export default function Search() {
     // 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <form >
+
                 <SearchUI >
                     <SearchIconWrapper>
                         <IconButton aria-label="search" color="inherit">
@@ -181,7 +181,7 @@ export default function Search() {
                     </datalist> */}
                     </div>
                 </SearchUI>
-            </form>
+            
         </Box>
 // =======
 //             </div>

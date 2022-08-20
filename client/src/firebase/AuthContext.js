@@ -15,22 +15,25 @@ export const AuthContextProvider = ({ children }) => {
     const googleSignIn = () => {
         const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider);
-        
+
     }
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             dispatch(getUser(currentUser));
 
-            let displayName = currentUser?.displayName;
-            let email = currentUser?.email
+            if (currentUser) {
+                let displayName = currentUser?.displayName;
+                let email = currentUser?.email
 
-            try {
-                axios.post(`http://localhost:3001/save`,{
-                    displayName, email
-                })
-            } catch (error) {
-                console.log(error.message)
+                try {
+                    let datos = await axios.post(`http://localhost:3001/save`, {
+                        displayName, email
+                    })
+                    window.localStorage.setItem("user", JSON.stringify(datos.data))
+                } catch (error) {
+                    console.log(error.message)
+                }
             }
         })
 

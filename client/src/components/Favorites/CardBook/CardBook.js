@@ -4,13 +4,16 @@ import { RiShoppingCartLine } from 'react-icons/ri'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector} from 'react-redux'
+import axios from 'axios'
 import { AddCart, addFavs, deleteCart, deleteFavs } from '../../../redux/features/data/dataSlice'
+const { REACT_APP_API } = process.env
 
-export default function CardBook({ id, name, author, img, gender, idiom, format, price }) {
+export default function CardBook({ id, name, author, img, price }) {
 
     const [cart, setCart] = useState(false)
     const [heart, setHeart] = useState(true)
+    let user = useSelector(state => state.data.user)
 
     let dispatch = useDispatch();
 
@@ -29,9 +32,21 @@ export default function CardBook({ id, name, author, img, gender, idiom, format,
         setHeart(true)
         dispatch(addFavs(id))
     }
-    const RemoveToFav = () => {
-        setHeart(true)
-        dispatch(deleteFavs(id))
+    const RemoveToFav = async() => {
+          //Aca iria el dispatch de la actions que quitaria el item al carrito
+          let auxUser = JSON.parse(window.localStorage.getItem("user"))
+          let idUser = auxUser.email
+          let t=!heart
+          if(user || window.localStorage.getItem("user")){
+            console.log("IDS", idUser, id)
+                await axios.put(REACT_APP_API + `/books/id/${id}`,{t})
+             const res= await axios.put(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
+             console.log(res.data)
+             dispatch(deleteFavs(id))
+          }else{
+              console.log("no se pudieron empujar")
+          }
+          setHeart(false)
     }
 
 

@@ -3,7 +3,7 @@ import CardBook from './CardBook/CardBook';
 import style from './home.module.css';
 import { Paginacion } from './Pagination/Pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { getLibros } from '../../redux/features/data/dataSlice';
+import { getLibros , getFav} from '../../redux/features/data/dataSlice';
 import Search from '../Search/Search';
 import Filters from '../Filters/Filters';
 import Loading from './Loading/Loading.jsx';
@@ -14,19 +14,20 @@ import FiltersSidebar from "../Filters/FiltersSidebar"
 
 export default function Home() {
     let dispatch = useDispatch();
+   
 
     // const [loading, setLoading] = useState(true)
     // const [error, setError] = useState(false)
 
 
-
-    useEffect(() => {
+    useEffect(() => {   
         dispatch(getLibros());
     }, [dispatch]);
 
     let books = useSelector((state) => state.data.books);
     let loading = useSelector((state) => state.data.loading);
     let error = useSelector((state) => state.data.error);
+    
 
     //logica de paginado
 
@@ -85,6 +86,7 @@ export default function Home() {
                                         return (
                                             <CardBook
                                                 name={l.title}
+                                                heart={l.heart}
                                                 id={l.isbn13}
                                                 price={l.price}
                                                 img={l.image}

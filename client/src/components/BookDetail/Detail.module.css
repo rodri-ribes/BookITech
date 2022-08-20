@@ -15,6 +15,23 @@
     box-shadow: 0px 0px 15px black;
 }
 
+.Container__Separador{
+    margin-bottom: 2rem;
+}
+
+.Container__Centrar{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem;
+}
+
+.Container__Error{
+    color: red;
+    margin-left: 1rem;
+}
+
 .LinkStyle{
     text-decoration: none;
     color: rgb(0, 86, 198);

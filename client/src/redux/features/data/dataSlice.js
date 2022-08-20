@@ -3,6 +3,7 @@ import axios from "axios";
 
 const { REACT_APP_API } = process.env;
 
+
 export const dataSlice = createSlice({
     name: "data",
     initialState: {
@@ -11,6 +12,7 @@ export const dataSlice = createSlice({
         details: [],
         Cart: [],
         Favs: [],
+        Favo:[],
         allBooks: [],
         Theme: [],
         range: [],
@@ -25,6 +27,7 @@ export const dataSlice = createSlice({
         loading: true,
         error: false,
         dataUser: [],
+        CartUser: [],
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -62,13 +65,18 @@ export const dataSlice = createSlice({
         },
 
         addFav: (state, actions) => {
-            state.Favs = state.Favs.concat(
-                state.books.filter((l) => l.isbn13 === actions.payload)
-            );
+             state.Favs = state.Favs.concat(state.books.filter((l) => l.isbn13 === actions.payload))
+        },
+        addFav2:(state, actions)=> {
+            state.Favo=actions.payload
         },
         deleteFav: (state, actions) => {
+            
             state.Favs = state.Favs.filter((l) => l.isbn13 !== actions.payload);
         },
+        // deleteFav2: (state,actions)=>{
+        //     state.Favo=
+        // }
 
         Range: (state, { payload }) => {
             if (Number(payload.min) === Number(payload.max)) {
@@ -194,7 +202,7 @@ export const dataSlice = createSlice({
             state.error = true;
         },
         dataUser: (state, actions) => {
-            state.dataUser = actions.payload;
+            state.dataUser = actions.payload;Development
         },
     },
 });
@@ -226,6 +234,8 @@ export const {
     setErrorTrue,
     dataUser,
     updateUser,
+    CartUser,
+    DeleteCartUser
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -270,6 +280,11 @@ export const AddCart = (id) => async (dispatch) => {
 export const DeleteCart = (id) => async (dispatch) => {
     dispatch(deleteCart(id));
 };
+export const getFav =(idUser) => async (dispatch) => {
+    const res = await axios.get(REACT_APP_API+ `/favorite`,{params:{email:idUser}})
+    //let filter=res.data.map(m=>m.book.isbn13)
+    dispatch(addFav2(res.data))
+}
 export const addFavs = (id) => async (dispatch) => {
     dispatch(addFav(id));
 };
@@ -366,19 +381,19 @@ export const changeDashboard = (payload) => async (dispatch) => {
 export const deleteBook = (id) => async (dispatch) => {
     try {
         let success = await axios.put(
-            `http://localhost:3001/books/delist/${id}`
+            `${REACT_APP_API}/books/delist/${id}`
         );
         console.log(success);
         if (success) dispatch(delistBook());
     } catch (error) {
         console.log(error);
     }
+    
 };
 export const updateBook = (payload) => async (dispatch) => {
     try {
         let success = await axios.put(
-            `http://localhost:3001/books/${payload.id}`,
-            { ...payload, delisted: false }
+            `${REACT_APP_API}/books/${payload.id}`, { ...payload, delisted: false }
         );
         console.log(success);
         if (success) dispatch(updateBook());
@@ -388,9 +403,10 @@ export const updateBook = (payload) => async (dispatch) => {
 };
 export const createBook = (payload) => async (dispatch) => {
     try {
-        let success = await axios.post(`http://localhost:3001/books/`, {
-            ...payload,
-        });
+
+        let success = await axios.post(
+            `${REACT_APP_API}/books/`, { ...payload }
+        );
         console.log(success);
         if (success) dispatch(newBook());
     } catch (error) {
@@ -419,4 +435,21 @@ export const updateUserdata = (id, payload) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-};
+}
+
+export const getCartUser = (idUser) => async (dispatch) => {
+    try {
+        let res = await axios.get(REACT_APP_API + '/cart/' + idUser)
+        console.log(idUser)
+        dispatch(CartUser(res.data[0].cart))
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const DeleteInCartUser = (id) => (dispatch) => {
+
+    dispatch(DeleteCartUser(id))
+
+}
+

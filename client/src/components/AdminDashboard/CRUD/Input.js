@@ -11,15 +11,17 @@ export function Input(props){
     useEffect(()=>{ 
       dispatch(getSearch(input))
     }, [input])
-    useEffect(()=>{
-     if(delisted){
-        dispatch(getSearch(input))
-      setDelisted(false)}
-    }, [delisted])
+    // useEffect(()=>{
+    //  if(delisted){
+    //     dispatch(getSearch(input))
+    //   setDelisted(false)}
+    // }, [delisted])
     const handleOnChange = (e)=>{
       e.preventDefault()
-      setTimeout(()=> setInput(e.target.value),10)
+      setTimeout(()=>(setInput(e.target.value)), 10)
     }
     return (
-     <TextField onChange={e=> handleOnChange(e)} fullWidth label="Search books by name or subject" id="bookInput" />)
+      <>
+     <TextField sx={{backgroundColor:'#ffffff', borderRadius:'10px'}}onChange={e=> handleOnChange(e)} fullWidth label="Search books by name or subject" id="bookInput" />
+     </>)
     }

@@ -19,7 +19,7 @@ import { Container, Stack } from '@mui/system';
 import { Grid } from '@mui/material';
 
 // usar  FilterAuthor , FilterGenre, FilterFormat , Rango de Precio
-export default function Filters({ setPagina, setOrden }) {
+export default function Filters({ setPagina}) {
     const dispatch = useDispatch();
     const [range, setRange] = useState({
         max: '',
@@ -33,12 +33,11 @@ export default function Filters({ setPagina, setOrden }) {
         'mongoose',
         'java',
         'javascript',
-        ' html',
+        'html',
         'css',
         'python',
         'php',
         'react',
-        'redux',
         'perl',
         'swift',
         'rust',
@@ -54,7 +53,7 @@ export default function Filters({ setPagina, setOrden }) {
         console.log(e.target.value);
         dispatch(ChangeRange(e.target.value));
         setPagina(1);
-        setOrden(e.target.value);
+        // setOrden(e.target.value);
     }
 
     function validate() {
@@ -72,7 +71,7 @@ export default function Filters({ setPagina, setOrden }) {
         console.log(e.target.value);
         dispatch(FilTheme(e.target.value));
         setPagina(1);
-        setOrden(e.target.value);
+        // setOrden(e.target.value);
     }
 
     function handleRange(e) {
@@ -84,7 +83,7 @@ export default function Filters({ setPagina, setOrden }) {
             setRange({ max: '', min: '' });
             // console.log('holaaa');
             setPagina(1);
-            setOrden(e.target.value);
+            // setOrden(e.target.value);
         }
     }
     function handleChange(e) {
@@ -98,7 +97,7 @@ export default function Filters({ setPagina, setOrden }) {
                 [e.target.name]: e.target.value,
             })
         );
-        setOrden(e.target.value);
+        // setOrden(e.target.value);
     }
     function handleOrden(e) {
         e.preventDefault();
@@ -212,10 +211,10 @@ export default function Filters({ setPagina, setOrden }) {
                                 </FormControl>
                             </Box>
                             <Stack>
-                                <form
+                                {/* <form
                                     // className={style.form}
                                     onSubmit={(e) => handleRange(e)}
-                                >
+                                > */}
                                 <Box
                                     component="form"
                                     display="flex"
@@ -271,7 +270,7 @@ export default function Filters({ setPagina, setOrden }) {
                                         onChange={(e) => handleChange(e)}
                                     /> */}
 
-                                    <Button variant="outlined" type="submit">Filter by price</Button>
+                                    <Button onClick={(e) => handleRange(e)} variant="outlined" type="submit">Filter by price</Button>
 
                                     {/* <button
                                         className={style.input2}
@@ -280,7 +279,7 @@ export default function Filters({ setPagina, setOrden }) {
                                         Filter
                                     </button> */}
                                     </Box>
-                                </form>
+                                {/* </form> */}
                             </Stack>
                             {/* <th > */}
                             
