@@ -106,6 +106,7 @@
     word-wrap: break-word;
     text-decoration: none;
     color: white;
+    margin-top: 0.5rem;
 }
 
 .Container__Information__ContainerAuthorAndPrice_author{

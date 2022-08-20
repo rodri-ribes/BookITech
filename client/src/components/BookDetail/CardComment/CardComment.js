@@ -53,13 +53,13 @@ export default function CardComment({ iduser, image, name, content, date, idBook
             <div className={style.Container__v2}>
                 <div className={style.Container__input}>
                     <div className={style.Container__input__NameAndDate}>
-                        <h3>{name}</h3>
                         <p>{date}</p>
                     </div>
+                    <h3>{name}</h3>
                 </div>
                 {showEdit ?
                     <div className={style.Container__v2__divEdit}>
-                        <textarea type="text" onChange={(e) => setEditComment(e.target.value)} />
+                        <textarea type="text" placeholder={content} onChange={(e) => setEditComment(e.target.value)} />
                         <button onClick={() => handleEdit()}>Edit Comment</button>
                     </div>
                     :

@@ -28,6 +28,7 @@
     flex-direction: column;
     width: 100%;
     word-wrap: break-word;
+    margin-bottom: 1rem;
 }
 
 .Container__input_content{
@@ -48,12 +49,12 @@
 .Container__input__NameAndDate{
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-end;
     position: relative;
     margin-bottom: 0.5rem;
 }
 
-.Container__input__NameAndDate h3{
+.Container__input h3{
     font-family: sans-serif;
 }
 
@@ -82,6 +83,11 @@
     resize: none;
     width: 100%;
     padding: 3px 10px;
+}
+
+.Container__v2__divEdit textarea::placeholder{
+    color: rgb(123, 123, 123);
+
 }
 
 .Container__v2__divEdit button{

@@ -360,3 +360,49 @@
     font-size: 0.8rem;
 
 }
+
+@media screen and (max-width: 968px){
+    .Container{
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    .Container__Content{
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .Container__Content__Info{
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .Container__Content__Info__Img{
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .Container__Content__Info__details{
+        width: 100%;
+    }
+
+    .Container__Content__Info__details_title{
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+
+    .Container__Content__Info__details_title h1{
+        margin-bottom: 0.5rem;
+    }
+
+    .Container__Content__Acitivity__Details{
+        width: 100%;
+    }
+
+    .Container__Content__Acitivity__Details_element{
+        width: 100%;
+    }
+
+    .Container__BarRight{
+        width: 100%;
+    }
+}

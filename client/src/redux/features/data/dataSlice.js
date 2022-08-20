@@ -1,11 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
+const { REACT_APP_API } = process.env;
 
-const { REACT_APP_API } = process.env
 
 export const dataSlice = createSlice({
-    name: 'data',
+    name: "data",
     initialState: {
         books: [],
         book: [],
@@ -21,9 +21,9 @@ export const dataSlice = createSlice({
         user: [],
         userID: [],
         MinToMax: [],
-        dashboardState: ['CRUD'],
-        id: [''],
-        nameSearch: '',
+        dashboardState: ["CRUD"],
+        id: [""],
+        nameSearch: "",
         loading: true,
         error: false,
         dataUser: [],
@@ -41,7 +41,7 @@ export const dataSlice = createSlice({
                 ...state,
                 book: actions.payload.data,
                 books: actions.payload.data,
-                nameSearch: actions.payload.name
+                nameSearch: actions.payload.name,
             };
         },
         addCart: (state, actions) => {
@@ -53,8 +53,15 @@ export const dataSlice = createSlice({
             state.Cart = state.Cart.filter((l) => l.isbn13 !== actions.payload);
         },
         FilterTheme: (state, actions) => {
-            state.Theme = actions.payload
-            state.books = actions.payload
+            let copiaA =
+                actions.payload === "all"
+                    ? [...state.allBooks]
+                    : actions.payload;
+            return {
+                ...state,
+                Theme: copiaA,
+                books: copiaA,
+            };
         },
 
         addFav: (state, actions) => {
@@ -75,18 +82,18 @@ export const dataSlice = createSlice({
             if (Number(payload.min) === Number(payload.max)) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert('Max and Min are the same, please make them different');
+                alert("Max and Min are the same, please make them different");
             } else if (Number(payload.min) > Number(payload.max)) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert('Min is greater than Max');
+                alert("Min is greater than Max");
             } else if (Number(payload.min) < 0 || Number(payload.max) < 0) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert('Min or Máx are less than 0');
+                alert("Min or Máx are less than 0");
             } else {
-                // let copirange = state.allBooks.filte
-                let copirange = state.books.filter(
+                let copirange = state.allBooks.filter(
+                // let copirange = state.books.filter(
                     (e) =>
                         Number(e.price.slice(1)) >= Number(payload.min) &&
                         Number(payload.max) >= Number(e.price.slice(1))
@@ -94,7 +101,7 @@ export const dataSlice = createSlice({
                 if (!copirange.length) {
                     state.books = [...state.books];
                     state.range = [...state.books];
-                    alert('price range not found');
+                    alert("price range not found");
                 } else {
                     return {
                         ...state,
@@ -104,7 +111,7 @@ export const dataSlice = createSlice({
                 }
             }
         },
-        ORDEN: (state, actions) => {
+         ORDEN: (state, actions) => {
             let copiABC = [...state.books];
 
             let filterAZ;
@@ -165,43 +172,37 @@ export const dataSlice = createSlice({
             state.userID = actions.payload;
         },
         comments: (state, actions) => {
-            state.comments = [actions.payload]
+            state.comments = [actions.payload];
         },
         vaciarCommets: (state, actions) => {
-            state.comments = []
+            state.comments = [];
         },
         delistBook: (state, actions) => {
-            return
+            return;
         },
         changeDashboardState: (state, actions) => {
             state.dashboardState = actions.payload;
         },
         putBook: (state, actions) => {
-            return
+            return;
         },
         newBook: (state, action) => {
-            return
+            return;
         },
         idForUpdate: (state, action) => {
-            state.id = action.payload
+            state.id = action.payload;
         },
         setLoadingFalse: (state, action) => {
-            state.loading = false
+            state.loading = false;
         },
         setLoadingTrue: (state, action) => {
-            state.loading = true
+            state.loading = true;
         },
         setErrorTrue: (state, action) => {
-            state.error = true
+            state.error = true;
         },
         dataUser: (state, actions) => {
-            state.dataUser = actions.payload
-        },
-        CartUser: (state, actions) => {
-            state.CartUser = actions.payload
-        },
-        DeleteCartUser: (state, actions) => {
-            state.CartUser = state.CartUser.filter(c => c._id !== actions.payload)
+            state.dataUser = actions.payload;Development
         },
     },
 });
@@ -212,7 +213,8 @@ export const {
     addLibro,
     SearchTitle,
     addCart,
-    addFav,addFav2, deleteFav,
+    addFav,
+    deleteFav,
     deleteCart,
     FilterTheme,
     Range,
@@ -234,7 +236,6 @@ export const {
     updateUser,
     CartUser,
     DeleteCartUser
-
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -268,7 +269,7 @@ export const getSearch = (name) => async (dispatch) => {
         dispatch(setLoadingFalse());
         // console.log(buscar.data);
     } catch (error) {
-        alert('the books were not found');
+        alert("the books were not found");
         console.log(error);
     }
 };
@@ -293,15 +294,15 @@ export const deleteFavs = (id) => async (dispatch) => {
 
 export const FilTheme = (payload) => async (dispatch) => {
     try {
-        if (payload === 'all') {
-            dispatch(FilterTheme(payload));
-        } else {
-            let buscar = await axios.get(
-                //URL PARA BUSCAR
-                REACT_APP_API + `/books/${payload}`
-            );
-            dispatch(FilterTheme(buscar.data));
-        }
+        // if (payload === 'all') {
+        //     dispatch(FilterTheme(payload));
+        // } else {
+        let buscar = await axios.get(
+            //URL PARA BUSCAR
+            REACT_APP_API + `/books/${payload}`
+        );
+        dispatch(FilterTheme(buscar.data));
+        // }
         // console.log(buscar.data);
     } catch (error) {
         // alert('the books were not found');
@@ -323,55 +324,59 @@ export const getUser = (data) => async (dispatch) => {
     dispatch(addUser(data));
 };
 
-
 export const getUserID = (id) => async (dispatch) => {
     try {
-        let uzer = await axios.get(REACT_APP_API + `/user/${id}`)
-        dispatch(addUserID(uzer.data))
+        let uzer = await axios.get(REACT_APP_API + `/user/${id}`);
+        dispatch(addUserID(uzer.data));
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 export const Comments = (id) => async (dispatch) => {
     try {
-        let komments = await axios.get(REACT_APP_API + `/comments/${id}`).catch((err) => { })
-        dispatch(comments(komments.data))
+        let komments = await axios
+            .get(REACT_APP_API + `/comments/${id}`)
+            .catch((err) => {});
+        dispatch(comments(komments.data));
+    } catch (error) {
+        console.log(error);
     }
-    catch (error) {
-        console.log(error)
-    }
-}
+};
 export const postComments = (payload) => async (dispatch) => {
     try {
-        const response = await axios.post(REACT_APP_API + `/comments/`, payload)
-        dispatch(comments(response.data))
+        const response = await axios.post(
+            REACT_APP_API + `/comments/`,
+            payload
+        );
+        dispatch(comments(response.data));
+    } catch (error) {
+        console.log(error);
     }
-    catch (error) {
-        console.log(error)
-    }
-}
+};
 export const DeleteComment = (id) => async (dispatch) => {
     try {
-        const response = await axios.delete(REACT_APP_API + `/comments/${id}`)
-        dispatch(comments(response.data))
+        const response = await axios.delete(REACT_APP_API + `/comments/${id}`);
+        dispatch(comments(response.data));
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 export const Vaciar = () => async (dispatch) => {
-    dispatch(vaciarCommets())
-}
+    dispatch(vaciarCommets());
+};
 export const UpdateComment = (id, payload) => async (dispatch) => {
     try {
-        console.log("payload", id, payload)
-        const response = await axios.put(REACT_APP_API + `/comments/${id}`, payload)
-
+        console.log("payload", id, payload);
+        const response = await axios.put(
+            REACT_APP_API + `/comments/${id}`,
+            payload
+        );
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 };
 export const changeDashboard = (payload) => async (dispatch) => {
-    dispatch(changeDashboardState(payload))
+    dispatch(changeDashboardState(payload));
 };
 export const deleteBook = (id) => async (dispatch) => {
     try {
@@ -383,7 +388,7 @@ export const deleteBook = (id) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-
+    
 };
 export const updateBook = (payload) => async (dispatch) => {
     try {
@@ -395,7 +400,6 @@ export const updateBook = (payload) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-
 };
 export const createBook = (payload) => async (dispatch) => {
     try {
@@ -408,11 +412,10 @@ export const createBook = (payload) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-
 };
 export const setId = (payload) => async (dispatch) => {
-    dispatch(idForUpdate(payload))
-}
+    dispatch(idForUpdate(payload));
+};
 
 export const getDataUser = (id) => async (dispatch) => {
     try {
@@ -427,8 +430,8 @@ export const getDataUser = (id) => async (dispatch) => {
 export const updateUserdata = (id, payload) => async (dispatch) => {
     try {
         console.log(payload);
-        const res = await axios.put(REACT_APP_API + `/user/${id}`, payload)
-        dispatch(dataUser(res.data))
+        const res = await axios.put(REACT_APP_API + `/user/${id}`, payload);
+        dispatch(dataUser(res.data));
     } catch (error) {
         console.log(error);
     }

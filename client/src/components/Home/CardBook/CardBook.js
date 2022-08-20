@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import style from './cardbook.module.css'
 import { RiShoppingCartLine } from 'react-icons/ri'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
@@ -14,10 +14,21 @@ export default function CardBook({ id, name, authors, img, price, heart }) {
     
 
     const [cart, setCart] = useState(false)
-    // const [heart, setHeart] = useState(false)
+
+    const [heart, setHeart] = useState(false)
+    
     let user = useSelector(state => state.data.user)
-    
-    
+
+    const [existUser, setexistUser] = useState(false)
+
+
+    useEffect(() => {
+        if (user || window.localStorage.getItem("user")) {
+            setexistUser(true)
+        } else {
+            setexistUser(false)
+        }
+    }, [user, window.localStorage.getItem("user")])
 
     let dispatch = useDispatch();
 
@@ -80,6 +91,8 @@ export default function CardBook({ id, name, authors, img, price, heart }) {
         
     }
 
+    //LOGICA PARA OCULTAR
+
 
     return (
         <div className={style.Container}>
@@ -90,16 +103,23 @@ export default function CardBook({ id, name, authors, img, price, heart }) {
             </div>
             <div className={style.Container__Information}>
                 <h3 className={style.Container__Information__ContainerAuthorAndPrice_price}>{price}</h3>
-                 <div className={style.Container__Information__Heart}>
-                    {heart ?
-                        <AiFillHeart onClick={() => RemoveToFav()} />
-                        :
-                        <AiOutlineHeart onClick={() => addToFav()} />
-                    }
-                </div> 
+
+                {existUser ?
+                    <div className={style.Container__Information__Heart}>
+                        {heart ?
+                            <AiFillHeart onClick={() => RemoveToFav()} />
+                            :
+                            <AiOutlineHeart onClick={() => addToFav()} />
+                        }
+                    </div>
+                    :
+                    null
+                }
+
                 <Link className={style.Container__Information_title} to={`/book/${id}`}>{name.charAt(0).toUpperCase() + name.slice(1, 30)} (...)</Link>
                 <div className={style.Container__Information__ContainerAuthorAndPrice}>
-                    <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors ? authors.toUpperCase().slice(1, 25) : 'has no author'}</p>
+                <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors ? authors.toUpperCase() : 'has no author'}</p>
+
                 </div>
             </div>
             <div className={style.Container__btn}>
