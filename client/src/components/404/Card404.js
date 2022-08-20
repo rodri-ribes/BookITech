@@ -33,6 +33,8 @@ export function Card404() {
         finishCompra()
     } else if (window.location.pathname.slice(0, 8) === "/failure") {
         mostrar = "failure"
+        window.localStorage.removeItem("buy")
+
     } else {
         mostrar = "404"
     }
