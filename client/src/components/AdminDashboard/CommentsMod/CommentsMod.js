@@ -4,6 +4,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 import axios from 'axios'
 import { useSelector } from 'react-redux';
+const {REACT_APP_API} = process.env
 
 export function CommentsMod() {
   
@@ -15,7 +16,9 @@ const parseComment = (book) => {
             reviewed: comment.reviewed || false,
             flagged: comment.flagged || false,
             user: comment.user[0],
-            book: book.title
+            book: book.title,
+            bookId: book.isbn13,
+            commentIndex : book.indexOf(comment)
         }
         })
         return [...booksComments]
@@ -27,6 +30,13 @@ const comments = [].concat(...commentsMatrix).slice(0,5)
     useEffect(()=> {
         
         }, [])
+const handleOk = async (event, comment) =>{
+    event.preventDefault()
+}
+const handleFlag = async (event, comment) =>{
+    event.preventDefault()
+}
+
 
     return (
         <React.Fragment>
@@ -39,12 +49,13 @@ const comments = [].concat(...commentsMatrix).slice(0,5)
                 return(
                <Box sx={{ marginLeft: '20px', marginBottom:'10px', bgcolor: 'rgb(210,210,210)', minHeight: '10vh', width: '60vw', borderRadius: '7px', display: 'flex', flexDirection:'row', justifyContent:'space-between'}}>
                     <div style={{marginLeft: '10px'}}>
+                        <Typography>Commentsds</Typography>
                         <Typography color='black' variant='h6' paragraph>"{e.body}"</Typography>
                         <Typography color={'black'} variant='body2' >by @{e.user} at: {e.book}</Typography>
                     </div>
                     <div style={{alignSelf: 'flex-end', marginBottom: '5px', marginRight:'5px'}}>
-                        <Button variant='contained'><DoneIcon/></Button>
-                        <Button variant="outlined"><DoDisturbOnIcon/></Button>
+                        <Button onClick={event => handleOk(event, e)} variant='contained'><DoneIcon/></Button>
+                        <Button onClick={event => handleFlag(event,e)} variant="outlined"><DoDisturbOnIcon/></Button>
                     </div>
                 </Box>)})}
             </Box>
