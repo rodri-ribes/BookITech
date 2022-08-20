@@ -25,7 +25,7 @@ console.log(booksReduce)
     <div className="carruselito">
   <Swiper
       // id='main'
-      modules={[Navigation, Pagination, Autoplay , A11y, History, HashNavigation  ]}
+      modules={[Navigation]}
       navigation= {true}
       slidesPerView={5}
       slidesPerGroupAuto={true}

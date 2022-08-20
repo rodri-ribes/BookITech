@@ -22,11 +22,11 @@ function Landing() {
     pagination={{ clickable: true }}
     // navigation = {true}
     navigation={true}
-    // autoplay={{
-    //     delay: 1000,
-    //     pauseOnMouseEnter: true,
-    //     disableOnInteraction: false,
-    //   }}
+    autoplay={{
+        delay: 10000,
+        pauseOnMouseEnter: true,
+        disableOnInteraction: false,
+      }}
   >
     <SwiperSlide>
         <Link to={'/book/9780137843749'}>

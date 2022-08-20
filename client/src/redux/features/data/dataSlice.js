@@ -202,7 +202,7 @@ export const dataSlice = createSlice({
             state.error = true;
         },
         dataUser: (state, actions) => {
-            state.dataUser = actions.payload;Development
+            state.dataUser = actions.payload;
         },
     },
 });
@@ -214,6 +214,7 @@ export const {
     SearchTitle,
     addCart,
     addFav,
+    addFav2,
     deleteFav,
     deleteCart,
     FilterTheme,
