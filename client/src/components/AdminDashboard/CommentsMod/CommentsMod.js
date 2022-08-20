@@ -49,7 +49,6 @@ const handleFlag = async (event, comment) =>{
                 return(
                <Box sx={{ marginLeft: '20px', marginBottom:'10px', bgcolor: 'rgb(210,210,210)', minHeight: '10vh', width: '60vw', borderRadius: '7px', display: 'flex', flexDirection:'row', justifyContent:'space-between'}}>
                     <div style={{marginLeft: '10px'}}>
-                        <Typography>Commentsds</Typography>
                         <Typography color='black' variant='h6' paragraph>"{e.body}"</Typography>
                         <Typography color={'black'} variant='body2' >by @{e.user} at: {e.book}</Typography>
                     </div>
