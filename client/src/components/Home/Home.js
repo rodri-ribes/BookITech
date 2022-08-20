@@ -12,13 +12,19 @@ import Noresults from './NoResults/Noresults';
 
 export default function Home() {
     let dispatch = useDispatch();
-   
+    let user = useSelector(state => state.data.user)
+
 
     // const [loading, setLoading] = useState(true)
     // const [error, setError] = useState(false)
 
 
     useEffect(() => {   
+        if(user || window.localStorage.getItem("user")){
+            let auxUser = JSON.parse(window.localStorage.getItem("user"))
+            let idUser = auxUser.email
+                dispatch(getFav(idUser))
+        }
         dispatch(getLibros());
     }, [dispatch]);
 

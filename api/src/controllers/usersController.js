@@ -169,6 +169,26 @@ async function createUser(req, res) {
         }
     }
 }
+
+async function ChangePass(req,res){
+    const { id }=req.params
+    const { password, newPassword }=req.body
+
+
+   if(!(password && newPassword)){
+    res.status(400).send("old and new password are required")
+   }
+   try{
+    let passwordHash = await bcrypt.hash(newPassword, 10);
+    const userChange= await User.findByIdAndUpdate(id,passwordHash)
+    res.status(200).json(userChange)
+   }
+   catch(error){
+    console.log(error)
+   }
+
+}
+
 async function GetUser(req, res) {
     try {
         const { id } = req.params;
@@ -312,6 +332,7 @@ module.exports = {
     createUser,
     GetUser,
     PutUser,
+    ChangePass,
     PostBook,
     editReview,
     createReview,
