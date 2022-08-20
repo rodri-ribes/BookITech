@@ -16,6 +16,7 @@ import {
     TextField,
     TableBody,
     Box,
+    Table,
 } from "@mui/material";
 import styled from "@emotion/styled";
 import Accordion from "@mui/material/Accordion";
@@ -29,6 +30,7 @@ import styles from "./Profile.module.css";
 import { updateUserdata, UpdatePass } from "../../redux/features/data/dataSlice";
 import axios from "axios";
 import Spinner from "../auxiliar/Spinner/Spinner";
+import { Link } from "react-router-dom";
 const { REACT_APP_API } = process.env;
 
 function Profile() {
@@ -174,41 +176,40 @@ function Profile() {
         transform: "translate(-50%, -50%)",
         borderRadius: "2%",
     };
-   
 
     const iconosStyles = {
         cursor: "pointer",
     };
 
     const cssTextField = {
-            width: "100%",
-            mb: 1.5,
-            "& .MuiInputBase-root": {
-                color: "#DADADA",
-            },
-            "& .MuiFormLabel-root": {
-                color: "#818181",
-            },
-            "& .MuiFormLabel-root.Mui-focused": {
-                color: "#DADADA",
-            },
-            "& .MuiOutlinedInput-root": {
-                "& > fieldset": { borderColor: "#818181" },
-            },
-            "& .MuiOutlinedInput-root.Mui-focused": {
-                "& > fieldset": {
-                    borderColor: "primary.main",
-                },
-            },
-            "& .MuiOutlinedInput-root:hover": {
-                "& > fieldset": {
-                    borderColor: "#DADADA",
-                },
-            },
-            "& .MuiOutlinedInput-root.Mui-focused fieldset": {
+        width: "100%",
+        mb: 1.5,
+        "& .MuiInputBase-root": {
+            color: "#DADADA",
+        },
+        "& .MuiFormLabel-root": {
+            color: "#818181",
+        },
+        "& .MuiFormLabel-root.Mui-focused": {
+            color: "#DADADA",
+        },
+        "& .MuiOutlinedInput-root": {
+            "& > fieldset": { borderColor: "#818181" },
+        },
+        "& .MuiOutlinedInput-root.Mui-focused": {
+            "& > fieldset": {
                 borderColor: "primary.main",
-            }
-        }
+            },
+        },
+        "& .MuiOutlinedInput-root:hover": {
+            "& > fieldset": {
+                borderColor: "#DADADA",
+            },
+        },
+        "& .MuiOutlinedInput-root.Mui-focused fieldset": {
+            borderColor: "primary.main",
+        },
+    };
 
     const bodyUpdate = (
         <Grid sx={modalStyles}>
@@ -318,16 +319,16 @@ function Profile() {
                     <Grid container spacing={8}>
                         <Grid item>
                             <br /> <br />
-                            {/* <ButtonBase> */}
-                            <Avatar
-                                alt="avatar"
-                                src={
-                                    User.img ||
-                                    "https://avataaars.io/?avatarStyle=Circle&topType=Eyepatch&facialHairType=BeardMagestic&clotheType=BlazerShirt&eyeType=WinkWacky&eyebrowType=RaisedExcitedNatural&mouthType=Serious&skinColor=Tanned"
-                                }
-                                sx={{ width: 250, height: 250 }}
-                            />
-                            {/* </ButtonBase> */}
+                            <ButtonBase>
+                                <Avatar
+                                    alt="avatar"
+                                    src={
+                                        User.img ||
+                                        "https://avataaars.io/?avatarStyle=Circle&topType=Eyepatch&facialHairType=BeardMagestic&clotheType=BlazerShirt&eyeType=WinkWacky&eyebrowType=RaisedExcitedNatural&mouthType=Serious&skinColor=Tanned"
+                                    }
+                                    sx={{ width: 250, height: 250 }}
+                                />
+                            </ButtonBase>
                         </Grid>
                         <Grid item xs={8} sm container>
                             <Grid
@@ -348,6 +349,8 @@ function Profile() {
                                                         sx={{
                                                             color: "#DADADA",
                                                             fontSize: "4rem",
+                                                            fontFamily:
+                                                                "monospace",
                                                         }}
                                                     >
                                                         {User.fullName}
@@ -371,6 +374,8 @@ function Profile() {
                                                     <TableCell
                                                         sx={{
                                                             color: "#DADADA",
+                                                            fontFamily:
+                                                                "monospace",
                                                         }}
                                                     >
                                                         <h2>{User.email}</h2>
@@ -378,6 +383,8 @@ function Profile() {
                                                     <TableCell
                                                         sx={{
                                                             color: "#DADADA",
+                                                            fontFamily:
+                                                                "monospace",
                                                         }}
                                                     >
                                                         {/* <EditIcon
@@ -391,6 +398,8 @@ function Profile() {
                                                     <TableCell
                                                         sx={{
                                                             color: "#DADADA",
+                                                            fontFamily:
+                                                                "monospace",
                                                         }}
                                                     >
                                                         {User.realName ? (
@@ -404,6 +413,8 @@ function Profile() {
                                                     <TableCell
                                                         sx={{
                                                             color: "#DADADA",
+                                                            fontFamily:
+                                                                "monospace",
                                                         }}
                                                     >
                                                         {/* <EditIcon
@@ -417,6 +428,8 @@ function Profile() {
                                                     <TableCell
                                                         sx={{
                                                             color: "#DADADA",
+                                                            fontFamily:
+                                                                "monospace",
                                                         }}
                                                     >
                                                         {User.lastname ? (
@@ -430,6 +443,8 @@ function Profile() {
                                                     <TableCell
                                                         sx={{
                                                             color: "#DADADA",
+                                                            fontFamily:
+                                                                "monospace",
                                                         }}
                                                     >
                                                         {/* <EditIcon
@@ -443,6 +458,8 @@ function Profile() {
                                                     <TableCell
                                                         sx={{
                                                             color: "#DADADA",
+                                                            fontFamily:
+                                                                "monospace",
                                                         }}
                                                     >
                                                         {User.phone ? (
@@ -456,6 +473,8 @@ function Profile() {
                                                     <TableCell
                                                         sx={{
                                                             color: "#DADADA",
+                                                            fontFamily:
+                                                                "monospace",
                                                         }}
                                                     >
                                                         {/* <EditIcon
@@ -469,6 +488,8 @@ function Profile() {
                                                     <TableCell
                                                         sx={{
                                                             color: "#DADADA",
+                                                            fontFamily:
+                                                                "monospace",
                                                         }}
                                                     >
                                                         {User.address ? (
@@ -482,6 +503,8 @@ function Profile() {
                                                     <TableCell
                                                         sx={{
                                                             color: "#DADADA",
+                                                            fontFamily:
+                                                                "monospace",
                                                         }}
                                                     >
                                                         {/* <EditIcon
@@ -533,10 +556,12 @@ function Profile() {
                                         sx={{
                                             color: "#DADADA",
                                             fontSize: "2rem",
+                                            fontFamily: "monospace",
                                         }}
                                         gutterBottom
                                         variant="subtitle1"
                                         component="div"
+                                        // fontFamily="monospace"
                                     >
                                         Rating (0 avg)
                                     </Typography>
@@ -544,28 +569,47 @@ function Profile() {
                                         sx={{
                                             color: "#DADADA",
                                             fontSize: "2rem",
+                                            fontFamily: "monospace",
                                         }}
                                         gutterBottom
                                         variant="subtitle1"
                                         component="div"
                                     >
-                                        {User.comments?.length} reviews
+                                        {User.reviews?.length} reviews
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            color: "#DADADA",
+                                            fontSize: "2rem",
+                                            fontFamily: "monospace",
+                                        }}
+                                        gutterBottom
+                                        variant="subtitle1"
+                                        component="div"
+                                    >
+                                        {User.comments?.length} comments
                                     </Typography>
                                     {/* <Typography
-                                            gutterBottom
-                                            variant="subtitle1"
-                                            component="div"
-                                        >
-                                            {User.email.length} favorites
-                                        </Typography> */}
+                                        sx={{
+                                            color: "#DADADA",
+                                            fontSize: "2rem",
+                                            fontFamily: "monospace",
+                                        }}
+                                        gutterBottom
+                                        variant="subtitle1"
+                                        component="div"
+                                    >
+                                        {User.fav?.length} favorites
+                                    </Typography> */}
                                     {/* <Typography
                                             gutterBottom
                                             variant="subtitle1"
                                             component="div"
+                                            fontFamily:"monospace"
                                         >
                                             {User.email.length} readed books
                                         </Typography>
-                                        <Typography variant="body2" gutterBottom>
+                                        <Typography variant="body2" gutterBottom fontFamily:"monospace">
                                             Joined in {User.email.length}
                                         </Typography> */}
                                 </Grid>
@@ -597,9 +641,18 @@ function Profile() {
                             sx={{
                                 backgroundColor: "#0f243b",
                                 color: "#DADADA",
+                                fontFamily: "monospace",
                             }}
                         >
-                            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+                            <Typography
+                                noWrap
+                                flexGrow={1}
+                                sx={{
+                                    width: "33%",
+                                    flexShrink: 0,
+                                    fontFamily: "monospace",
+                                }}
+                            >
                                 <h2>Shopping history</h2>
                             </Typography>
                         </AccordionSummary>
@@ -609,7 +662,47 @@ function Profile() {
                                 color: "#DADADA",
                             }}
                         >
-                            <Typography>Nothing here</Typography>
+                            <Grid>
+                                {User.buy.map((s) => {
+                                    return (
+                                        <TableCell
+                                            sx={{
+                                                display: "flex",
+                                                justifyContent: "start",
+                                            }}
+                                        >
+                                            <Link to={"/book/" + s.isbn13}>
+                                                <img
+                                                    src={s.image}
+                                                    alt={s.title}
+                                                    width="100px"
+                                                    height="auto"
+                                                />
+                                            </Link>
+                                            <Typography
+                                                sx={{
+                                                    ml: 4,
+                                                    mt: 5,
+                                                    fontSize: "22px",
+                                                    flexGrow: 1,
+                                                }}
+                                            >
+                                                {s.title}
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    ml: 4,
+                                                    mt: 5,
+                                                    fontSize: "24px",
+                                                }}
+                                            >
+                                                
+                                                {s.price}
+                                            </Typography>
+                                        </TableCell>
+                                    );
+                                })}
+                            </Grid>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion
@@ -625,7 +718,15 @@ function Profile() {
                                 color: "#DADADA",
                             }}
                         >
-                            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+                            <Typography
+                                noWrap
+                                flexGrow={1}
+                                sx={{
+                                    width: "33%",
+                                    flexShrink: 0,
+                                    fontFamily: "monospace",
+                                }}
+                            >
                                 <h2>Reviews</h2>
                             </Typography>
                         </AccordionSummary>
@@ -635,10 +736,61 @@ function Profile() {
                                 color: "#DADADA",
                             }}
                         >
-                            <Typography>
+                            {/* <Typography>
                                 Dare to write your review about the books you
                                 have read!
-                            </Typography>
+                            </Typography> */}
+                            <Grid>
+                                {User.reviews.map((s) => {
+                                    return (
+                                        <TableCell
+                                            sx={{
+                                                display: "flex",
+                                                justifyContent: "start",
+                                            }}
+                                        >
+                                            <Link to={"/book/" + s.book}>
+                                                <img
+                                                    src={s.bookImg}
+                                                    alt={s.bookTitle}
+                                                    width="100px"
+                                                    height="auto"
+                                                />
+                                            </Link>
+                                            <Typography
+                                                sx={{
+                                                    ml: 4,
+                                                    mt: 5,
+                                                    fontSize: "22px",
+                                                    flexGrow: 1,
+                                                }}
+                                            >
+                                                {s.bookTitle}
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    ml: 4,
+                                                    mt: 5,
+                                                    fontSize: "22px",
+                                                    flexGrow: 1,
+                                                }}
+                                            >
+                                                {`"${s.review}"`}
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    ml: 4,
+                                                    mt: 5,
+                                                    fontSize: "18px",
+                                                }}
+                                            >
+                                                
+                                                {s.status}
+                                            </Typography>
+                                        </TableCell>
+                                    );
+                                })}
+                            </Grid>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion
@@ -654,7 +806,15 @@ function Profile() {
                                 color: "#DADADA",
                             }}
                         >
-                            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+                            <Typography
+                                noWrap
+                                flexGrow={1}
+                                sx={{
+                                    width: "33%",
+                                    flexShrink: 0,
+                                    fontFamily: "monospace",
+                                }}
+                            >
                                 <h2>Favorites</h2>
                             </Typography>
                         </AccordionSummary>
@@ -709,7 +869,7 @@ function Profile() {
                                 color: "#DADADA",
                             }}
                         >
-                            <Typography sx={{ width: "33%", flexShrink: 0 }}>
+                            <Typography noWrap flexGrow={1} sx={{ width: "33%", flexShrink: 0, fontFamily:"monospace" }}>
                                 Readed books
                             </Typography>
                         </AccordionSummary>
