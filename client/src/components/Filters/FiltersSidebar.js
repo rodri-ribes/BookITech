@@ -91,6 +91,7 @@ function FiltersSidebar(props, { setPagina }) {
     }
     function handleTheme(e) {
         // e.preventDefault();
+        handleDrawerToggle()
         console.log(e.target.textContent);
         dispatch(FilTheme(e.target.textContent));
         setPagina(1);
