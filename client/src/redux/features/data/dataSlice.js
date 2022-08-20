@@ -202,8 +202,9 @@ export const dataSlice = createSlice({
             state.error = true;
         },
         dataUser: (state, actions) => {
-            state.dataUser = actions.payload;Development
+            state.dataUser = actions.payload;
         },
+
     },
 });
 
@@ -214,6 +215,7 @@ export const {
     SearchTitle,
     addCart,
     addFav,
+    addFav2,
     deleteFav,
     deleteCart,
     FilterTheme,
@@ -434,6 +436,16 @@ export const updateUserdata = (id, payload) => async (dispatch) => {
         dispatch(dataUser(res.data));
     } catch (error) {
         console.log(error);
+    }
+}
+export const UpdatePass=(id,payload) => async (dispatch)=>{
+    try{
+        console.log(payload);
+        const res = await axios.put(REACT_APP_API +`/user/change/${id}`,payload)
+        alert("Password changed successfully")
+    }
+    catch (error) {
+        alert("The current Password doesn't match with original")
     }
 }
 

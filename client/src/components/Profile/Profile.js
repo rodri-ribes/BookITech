@@ -26,7 +26,7 @@ import { motion } from "framer-motion";
 import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
 import styles from "./Profile.module.css";
-import { updateUserdata } from "../../redux/features/data/dataSlice";
+import { updateUserdata, UpdatePass } from "../../redux/features/data/dataSlice";
 import axios from "axios";
 import Spinner from "../auxiliar/Spinner/Spinner";
 const { REACT_APP_API } = process.env;
@@ -41,7 +41,13 @@ function Profile() {
     const [User, setUser] = useState(false);
 
     const [updateData, setUpdateData] = useState();
+    const [passChange,setPassChange]= useState()
     const [modalUpdate, setModalUpdate] = useState(false);
+    const [modalUpdatePass,setModalUpdatePass]= useState(false);
+    const [pass,setPass]= useState({
+        current:"",
+        password: "",
+    })
     const [fieldSelected, setFieldSelected] = useState({
         fullName: "",
         email: "",
@@ -53,7 +59,7 @@ function Profile() {
     });
 
     let userId = JSON.parse(window.localStorage.getItem("user"));
-    console.log(userId);
+    console.log(userId)
 
     const getdata = async () => {
         let userId = JSON.parse(window.localStorage.getItem("user"));
@@ -104,6 +110,13 @@ function Profile() {
             [name]: value,
         }));
     };
+    const handleChangePass =(e)=>{
+        const { name, value}= e.target;
+        setPass((prevState)=>({
+            ...prevState,
+            [name]:value,
+        }))
+    }
 
     const cleaner = () => {
         setFieldSelected("");
@@ -124,12 +137,28 @@ function Profile() {
         openCloseModal();
         dispatch(updateUserdata(User._id, fieldSelected));
     };
-    console.log(User.id);
+    const pushNewPass=()=>{
+        
+        setPassChange((prevState)=>({
+            ...prevState,
+            current:pass.current,
+            password:pass.password
+        }))
+        console.log(passChange)
+        openCloseModalPass();
+        dispatch(UpdatePass(User._id,pass))
+    }
+
 
     const openCloseModal = () => {
         setModalUpdate(!modalUpdate);
         cleaner();
     };
+    const openCloseModalPass =()=>{
+        setModalUpdatePass(!modalUpdatePass)
+        cleaner();
+    }
+
 
     const modalStyles = {
         position: "absolute",
@@ -145,7 +174,7 @@ function Profile() {
         transform: "translate(-50%, -50%)",
         borderRadius: "2%",
     };
-    console.log(User.img);
+   
 
     const iconosStyles = {
         cursor: "pointer",
@@ -247,6 +276,39 @@ function Profile() {
             </div>
         </Grid>
     );
+    const bodyUpdatePass =(
+        <Grid sx={modalStyles}>
+            <Box component="form" noValidate>
+            <TextField
+                    id="custom-css-outlined-input"
+                    sx={cssTextField}
+                    label="Password"
+                    name="current"
+                    onChange={(e) => handleChangePass(e)}
+                    value={pass && pass.current}
+                />
+            <TextField
+                    id="custom-css-outlined-input"
+                    sx={cssTextField}
+                    label="New Password"
+                    name="password"
+                    onChange={(e) => handleChangePass(e)}
+                    value={pass && pass.password}
+                />
+            </Box>
+            
+            <br />
+            <div align="right">
+                <Button color="primary" onClick={() => pushNewPass()}>
+                    update
+                </Button>
+                <Button color="primary" onClick={() => openCloseModalPass()}>
+                    cancel
+                </Button>
+            </div>
+        </Grid>
+    )
+
     // if (!User.length) return
     return (
         <div className={styles.cont}>
@@ -428,6 +490,29 @@ function Profile() {
                                                     </TableCell>
                                                 </TableRow>
                                             </TableBody>
+                                            <TableBody>
+                                                <TableRow key={User.id}>
+                                                    <TableCell
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
+                                                    >
+                                                        <h2>Update Password</h2>
+                                                    </TableCell>
+                                                    <TableCell
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
+                                                    >
+                                                        <EditIcon
+                                                            sx={iconosStyles}
+                                                            onClick={() =>
+                                                                openCloseModalPass()
+                                                            }
+                                                        />
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableBody>
                                         </TableContainer>
                                     </Stack>
                                 </Grid>
@@ -492,6 +577,12 @@ function Profile() {
                             // onClose={openCloseModal()}
                         >
                             {bodyUpdate}
+                        </Modal>
+                        <Modal
+                            open={modalUpdatePass}
+                            // onClose={openCloseModal()}
+                        >
+                            {bodyUpdatePass}
                         </Modal>
                     </Grid>
                     <br /> <br />
