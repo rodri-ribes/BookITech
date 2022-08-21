@@ -28,6 +28,7 @@ export const dataSlice = createSlice({
         error: false,
         dataUser: [],
         CartUser: [],
+        heart:[]
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -384,6 +385,10 @@ export const dataSlice = createSlice({
         vaciarCommets: (state, actions) => {
             state.comments = [];
         },
+        vaciarFav: (state, actions) => {
+            state.Favo = [];
+            state.heart=[];
+        },
         delistBook: (state, actions) => {
             return;
         },
@@ -411,6 +416,11 @@ export const dataSlice = createSlice({
         dataUser: (state, actions) => {
             state.dataUser = actions.payload;
         },
+
+        heart:(state, actions)=>{
+            state.heart= actions.payload;
+        }
+
         contadorCart: (state, actions) => {
             state.CartUser = actions.payload;
         },
@@ -448,6 +458,7 @@ export const {
     comments,
     addUserID,
     vaciarCommets,
+    vaciarFav,
     delistBook,
     changeDashboardState,
     putBook,
@@ -459,10 +470,12 @@ export const {
     dataUser,
     updateUser,
     CartUser,
+    heart,
     DeleteCartUser,
     contadorQuitarCart,
     contadorCart,
     clearFil,
+
 
 } = dataSlice.actions;
 
@@ -592,6 +605,10 @@ export const DeleteComment = (id) => async (dispatch) => {
 export const Vaciar = () => async (dispatch) => {
     dispatch(vaciarCommets());
 };
+export const vaciarFavs = ()=> async (dispatch) => {
+    dispatch(vaciarFav())
+    console.log("putBook")
+}
 export const UpdateComment = (id, payload) => async (dispatch) => {
     try {
         console.log("payload", id, payload);
@@ -688,6 +705,16 @@ export const getCartUser = (idUser) => async (dispatch) => {
 export const DeleteInCartUser = (id) => (dispatch) => {
 
     dispatch(contadorQuitarCart(id))
+
+}
+export const GetHeart=(idUser)=> async (dispatch) => {
+    try{
+        let success = await axios.get(REACT_APP_API + `/favorite/id?email=${idUser}`)
+       await dispatch(heart(success.data))
+    }
+    catch(error){
+        console.log(error)
+    }
 
 }
 

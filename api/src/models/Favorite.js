@@ -10,10 +10,6 @@ const FavoriteSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    heart:{
-        type: Boolean,
-        default: false
-    }
 })
 
 module.exports = mongoose.model('Favorite', FavoriteSchema)

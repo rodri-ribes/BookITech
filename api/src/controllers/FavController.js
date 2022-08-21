@@ -13,10 +13,15 @@ async function PostFav(req, res) {
             let _id = id;
             const book = await Books.findOne({isbn13:_id})
             const user = await Users.findOne({email}) 
-            const all = new Favorite({book,user,heart:true})
-            const doc = await Favorite.findOne({book:book}) || await Favorite.create(all)
-             await doc.save()
-            res.status(200).send('Agregado correctamente')
+            const x = await Favorite.findOne({book,user}).populate("book")
+            if(x){
+                return res.status(400).send('Same book can send twice')
+            }
+            else{
+                const all = new Favorite({book,user})
+                await all.save()
+                return res.status(200).send('Agregado correctamente')
+            }
         }
 
         }
@@ -25,6 +30,25 @@ async function PostFav(req, res) {
     }
 }
 
+async function GetFavById(req, res){
+    const {email}= req.query
+    try{
+            if(email){
+            
+                let user = await Users.findOne({email})
+                let fav = await Favorite.find({user}).select(["book"]).populate("book")
+                fav=fav.map(l=>l.book.isbn13)
+            //    console.log(Favorite.book.isbn13)
+                if(fav.length ===0){
+                    return res.status(202).send([])
+                }
+               return  res.status(200).send(fav)
+            }
+    }
+    catch (err){
+        res.status(404).send('No me trajo los Fav')
+    }
+}
 
 //Cuando se inician la cuenta y ver si tiene fav
 async function GetFav (req,res) {
@@ -106,4 +130,4 @@ async function DeleteFav(req,res) {
 }
 
 
-module.exports ={  PostFav,GetFav,DeleteFav}
+module.exports ={  PostFav,GetFav,DeleteFav,GetFavById}
