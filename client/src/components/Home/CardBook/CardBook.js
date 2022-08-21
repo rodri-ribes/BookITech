@@ -5,25 +5,18 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AddCart, addFavs, deleteCart, deleteFavs, getCartUser,getFav } from '../../../redux/features/data/dataSlice'
+import { AddCart, addFavs, deleteCart, deleteFavs, getCartUser,getFav,GetHeart } from '../../../redux/features/data/dataSlice'
 import axios from 'axios'
 const { REACT_APP_API } = process.env
 
-export default function CardBook({ id, name, authors, img, price,  }) {
+export default function CardBook({ id, name, authors, img, price, heart }) {
     
-    
-
     const [cart, setCart] = useState(false)
-
-    const [heart, setHeart] = useState(false)
-    
     let user = useSelector(state => state.data.user)
-
     const [existUser, setexistUser] = useState(false)
 
-
     useEffect(() => {
-        if (user || window.localStorage.getItem("user")) {
+        if ( window.localStorage.getItem("user")) {
             setexistUser(true)
         } else {
             setexistUser(false)
@@ -70,11 +63,12 @@ export default function CardBook({ id, name, authors, img, price,  }) {
         if(user || window.localStorage.getItem("user")){
             await axios.post(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
             dispatch(getFav(idUser))
+            dispatch(GetHeart(idUser))
+            
         }else{
             dispatch(addFavs(id))
         }
-        
-        
+       
     }
     const RemoveToFav = async() => {
         //Aca iria el dispatch de la actions que quitaria el favorito
@@ -84,11 +78,11 @@ export default function CardBook({ id, name, authors, img, price,  }) {
             const res= await axios.put(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
             console.log(res.data)
             dispatch(deleteFavs(id))
+            dispatch(getFav(idUser))
+            dispatch(GetHeart(idUser))
         }else{
             console.log("no se pudieron empujar")
-        }
-        // setHeart(false)
-        
+        }    
     }
 
     //LOGICA PARA OCULTAR
@@ -103,8 +97,6 @@ export default function CardBook({ id, name, authors, img, price,  }) {
             </div>
             <div className={style.Container__Information}>
                 <h3 className={style.Container__Information__ContainerAuthorAndPrice_price}>{price}</h3>
-
-                {existUser ?
                     <div className={style.Container__Information__Heart}>
                         {heart ?
                             <AiFillHeart onClick={() => RemoveToFav()} />
@@ -112,9 +104,6 @@ export default function CardBook({ id, name, authors, img, price,  }) {
                             <AiOutlineHeart onClick={() => addToFav()} />
                         }
                     </div>
-                    :
-                    null
-                }
 
                 <Link className={style.Container__Information_title} to={`/book/${id}`}>{name.charAt(0).toUpperCase() + name.slice(1, 30)} (...)</Link>
                 <div className={style.Container__Information__ContainerAuthorAndPrice}>

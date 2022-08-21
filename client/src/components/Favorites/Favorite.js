@@ -1,56 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector ,useDispatch} from "react-redux"
+import { useSelector ,useDispatch, connect} from "react-redux"
 import {Card404} from "../404/Card404"
 import fav from "./Fav.module.css"
-import CardBook from "./CardBook/CardBook"
+//import CardBook from "./CardBook/CardBook"
+import CardBook from '../Home/CardBook/CardBook';
 import { Paginacion } from '../Home/Pagination/Pagination'
 import { GiBookmarklet } from "react-icons/gi"
-import { useNavigate } from 'react-router-dom'
 import {getFav} from '../../redux/features/data/dataSlice'
 
 function Favorite() {
-
-    let Favo = useSelector(state => state.data.Favo)
+    //props
+    let Favos=useSelector(state => state.data.Favo)
+    let heart= useSelector(state => state.data.heart)
     let user = useSelector(state => state.data.user)
-    const [Favos,setFavos]= useState([])
-    const Favorites=Favo?.map(l=>l.book)    
-
-    const dispatch = useDispatch()
-    useEffect(() => {  
-            if(user || window.localStorage.getItem("user")){
-            let auxUser = JSON.parse(window.localStorage.getItem("user"))
-            let idUser = auxUser.email
-                dispatch(getFav(idUser))
-        }
-    })
-    useEffect(() => {
-        setFavos(Favorites)
-      },[])
-
-    const [pagina, setPagina] = useState(1);
-
+    const Favorites=Favos?.map(l=>l.book)  
+    const [pagina, setPagina] = useState(1)
     const porPagina = 10;
-    
-
-   
-    const ceil = Favos.length / porPagina;
+    const ceil = Favorites.length / porPagina;
     let maximo = Math.ceil(ceil)
-
-
-    //si el usuario no esta logueado no pueda acceder
-
-    // let navigate = useNavigate();
-    // let user = useSelector(state => state.data.user)
-
-    // useEffect(() => {
-    //     if (!user) {
-    //         navigate("/");
-    //     } else if (!window.localStorage.getItem("user")) {
-    //         navigate("/");
-    //     }
-    // }, [])
-
-
 
     return (
         <div className={fav.Container} >
@@ -60,13 +27,14 @@ function Favorite() {
 
             <div className={fav.Container__PanelCards} >
                 {
-                    Favos.slice(
+                    Favorites.slice(
                         (pagina - 1) * porPagina,
                         (pagina - 1) * porPagina + porPagina
                     ).map((l, i) => {
                         return (
                             <CardBook
                                 name={l.title}
+                                heart={heart.includes(l.isbn13)}
                                 id={l.isbn13}
                                 author={l.author}
                                 gender={l.gender}
@@ -87,4 +55,12 @@ function Favorite() {
     )
 }
 
-export default Favorite
+// function mapStateToProps(state){
+//     return{
+//       Favos: state.data.Favo,
+//       heart: state.data.heart
+//     }
+//   }
+
+export default  Favorite ;
+//connect(mapStateToProps, null)
