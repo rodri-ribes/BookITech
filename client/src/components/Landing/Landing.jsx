@@ -7,6 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './landing.css'
+import fotoNigaa from './1.jpg'
 
 function Landing() {
   return (
@@ -48,7 +49,7 @@ function Landing() {
 
     <SwiperSlide>
         <Link to={'/book/9780596527747'}>
-            <img src="https://http2.mlstatic.com/D_NQ_961400-MLA51079513138_082022-OO.webp" alt="" />   
+            <img src={fotoNigaa} alt="" />   
         </Link>
     </SwiperSlide>
 

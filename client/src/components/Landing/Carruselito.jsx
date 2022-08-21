@@ -39,18 +39,6 @@ console.log(booksReduce)
       <div className="slide-image">
         <img src={l.image} alt="" />
       </div>
-      <div className="slide-text">
-        <div className="slide-name">
-
-         <p>{l.title}</p>
-
-        </div>
-        <div className="slide-price">
-
-          <p>{l.price}</p>
-
-        </div>
-      </div>
       </Link>
       </div>
      
