@@ -9,8 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate } from "react-router-dom"
-
+import { useNavigate } from "react-router-dom";
 
 const SearchUI = styled("div")(({ theme }) => ({
     position: "relative",
@@ -46,7 +45,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         transition: theme.transitions.create("width"),
         width: "100%",
         [theme.breakpoints.up("sm")]: {
-            width: "15ch",
+            width: "17ch",
             "&:focus": {
                 width: "30ch",
             },
@@ -59,7 +58,7 @@ export default function Search() {
     const [option, setOption] = useState([]);
     const [name, setName] = useState("");
     const books = useSelector((state) => state.data.allBooks);
-    let navigate = useNavigate()
+    let navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
         let titulo = books.map((e) => e.title);
@@ -68,12 +67,10 @@ export default function Search() {
         setOption(titulo);
     }, [books]);
 
-
-    
     function handleChange2(e) {
         // setName('');
         // setName(e.target.value);
-        dispatch(getSearch(e.target.value))
+        dispatch(getSearch(e.target.value));
         // if (!name) {
         // setName(e.target.value);
         // if (name.length < 1) {
@@ -82,23 +79,23 @@ export default function Search() {
         // }
     }
 
-    function redirect(){
-        if (window.location.pathname !== '/') {
-            navigate('/')
+    function redirect() {
+        if (window.location.pathname !== "/") {
+            navigate("/");
         }
     }
 
     function handleChange(e) {
         if (name.length >= 3) {
             // setName(e.target.value);
-            dispatch(getSearch(name))
+            dispatch(getSearch(name));
             setDisplay(true);
             // setOption(books.map((e) => e.title));
         }
-        console.log(window.location.pathname)
+        console.log(window.location.pathname);
         // if (!name) {
         // setName(e.target.value);
-        dispatch(getSearch(name))
+        dispatch(getSearch(name));
         if (name.length < 2) {
             setDisplay(false);
             // setOption([]);
@@ -123,30 +120,41 @@ export default function Search() {
         setDisplay(false);
     }
     //redirect
-    // 
+    //
     return (
         <Box sx={{ flexGrow: 1 }}>
-
-                <SearchUI >
-                    <SearchIconWrapper>
-                        <IconButton aria-label="search" color="inherit">
-                            <SearchIcon />
-                        </IconButton>
-                    </SearchIconWrapper>
-                    <StyledInputBase
-                        placeholder="Search…"
-                        inputProps={{ "aria-label": "search" }}
-                        onChange={(e) => handleChange2(e)}
-                        onClick={redirect}
-                        type="text"
-                        // value={name}
-                        sx={{
-                            flexGrow: 1,
-                            display: { md: "flex", xs: "none" }
-                            }}
-                    />
-                    <div>
-                        {/* <div>
+            <SearchUI>
+                <SearchIconWrapper>
+                    <IconButton
+                        aria-label="search"
+                        color="inherit"
+                        sx={{ ml: -2.5, display: { md: "none", xs: "flex" } }}
+                    >
+                        <SearchIcon />
+                    </IconButton>
+                    <IconButton
+                        aria-label="search"
+                        color="inherit"
+                        sx={{ display: { md: "flex", xs: "none" } }}
+                        pointer= "cursor"
+                    >
+                        <SearchIcon />
+                    </IconButton>
+                </SearchIconWrapper>
+                <StyledInputBase
+                    placeholder="Search…"
+                    inputProps={{ "aria-label": "search" }}
+                    onChange={(e) => handleChange2(e)}
+                    onClick={redirect}
+                    type="text"
+                    // value={name}
+                    sx={{
+                        flexGrow: 1,
+                        display: { md: "flex" },
+                    }}
+                />
+                <div>
+                    {/* <div>
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <input
                         onChange={(e) => handleChange(e)}
@@ -161,7 +169,7 @@ export default function Search() {
                 </form>
 <<<<<<< HEAD
             </div> */}
-                        {/* <datalist id="form">
+                    {/* <datalist id="form">
                         {display &&
                             option
                                 ?.filter((e) =>
@@ -179,31 +187,30 @@ export default function Search() {
                                     );
                                 })}
                     </datalist> */}
-                    </div>
-                </SearchUI>
-            
+                </div>
+            </SearchUI>
         </Box>
-// =======
-//             </div>
-//             <datalist className={style.dentro} id="form">
-//                 {display &&
-//                     option
-//                         ?.filter((e) =>
-//                             e.includes(name)
-//                         )
-//                         .map((e, k) => {
-//                             return (
-//                                 <option
-//                                     key={k}
-//                                     onClick={() => setClick(e)}
-//                                     value={e}
-//                                 >
-//                                     {e}
-//                                 </option>
-//                             );
-//                         })}
-//             </datalist>
-//         </div>
-// >>>>>>> Development
+        // =======
+        //             </div>
+        //             <datalist className={style.dentro} id="form">
+        //                 {display &&
+        //                     option
+        //                         ?.filter((e) =>
+        //                             e.includes(name)
+        //                         )
+        //                         .map((e, k) => {
+        //                             return (
+        //                                 <option
+        //                                     key={k}
+        //                                     onClick={() => setClick(e)}
+        //                                     value={e}
+        //                                 >
+        //                                     {e}
+        //                                 </option>
+        //                             );
+        //                         })}
+        //             </datalist>
+        //         </div>
+        // >>>>>>> Development
     );
 }

@@ -14,11 +14,12 @@ import FiltersSidebar from "../Filters/FiltersSidebar"
 
 export default function Home() {
     let dispatch = useDispatch();
-   
+    let user = useSelector(state => state.data.user)
+
 
     // const [loading, setLoading] = useState(true)
     // const [error, setError] = useState(false)
-
+    
 
     useEffect(() => {   
         dispatch(getLibros());
