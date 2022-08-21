@@ -92,16 +92,13 @@ export const dataSlice = createSlice({
                 state.range = [...state.books];
                 alert("Min or Máx are less than 0");
             } else {
-                let copirange = state.allBooks.filter(
-                // let copirange = state.books.filter(
+                let copirange = state.books.filter(
                     (e) =>
                         Number(e.price.slice(1)) >= Number(payload.min) &&
                         Number(payload.max) >= Number(e.price.slice(1))
                 );
                 if (!copirange.length) {
-                    state.books = [...state.books];
-                    state.range = [...state.books];
-                    alert("price range not found");
+                    state.books = state.allBooks.filter( e => Number(e.price.slice(1)) >= Number(payload.min) && Number(payload.max) >= Number(e.price.slice(1)))
                 } else {
                     return {
                         ...state,
@@ -115,7 +112,105 @@ export const dataSlice = createSlice({
             let copiABC = [...state.books];
 
             let filterAZ;
-            if (actions.payload === 'A-Z') {
+            if(state.MinToMax.length){
+                if (actions.payload === 'A-Z') {
+                    let min = [...state.books].sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        })
+                    let max = [...state.books].sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        });
+                    if (JSON.stringify(state.MinToMax) === JSON.stringify(min)){
+                        console.log('holaaaaMin')
+                        filterAZ = copiABC.sort((a, b) => {
+                        if (a.title > b.title) {
+                            return 1;
+                        }
+                        if (b.title > a.title) {
+                            return -1;
+                        }
+                        return 0;
+                    }).sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        })
+                    }
+                    else if (JSON.stringify(state.MinToMax) === JSON.stringify(max)){
+                        console.log('Holaaa max')
+                        filterAZ = copiABC.sort((a, b) => {
+                        if (a.title > b.title) {
+                            return 1;
+                        }
+                        if (b.title > a.title) {
+                            return -1;
+                        }
+                        return 0;
+                    }).sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        })
+                    } else {
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return 1;
+                            }
+                            if (b.title > a.title) {
+                                return -1;
+                            }
+                            return 0;
+                        })}
+                } if (actions.payload === 'Z-A') {
+                    let min2 = [...state.books].sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        })
+                    let max2 = [...state.books].sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        });
+                    if (JSON.stringify(state.MinToMax) === JSON.stringify(min2)){
+                        filterAZ = copiABC.sort((a, b) => {
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (b.title > a.title) {
+                            return 1;
+                        }
+                        return 0;
+                    }).sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        })
+                    }
+                    else if (JSON.stringify(state.MinToMax) === JSON.stringify(max2)){
+                        filterAZ = copiABC.sort((a, b) => {
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (b.title > a.title) {
+                            return 1;
+                        }
+                        return 0;
+                    }).sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        })
+                    } else {
+                        filterAZ = copiABC.sort((a, b) => {
+                                if (a.title > b.title) {
+                                return -1;
+                            }
+                            if (b.title > a.title) {
+                                return 1;
+                            }
+                            return 0;
+                        });}
+                    } 
+        
+            } else {
+                if (actions.payload === 'A-Z') {
                 filterAZ = copiABC.sort((a, b) => {
                     if (a.title > b.title) {
                         return 1;
@@ -128,7 +223,7 @@ export const dataSlice = createSlice({
             }
             if (actions.payload === 'Z-A') {
                 filterAZ = copiABC.sort((a, b) => {
-                    if (a.title > b.title) {
+                        if (a.title > b.title) {
                         return -1;
                     }
                     if (b.title > a.title) {
@@ -137,17 +232,125 @@ export const dataSlice = createSlice({
                     return 0;
                 });
             }
-
+            }
 
             return {
                 ...state,
                 A_Z: actions.payload === 'all' ? [...state.books] : filterAZ,
+                MinToMax: filterAZ,
                 books: actions.payload === 'all' ? [...state.allBooks] : filterAZ,
             };
         },
         MINtoMAX: (state, actions) => {
             let cambiar = [...state.books];
             let filtrar;
+            if(state.A_Z.length){
+                if(actions.payload === 'MintoMax'){
+                    let az = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                        return 1; 
+                    }
+                    if (b.title > a.title) {
+                        return -1;
+                    }
+                    return 0;
+                });
+                    let za = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                        return -1; 
+                    }
+                    if (b.title > a.title) {
+                        return 1;
+                    }
+                    return 0;
+                    });
+                    if(JSON.stringify(state.A_Z) === JSON.stringify(az)){
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                return 1; 
+                            }
+                            if (b.title > a.title) {
+                                return -1;
+                            }
+                            return 0;
+                        });
+                    }
+                    if(JSON.stringify(state.A_Z) === JSON.stringify(za)){
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                return -1; 
+                            }
+                            if (b.title > a.title) {
+                                return 1;
+                            }
+                            return 0;
+                        });
+                    }
+                    filtrar = cambiar.sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        });
+                }
+                if(actions.payload === 'MaxtoMin'){
+                    let azM = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                        return 1; 
+                    }
+                    if (b.title > a.title) {
+                        return -1;
+                    }
+                    return 0;
+                });
+                    let zaM = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                        return -1; 
+                    }
+                    if (b.title > a.title) {
+                        return 1;
+                    }
+                    return 0;
+                    });
+                    if(JSON.stringify(state.A_Z) === JSON.stringify(azM)){
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                return 1; 
+                            }
+                            if (b.title > a.title) {
+                                return -1;
+                            }
+                            return 0;
+                        });
+                    }
+                    if(JSON.stringify(state.A_Z) === JSON.stringify(zaM)){
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                return -1; 
+                            }
+                            if (b.title > a.title) {
+                                return 1;
+                            }
+                            return 0;
+                        });
+                    }
+                    filtrar = cambiar.sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        });
+                }
+            } else {
+                
             if (actions.payload === 'MintoMax') {
                 filtrar = cambiar.sort(
                     (a, b) => {
@@ -159,9 +362,12 @@ export const dataSlice = createSlice({
                     (a, b) => {
                         return Number(b.price.slice(1)) - Number(a.price.slice(1))
                     });
+                }
             }
             return {
                 ...state,
+                MinToMax: filtrar,
+                A_Z: filtrar,
                 books: actions.payload === 'all' ? cambiar : filtrar,
             };
         },
@@ -205,6 +411,15 @@ export const dataSlice = createSlice({
             state.dataUser = actions.payload;
         },
 
+        clearFil: (state, actions) => {
+            state.books = state.allBooks;
+            state.range = [];
+            state.A_Z =  [];
+            state.MinToMax = [];
+            state.Theme = [];
+        }
+        
+
     },
 });
 
@@ -237,7 +452,7 @@ export const {
     dataUser,
     updateUser,
     CartUser,
-    DeleteCartUser
+    DeleteCartUser,clearFil,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -465,3 +680,6 @@ export const DeleteInCartUser = (id) => (dispatch) => {
 
 }
 
+export const ResetFil = () => (dispatch) => {
+    dispatch(clearFil())
+}
