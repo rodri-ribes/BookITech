@@ -12,7 +12,7 @@ export const dataSlice = createSlice({
         details: [],
         Cart: [],
         Favs: [],
-        Favo:[],
+        Favo: [],
         allBooks: [],
         Theme: [],
         range: [],
@@ -65,13 +65,13 @@ export const dataSlice = createSlice({
         },
 
         addFav: (state, actions) => {
-             state.Favs = state.Favs.concat(state.books.filter((l) => l.isbn13 === actions.payload))
+            state.Favs = state.Favs.concat(state.books.filter((l) => l.isbn13 === actions.payload))
         },
-        addFav2:(state, actions)=> {
-            state.Favo=actions.payload
+        addFav2: (state, actions) => {
+            state.Favo = actions.payload
         },
         deleteFav: (state, actions) => {
-            
+
             state.Favs = state.Favs.filter((l) => l.isbn13 !== actions.payload);
         },
         // deleteFav2: (state,actions)=>{
@@ -92,6 +92,7 @@ export const dataSlice = createSlice({
                 state.range = [...state.books];
                 alert("Min or Máx are less than 0");
             } else {
+
                 let copirange = state.books.filter(
                     (e) =>
                         Number(e.price.slice(1)) >= Number(payload.min) &&
@@ -108,7 +109,7 @@ export const dataSlice = createSlice({
                 }
             }
         },
-         ORDEN: (state, actions) => {
+        ORDEN: (state, actions) => {
             let copiABC = [...state.books];
 
             let filterAZ;
@@ -410,6 +411,12 @@ export const dataSlice = createSlice({
         dataUser: (state, actions) => {
             state.dataUser = actions.payload;
         },
+        contadorCart: (state, actions) => {
+            state.CartUser = actions.payload;
+        },
+        contadorQuitarCart: (state, actions) => {
+            state.CartUser = state.CartUser.filter(c => c._id !== actions.payload)
+        },
 
         clearFil: (state, actions) => {
             state.books = state.allBooks;
@@ -452,7 +459,11 @@ export const {
     dataUser,
     updateUser,
     CartUser,
-    DeleteCartUser,clearFil,
+    DeleteCartUser,
+    contadorQuitarCart,
+    contadorCart,
+    clearFil,
+
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -497,8 +508,8 @@ export const AddCart = (id) => async (dispatch) => {
 export const DeleteCart = (id) => async (dispatch) => {
     dispatch(deleteCart(id));
 };
-export const getFav =(idUser) => async (dispatch) => {
-    const res = await axios.get(REACT_APP_API+ `/favorite`,{params:{email:idUser}})
+export const getFav = (idUser) => async (dispatch) => {
+    const res = await axios.get(REACT_APP_API + `/favorite`, { params: { email: idUser } })
     //let filter=res.data.map(m=>m.book.isbn13)
     dispatch(addFav2(res.data))
 }
@@ -553,7 +564,7 @@ export const Comments = (id) => async (dispatch) => {
     try {
         let komments = await axios
             .get(REACT_APP_API + `/comments/${id}`)
-            .catch((err) => {});
+            .catch((err) => { });
         dispatch(comments(komments.data));
     } catch (error) {
         console.log(error);
@@ -605,7 +616,7 @@ export const deleteBook = (id) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-    
+
 };
 export const updateBook = (payload) => async (dispatch) => {
     try {
@@ -653,10 +664,10 @@ export const updateUserdata = (id, payload) => async (dispatch) => {
         console.log(error);
     }
 }
-export const UpdatePass=(id,payload) => async (dispatch)=>{
-    try{
+export const UpdatePass = (id, payload) => async (dispatch) => {
+    try {
         console.log(payload);
-        const res = await axios.put(REACT_APP_API +`/user/change/${id}`,payload)
+        const res = await axios.put(REACT_APP_API + `/user/change/${id}`, payload)
         alert("Password changed successfully")
     }
     catch (error) {
@@ -667,8 +678,8 @@ export const UpdatePass=(id,payload) => async (dispatch)=>{
 export const getCartUser = (idUser) => async (dispatch) => {
     try {
         let res = await axios.get(REACT_APP_API + '/cart/' + idUser)
-        console.log(idUser)
-        dispatch(CartUser(res.data[0].cart))
+        // console.log(res.data[0].cart)
+        dispatch(contadorCart(res.data[0].cart))
     } catch (error) {
         console.log(error);
     }
@@ -676,7 +687,7 @@ export const getCartUser = (idUser) => async (dispatch) => {
 
 export const DeleteInCartUser = (id) => (dispatch) => {
 
-    dispatch(DeleteCartUser(id))
+    dispatch(contadorQuitarCart(id))
 
 }
 
