@@ -417,6 +417,7 @@ export const dataSlice = createSlice({
             state.MinToMax = [];
             state.Theme = [];
         }
+        
     },
 });
 
