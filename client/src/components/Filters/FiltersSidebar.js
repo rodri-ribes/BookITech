@@ -31,7 +31,7 @@ import {
     FilTheme,
     ORdenAZ,
     PriceRange,
-    ChangeRange,
+    ChangeRange,ResetFil,
 } from "../../redux/features/data/dataSlice";
 import style from "./Filters.module.css";
 
@@ -61,12 +61,12 @@ function FiltersSidebar(props, { setPagina }) {
         "mongoose",
         "java",
         "javascript",
-        " html",
+        "html",
         "css",
         "python",
         "php",
         "react",
-        "redux",
+        // "redux",
         "perl",
         "swift",
         "rust",
@@ -76,17 +76,21 @@ function FiltersSidebar(props, { setPagina }) {
         "typescript",
         "express.js",
     ];
+    function ClearFilter() {
+        dispatch(ResetFil())
+        // setPagina(1)
+    }
 
     function handleChangeRangeMin(e) {
         e.preventDefault();
         dispatch(ChangeRange("MintoMax"));
-        setPagina(1);
+        // setPagina(1);
     }
 
     function handleChangeRangeMax(e) {
         e.preventDefault();
         dispatch(ChangeRange("MaxtoMin"));
-        setPagina(1);
+        // setPagina(1);
     }
 
     function validate() {
@@ -103,7 +107,7 @@ function FiltersSidebar(props, { setPagina }) {
         // e.preventDefault();
         console.log(e.target.textContent);
         dispatch(FilTheme(e.target.textContent));
-        setPagina(1);
+        // setPagina(1);
     }
 
     function handleRange(e) {
@@ -114,7 +118,7 @@ function FiltersSidebar(props, { setPagina }) {
             dispatch(PriceRange(range));
             setRange({ max: "", min: "" });
             // console.log('holaaa');
-            setPagina(1);
+            // setPagina(1);
         }
     }
     function handleChange(e) {
@@ -133,14 +137,14 @@ function FiltersSidebar(props, { setPagina }) {
         e.preventDefault();
         console.log(e.target.value);
         dispatch(ORdenAZ("A-Z"));
-        setPagina(1);
+        // setPagina(1);
     }
 
     function handleOrdenZA(e) {
         e.preventDefault();
         console.log(e.target.value);
         dispatch(ORdenAZ("Z-A"));
-        setPagina(1);
+        // setPagina(1);
     }
 
     const handleDrawerToggle = () => {
@@ -318,6 +322,9 @@ function FiltersSidebar(props, { setPagina }) {
                     </Box>
                 {/* </form> */}
             </List>
+            <ListItem >
+                    <ListItemButton onClick={() => ClearFilter()}>RESET</ListItemButton>
+                </ListItem>
             <List>
                 <Typography
                     sx={{
