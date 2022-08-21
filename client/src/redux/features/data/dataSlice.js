@@ -427,6 +427,7 @@ export const {
     SearchTitle,
     addCart,
     addFav,
+    addFav2,
     deleteFav,
     deleteCart,
     FilterTheme,
@@ -448,7 +449,7 @@ export const {
     dataUser,
     updateUser,
     CartUser,
-    DeleteCartUser,addFav2,clearFil,
+    DeleteCartUser,clearFil,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
