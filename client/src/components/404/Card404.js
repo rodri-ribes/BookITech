@@ -6,12 +6,14 @@ import Payment from './Payment/Payment.js'
 import successImg from './img/success.png'
 import deniedImg from './img/denied.png'
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { getCartUser } from "../../redux/features/data/dataSlice";
 const { REACT_APP_API } = process.env
 
 export function Card404() {
 
     let mostrar;
-
+    let dispatch = useDispatch()
     let navigate = useNavigate()
 
     const finishCompra = async () => {
@@ -26,11 +28,13 @@ export function Card404() {
         } catch (error) {
             console.log(error)
         }
+        dispatch(getCartUser(user.id))
     }
 
     if (window.location.pathname.slice(0, 8) === "/success") {
         mostrar = "success"
         finishCompra()
+
     } else if (window.location.pathname.slice(0, 8) === "/failure") {
         mostrar = "failure"
         window.localStorage.removeItem("buy")

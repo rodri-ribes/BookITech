@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Container, ContainerCash, ContainerEmptyCart, ContainerPanel } from './Cart.elements';
-import { BsCart4 } from 'react-icons/bs'
+import { BsCart4, BsFillNutFill } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux';
 import CardBooksInCart from './CardBooksInCart/CardBooksInCart';
 import calcularCarrito from './functions/calcularCarrito';
@@ -8,7 +8,7 @@ import { FaCartArrowDown } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import filtrarBooksUser from './functions/filtrarBooksUser';
-import { getCartUser } from '../../redux/features/data/dataSlice';
+import { actionVaciarCarritoDespDeLogin, getCartUser } from '../../redux/features/data/dataSlice';
 
 import { Confirm } from 'react-st-modal';
 const { REACT_APP_API } = process.env
@@ -43,6 +43,8 @@ export default function CartShopping() {
             let res = axios.get(REACT_APP_API + '/cart/' + auxUser.id).then(c => {
                 setCartFiltrado(filtrarBooksUser(booksTotal, c.data[0].cart))
             })
+            if (!click) dispatch(getCartUser(auxUser.id))
+
         }
         setClick(!click);
     }
@@ -129,6 +131,23 @@ export default function CartShopping() {
     let cantidad;
 
 
+    //LOGICA PARA CONCATENAR EL CARRITO CUANDO NO ESTAS LOGUEADO CON EL LOGUEADO
+
+    if (books.length > 0 && window.localStorage.getItem("user")) {
+
+        let auxUser = JSON.parse(window.localStorage.getItem("user"))
+        let idUser = auxUser.id
+        books.forEach(async c => {
+            let idBook = c.isbn13
+            await axios.post(REACT_APP_API + '/cart/add', {
+                idUser, idBook
+            })
+        })
+        dispatch(actionVaciarCarritoDespDeLogin())
+        dispatch(getCartUser(idUser))
+    }
+
+
     if (user || window.localStorage.getItem("user")) {
         total = calcularCarrito(contador, cartFiltrado)
         if (CartUser !== 0) {
@@ -175,7 +194,25 @@ export default function CartShopping() {
                     unit_price: parseFloat(e.price.slice(1))
                 })
             })
-            window.localStorage.setItem("buy", JSON.stringify(cartFiltrado))
+
+            let compraUser = []
+
+            let date = new Date();
+            let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+            cartFiltrado.forEach(e => {
+                compraUser.push({
+                    title: e.title,
+                    subtitle: e.subtitle,
+                    image: e.image,
+                    isbn13: e.isbn13,
+                    price: e.price,
+                    cantidad: contador[e.title],
+                    date: date.toLocaleDateString('en-US', options)
+                })
+            })
+
+            window.localStorage.setItem("buy", JSON.stringify(compraUser))
             try {
                 let resp = await axios.post(REACT_APP_API + '/payment', {
                     items
@@ -183,7 +220,6 @@ export default function CartShopping() {
                 // console.log(resp.data.init_point)
                 window.location.href = resp.data.init_point
                 // window.location.href = resp.data.sandbox_init_point
-                console.log("respuesta de mercado pago", resp.data)
             } catch (error) {
                 console.log(error)
             }
