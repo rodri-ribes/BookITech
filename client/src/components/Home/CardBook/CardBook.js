@@ -5,18 +5,19 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AddCart, addFavs, deleteCart, deleteFavs, getCartUser,getFav,GetHeart } from '../../../redux/features/data/dataSlice'
+import { AddCart, addFavs, deleteCart, deleteFavs, getCartUser, getFav, GetHeart } from '../../../redux/features/data/dataSlice'
 import axios from 'axios'
 const { REACT_APP_API } = process.env
 
-export default function CardBook({ id, name, authors, img, price, heart}) {
-    
+
+export default function CardBook({ id, name, authors, img, price, heart }) {
+
     const [cart, setCart] = useState(false)
     let user = useSelector(state => state.data.user)
     const [existUser, setexistUser] = useState(false)
 
     useEffect(() => {
-        if ( window.localStorage.getItem("user")) {
+        if (window.localStorage.getItem("user")) {
             setexistUser(true)
         } else {
             setexistUser(false)
@@ -57,32 +58,32 @@ export default function CardBook({ id, name, authors, img, price, heart}) {
     }
 
     const addToFav = async () => {
-            let auxUser = JSON.parse(window.localStorage.getItem("user"))
-            let idUser = auxUser.email
-            console.log("IDS", idUser, id)
-        if(user || window.localStorage.getItem("user")){
-            await axios.post(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
+        let auxUser = JSON.parse(window.localStorage.getItem("user"))
+        let idUser = auxUser.email
+        console.log("IDS", idUser, id)
+        if (user || window.localStorage.getItem("user")) {
+            await axios.post(REACT_APP_API + `/favorite/?email=${idUser}`, { id })
             dispatch(getFav(idUser))
             dispatch(GetHeart(idUser))
-            
-        }else{
+
+        } else {
             dispatch(addFavs(id))
         }
-       
+
     }
-    const RemoveToFav = async() => {
+    const RemoveToFav = async () => {
         //Aca iria el dispatch de la actions que quitaria el favorito
         let auxUser = JSON.parse(window.localStorage.getItem("user"))
         let idUser = auxUser.email
-        if(user || window.localStorage.getItem("user")){
-            const res= await axios.put(REACT_APP_API +`/favorite/?email=${idUser}`,{id})
+        if (user || window.localStorage.getItem("user")) {
+            const res = await axios.put(REACT_APP_API + `/favorite/?email=${idUser}`, { id })
             console.log(res.data)
             dispatch(deleteFavs(id))
             dispatch(getFav(idUser))
             dispatch(GetHeart(idUser))
-        }else{
+        } else {
             console.log("no se pudieron empujar")
-        }    
+        }
     }
 
     //LOGICA PARA OCULTAR
@@ -97,17 +98,17 @@ export default function CardBook({ id, name, authors, img, price, heart}) {
             </div>
             <div className={style.Container__Information}>
                 <h3 className={style.Container__Information__ContainerAuthorAndPrice_price}>{price}</h3>
-                    <div className={style.Container__Information__Heart}>
-                        {heart ?
-                            <AiFillHeart onClick={() => RemoveToFav()} />
-                            :
-                            <AiOutlineHeart onClick={() => addToFav()} />
-                        }
-                    </div>
+                <div className={style.Container__Information__Heart}>
+                    {heart ?
+                        <AiFillHeart onClick={() => RemoveToFav()} />
+                        :
+                        <AiOutlineHeart onClick={() => addToFav()} />
+                    }
+                </div>
 
                 <Link className={style.Container__Information_title} to={`/book/${id}`}>{name?.charAt(0).toUpperCase() + name?.slice(1, 25)} (...)</Link>
                 <div className={style.Container__Information__ContainerAuthorAndPrice}>
-                <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors ? authors.toUpperCase().slice(0,20) : 'has no author'}...</p>
+                    <p className={style.Container__Information__ContainerAuthorAndPrice_author}>{authors ? authors.toUpperCase().slice(0, 20) : 'has no author'}...</p>
 
                 </div>
             </div>
