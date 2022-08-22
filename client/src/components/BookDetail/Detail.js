@@ -211,12 +211,12 @@ function Detail() {
 
   useEffect(() => {
     if (userData) {
-      userData.buy.forEach(c => {
+      userData.buy?.forEach(c => {
         if (c.isbn13 === id) {
           setReviewUser(true)
         }
       })
-      userData.reviews.forEach(c => {
+      userData.reviews?.forEach(c => {
         if (c.book === id) {
           setExisteReview(true)
           setReview(c.review)
