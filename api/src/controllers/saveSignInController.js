@@ -38,17 +38,19 @@ const saveSignIn = async (req, res) => {
       to: email,
       subject: "HELLOOO ",
       html: `
-        <div style="background-color:#DCDCDC; border-radius:20px">
-        <h1 style="text-align:center; padding:10px">Welcome to BookITech 📖</h1>
-        <div style="text-align:center">
-        <img src=${img[0]} alt='img not foun' width='150' height='150' />
-        <img src=${img[1]} alt='img not foun' width='150' height='150'/>
-                <img src=${img[2]} alt='img not foun' width='150' height='150'/>                      
-                <img src=${img[3]} alt='img not foun' width='150' height='150'/>
+        <div style="justify-content:center;">
+        <div style="background-color:#DCDCDC; border-radius:20px; font-family:Rockweel,Lucidatypewriter; font-size=40px ">
+        <h1 style="text-align:center; padding:10px; text-decoration:underline; background-color:#0a1929; color:#DADADA;">Welcome to BookITech 📖</h1>
+        <div style="text-align:center; padding:0px 100px">
+        <img src=${img[0]} alt='img not foun' width="200px" height="200px" />
+        <img src=${img[1]} alt='img not foun' width="200px" height="200px"/>
+                <img src=${img[2]} alt='img not foun' width="200px" height="200px"/>                      
+                <img src=${img[3]} alt='img not foun' width="200px" height="200px"/>
         </div>
-        <div style="text-align:center; padding:10px">
-        <h5>↓BUY HERE!↓</h5>
-        <a href="https://bookitech-olive.vercel.app/">📚BookITech 📗</a>
+        <div style="text-align:center; padding:10px; background-color:#0a1929; color:#DADADA;">
+        <p style="font-family:Rockweel,Lucidatypewriter; font-size:15px;" >↓BUY HERE!↓</p>
+        <a href="https://bookitech-olive.vercel.app/" style="font-family:Rockweel,Lucidatypewriter; font-size:17px; " >📚BookITech 📗</a>
+        </div>
         </div>
         </div>
         `

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import style from './SignIn.module.css'
-
+import SpinnerSignUp from '../auxiliar/SpinnerSignUp/SpinnerSignUp'
 import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
-import { getLibros, getUser } from '../../redux/features/data/dataSlice';
+import { getLibros, getUser,GetHeart, getFav } from '../../redux/features/data/dataSlice';
 import { UserAuth } from '../../firebase/AuthContext';
 import { FacebookLoginButton, GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider } from 'firebase/auth'
@@ -91,6 +91,9 @@ export default function SignIn() {
 
                 let { email, password } = valores;
 
+                
+                email = email.toLowerCase();
+
                 try {
                     let resp = await axios.post(REACT_APP_API + `/signin`, {
                         password, email
@@ -98,10 +101,10 @@ export default function SignIn() {
                     window.localStorage.setItem("user", JSON.stringify(resp.data))
                     dispatch(getUser(resp.data))
                     setConfirm({ message: "You logged in successfully", visible: true, error: false })
-
+                    dispatch(GetHeart(resp.data.email))
+                    dispatch(getFav(resp.data.email))
                     setTimeout(() => {
                         setConfirm({ message: "", visible: null, error: null })
-                        dispatch(getLibros())
                         navigate("/")
                     }, 2000);
 

@@ -1,46 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
-import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import SortByAlphaIcon from "@mui/icons-material/SortByAlpha";
 import { BsSortAlphaDown } from "react-icons/bs";
 import { BsSortAlphaUp } from "react-icons/bs";
 import { BsSortDownAlt } from "react-icons/bs";
 import { BsSortUpAlt } from "react-icons/bs";
-import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import { Button, TextField } from "@mui/material";
-import styled from "@emotion/styled";
 import { useDispatch } from "react-redux";
 import {
     FilTheme,
     ORdenAZ,
     PriceRange,
-    ChangeRange,
+    ChangeRange,ResetFil,
 } from "../../redux/features/data/dataSlice";
-import style from "./Filters.module.css";
-
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import { Container, Stack } from "@mui/system";
-import { Grid } from "@mui/material";
+import DrawerDesktop from "./DrawerDesktop";
 
 const drawerWidth = 240;
 
@@ -53,7 +37,7 @@ function FiltersSidebar(props, { setPagina }) {
         max: "",
         min: "",
     });
-    const [errors, setErrors] = useState({});
+    const [/*errors*/, setErrors] = useState({});
 
     const tematica = [
         "mongo",
@@ -61,12 +45,12 @@ function FiltersSidebar(props, { setPagina }) {
         "mongoose",
         "java",
         "javascript",
-        " html",
+        "html",
         "css",
         "python",
         "php",
         "react",
-        "redux",
+        // "redux",
         "perl",
         "swift",
         "rust",
@@ -76,17 +60,27 @@ function FiltersSidebar(props, { setPagina }) {
         "typescript",
         "express.js",
     ];
+    function ClearFilter() {
+        dispatch(ResetFil())
+        // setPagina(1)
+    }
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
 
     function handleChangeRangeMin(e) {
         e.preventDefault();
+        handleDrawerToggle();
         dispatch(ChangeRange("MintoMax"));
-        setPagina(1);
+        // setPagina(1);
     }
 
     function handleChangeRangeMax(e) {
         e.preventDefault();
+        handleDrawerToggle();
         dispatch(ChangeRange("MaxtoMin"));
-        setPagina(1);
+        // setPagina(1);
     }
 
     function validate() {
@@ -101,20 +95,22 @@ function FiltersSidebar(props, { setPagina }) {
     }
     function handleTheme(e) {
         // e.preventDefault();
+        handleDrawerToggle();
         console.log(e.target.textContent);
         dispatch(FilTheme(e.target.textContent));
-        setPagina(1);
+        // setPagina(1);
     }
 
     function handleRange(e) {
         e.preventDefault();
+        handleDrawerToggle();
         if (!range.max || !range.min) {
             alert("Máx and Min Required");
         } else {
             dispatch(PriceRange(range));
             setRange({ max: "", min: "" });
             // console.log('holaaa');
-            setPagina(1);
+            // setPagina(1);
         }
     }
     function handleChange(e) {
@@ -131,21 +127,19 @@ function FiltersSidebar(props, { setPagina }) {
     }
     function handleOrdenAZ(e) {
         e.preventDefault();
+        handleDrawerToggle();
         console.log(e.target.value);
         dispatch(ORdenAZ("A-Z"));
-        setPagina(1);
+        // setPagina(1);
     }
 
     function handleOrdenZA(e) {
         e.preventDefault();
+        // handleDrawerToggle()
         console.log(e.target.value);
         dispatch(ORdenAZ("Z-A"));
-        setPagina(1);
+        // setPagina(1);
     }
-
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
 
     const cssTextField = {
         mr: 1,
@@ -178,16 +172,18 @@ function FiltersSidebar(props, { setPagina }) {
 
     const drawer = (
         <div>
-            <Toolbar sx={{ backgroundColor: "#07121e", color: "#DADADA" }} />
+            <Toolbar
+                sx={{ mt: 4, backgroundColor: "#07121e", color: "#DADADA" }}
+            />
             <Divider />
             <List>
                 <Typography
                     sx={{
                         ml: 2,
                         mb: 1,
-                        // fontFamily: "monospace",
+                        fontFamily: "monospace",
                         fontWeight: 800,
-                        letterSpacing: ".2rem",
+                        letterSpacing: ".1rem",
                         color: "inherit",
                         textDecoration: "none",
                     }}
@@ -199,6 +195,7 @@ function FiltersSidebar(props, { setPagina }) {
                         onClick={(e) => handleOrdenAZ(e)}
                         value="A-Z"
                         sx={{ fontSize: "22px" }}
+                        onClose={handleDrawerToggle}
                     >
                         <BsSortAlphaDown color="#DADADA" />
                         <ListItemText primary={"A to Z"} sx={{ ml: 4 }} />
@@ -209,6 +206,7 @@ function FiltersSidebar(props, { setPagina }) {
                         onClick={(e) => handleOrdenZA(e)}
                         value="Z-A"
                         sx={{ fontSize: "22px" }}
+                        onClose={handleDrawerToggle}
                     >
                         <BsSortAlphaUp color="#DADADA" />
                         <ListItemText primary={"Z to A"} sx={{ ml: 4 }} />
@@ -221,9 +219,9 @@ function FiltersSidebar(props, { setPagina }) {
                     sx={{
                         ml: 2,
                         mb: 1,
-                        // fontFamily: "monospace",
+                        fontFamily: "monospace",
                         fontWeight: 800,
-                        letterSpacing: ".2rem",
+                        letterSpacing: ".1rem",
                         color: "inherit",
                         textDecoration: "none",
                     }}
@@ -235,6 +233,7 @@ function FiltersSidebar(props, { setPagina }) {
                         onClick={(e) => handleChangeRangeMin(e)}
                         value="MintoMax"
                         sx={{ fontSize: "22px" }}
+                        onClose={handleDrawerToggle}
                     >
                         <BsSortDownAlt color="#DADADA" />
                         <ListItemText primary={"Low to High"} sx={{ ml: 4 }} />
@@ -245,6 +244,7 @@ function FiltersSidebar(props, { setPagina }) {
                         onClick={(e) => handleChangeRangeMax(e)}
                         value="MaxtoMin"
                         sx={{ fontSize: "22px" }}
+                        onClose={handleDrawerToggle}
                     >
                         <BsSortUpAlt color="#DADADA" />
                         <ListItemText primary={"High to Low"} sx={{ ml: 4 }} />
@@ -257,9 +257,9 @@ function FiltersSidebar(props, { setPagina }) {
                     sx={{
                         ml: 2,
                         mb: 3,
-                        // fontFamily: "monospace",
+                        fontFamily: "monospace",
                         fontWeight: 800,
-                        letterSpacing: ".2rem",
+                        letterSpacing: ".1rem",
                         color: "inherit",
                         textDecoration: "none",
                     }}
@@ -267,65 +267,69 @@ function FiltersSidebar(props, { setPagina }) {
                     Filter by price
                 </Typography>
                 {/* <form onSubmit={(e) => handleRange(e)}> */}
-                    <Box
-                        component="form"
-                        display="grid"
-                        sx={{
-                            "& > :not(style)": { m: 1, width: "90%" },
-                        }}
-                        noValidate
-                        autoComplete="off"
-                    >
-                        <ListItem disablePadding>
-                            <TextField
-                                sx={cssTextField}
-                                label="Min"
-                                id="custom-css-outlined-input"
-                                type="number"
-                                name="min"
-                                min={"0"}
-                                value={range.min}
-                                onChange={(e) => handleChange(e)}
-                            />
-                            <TextField
-                                sx={cssTextField}
-                                label="Max"
-                                id="custom-css-outlined-input"
-                                type="number"
-                                name="max"
-                                min={"0"}
-                                value={range.max}
-                                onChange={(e) => handleChange(e)}
-                            />
-                        </ListItem>
-                        <ListItem disablePadding>
-                            <Button
-                                sx={{
-                                    // color: "#DADADA",
-                                    mt: 1,
-                                    ml: 0,
-                                    mb: 3,
-                                    mr: 1,
-                                    width: "100%",
-                                }}
-                                variant="outlined"
-                                type="submit"
-                                onClick={(e) => handleRange(e)}
-                            >
-                                Filter by price
-                            </Button>
-                        </ListItem>
-                    </Box>
+                <Box
+                    component="form"
+                    display="grid"
+                    sx={{
+                        "& > :not(style)": { m: 1, width: "90%" },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                >
+                    <ListItem disablePadding>
+                        <TextField
+                            sx={cssTextField}
+                            label="Min"
+                            id="custom-css-outlined-input"
+                            type="number"
+                            name="min"
+                            min={"0"}
+                            value={range.min}
+                            onChange={(e) => handleChange(e)}
+                        />
+                        <TextField
+                            sx={cssTextField}
+                            label="Max"
+                            id="custom-css-outlined-input"
+                            type="number"
+                            name="max"
+                            min={"0"}
+                            value={range.max}
+                            onChange={(e) => handleChange(e)}
+                        />
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <Button
+                            sx={{
+                                // color: "#DADADA",
+                                mt: 1,
+                                ml: 0,
+                                mb: 3,
+                                mr: 1,
+                                width: "100%",
+                            }}
+                            variant="outlined"
+                            // type="submit"
+                            onClose={handleDrawerToggle}
+                            onClick={(e) => handleRange(e)}
+                        >
+                            Filter by price
+                        </Button>
+                    </ListItem>
+                </Box>
                 {/* </form> */}
             </List>
+            <ListItem >
+                    <ListItemButton onClick={() => ClearFilter()}>RESET</ListItemButton>
+                </ListItem>
             <List>
                 <Typography
                     sx={{
                         ml: 2,
                         mb: 3,
-                        // fontFamily: "monospace",
+                        fontFamily: "monospace",
                         fontWeight: 800,
-                        letterSpacing: ".2rem",
+                        letterSpacing: ".1rem",
                         color: "inherit",
                         textDecoration: "none",
                     }}
@@ -346,6 +350,7 @@ function FiltersSidebar(props, { setPagina }) {
                                     value={e}
                                     sx={{ width: "100%", color: "#DADADA" }}
                                     onClick={(e) => handleTheme(e)}
+                                    onClose={handleDrawerToggle}
                                 >
                                     {e.toUpperCase()}
                                 </ListItemButton>
@@ -362,9 +367,9 @@ function FiltersSidebar(props, { setPagina }) {
         window !== undefined ? () => window().document.body : undefined;
 
     return (
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", ml: -1, mt: 4 }} position="fixed">
             <CssBaseline />
-            <Toolbar>
+            <Toolbar sx={{ display: "flex", flexDirection: "column", ml: -1 }}>
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"
@@ -372,9 +377,23 @@ function FiltersSidebar(props, { setPagina }) {
                     onClick={handleDrawerToggle}
                     sx={{ mr: 2, display: { md: "none" } }}
                 >
-                    <Typography variant="h6" noWrap component="div">
-                        Filters
+                    <Typography
+                        fontSize={"16px"}
+                        sx={{ fontWeight: 800, letterSpacing: ".2rem" }}
+                        variant="h6"
+                        noWrap
+                        component="div"
+                    >
+                        FILTERS
                     </Typography>
+                </IconButton>
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={handleDrawerToggle}
+                    sx={{ mr: 2, display: { md: "none" } }}
+                >
                     <FilterAltIcon />
                 </IconButton>
             </Toolbar>
@@ -394,7 +413,7 @@ function FiltersSidebar(props, { setPagina }) {
                         keepMounted: true, // Better open performance on mobile.
                     }}
                     sx={{
-                        display: { xs: "block", sm: "none" },
+                        display: { xs: "block", md: "none" },
                         "& .MuiDrawer-paper": {
                             boxSizing: "border-box",
                             width: drawerWidth,
@@ -407,15 +426,13 @@ function FiltersSidebar(props, { setPagina }) {
                 </Drawer>
                 <Drawer
                     variant="permanent"
-                    // anchor="bottom"
                     sx={{
-                        display: { xs: "none", sm: "block" },
+                        display: { xs: "none", md: "block" },
                         "& .MuiDrawer-paper": {
                             boxSizing: "border-box",
                             width: drawerWidth,
                             backgroundColor: "#07121e",
                             color: "#DADADA",
-                            // paddingTop: "75px",
                         },
                     }}
                     open
@@ -424,7 +441,8 @@ function FiltersSidebar(props, { setPagina }) {
                     }}
                     // open PaperProps={{ style: { height: "875px" } }}
                 >
-                    {drawer}
+                    <DrawerDesktop />
+                    {/* {drawer} */}
                 </Drawer>
             </Box>
         </Box>
