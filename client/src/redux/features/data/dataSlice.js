@@ -420,6 +420,7 @@ export const dataSlice = createSlice({
         },
         dataUser: (state, actions) => {
             state.dataUser = actions.payload;
+
         },
 
         heart:(state, actions)=>{
@@ -427,6 +428,7 @@ export const dataSlice = createSlice({
         },
 
         contadorCart: (state, actions) => {
+
             state.CartUser = actions.payload;
         },
         contadorQuitarCart: (state, actions) => {
