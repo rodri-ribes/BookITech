@@ -12,6 +12,7 @@ import { AuthContextProvider } from "./firebase/AuthContext.js";
 import Profile from "./components/Profile/Profile.js";
 import { AdminDashboard } from './components/AdminDashboard/AdminDashboard';
 import { Card404 } from "./components/404/Card404.js";
+import About from "./components/About/About.jsx";
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <NavBar />
         <div className="container">
           <Routes>
+            <Route path="/about" element={<About />} />
             <Route path="/book/:id" element={<Detail />} />
             <Route path="/" element={<Home />} />
             <Route path="/favorites" element={<Favorite />} />

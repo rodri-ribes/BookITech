@@ -38,12 +38,13 @@ const { REACT_APP_API } = process.env;
 
 function Profile() {
     let dispatch = useDispatch();
-    let Favs = useSelector((state) => state.data.Favs);
-    var favLength = Favs.length;
+    let Favo = useSelector((state) => state.data.Favo);
+    var favLength = Favo.length;
     var leftConstraints = favLength * -100;
     const [expanded, setExpanded] = useState(false);
 
     const [User, setUser] = useState(false);
+    const [text, setText] = useState("");
 
     const [updateData, setUpdateData] = useState();
     const [passChange, setPassChange] = useState();
@@ -162,7 +163,6 @@ function Profile() {
         setModalUpdatePass(!modalUpdatePass);
         cleaner();
     };
-    
 
     const modalStyles = {
         position: "absolute",
@@ -213,6 +213,18 @@ function Profile() {
         },
     };
 
+    let [boole, setBoole] = useState(true);
+    var validEmail =
+        /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+    let validate = () => {
+        if (validEmail.test(text)) {
+            setBoole(true);
+        } else {
+            setBoole(false);
+        }
+    };
+    // validate()
+
     const bodyUpdate = (
         <Grid sx={modalStyles}>
             <Box component="form" noValidate>
@@ -242,7 +254,12 @@ function Profile() {
                     sx={cssTextField}
                     label="Name"
                     name="realName"
-                    onChange={(e) => handleChange2(e)}
+                    error={boole}
+                    helperText={boole === false ? "ERRORRRR" : ""}
+                    onChange={(e) => {
+                        handleChange2(e);
+                        setText(e.target.value);
+                    }}
                     value={fieldSelected && fieldSelected.realName}
                 />
                 <TextField
@@ -270,7 +287,11 @@ function Profile() {
 
             <br />
             <div align="right">
-                <Button color="primary" onClick={() => pushNewData()}>
+                <Button
+                    disabled={boole === false}
+                    color="primary"
+                    onClick={() => pushNewData()}
+                >
                     update
                 </Button>
                 <Button color="primary" onClick={() => openCloseModal()}>
@@ -357,7 +378,20 @@ function Profile() {
                                                                 "monospace",
                                                         }}
                                                     >
-                                                        {User.fullName}
+                                                        {User.fullName ? (
+                                                            User.fullName
+                                                        ) : (
+                                                            <Typography
+                                                                sx={{
+                                                                    fontSize:
+                                                                        "3.3rem",
+                                                                    fontFamily:
+                                                                        "monospace",
+                                                                }}
+                                                            >
+                                                                Username
+                                                            </Typography>
+                                                        )}
                                                     </TableCell>
                                                     <TableCell
                                                         sx={{
@@ -668,46 +702,76 @@ function Profile() {
                                 color: "#DADADA",
                             }}
                         >
-                            <Grid>
-                                {User.buy.map((s) => {
-                                    return (
-                                        <TableCell
-                                            sx={{
-                                                display: "flex",
-                                                justifyContent: "start",
-                                            }}
-                                        >
-                                            <Link to={"/book/" + s.isbn13}>
-                                                <img
-                                                    src={s.image}
-                                                    alt={s.title}
-                                                    width="100px"
-                                                    height="auto"
-                                                />
-                                            </Link>
-                                            <Typography
-                                                sx={{
-                                                    ml: 4,
-                                                    mt: 5,
-                                                    fontSize: "22px",
-                                                    flexGrow: 1,
-                                                }}
-                                            >
-                                                {s.title}
-                                            </Typography>
-                                            <Typography
-                                                sx={{
-                                                    ml: 4,
-                                                    mt: 5,
-                                                    fontSize: "24px",
-                                                }}
-                                            >
-                                                {s.price}
-                                            </Typography>
-                                        </TableCell>
-                                    );
-                                })}
-                            </Grid>
+                            <TableContainer>
+                                <Table
+                                    sx={{ minWidth: 650 }}
+                                    aria-label="simple table"
+                                >
+                                    <TableBody>
+                                        {User.buy.map((s) => {
+                                            return (
+                                                <TableRow
+                                                    key={s.isbn13}
+                                                    sx={{
+                                                        "&:last-child td, &:last-child th":
+                                                            { border: 0 },
+                                                    }}
+                                                >
+                                                    <TableCell
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
+                                                        align="left"
+                                                    >
+                                                        <Link
+                                                            to={
+                                                                "/book/" +
+                                                                s.isbn13
+                                                            }
+                                                        >
+                                                            <img
+                                                                src={s.image}
+                                                                alt={s.title.replace(
+                                                                s.title[0],
+                                                                s.title[0].toUpperCase())}
+                                                                width="100px"
+                                                                height="auto"
+                                                            />
+                                                        </Link>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Typography
+                                                            align="left"
+                                                            sx={{
+                                                                fontSize:
+                                                                    "22px",
+                                                                color: "#DADADA",
+                                                            }}
+                                                        >
+                                                            {s.title.replace(
+                                                                s.title[0],
+                                                                s.title[0].toUpperCase()
+                                                            )}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Typography
+                                                            align="left"
+                                                            sx={{
+                                                                fontSize:
+                                                                    "24px",
+                                                                color: "#DADADA",
+                                                            }}
+                                                        >
+                                                            {s.price}
+                                                        </Typography>
+                                                    </TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion
@@ -745,56 +809,207 @@ function Profile() {
                                 Dare to write your review about the books you
                                 have read!
                             </Typography> */}
-                            <Grid>
-                                {User.reviews.map((s) => {
-                                    return (
-                                        <TableCell
-                                            sx={{
-                                                display: "flex",
-                                                justifyContent: "start",
-                                            }}
-                                        >
-                                            <Link to={"/book/" + s.book}>
-                                                <img
-                                                    src={s.bookImg}
-                                                    alt={s.bookTitle}
-                                                    width="100px"
-                                                    height="auto"
-                                                />
-                                            </Link>
-                                            <Typography
-                                                sx={{
-                                                    ml: 4,
-                                                    mt: 5,
-                                                    fontSize: "22px",
-                                                    flexGrow: 1,
-                                                }}
-                                            >
-                                                {s.bookTitle}
-                                            </Typography>
-                                            <Typography
-                                                sx={{
-                                                    ml: 4,
-                                                    mt: 5,
-                                                    fontSize: "22px",
-                                                    flexGrow: 1,
-                                                }}
-                                            >
-                                                {`"${s.review}"`}
-                                            </Typography>
-                                            <Typography
-                                                sx={{
-                                                    ml: 4,
-                                                    mt: 5,
-                                                    fontSize: "18px",
-                                                }}
-                                            >
-                                                {s.status}
-                                            </Typography>
-                                        </TableCell>
-                                    );
-                                })}
-                            </Grid>
+                            <TableContainer>
+                                <Table
+                                    sx={{ minWidth: 650 }}
+                                    aria-label="simple table"
+                                >
+                                    <TableBody>
+                                        {User.reviews.map((s) => {
+                                            return (
+                                                <TableRow
+                                                    key={s.isbn13}
+                                                    sx={{
+                                                        "&:last-child td, &:last-child th":
+                                                            { border: 0 },
+                                                    }}
+                                                >
+                                                    <TableCell
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
+                                                        align="left"
+                                                    >
+                                                        <Link
+                                                            to={
+                                                                "/book/" +
+                                                                s.book
+                                                            }
+                                                        >
+                                                            <img
+                                                                src={s.bookImg}
+                                                                alt={s.bookTitle.replace(
+                                                                    s
+                                                                        .bookTitle[0],
+                                                                    s.bookTitle[0].toUpperCase()
+                                                                )}
+                                                                width="100px"
+                                                                height="auto"
+                                                            />
+                                                        </Link>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Typography
+                                                            align="left"
+                                                            sx={{
+                                                                fontSize:
+                                                                    "22px",
+                                                                color: "#DADADA",
+                                                            }}
+                                                        >
+                                                            {s.bookTitle.replace(
+                                                                s.bookTitle[0],
+                                                                s.bookTitle[0].toUpperCase()
+                                                            )}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Typography
+                                                            align="left"
+                                                            sx={{
+                                                                fontSize:
+                                                                    "22px",
+                                                                color: "#DADADA",
+                                                            }}
+                                                        >
+                                                            {`"${s.review}"`}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Typography
+                                                            align="left"
+                                                            sx={{
+                                                                fontSize:
+                                                                    "18px",
+                                                                color: "#DADADA",
+                                                            }}
+                                                        >
+                                                            {s.status}
+                                                        </Typography>
+                                                    </TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion
+                        expanded={expanded === "panel4"}
+                        onChange={handleChange("panel4")}
+                    >
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel4bh-content"
+                            id="panel4bh-header"
+                            sx={{
+                                backgroundColor: "#0f243b",
+                                color: "#DADADA",
+                            }}
+                        >
+                            <Typography
+                                noWrap
+                                flexGrow={1}
+                                sx={{
+                                    width: "33%",
+                                    flexShrink: 0,
+                                    fontFamily: "monospace",
+                                }}
+                            >
+                                <h2>Comments</h2>
+                            </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails
+                            sx={{
+                                backgroundColor: "#0f243b",
+                                color: "#DADADA",
+                            }}
+                        >
+                            <TableContainer>
+                                <Table
+                                    sx={{ minWidth: 650 }}
+                                    aria-label="simple table"
+                                >
+                                    <TableBody>
+                                        {User.reviews.map((s) => {
+                                            return (
+                                                <TableRow
+                                                    key={s.isbn13}
+                                                    sx={{
+                                                        "&:last-child td, &:last-child th":
+                                                            { border: 0 },
+                                                    }}
+                                                >
+                                                    <TableCell
+                                                        sx={{
+                                                            color: "#DADADA",
+                                                        }}
+                                                        align="left"
+                                                    >
+                                                        <Link
+                                                            to={
+                                                                "/book/" +
+                                                                s.book
+                                                            }
+                                                        >
+                                                            <img
+                                                                src={s.bookImg}
+                                                                alt={s.bookTitle.replace(
+                                                                    s
+                                                                        .bookTitle[0],
+                                                                    s.bookTitle[0].toUpperCase()
+                                                                )}
+                                                                width="100px"
+                                                                height="auto"
+                                                            />
+                                                        </Link>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Typography
+                                                            align="left"
+                                                            sx={{
+                                                                fontSize:
+                                                                    "22px",
+                                                                color: "#DADADA",
+                                                            }}
+                                                        >
+                                                            {s.bookTitle.replace(
+                                                                s.bookTitle[0],
+                                                                s.bookTitle[0].toUpperCase()
+                                                            )}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Typography
+                                                            align="left"
+                                                            sx={{
+                                                                fontSize:
+                                                                    "22px",
+                                                                color: "#DADADA",
+                                                            }}
+                                                        >
+                                                            {`"${s.review}"`}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Typography
+                                                            align="left"
+                                                            sx={{
+                                                                fontSize:
+                                                                    "18px",
+                                                                color: "#DADADA",
+                                                            }}
+                                                        >
+                                                            {s.status}
+                                                        </Typography>
+                                                    </TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion
@@ -838,7 +1053,7 @@ function Profile() {
                                             left: leftConstraints,
                                         }}
                                     >
-                                        {Favs.map((l, i) => {
+                                        {Favo.map((l, i) => {
                                             return (
                                                 <motion.div
                                                     className={
@@ -850,6 +1065,7 @@ function Profile() {
                                                         id={l.isbn13}
                                                         authors={l.authors}
                                                         img={l.image}
+                                                        price={l.price}
                                                         key={i}
                                                     />
                                                 </motion.div>
@@ -860,59 +1076,6 @@ function Profile() {
                             </Typography>
                         </AccordionDetails>
                     </Accordion>
-                    {/* <Accordion
-                        expanded={expanded === "panel4"}
-                        onChange={handleChange("panel4")}
-                    >
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel4bh-content"
-                            id="panel4bh-header"
-                            sx={{
-                                backgroundColor: "#0f243b",
-                                color: "#DADADA",
-                            }}
-                        >
-                            <Typography noWrap flexGrow={1} sx={{ width: "33%", flexShrink: 0, fontFamily:"monospace" }}>
-                                Readed books
-                            </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails
-                            sx={{
-                                backgroundColor: "#0f243b",
-                                color: "#DADADA",
-                            }}
-                        >
-                            <Typography>
-                                <motion.div className={styles.carousel}>
-                                    <motion.div
-                                        className={styles.containerItem}
-                                        drag="x"
-                                        dragConstraints={{
-                                            right: 0,
-                                            left: leftConstraints,
-                                        }}
-                                    >
-                                        {Favs.map((l, i) => {
-                                            return (
-                                                <motion.div
-                                                    className={styles.carouselItem}
-                                                >
-                                                    <CardBook
-                                                        name={l.title}
-                                                        id={l.isbn13}
-                                                        authors={l.authors}
-                                                        img={l.image}
-                                                        key={i}
-                                                    />
-                                                </motion.div>
-                                            );
-                                        })}
-                                    </motion.div>
-                                </motion.div>
-                            </Typography>
-                        </AccordionDetails>
-                    </Accordion> */}
                 </Container>
             ) : (
                 <Spinner />
