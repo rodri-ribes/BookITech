@@ -67,13 +67,12 @@ export default function Search() {
     //     setOption(titulo);
     // }, [books]);
 
-    const cleanName = () =>{
-        setName('')
+    const cleanName = (search) =>{
+        setName(`${search}`)
     }
 
 
     useEffect(()=>{
-        console.log('DALEE PAA')
         dispatch(addFunctionCleans(cleanName))
     },[])
 
