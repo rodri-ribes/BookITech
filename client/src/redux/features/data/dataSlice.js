@@ -29,7 +29,9 @@ export const dataSlice = createSlice({
         error: false,
         dataUser: [],
         CartUser: [],
-        heart:[]
+        heart:[],
+        cleanSearch: null,
+
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -432,17 +434,16 @@ export const dataSlice = createSlice({
         vaciarCarritoDespDeLogin: (state, actions) => {
             state.Cart = actions.payload
         },
-
-
         clearFil: (state, actions) => {
             state.books = state.allBooks;
             state.range = [];
             state.A_Z = [];
             state.MinToMax = [];
             state.Theme = [];
+        },
+        addFunctionClean: (state, actions) =>{
+            state.cleanSearch = actions.payload
         }
-
-
     },
 });
 
@@ -481,9 +482,8 @@ export const {
     contadorQuitarCart,
     contadorCart,
     clearFil,
-    vaciarCarritoDespDeLogin
-
-
+    vaciarCarritoDespDeLogin,
+    addFunctionClean,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -729,8 +729,10 @@ export const GetHeart=(idUser)=> async (dispatch) => {
 
 }
 
-
-
 export const ResetFil = () => (dispatch) => {
     dispatch(clearFil())
+}
+
+export const addFunctionCleans = (fnc) =>(dispatch) => {
+    dispatch(addFunctionClean(fnc))
 }

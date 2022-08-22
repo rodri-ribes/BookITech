@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSearch } from "../../redux/features/data/dataSlice";
+import { getSearch, addFunctionCleans } from "../../redux/features/data/dataSlice";
 import { AiOutlineSearch } from "react-icons/ai";
 // import style from './Search.module.css';
 import { styled, alpha } from "@mui/material/styles";
@@ -60,20 +60,23 @@ export default function Search() {
     const books = useSelector((state) => state.data.allBooks);
     let navigate = useNavigate();
     const dispatch = useDispatch();
-    useEffect(() => {
-        let titulo = books.map((e) => e.title);
-        // let autor = books.map((e) => e.authors);
-        // let obj = titulo.concat(autor);
-        setOption(titulo);
-    }, [books]);
+    // useEffect(() => {
+    //     let titulo = books.map((e) => e.title);
+    //     // let autor = books.map((e) => e.authors);
+    //     // let obj = titulo.concat(autor);
+    //     setOption(titulo);
+    // }, [books]);
+
+
+    useEffect(()=>{
+        console.log('DALEE PAA')
+        dispatch(addFunctionCleans(setName))
+    },[])
 
     function handleChange2(e) {
         let named = e.target.value  
-        // setName(prevState => prevState + named)
-        console.log(named)
-        console.log(name)
-
-
+        // console.log(named)
+        // console.log(name)
         if(name === ''){
             setName((prevState) =>{
                 return prevState + named
