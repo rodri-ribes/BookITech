@@ -55,14 +55,30 @@
     text-decoration:none;
 }
 
-.slide-text p {
-    color: black;
+.carruselito{
+  margin-top: 140px;
+}
+
+.slide-container .slide-image img{
+    width: 200px;
+    height: 300px;
+}
+
+h2{
+  font-size: 26px;
+  font-weight: 300;
+  margin-left: 12px;
 }
 .slide-container{
-  background-color: #0f243b;
-  box-shadow: 0px 0px 15px black;
-  margin-left: 20px;
-  margin-right: 20px;
+  background-color: #0a1929;
+  /* box-shadow: 0px 0px 15px black; */
+  /* margin-left: 10px;
+  margin-right: 10px; */
   width: 215px;
-  height: 410px;
+  height: 300px;
+}
+
+
+.carruselito .swiper .swiper-slide{
+  width: 200px;
 }

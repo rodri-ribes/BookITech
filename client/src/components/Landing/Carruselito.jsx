@@ -1,28 +1,18 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigation, Pagination, Autoplay, A11y, History, HashNavigation   } from 'swiper';
-import { getLibros } from '../../redux/features/data/dataSlice';
+import { Navigation} from 'swiper';
 import './carruselito.css'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-export default function Carruselito() {
-
-  let dispatch = useDispatch();
-  let books = useSelector((state) => state.data.books);
+export default function Carruselito({books, title}) {
 
 
-useEffect(() => {   
-  dispatch(getLibros());
-}, [dispatch]);
-
-let booksReduce = books.slice(0,15)
-console.log(booksReduce)
 
   return (
     <div className="carruselito">
+      <h2>{title}</h2>
   <Swiper
       // id='main'
       modules={[Navigation]}
@@ -31,11 +21,11 @@ console.log(booksReduce)
       slidesPerGroupAuto={true}
     >
   {
-    booksReduce.map(l =>{
+    books ? books.map(l =>{
       return(
     <SwiperSlide>
       <div className="slide-container">
-      <Link to={'/'} className="link-slide">
+      <Link to={`/book/${l.isbn13}`} className="link-slide">
       <div className="slide-image">
         <img src={l.image} alt="" />
       </div>
@@ -47,6 +37,7 @@ console.log(booksReduce)
       )
 
     })
+    : null
   }
 
 

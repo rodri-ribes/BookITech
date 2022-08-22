@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import Carruselito from './Carruselito.jsx';
+import { getLibros } from '../../redux/features/data/dataSlice';
 import { Navigation, Pagination, Autoplay, A11y, History, HashNavigation   } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useDispatch, useSelector } from 'react-redux';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -10,6 +12,28 @@ import './landing.css'
 import fotoNigaa from './1.jpg'
 
 function Landing() {
+
+
+
+    let dispatch = useDispatch();
+    let books = useSelector((state) => state.data.books);
+  
+  
+  useEffect(() => {   
+    dispatch(getLibros());
+  }, [dispatch]);
+  
+  let booksReduce = books.slice(0,15)
+  let booksReduce2 = books.slice(15,30)
+
+const title1 = 'Libros mas vendidos!'
+
+
+
+
+
+
+
   return (
     <>
 
@@ -56,7 +80,8 @@ function Landing() {
   </Swiper>
 
 
-  <Carruselito/>
+  <Carruselito books={booksReduce}  title={title1} />
+  <Carruselito books={booksReduce2}     />
     </>
    
   )
