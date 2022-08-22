@@ -1,13 +1,20 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {CssBaseline, Container, Box, Typography, Button} from '@mui/material'
 import DoneIcon from '@mui/icons-material/Done';
 import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 import axios from 'axios'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {getLibros} from '../../../redux/features/data/dataSlice'
+import { CommentCard } from './CommentCard';
+import {Paginacion} from '../../Home/Pagination/Pagination'
+import RefreshIcon from '@mui/icons-material/Refresh';
 const {REACT_APP_API} = process.env
 
-export function CommentsMod() {
+
+
+export function CommentsMod(props) {
   
+
 const parseComment = (book) => {
     if(book.comments.length === 0) return false
     const booksComments = book.comments.map(comment => {
@@ -18,48 +25,46 @@ const parseComment = (book) => {
             user: comment.user[0],
             book: book.title,
             bookId: book.isbn13,
-            commentIndex : book.indexOf(comment)
+            // commentIndex : book.indexOf(comment)
         }
         })
         return [...booksComments]
 }
-const books = useSelector(state => state.data.books)//.slice(0, 5)
-const commentsMatrix = books.map(book => parseComment(book)).filter(e => e!=false)
-const comments = [].concat(...commentsMatrix).slice(0,5)
+
+
+async function filterBooks(){
+    const books = await axios.get(REACT_APP_API + '/books').catch(err =>console.log(err))
+    const commentsMatrix = books.data.map(book => parseComment(book)).filter(e => e!=false)
+    setComments([].concat(...commentsMatrix).filter(e => !e.reviewed))
     console.table(comments)
-    useEffect(()=> {
-        
-        }, [])
-const handleOk = async (event, comment) =>{
-    event.preventDefault()
-}
-const handleFlag = async (event, comment) =>{
-    event.preventDefault()
 }
 
+const [comments, setComments] = useState([])
+
+useEffect(()=>{
+    filterBooks()
+}, [])
 
     return (
         <React.Fragment>
           <CssBaseline />
           <Container maxWidth='md' sx={{position: 'relative', display: 'flex'}} >
             <Box sx={{ bgcolor: '#173A5E', minHeight: '75vh', width: '70vw', borderRadius: '7px'}}>
-                <Typography sx={{margin: '20px'}} variant='h5'>Unreviewed comments: </Typography>
-               {comments &&
+                <div style={{ width:'95%', display: 'flex', justifyContent:'space-between', paddingTop:'10px'}}>
+                    <Typography sx={{margin: '20px'}} variant='h5'>Unreviewed comments: </Typography>
+                    <Button sx={{paddingTop:'10px', alignSelf: 'flex-end'}} variant='outlined' onClick={filterBooks}> <RefreshIcon fontSize='large'/></Button>
+                </div>
+               {comments.length ?
                comments.map( e => { 
-                return(
-               <Box sx={{ marginLeft: '20px', marginBottom:'10px', bgcolor: 'rgb(210,210,210)', minHeight: '10vh', width: '60vw', borderRadius: '7px', display: 'flex', flexDirection:'row', justifyContent:'space-between'}}>
-                    <div style={{marginLeft: '10px'}}>
-                        <Typography color='black' variant='h6' paragraph>"{e.body}"</Typography>
-                        <Typography color={'black'} variant='body2' >by @{e.user} at: {e.book}</Typography>
-                    </div>
-                    <div style={{alignSelf: 'flex-end', marginBottom: '5px', marginRight:'5px'}}>
-                        <Button onClick={event => handleOk(event, e)} variant='contained'><DoneIcon/></Button>
-                        <Button onClick={event => handleFlag(event,e)} variant="outlined"><DoDisturbOnIcon/></Button>
-                    </div>
-                </Box>)})}
+                return !e.reviewed && 
+                    <CommentCard key={e._id}comment={e}/>})
+                    
+                : <Typography sx={{marginLeft: '25px'}} variant='body'>Up to date...</Typography> }
+               
             </Box>
           </Container>
         </React.Fragment>
       );
     }
+
 
