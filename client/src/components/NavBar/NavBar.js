@@ -125,7 +125,7 @@ function NavBar({ user, setUser }) {
                         /> */}
                         <Link to="/" style={textLink}>
                             <IconButton sx={{ display:{xs: "none", md: "flex"}, color: "#DADADA", mr: 2}}>
-                                <AdbIcon />
+                                <img src="/favicon.ico" alt="logo" width="40px" />
                             </IconButton>
                         </Link>
                         <Link to="/" style={textLink}>
@@ -232,7 +232,7 @@ function NavBar({ user, setUser }) {
 
                         <Link to="/" style={textLink}>
                             <IconButton sx={{ display: {md: "none"}, color: "#DADADA", mr: 1 }}>
-                                <AdbIcon />
+                            <img src="/favicon.ico" alt="logo" width="40px" />
                             </IconButton>
                             {/* <Typography
                                 variant="h5"

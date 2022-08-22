@@ -24,7 +24,7 @@ const parseComment = (book) => {
             user: comment.user[0],
             book: book.title,
             bookId: book.isbn13,
-            commentId : comment._id
+            // commentIndex : book.indexOf(comment)
         }
         })
         return [...booksComments]
