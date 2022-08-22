@@ -50,9 +50,9 @@ useEffect(()=>{
           <CssBaseline />
           <Container maxWidth='md' sx={{position: 'relative', display: 'flex'}} >
             <Box sx={{ bgcolor: '#173A5E', minHeight: '75vh', width: '70vw', borderRadius: '7px'}}>
-                <div style={{ width:'100%'}}>
+                <div style={{ width:'95%', display: 'flex', justifyContent:'space-between', paddingTop:'10px'}}>
                     <Typography sx={{margin: '20px'}} variant='h5'>Unreviewed comments: </Typography>
-                    <Button sx={{justifySelf:'stretch'}} variant='outlined' onClick={filterBooks}> <RefreshIcon fontSize='large'/></Button>
+                    <Button sx={{paddingTop:'10px', alignSelf: 'flex-end'}} variant='outlined' onClick={filterBooks}> <RefreshIcon fontSize='large'/></Button>
                 </div>
                {comments.length ?
                comments.map( e => { 
