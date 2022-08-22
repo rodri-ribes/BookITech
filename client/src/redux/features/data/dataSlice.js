@@ -422,7 +422,7 @@ export const dataSlice = createSlice({
 
         heart:(state, actions)=>{
             state.heart= actions.payload;
-        }
+        },
 
         contadorCart: (state, actions) => {
             state.CartUser = actions.payload;
