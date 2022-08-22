@@ -550,18 +550,14 @@ function Detail() {
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>MORE REVIEWS</h4>
                     <hr />
-                    <p>To see what friends thought of this book, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
-                    <div className={style.Container__Separador} />
-                    <h4>READER Q&A</h4>
-                    <hr />
-                    <p>To ask other readers questions about {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
+                    <p>To see what friends thought of this book, please <Link className={style.LinkStyle} to="/signin">Sign In</Link></p>
                     <div className={style.Container__Separador} />
 
                   </div>
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>COMMENTS</h4>
                     <hr />
-                    <p>To leave a comment on {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
+                    <p>To leave a comment on {details.title}, please <Link className={style.LinkStyle} to="/signin">Sign In</Link></p>
                     <div className={style.Container__Separador} />
                     <div className={style.Container__Content__Acitivity__Details}>
                       {

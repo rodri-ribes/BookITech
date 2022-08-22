@@ -1,0 +1,29 @@
+.Container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* outline: 1px solid yellow; */
+    width: 100%;
+    margin: 0 auto;
+}
+
+.Container__list{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    left: 100px;
+    /* outline: 1px solid red; */
+    width: 900px;
+}
+
+.Container__list__total{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #0f243b;
+    padding: 1rem;
+    border-radius: 3px;
+    margin-bottom: 1rem;
+    font-family: lucida sans;
+}
