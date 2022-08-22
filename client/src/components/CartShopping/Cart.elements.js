@@ -46,18 +46,19 @@ export const ContainerPanel = styled.div`
         width: 10px;
     }
     ::-webkit-scrollbar-track{
-        background: white;
+        background: #1F436B;
     }
     ::-webkit-scrollbar-thumb{
-        background: red;
-        border-radius: 5px;
+        background: #0f243b;
+        border-radius: 2px;
+        
     }
 
     @media screen and (max-width: 968px){
         position: absolute;
-        right: 20px;
+        right: 0px;
         top: 90px;
-        width: 90%;
+        width: 100%;
     }
 `;
 

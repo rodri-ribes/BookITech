@@ -1,17 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { BsNutFill } from "react-icons/bs";
 
+const { REACT_APP_API } = process.env;
 
-const { REACT_APP_API } = process.env
 
 export const dataSlice = createSlice({
-    name: 'data',
+    name: "data",
     initialState: {
         books: [],
         book: [],
         details: [],
         Cart: [],
         Favs: [],
+        Favo: [],
         allBooks: [],
         Theme: [],
         range: [],
@@ -20,13 +22,14 @@ export const dataSlice = createSlice({
         user: [],
         userID: [],
         MinToMax: [],
-        dashboardState: ['CRUD'],
-        id: [''],
-        nameSearch: '',
+        dashboardState: ["CRUD"],
+        id: [""],
+        nameSearch: "",
         loading: true,
         error: false,
         dataUser: [],
         CartUser: [],
+        heart:[]
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -40,7 +43,7 @@ export const dataSlice = createSlice({
                 ...state,
                 book: actions.payload.data,
                 books: actions.payload.data,
-                nameSearch: actions.payload.name
+                nameSearch: actions.payload.name,
             };
         },
         addCart: (state, actions) => {
@@ -52,43 +55,53 @@ export const dataSlice = createSlice({
             state.Cart = state.Cart.filter((l) => l.isbn13 !== actions.payload);
         },
         FilterTheme: (state, actions) => {
-            state.Theme = actions.payload
-            state.books = actions.payload
+            let copiaA =
+                actions.payload === "all"
+                    ? [...state.allBooks]
+                    : actions.payload;
+            return {
+                ...state,
+                Theme: copiaA,
+                books: copiaA,
+            };
         },
 
         addFav: (state, actions) => {
-            state.Favs = state.Favs.concat(
-                state.books.filter((l) => l.isbn13 === actions.payload)
-            );
+            state.Favs = state.Favs.concat(state.books.filter((l) => l.isbn13 === actions.payload))
+        },
+        addFav2: (state, actions) => {
+            state.Favo = actions.payload
         },
         deleteFav: (state, actions) => {
+
             state.Favs = state.Favs.filter((l) => l.isbn13 !== actions.payload);
         },
+        // deleteFav2: (state,actions)=>{
+        //     state.Favo=
+        // }
 
         Range: (state, { payload }) => {
             if (Number(payload.min) === Number(payload.max)) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert('Max and Min are the same, please make them different');
+                alert("Max and Min are the same, please make them different");
             } else if (Number(payload.min) > Number(payload.max)) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert('Min is greater than Max');
+                alert("Min is greater than Max");
             } else if (Number(payload.min) < 0 || Number(payload.max) < 0) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert('Min or Máx are less than 0');
+                alert("Min or Máx are less than 0");
             } else {
-                // let copirange = state.allBooks.filte
+
                 let copirange = state.books.filter(
                     (e) =>
                         Number(e.price.slice(1)) >= Number(payload.min) &&
                         Number(payload.max) >= Number(e.price.slice(1))
                 );
                 if (!copirange.length) {
-                    state.books = [...state.books];
-                    state.range = [...state.books];
-                    alert('price range not found');
+                    state.books = state.allBooks.filter(e => Number(e.price.slice(1)) >= Number(payload.min) && Number(payload.max) >= Number(e.price.slice(1)))
                 } else {
                     return {
                         ...state,
@@ -102,73 +115,264 @@ export const dataSlice = createSlice({
             let copiABC = [...state.books];
 
             let filterAZ;
-            if (actions.payload === 'A-Z') {
-                filterAZ = copiABC.sort((a, b) => {
-                    if (a.title > b.title) {
-                        return 1;
+            if (state.MinToMax.length) {
+                if (actions.payload === 'A-Z') {
+                    let min = [...state.books].sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        })
+                    let max = [...state.books].sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        });
+                    if (JSON.stringify(state.MinToMax) === JSON.stringify(min)) {
+                        console.log('holaaaaMin')
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return 1;
+                            }
+                            if (b.title > a.title) {
+                                return -1;
+                            }
+                            return 0;
+                        }).sort(
+                            (a, b) => {
+                                return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                            })
                     }
-                    if (b.title > a.title) {
-                        return -1;
+                    else if (JSON.stringify(state.MinToMax) === JSON.stringify(max)) {
+                        console.log('Holaaa max')
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return 1;
+                            }
+                            if (b.title > a.title) {
+                                return -1;
+                            }
+                            return 0;
+                        }).sort(
+                            (a, b) => {
+                                return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                            })
+                    } else {
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return 1;
+                            }
+                            if (b.title > a.title) {
+                                return -1;
+                            }
+                            return 0;
+                        })
                     }
-                    return 0;
-                })
-            }
-            if (actions.payload === 'Z-A') {
-                filterAZ = copiABC.sort((a, b) => {
-                    if (a.title > b.title) {
-                        return -1;
+                } if (actions.payload === 'Z-A') {
+                    let min2 = [...state.books].sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        })
+                    let max2 = [...state.books].sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        });
+                    if (JSON.stringify(state.MinToMax) === JSON.stringify(min2)) {
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return -1;
+                            }
+                            if (b.title > a.title) {
+                                return 1;
+                            }
+                            return 0;
+                        }).sort(
+                            (a, b) => {
+                                return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                            })
                     }
-                    if (b.title > a.title) {
-                        return 1;
+                    else if (JSON.stringify(state.MinToMax) === JSON.stringify(max2)) {
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return -1;
+                            }
+                            if (b.title > a.title) {
+                                return 1;
+                            }
+                            return 0;
+                        }).sort(
+                            (a, b) => {
+                                return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                            })
+                    } else {
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return -1;
+                            }
+                            if (b.title > a.title) {
+                                return 1;
+                            }
+                            return 0;
+                        });
                     }
-                    return 0;
-                });
-            }
+                }
 
-            // let filterAZ =
-            //     actions.payload === 'A-Z'
-            //         ? copiABC.sort((a, b) => {
-            //             if (a.title > b.title) {
-            //                 return 1;
-            //             }
-            //             if (b.title > a.title) {
-            //                 return -1;
-            //             }
-            //             return 0;
-            //         })
-            //         : copiABC.sort((a, b) => {
-            //             if (a.title > b.title) {
-            //                 return -1;
-            //             }
-            //             if (b.title > a.title) {
-            //                 return 1;
-            //             }
-            //             return 0;
-            //         });
+            } else {
+                if (actions.payload === 'A-Z') {
+                    filterAZ = copiABC.sort((a, b) => {
+                        if (a.title > b.title) {
+                            return 1;
+                        }
+                        if (b.title > a.title) {
+                            return -1;
+                        }
+                        return 0;
+                    })
+                }
+                if (actions.payload === 'Z-A') {
+                    filterAZ = copiABC.sort((a, b) => {
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (b.title > a.title) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                }
+            }
 
             return {
                 ...state,
                 A_Z: actions.payload === 'all' ? [...state.books] : filterAZ,
+                MinToMax: filterAZ,
                 books: actions.payload === 'all' ? [...state.allBooks] : filterAZ,
             };
         },
         MINtoMAX: (state, actions) => {
             let cambiar = [...state.books];
             let filtrar;
-            if (actions.payload === 'MintoMax') {
-                filtrar = cambiar.sort(
-                    (a, b) => {
-                        return Number(a.price.slice(1)) - Number(b.price.slice(1))
+            if (state.A_Z.length) {
+                if (actions.payload === 'MintoMax') {
+                    let az = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                            return 1;
+                        }
+                        if (b.title > a.title) {
+                            return -1;
+                        }
+                        return 0;
                     });
-            }
-            if (actions.payload === 'MaxtoMin') {
-                filtrar = cambiar.sort(
-                    (a, b) => {
-                        return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                    let za = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (b.title > a.title) {
+                            return 1;
+                        }
+                        return 0;
                     });
+                    if (JSON.stringify(state.A_Z) === JSON.stringify(az)) {
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                    return 1;
+                                }
+                                if (b.title > a.title) {
+                                    return -1;
+                                }
+                                return 0;
+                            });
+                    }
+                    if (JSON.stringify(state.A_Z) === JSON.stringify(za)) {
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                    return -1;
+                                }
+                                if (b.title > a.title) {
+                                    return 1;
+                                }
+                                return 0;
+                            });
+                    }
+                    filtrar = cambiar.sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        });
+                }
+                if (actions.payload === 'MaxtoMin') {
+                    let azM = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                            return 1;
+                        }
+                        if (b.title > a.title) {
+                            return -1;
+                        }
+                        return 0;
+                    });
+                    let zaM = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (b.title > a.title) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                    if (JSON.stringify(state.A_Z) === JSON.stringify(azM)) {
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                    return 1;
+                                }
+                                if (b.title > a.title) {
+                                    return -1;
+                                }
+                                return 0;
+                            });
+                    }
+                    if (JSON.stringify(state.A_Z) === JSON.stringify(zaM)) {
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                    return -1;
+                                }
+                                if (b.title > a.title) {
+                                    return 1;
+                                }
+                                return 0;
+                            });
+                    }
+                    filtrar = cambiar.sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        });
+                }
+            } else {
+
+                if (actions.payload === 'MintoMax') {
+                    filtrar = cambiar.sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        });
+                }
+                if (actions.payload === 'MaxtoMin') {
+                    filtrar = cambiar.sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        });
+                }
             }
             return {
                 ...state,
+                MinToMax: filtrar,
+                A_Z: filtrar,
                 books: actions.payload === 'all' ? cambiar : filtrar,
             };
         },
@@ -179,44 +383,67 @@ export const dataSlice = createSlice({
             state.userID = actions.payload;
         },
         comments: (state, actions) => {
-            state.comments = [actions.payload]
+            state.comments = [actions.payload];
         },
         vaciarCommets: (state, actions) => {
-            state.comments = []
+            state.comments = [];
+        },
+        vaciarFav: (state, actions) => {
+            state.Favo = [];
+            state.heart=[];
         },
         delistBook: (state, actions) => {
-            return
+            return;
         },
         changeDashboardState: (state, actions) => {
             state.dashboardState = actions.payload;
         },
         putBook: (state, actions) => {
-            return
+            return;
         },
         newBook: (state, action) => {
-            return
+            return;
         },
         idForUpdate: (state, action) => {
-            state.id = action.payload
+            state.id = action.payload;
         },
         setLoadingFalse: (state, action) => {
-            state.loading = false
+            state.loading = false;
         },
         setLoadingTrue: (state, action) => {
-            state.loading = true
+            state.loading = true;
         },
         setErrorTrue: (state, action) => {
-            state.error = true
+            state.error = true;
         },
         dataUser: (state, actions) => {
-            state.dataUser = actions.payload
+            state.dataUser = actions.payload;
         },
-        CartUser: (state, actions) => {
-            state.CartUser = actions.payload
+
+        heart:(state, actions)=>{
+            state.heart= actions.payload;
+        }
+
+        contadorCart: (state, actions) => {
+            state.CartUser = actions.payload;
         },
-        DeleteCartUser: (state, actions) => {
+        contadorQuitarCart: (state, actions) => {
             state.CartUser = state.CartUser.filter(c => c._id !== actions.payload)
         },
+        vaciarCarritoDespDeLogin: (state, actions) => {
+            state.Cart = actions.payload
+        },
+
+
+        clearFil: (state, actions) => {
+            state.books = state.allBooks;
+            state.range = [];
+            state.A_Z = [];
+            state.MinToMax = [];
+            state.Theme = [];
+        }
+
+
     },
 });
 
@@ -226,7 +453,9 @@ export const {
     addLibro,
     SearchTitle,
     addCart,
-    addFav, deleteFav,
+    addFav,
+    addFav2,
+    deleteFav,
     deleteCart,
     FilterTheme,
     Range,
@@ -236,6 +465,7 @@ export const {
     comments,
     addUserID,
     vaciarCommets,
+    vaciarFav,
     delistBook,
     changeDashboardState,
     putBook,
@@ -247,7 +477,13 @@ export const {
     dataUser,
     updateUser,
     CartUser,
-    DeleteCartUser
+    heart,
+    DeleteCartUser,
+    contadorQuitarCart,
+    contadorCart,
+    clearFil,
+    vaciarCarritoDespDeLogin
+
 
 } = dataSlice.actions;
 
@@ -282,7 +518,7 @@ export const getSearch = (name) => async (dispatch) => {
         dispatch(setLoadingFalse());
         // console.log(buscar.data);
     } catch (error) {
-        alert('the books were not found');
+        alert("the books were not found");
         console.log(error);
     }
 };
@@ -293,6 +529,11 @@ export const AddCart = (id) => async (dispatch) => {
 export const DeleteCart = (id) => async (dispatch) => {
     dispatch(deleteCart(id));
 };
+export const getFav = (idUser) => async (dispatch) => {
+    const res = await axios.get(REACT_APP_API + `/favorite`, { params: { email: idUser } })
+    //let filter=res.data.map(m=>m.book.isbn13)
+    dispatch(addFav2(res.data))
+}
 export const addFavs = (id) => async (dispatch) => {
     dispatch(addFav(id));
 };
@@ -302,15 +543,15 @@ export const deleteFavs = (id) => async (dispatch) => {
 
 export const FilTheme = (payload) => async (dispatch) => {
     try {
-        if (payload === 'all') {
-            dispatch(FilterTheme(payload));
-        } else {
-            let buscar = await axios.get(
-                //URL PARA BUSCAR
-                REACT_APP_API + `/books/${payload}`
-            );
-            dispatch(FilterTheme(buscar.data));
-        }
+        // if (payload === 'all') {
+        //     dispatch(FilterTheme(payload));
+        // } else {
+        let buscar = await axios.get(
+            //URL PARA BUSCAR
+            REACT_APP_API + `/books/${payload}`
+        );
+        dispatch(FilterTheme(buscar.data));
+        // }
         // console.log(buscar.data);
     } catch (error) {
         // alert('the books were not found');
@@ -332,55 +573,63 @@ export const getUser = (data) => async (dispatch) => {
     dispatch(addUser(data));
 };
 
-
 export const getUserID = (id) => async (dispatch) => {
     try {
-        let uzer = await axios.get(REACT_APP_API + `/user/${id}`)
-        dispatch(addUserID(uzer.data))
+        let uzer = await axios.get(REACT_APP_API + `/user/${id}`);
+        dispatch(addUserID(uzer.data));
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 export const Comments = (id) => async (dispatch) => {
     try {
-        let komments = await axios.get(REACT_APP_API + `/comments/${id}`).catch((err) => { })
-        dispatch(comments(komments.data))
+        let komments = await axios
+            .get(REACT_APP_API + `/comments/${id}`)
+            .catch((err) => { });
+        dispatch(comments(komments.data));
+    } catch (error) {
+        console.log(error);
     }
-    catch (error) {
-        console.log(error)
-    }
-}
+};
 export const postComments = (payload) => async (dispatch) => {
     try {
-        const response = await axios.post(REACT_APP_API + `/comments/`, payload)
-        dispatch(comments(response.data))
+        const response = await axios.post(
+            REACT_APP_API + `/comments/`,
+            payload
+        );
+        dispatch(comments(response.data));
+    } catch (error) {
+        console.log(error);
     }
-    catch (error) {
-        console.log(error)
-    }
-}
+};
 export const DeleteComment = (id) => async (dispatch) => {
     try {
-        const response = await axios.delete(REACT_APP_API + `/comments/${id}`)
-        dispatch(comments(response.data))
+        const response = await axios.delete(REACT_APP_API + `/comments/${id}`);
+        dispatch(comments(response.data));
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-}
+};
 export const Vaciar = () => async (dispatch) => {
-    dispatch(vaciarCommets())
+    dispatch(vaciarCommets());
+};
+export const vaciarFavs = ()=> async (dispatch) => {
+    dispatch(vaciarFav())
+    console.log("putBook")
 }
 export const UpdateComment = (id, payload) => async (dispatch) => {
     try {
-        console.log("payload", id, payload)
-        const response = await axios.put(REACT_APP_API + `/comments/${id}`, payload)
-
+        console.log("payload", id, payload);
+        const response = await axios.put(
+            REACT_APP_API + `/comments/${id}`,
+            payload
+        );
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 };
 export const changeDashboard = (payload) => async (dispatch) => {
-    dispatch(changeDashboardState(payload))
+    dispatch(changeDashboardState(payload));
 };
 export const deleteBook = (id) => async (dispatch) => {
     try {
@@ -404,10 +653,10 @@ export const updateBook = (payload) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-
 };
 export const createBook = (payload) => async (dispatch) => {
     try {
+
         let success = await axios.post(
             `${REACT_APP_API}/books/`, { ...payload }
         );
@@ -416,11 +665,10 @@ export const createBook = (payload) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-
 };
 export const setId = (payload) => async (dispatch) => {
-    dispatch(idForUpdate(payload))
-}
+    dispatch(idForUpdate(payload));
+};
 
 export const getDataUser = (id) => async (dispatch) => {
     try {
@@ -435,18 +683,28 @@ export const getDataUser = (id) => async (dispatch) => {
 export const updateUserdata = (id, payload) => async (dispatch) => {
     try {
         console.log(payload);
-        const res = await axios.put(REACT_APP_API + `/user/${id}`, payload)
-        dispatch(dataUser(res.data))
+        const res = await axios.put(REACT_APP_API + `/user/${id}`, payload);
+        dispatch(dataUser(res.data));
     } catch (error) {
         console.log(error);
+    }
+}
+export const UpdatePass = (id, payload) => async (dispatch) => {
+    try {
+        console.log(payload);
+        const res = await axios.put(REACT_APP_API + `/user/change/${id}`, payload)
+        alert("Password changed successfully")
+    }
+    catch (error) {
+        alert("The current Password doesn't match with original")
     }
 }
 
 export const getCartUser = (idUser) => async (dispatch) => {
     try {
         let res = await axios.get(REACT_APP_API + '/cart/' + idUser)
-        console.log(idUser)
-        dispatch(CartUser(res.data[0].cart))
+        // console.log(res.data[0].cart)
+        dispatch(contadorCart(res.data[0].cart))
     } catch (error) {
         console.log(error);
     }
@@ -454,7 +712,26 @@ export const getCartUser = (idUser) => async (dispatch) => {
 
 export const DeleteInCartUser = (id) => (dispatch) => {
 
-    dispatch(DeleteCartUser(id))
+    dispatch(contadorQuitarCart(id))
+}
+
+export const actionVaciarCarritoDespDeLogin = () => (dispatch) => {
+
+    dispatch(vaciarCarritoDespDeLogin([]))
+}
+export const GetHeart=(idUser)=> async (dispatch) => {
+    try{
+        let success = await axios.get(REACT_APP_API + `/favorite/id?email=${idUser}`)
+       await dispatch(heart(success.data))
+    }
+    catch(error){
+        console.log(error)
+    }
 
 }
 
+
+
+export const ResetFil = () => (dispatch) => {
+    dispatch(clearFil())
+}

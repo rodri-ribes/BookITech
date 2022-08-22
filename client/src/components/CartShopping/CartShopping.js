@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Container, ContainerCash, ContainerEmptyCart, ContainerPanel } from './Cart.elements';
-import { BsCart4 } from 'react-icons/bs'
+import { BsCart4, BsFillNutFill } from 'react-icons/bs'
 import { useDispatch, useSelector } from 'react-redux';
 import CardBooksInCart from './CardBooksInCart/CardBooksInCart';
 import calcularCarrito from './functions/calcularCarrito';
@@ -8,8 +8,10 @@ import { FaCartArrowDown } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import filtrarBooksUser from './functions/filtrarBooksUser';
-const { REACT_APP_API } = process.env
+import { actionVaciarCarritoDespDeLogin, getCartUser } from '../../redux/features/data/dataSlice';
 
+import { Confirm } from 'react-st-modal';
+const { REACT_APP_API } = process.env
 
 export default function CartShopping() {
 
@@ -24,15 +26,25 @@ export default function CartShopping() {
 
     let CartUser = useSelector(state => state.data.CartUser)
 
+    let dispatch = useDispatch()
+    useEffect(() => {
+        if (window.localStorage.getItem("user")) {
+            let auxUser = JSON.parse(window.localStorage.getItem("user"))
+            dispatch(getCartUser(auxUser.id))
+
+        }
+    }, [])
+
     const changeClick = async () => {
         let idUser;
         if (window.localStorage.getItem("user")) {
             let auxUser = JSON.parse(window.localStorage.getItem("user"))
-            idUser = auxUser.id
 
-            let res = axios.get(REACT_APP_API + '/cart/' + idUser).then(c => {
+            let res = axios.get(REACT_APP_API + '/cart/' + auxUser.id).then(c => {
                 setCartFiltrado(filtrarBooksUser(booksTotal, c.data[0].cart))
             })
+            if (!click) dispatch(getCartUser(auxUser.id))
+
         }
         setClick(!click);
     }
@@ -45,10 +57,6 @@ export default function CartShopping() {
     })
 
     /**----------- Manejo de sumar elementos -------------------------- */
-
-    //este state tiene la cantidades de cada libro, solo habria q hacer una relacion
-    //con el array de los libros, se podria crear un array nuevo con cada objeto con los atributos name del libro, precio y la cantidad
-    //si no sabes como hacerlo hablame, att rodrigo
 
     const [contador, setContador] = useState({})
 
@@ -122,18 +130,36 @@ export default function CartShopping() {
     let total;
     let cantidad;
 
-    // useEffect(() => {
-    //     cantidad = CartUser.length;
-    // }, [cartUser])
+
+    //LOGICA PARA CONCATENAR EL CARRITO CUANDO NO ESTAS LOGUEADO CON EL LOGUEADO
+
+    if (books.length > 0 && window.localStorage.getItem("user")) {
+
+        let auxUser = JSON.parse(window.localStorage.getItem("user"))
+        let idUser = auxUser.id
+        books.forEach(async c => {
+            let idBook = c.isbn13
+            await axios.post(REACT_APP_API + '/cart/add', {
+                idUser, idBook
+            })
+        })
+        dispatch(actionVaciarCarritoDespDeLogin())
+        dispatch(getCartUser(idUser))
+    }
 
 
     if (user || window.localStorage.getItem("user")) {
         total = calcularCarrito(contador, cartFiltrado)
-        cantidad = CartUser.length
+        if (CartUser !== 0) {
+            cantidad = CartUser.length
+        } else {
+            cantidad = cartFiltrado.length
+        }
     } else {
         total = calcularCarrito(contador, books)
         cantidad = books.length;
     }
+
 
     total = total.toFixed(2)
 
@@ -143,12 +169,18 @@ export default function CartShopping() {
     let navigate = useNavigate()
 
 
+    const alert = async () => {
+        const result = await Confirm('You need an account to continue with the purchase',
+            'You need to have an account');
+
+        if (result) {
+            navigate("/signup")
+        }
+    }
+
     const submitPay = async () => {
 
         if (user || window.localStorage.getItem("user")) {
-            //aca iria la logica del proceso del pago
-            // console.log("contador", contador)
-            // console.log("filtrado", cartFiltrado)
             let items = [];
             cartFiltrado.forEach(e => {
                 items.push({
@@ -162,7 +194,25 @@ export default function CartShopping() {
                     unit_price: parseFloat(e.price.slice(1))
                 })
             })
-            window.localStorage.setItem("buy", JSON.stringify(cartFiltrado))
+
+            let compraUser = []
+
+            let date = new Date();
+            let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+            cartFiltrado.forEach(e => {
+                compraUser.push({
+                    title: e.title,
+                    subtitle: e.subtitle,
+                    image: e.image,
+                    isbn13: e.isbn13,
+                    price: e.price,
+                    cantidad: contador[e.title],
+                    date: date.toLocaleDateString('en-US', options)
+                })
+            })
+
+            window.localStorage.setItem("buy", JSON.stringify(compraUser))
             try {
                 let resp = await axios.post(REACT_APP_API + '/payment', {
                     items
@@ -170,15 +220,12 @@ export default function CartShopping() {
                 // console.log(resp.data.init_point)
                 window.location.href = resp.data.init_point
                 // window.location.href = resp.data.sandbox_init_point
-                console.log("respuesta de mercado pago", resp.data)
             } catch (error) {
                 console.log(error)
             }
         } else {
-            let aux = window.confirm("You need an account to continue with the purchase")
-            if (aux) {
-                navigate("/signup")
-            }
+            alert()
+
         }
     }
 
@@ -191,6 +238,7 @@ export default function CartShopping() {
                     <p>{cantidad}</p>
                 </div>
             </Container>
+
             <ContainerPanel click={click} >
                 {user || window.localStorage.getItem("user") ?
                     cartFiltrado.length > 0 ?

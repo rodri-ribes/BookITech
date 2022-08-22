@@ -266,10 +266,12 @@ function Detail() {
   const editReview = async () => {
     if (review.length >= 10) {
       setViewEditComment(false)
-
-      setDateReview(date.toLocaleDateString('en-US', options))
+      let date = new Date();
+      let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      let fecha = date.toLocaleDateString('en-US', options)
+      setDateReview(fecha)
       await axios.put(REACT_APP_API + `/review/edit/${usuario.id}`, {
-        book: id, rating, status: dateReview, review
+        book: id, rating, status: fecha, review
       })
 
       let dataUsuario = await axios.get(REACT_APP_API + `/user/${usuario.id}`);
@@ -548,18 +550,14 @@ function Detail() {
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>MORE REVIEWS</h4>
                     <hr />
-                    <p>To see what friends thought of this book, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
-                    <div className={style.Container__Separador} />
-                    <h4>READER Q&A</h4>
-                    <hr />
-                    <p>To ask other readers questions about {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
+                    <p>To see what friends thought of this book, please <Link className={style.LinkStyle} to="/signin">Sign In</Link></p>
                     <div className={style.Container__Separador} />
 
                   </div>
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>COMMENTS</h4>
                     <hr />
-                    <p>To leave a comment on {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
+                    <p>To leave a comment on {details.title}, please <Link className={style.LinkStyle} to="/signin">Sign In</Link></p>
                     <div className={style.Container__Separador} />
                     <div className={style.Container__Content__Acitivity__Details}>
                       {
@@ -602,18 +600,22 @@ function Detail() {
                 <h1>Recommended</h1>
               </div>
               <div className={style.Container__BarRight__Apart__Container}>
-                {theme.length > 0 && theme.slice(1, 6).map(c => {
-                  return (
-                    <a href={`/book/${c.isbn13}`} className={style.Container__BarRight__Apart__Container__Card}>
-                      <img src={c.image} alt={c.title} />
-                      <div className={style.Container__BarRight__Apart__Container__Card__info}>
-                        <h3>{c.title.charAt(0).toUpperCase() + c.title.slice(1)}</h3>
-                        <h4>Author: {c.authors.charAt(0).toUpperCase() + c.authors.slice(1)}</h4>
-                        <p>{c.subtitle.charAt(0).toUpperCase() + c.subtitle.slice(1)}</p>
-                      </div>
-                    </a>
-                  )
-                })}
+                {theme.length > 0 ?
+                  theme.slice(1, 6).map(c => {
+                    return (
+                      <a href={`/book/${c.isbn13}`} className={style.Container__BarRight__Apart__Container__Card}>
+                        <img src={c.image} alt={c.title} />
+                        <div className={style.Container__BarRight__Apart__Container__Card__info}>
+                          <h3>{c.title.charAt(0).toUpperCase() + c.title.slice(1)}</h3>
+                          <h4>Author: {c.authors.charAt(0).toUpperCase() + c.authors.slice(1)}</h4>
+                          <p>{c.subtitle.charAt(0).toUpperCase() + c.subtitle.slice(1)}</p>
+                        </div>
+                      </a>
+                    )
+                  })
+                  :
+                  <Spinner />
+                }
               </div>
             </div>
           </div>

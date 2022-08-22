@@ -76,9 +76,19 @@ const BookSchema = new Schema({
             date: {
                 type: String,
             },
-            user: Array
+            user: Array,
+            reviewed: {
+                type: Boolean,
+                default: false
+            },
+            flagged: {
+                type: Boolean,
+                default: false
+            }
         }
     ],
+
+
     reviews: [
         {
             book: String,
@@ -93,6 +103,7 @@ const BookSchema = new Schema({
             review: String,
         }
     ],
+
 
 })
 

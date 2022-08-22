@@ -26,6 +26,7 @@
     font-family: 'Edu QLD Beginner', cursive;
     align-self: center;
     font-size: 2rem;
+    color: black;
 }
 
 .Container__Div{
@@ -109,6 +110,7 @@
     margin-top: 0.5rem;
     font-family: lucida sans;
     text-decoration: none;
+    color: black;
 }
 
 .Container__Register_Link{

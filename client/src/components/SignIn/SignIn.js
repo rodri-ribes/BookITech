@@ -5,12 +5,12 @@ import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
-import { getLibros, getUser } from '../../redux/features/data/dataSlice';
+import { getLibros, getUser,GetHeart, getFav } from '../../redux/features/data/dataSlice';
 import { UserAuth } from '../../firebase/AuthContext';
 import { FacebookLoginButton, GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider } from 'firebase/auth'
 import { auth } from '../../firebase/index';
-const {REACT_APP_API} = process.env
+const { REACT_APP_API } = process.env
 
 export default function SignIn() {
 
@@ -35,7 +35,7 @@ export default function SignIn() {
         }
         setTimeout(() => {
             dispatch(getLibros())
-        }, 3000);
+        }, 5000);
     }
 
     //si el usuario no esta logueado no pueda acceder
@@ -46,19 +46,19 @@ export default function SignIn() {
         }
     }, [])
 
-   
+
 
     const signInWithFacebook = () => {
         const provider = new FacebookAuthProvider();
-        signInWithPopup(auth, provider )
-        .catch((err) => {
-            console.log(err.message);
-        })
+        signInWithPopup(auth, provider)
+            .catch((err) => {
+                console.log(err.message);
+            })
         setTimeout(() => {
             dispatch(getLibros())
             navigate("/")
-        }, 15000);
-        
+        }, 5000);
+
     }
 
     const responseFacebook = (response) => {
@@ -67,15 +67,15 @@ export default function SignIn() {
 
     const signInWithGithub = () => {
         const provider = new GithubAuthProvider();
-        signInWithPopup(auth, provider )
-        .catch((err) => {
-            console.log(err.message);
-        })
+        signInWithPopup(auth, provider)
+            .catch((err) => {
+                console.log(err.message);
+            })
         setTimeout(() => {
             dispatch(getLibros())
             navigate("/")
-        }, 15000);
-        
+        }, 5000);
+
     }
     const responseGithub = (response) => {
         console.log(response);
@@ -101,10 +101,10 @@ export default function SignIn() {
                     window.localStorage.setItem("user", JSON.stringify(resp.data))
                     dispatch(getUser(resp.data))
                     setConfirm({ message: "You logged in successfully", visible: true, error: false })
-
+                    dispatch(GetHeart(resp.data.email))
+                    dispatch(getFav(resp.data.email))
                     setTimeout(() => {
                         setConfirm({ message: "", visible: null, error: null })
-                        dispatch(getLibros())
                         navigate("/")
                     }, 2000);
 
@@ -169,7 +169,7 @@ export default function SignIn() {
                                 callback={responseFacebook} />
                         </div>
                         <div className='github'>
-                            <GithubLoginButton 
+                            <GithubLoginButton
                                 onClick={signInWithGithub}
                                 callback={responseGithub} />
                         </div>

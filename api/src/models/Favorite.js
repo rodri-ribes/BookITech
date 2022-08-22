@@ -9,7 +9,7 @@ const FavoriteSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
 })
 
 module.exports = mongoose.model('Favorite', FavoriteSchema)
