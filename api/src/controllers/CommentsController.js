@@ -29,11 +29,11 @@ async function updateComments(req, res) {
     let idBook = req.params.id;
     let idComment = req.params.idcomment;
 
-    let { content, fecha } = req.body;
+    let { content, fecha, type } = req.body;
 
     let date = fecha || null
     
-    if(typeof content == 'object') {
+    if(type.review) {
         console.log(content)
         let book = await Book.findOne({ isbn13: idBook}).catch( err => console.log(err))
         if(!book) return res.status(400).send("book not found")
