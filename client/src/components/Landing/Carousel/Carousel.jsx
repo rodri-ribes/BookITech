@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import { Navigation} from 'swiper';
-import './carruselito.css'
+import './carousel.css'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -22,21 +22,17 @@ export default function Carruselito({books, title}) {
     >
   {
     books ? books.map(l =>{
-      return(
-    <SwiperSlide>
-      <div className="slide-container">
-      <Link to={`/book/${l.isbn13}`} className="link-slide">
-      <div className="slide-image">
-        <img src={l.image} alt="" />
-      </div>
-      </Link>
-      </div>
-     
-    
-  </SwiperSlide>
-      )
-
-    })
+    return(
+      <SwiperSlide>
+        <div className="slide-container">
+          <Link to={`/book/${l.isbn13}`} className="link-slide">
+            <div className="slide-image">
+              <img src={l.image} alt="" />
+            </div>
+          </Link>
+        </div>
+      </SwiperSlide>
+    )})
     : null
   }
 

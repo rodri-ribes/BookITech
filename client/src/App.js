@@ -23,13 +23,13 @@ function App() {
         <div className="container">
           <Routes>
             <Route path="/book/:id" element={<Detail />} />
-            <Route path="/" element={<Home />} />
+            <Route path='/' element={<Landing />} />
+            <Route path="/search" element={<Home />} />
             <Route path="/favorites" element={<Favorite />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/profile" element={<Profile />} />
             <Route path='/admin' element={<AdminDashboard />} />
-            <Route path='/home' element={<Landing />} />
             <Route path="*" element={<Card404 />} />
           </Routes>
         </div>

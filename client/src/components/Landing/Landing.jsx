@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
-import Carruselito from './Carruselito.jsx';
+import Carruselito from './Carousel/Carousel';
 import { getLibros } from '../../redux/features/data/dataSlice';
 import { Navigation, Pagination, Autoplay, A11y, History, HashNavigation   } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,7 +9,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './landing.css'
-import fotoNigaa from './1.jpg'
+import fotoBook from './assets/1.jpg'
 
 function Landing() {
 
@@ -26,7 +26,7 @@ function Landing() {
   let booksReduce = books.slice(0,15)
   let booksReduce2 = books.slice(15,30)
 
-const title1 = 'Libros mas vendidos!'
+  const title1 = 'Libros mas vendidos!'
 
 
 
@@ -73,7 +73,7 @@ const title1 = 'Libros mas vendidos!'
 
     <SwiperSlide>
         <Link to={'/book/9780596527747'}>
-            <img src={fotoNigaa} alt="" />   
+            <img src={fotoBook} alt="" />   
         </Link>
     </SwiperSlide>
 
@@ -81,7 +81,8 @@ const title1 = 'Libros mas vendidos!'
 
 
   <Carruselito books={booksReduce}  title={title1} />
-  <Carruselito books={booksReduce2}     />
+
+  <Carruselito books={booksReduce2}  title={'Libros con mejor rating!'}   />
     </>
    
   )
