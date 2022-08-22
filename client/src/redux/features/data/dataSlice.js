@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BsNutFill } from "react-icons/bs";
 
 const { REACT_APP_API } = process.env;
 
@@ -12,7 +13,7 @@ export const dataSlice = createSlice({
         details: [],
         Cart: [],
         Favs: [],
-        Favo:[],
+        Favo: [],
         allBooks: [],
         Theme: [],
         range: [],
@@ -28,6 +29,7 @@ export const dataSlice = createSlice({
         error: false,
         dataUser: [],
         CartUser: [],
+        heart:[]
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -65,13 +67,13 @@ export const dataSlice = createSlice({
         },
 
         addFav: (state, actions) => {
-             state.Favs = state.Favs.concat(state.books.filter((l) => l.isbn13 === actions.payload))
+            state.Favs = state.Favs.concat(state.books.filter((l) => l.isbn13 === actions.payload))
         },
-        addFav2:(state, actions)=> {
-            state.Favo=actions.payload
+        addFav2: (state, actions) => {
+            state.Favo = actions.payload
         },
         deleteFav: (state, actions) => {
-            
+
             state.Favs = state.Favs.filter((l) => l.isbn13 !== actions.payload);
         },
         // deleteFav2: (state,actions)=>{
@@ -92,16 +94,14 @@ export const dataSlice = createSlice({
                 state.range = [...state.books];
                 alert("Min or Máx are less than 0");
             } else {
-                let copirange = state.allBooks.filter(
-                // let copirange = state.books.filter(
+
+                let copirange = state.books.filter(
                     (e) =>
                         Number(e.price.slice(1)) >= Number(payload.min) &&
                         Number(payload.max) >= Number(e.price.slice(1))
                 );
                 if (!copirange.length) {
-                    state.books = [...state.books];
-                    state.range = [...state.books];
-                    alert("price range not found");
+                    state.books = state.allBooks.filter(e => Number(e.price.slice(1)) >= Number(payload.min) && Number(payload.max) >= Number(e.price.slice(1)))
                 } else {
                     return {
                         ...state,
@@ -111,57 +111,268 @@ export const dataSlice = createSlice({
                 }
             }
         },
-         ORDEN: (state, actions) => {
+        ORDEN: (state, actions) => {
             let copiABC = [...state.books];
 
             let filterAZ;
-            if (actions.payload === 'A-Z') {
-                filterAZ = copiABC.sort((a, b) => {
-                    if (a.title > b.title) {
-                        return 1;
+            if (state.MinToMax.length) {
+                if (actions.payload === 'A-Z') {
+                    let min = [...state.books].sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        })
+                    let max = [...state.books].sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        });
+                    if (JSON.stringify(state.MinToMax) === JSON.stringify(min)) {
+                        console.log('holaaaaMin')
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return 1;
+                            }
+                            if (b.title > a.title) {
+                                return -1;
+                            }
+                            return 0;
+                        }).sort(
+                            (a, b) => {
+                                return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                            })
                     }
-                    if (b.title > a.title) {
-                        return -1;
+                    else if (JSON.stringify(state.MinToMax) === JSON.stringify(max)) {
+                        console.log('Holaaa max')
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return 1;
+                            }
+                            if (b.title > a.title) {
+                                return -1;
+                            }
+                            return 0;
+                        }).sort(
+                            (a, b) => {
+                                return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                            })
+                    } else {
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return 1;
+                            }
+                            if (b.title > a.title) {
+                                return -1;
+                            }
+                            return 0;
+                        })
                     }
-                    return 0;
-                })
-            }
-            if (actions.payload === 'Z-A') {
-                filterAZ = copiABC.sort((a, b) => {
-                    if (a.title > b.title) {
-                        return -1;
+                } if (actions.payload === 'Z-A') {
+                    let min2 = [...state.books].sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        })
+                    let max2 = [...state.books].sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        });
+                    if (JSON.stringify(state.MinToMax) === JSON.stringify(min2)) {
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return -1;
+                            }
+                            if (b.title > a.title) {
+                                return 1;
+                            }
+                            return 0;
+                        }).sort(
+                            (a, b) => {
+                                return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                            })
                     }
-                    if (b.title > a.title) {
-                        return 1;
+                    else if (JSON.stringify(state.MinToMax) === JSON.stringify(max2)) {
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return -1;
+                            }
+                            if (b.title > a.title) {
+                                return 1;
+                            }
+                            return 0;
+                        }).sort(
+                            (a, b) => {
+                                return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                            })
+                    } else {
+                        filterAZ = copiABC.sort((a, b) => {
+                            if (a.title > b.title) {
+                                return -1;
+                            }
+                            if (b.title > a.title) {
+                                return 1;
+                            }
+                            return 0;
+                        });
                     }
-                    return 0;
-                });
-            }
+                }
 
+            } else {
+                if (actions.payload === 'A-Z') {
+                    filterAZ = copiABC.sort((a, b) => {
+                        if (a.title > b.title) {
+                            return 1;
+                        }
+                        if (b.title > a.title) {
+                            return -1;
+                        }
+                        return 0;
+                    })
+                }
+                if (actions.payload === 'Z-A') {
+                    filterAZ = copiABC.sort((a, b) => {
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (b.title > a.title) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                }
+            }
 
             return {
                 ...state,
                 A_Z: actions.payload === 'all' ? [...state.books] : filterAZ,
+                MinToMax: filterAZ,
                 books: actions.payload === 'all' ? [...state.allBooks] : filterAZ,
             };
         },
         MINtoMAX: (state, actions) => {
             let cambiar = [...state.books];
             let filtrar;
-            if (actions.payload === 'MintoMax') {
-                filtrar = cambiar.sort(
-                    (a, b) => {
-                        return Number(a.price.slice(1)) - Number(b.price.slice(1))
+            if (state.A_Z.length) {
+                if (actions.payload === 'MintoMax') {
+                    let az = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                            return 1;
+                        }
+                        if (b.title > a.title) {
+                            return -1;
+                        }
+                        return 0;
                     });
-            }
-            if (actions.payload === 'MaxtoMin') {
-                filtrar = cambiar.sort(
-                    (a, b) => {
-                        return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                    let za = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (b.title > a.title) {
+                            return 1;
+                        }
+                        return 0;
                     });
+                    if (JSON.stringify(state.A_Z) === JSON.stringify(az)) {
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                    return 1;
+                                }
+                                if (b.title > a.title) {
+                                    return -1;
+                                }
+                                return 0;
+                            });
+                    }
+                    if (JSON.stringify(state.A_Z) === JSON.stringify(za)) {
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                    return -1;
+                                }
+                                if (b.title > a.title) {
+                                    return 1;
+                                }
+                                return 0;
+                            });
+                    }
+                    filtrar = cambiar.sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        });
+                }
+                if (actions.payload === 'MaxtoMin') {
+                    let azM = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                            return 1;
+                        }
+                        if (b.title > a.title) {
+                            return -1;
+                        }
+                        return 0;
+                    });
+                    let zaM = [...state.books].sort((a, b) => {
+                        if (a.title > b.title) {
+                            return -1;
+                        }
+                        if (b.title > a.title) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+                    if (JSON.stringify(state.A_Z) === JSON.stringify(azM)) {
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                    return 1;
+                                }
+                                if (b.title > a.title) {
+                                    return -1;
+                                }
+                                return 0;
+                            });
+                    }
+                    if (JSON.stringify(state.A_Z) === JSON.stringify(zaM)) {
+                        filtrar = cambiar.sort(
+                            (a, b) => {
+                                return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                            }).sort((a, b) => {
+                                if (a.title > b.title) {
+                                    return -1;
+                                }
+                                if (b.title > a.title) {
+                                    return 1;
+                                }
+                                return 0;
+                            });
+                    }
+                    filtrar = cambiar.sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        });
+                }
+            } else {
+
+                if (actions.payload === 'MintoMax') {
+                    filtrar = cambiar.sort(
+                        (a, b) => {
+                            return Number(a.price.slice(1)) - Number(b.price.slice(1))
+                        });
+                }
+                if (actions.payload === 'MaxtoMin') {
+                    filtrar = cambiar.sort(
+                        (a, b) => {
+                            return Number(b.price.slice(1)) - Number(a.price.slice(1))
+                        });
+                }
             }
             return {
                 ...state,
+                MinToMax: filtrar,
+                A_Z: filtrar,
                 books: actions.payload === 'all' ? cambiar : filtrar,
             };
         },
@@ -176,6 +387,10 @@ export const dataSlice = createSlice({
         },
         vaciarCommets: (state, actions) => {
             state.comments = [];
+        },
+        vaciarFav: (state, actions) => {
+            state.Favo = [];
+            state.heart=[];
         },
         delistBook: (state, actions) => {
             return;
@@ -205,6 +420,30 @@ export const dataSlice = createSlice({
             state.dataUser = actions.payload;
         },
 
+        heart:(state, actions)=>{
+            state.heart= actions.payload;
+        },
+
+        contadorCart: (state, actions) => {
+            state.CartUser = actions.payload;
+        },
+        contadorQuitarCart: (state, actions) => {
+            state.CartUser = state.CartUser.filter(c => c._id !== actions.payload)
+        },
+        vaciarCarritoDespDeLogin: (state, actions) => {
+            state.Cart = actions.payload
+        },
+
+
+        clearFil: (state, actions) => {
+            state.books = state.allBooks;
+            state.range = [];
+            state.A_Z = [];
+            state.MinToMax = [];
+            state.Theme = [];
+        }
+
+
     },
 });
 
@@ -226,6 +465,7 @@ export const {
     comments,
     addUserID,
     vaciarCommets,
+    vaciarFav,
     delistBook,
     changeDashboardState,
     putBook,
@@ -237,7 +477,14 @@ export const {
     dataUser,
     updateUser,
     CartUser,
-    DeleteCartUser
+    heart,
+    DeleteCartUser,
+    contadorQuitarCart,
+    contadorCart,
+    clearFil,
+    vaciarCarritoDespDeLogin
+
+
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -282,8 +529,8 @@ export const AddCart = (id) => async (dispatch) => {
 export const DeleteCart = (id) => async (dispatch) => {
     dispatch(deleteCart(id));
 };
-export const getFav =(idUser) => async (dispatch) => {
-    const res = await axios.get(REACT_APP_API+ `/favorite`,{params:{email:idUser}})
+export const getFav = (idUser) => async (dispatch) => {
+    const res = await axios.get(REACT_APP_API + `/favorite`, { params: { email: idUser } })
     //let filter=res.data.map(m=>m.book.isbn13)
     dispatch(addFav2(res.data))
 }
@@ -338,7 +585,7 @@ export const Comments = (id) => async (dispatch) => {
     try {
         let komments = await axios
             .get(REACT_APP_API + `/comments/${id}`)
-            .catch((err) => {});
+            .catch((err) => { });
         dispatch(comments(komments.data));
     } catch (error) {
         console.log(error);
@@ -366,6 +613,10 @@ export const DeleteComment = (id) => async (dispatch) => {
 export const Vaciar = () => async (dispatch) => {
     dispatch(vaciarCommets());
 };
+export const vaciarFavs = ()=> async (dispatch) => {
+    dispatch(vaciarFav())
+    console.log("putBook")
+}
 export const UpdateComment = (id, payload) => async (dispatch) => {
     try {
         console.log("payload", id, payload);
@@ -390,7 +641,7 @@ export const deleteBook = (id) => async (dispatch) => {
     } catch (error) {
         console.log(error);
     }
-    
+
 };
 export const updateBook = (payload) => async (dispatch) => {
     try {
@@ -438,10 +689,10 @@ export const updateUserdata = (id, payload) => async (dispatch) => {
         console.log(error);
     }
 }
-export const UpdatePass=(id,payload) => async (dispatch)=>{
-    try{
+export const UpdatePass = (id, payload) => async (dispatch) => {
+    try {
         console.log(payload);
-        const res = await axios.put(REACT_APP_API +`/user/change/${id}`,payload)
+        const res = await axios.put(REACT_APP_API + `/user/change/${id}`, payload)
         alert("Password changed successfully")
     }
     catch (error) {
@@ -452,8 +703,8 @@ export const UpdatePass=(id,payload) => async (dispatch)=>{
 export const getCartUser = (idUser) => async (dispatch) => {
     try {
         let res = await axios.get(REACT_APP_API + '/cart/' + idUser)
-        console.log(idUser)
-        dispatch(CartUser(res.data[0].cart))
+        // console.log(res.data[0].cart)
+        dispatch(contadorCart(res.data[0].cart))
     } catch (error) {
         console.log(error);
     }
@@ -461,7 +712,26 @@ export const getCartUser = (idUser) => async (dispatch) => {
 
 export const DeleteInCartUser = (id) => (dispatch) => {
 
-    dispatch(DeleteCartUser(id))
+    dispatch(contadorQuitarCart(id))
+}
+
+export const actionVaciarCarritoDespDeLogin = () => (dispatch) => {
+
+    dispatch(vaciarCarritoDespDeLogin([]))
+}
+export const GetHeart=(idUser)=> async (dispatch) => {
+    try{
+        let success = await axios.get(REACT_APP_API + `/favorite/id?email=${idUser}`)
+       await dispatch(heart(success.data))
+    }
+    catch(error){
+        console.log(error)
+    }
 
 }
 
+
+
+export const ResetFil = () => (dispatch) => {
+    dispatch(clearFil())
+}

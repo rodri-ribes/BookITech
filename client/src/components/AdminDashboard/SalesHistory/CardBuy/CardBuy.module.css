@@ -1,0 +1,58 @@
+.Container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    background-color: #0f243b;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.Container__info{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.Container__info h3{
+    font-family: arial;
+}
+
+tr th{
+    font-family: lucida sans;
+}
+
+tr td {
+    font-family: lucida sans;
+    text-align: center;
+}
+
+
+.Container__detalles{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+/*--------CSS DE LAS VENTAS----------*/
+
+
+.Container__buy{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.Container_price{
+    align-self: flex-end;
+    margin-top: 1rem;
+    font-family: sans-serif;
+}
