@@ -91,8 +91,8 @@ export default function SignIn() {
 
                 let { email, password } = valores;
 
-                setConfirm({ message: <SpinnerSignUp/> , visible: true, error: false })
-                email = email.toLowerCase;
+                
+                email = email.toLowerCase();
 
                 try {
                     let resp = await axios.post(REACT_APP_API + `/signin`, {
