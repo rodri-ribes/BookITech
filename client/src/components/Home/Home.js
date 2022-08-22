@@ -29,9 +29,11 @@ import FiltersSidebar from "../Filters/FiltersSidebar"
     }
 }
     useEffect(() => {  
-        if(window.localStorage.getItem("user")) idUser() 
-        dispatch(getLibros());   
+        if(window.localStorage.getItem("user")) idUser()   
+        if(nameSearch === "") dispatch(getLibros()); 
     }, [dispatch]);
+
+
     let books = useSelector((state) => state.data.books);
     let loading = useSelector((state) => state.data.loading);
     let error = useSelector((state) => state.data.error);

@@ -68,15 +68,35 @@ export default function Search() {
     }, [books]);
 
     function handleChange2(e) {
-        // setName('');
-        // setName(e.target.value);
-        dispatch(getSearch(e.target.value));
-        // if (!name) {
-        // setName(e.target.value);
-        // if (name.length < 1) {
-        //     setDisplay(false);
-        //     // setOption([]);
-        // }
+        let named = e.target.value  
+        // setName(prevState => prevState + named)
+        console.log(named)
+        console.log(name)
+
+
+        if(name === ''){
+            setName((prevState) =>{
+                return prevState + named
+            })
+            dispatch(getSearch(named))
+        return 
+        }
+        if(name.length < named.length){
+            setName((prevState) =>{
+                return prevState + named[named.length - 1]
+            })
+            dispatch(getSearch(named))
+            setName(named)
+        return
+        }
+        if(name.length > named.length){
+            let diferencia = name.length - named.length
+            setName((prevState) =>{
+                return prevState.slice(0, -diferencia)
+            })
+            dispatch(getSearch(named))
+        return
+        }
     }
 
     function redirect() {
@@ -104,91 +124,84 @@ export default function Search() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!name) {
-            alert("failed search");
-            setName("");
-            // setDisplay(false);
-            // setOption([]);
-        } else {
-            dispatch(getSearch(name));
-            setName("");
-            // setDisplay(false);
+        if (window.location.pathname !== '/') {
+            navigate('/')
+            // console.log(e.target.value)
+            dispatch(getSearch(name))
+            // setName("");
         }
     }
-    function setClick(val) {
-        setName(val);
-        setDisplay(false);
-    }
-    //redirect
-    //
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <SearchUI>
-                <SearchIconWrapper>
-                    <IconButton
-                        aria-label="search"
-                        color="inherit"
-                        sx={{ ml: -2.5, display: { md: "none", xs: "flex" } }}
-                    >
-                        <SearchIcon />
-                    </IconButton>
-                    <IconButton
-                        aria-label="search"
-                        color="inherit"
-                        sx={{ display: { md: "flex", xs: "none" } }}
-                        pointer= "cursor"
-                    >
-                        <SearchIcon />
-                    </IconButton>
-                </SearchIconWrapper>
-                <StyledInputBase
-                    placeholder="Search…"
-                    inputProps={{ "aria-label": "search" }}
-                    onChange={(e) => handleChange2(e)}
-                    onClick={redirect}
-                    type="text"
-                    // value={name}
-                    sx={{
-                        flexGrow: 1,
-                        display: { md: "flex" },
-                    }}
-                />
-                <div>
-                    {/* <div>
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <input
-                        onChange={(e) => handleChange(e)}
+            <form onSubmit={(e) => handleSubmit(e)} >
+                <SearchUI>
+                    <SearchIconWrapper>
+                        <IconButton
+                            aria-label="search"
+                            color="inherit"
+                            sx={{ ml: -2.5, display: { md: "none", xs: "flex" } }}
+                        >
+                            <SearchIcon />
+                        </IconButton>
+                        <IconButton
+                            aria-label="search"
+                            color="inherit"
+                            sx={{ display: { md: "flex", xs: "none" } }}
+                            pointer= "cursor"
+                        >
+                            <SearchIcon />
+                        </IconButton>
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                        placeholder="Search…"
+                        inputProps={{ "aria-label": "search" }}
+                        onChange={(e) => handleChange2(e)}
+                        // onClick={redirect}
                         type="text"
-                        placeholder="Search..."
-                        value={name}
-                        list="form"
+                        // value={name}
+                        sx={{
+                            flexGrow: 1,
+                            display: { md: "flex" },
+                        }}
                     />
-                    <button type="submit">
-                        <AiOutlineSearch />
-                    </button>
-                </form>
-<<<<<<< HEAD
-            </div> */}
-                    {/* <datalist id="form">
-                        {display &&
-                            option
-                                ?.filter((e) =>
-                                    e.toLowerCase().includes(name.toLowerCase())
-                                )
-                                .map((e, k) => {
-                                    return (
-                                        <option
-                                            key={k}
-                                            onClick={() => setClick(e)}
-                                            value={e}
-                                        >
-                                            {e}
-                                        </option>
-                                    );
-                                })}
-                    </datalist> */}
-                </div>
-            </SearchUI>
+                    <div>
+                        {/* <div>
+                    <form onSubmit={(e) => handleSubmit(e)}>
+                        <input
+                            onChange={(e) => handleChange(e)}
+                            type="text"
+                            placeholder="Search..."
+                            value={name}
+                            list="form"
+                        />
+                        <button type="submit">
+                            <AiOutlineSearch />
+                        </button>
+                    </form>
+    <<<<<<< HEAD
+                </div> */}
+                        {/* <datalist id="form">
+                            {display &&
+                                option
+                                    ?.filter((e) =>
+                                        e.toLowerCase().includes(name.toLowerCase())
+                                    )
+                                    .map((e, k) => {
+                                        return (
+                                            <option
+                                                key={k}
+                                                onClick={() => setClick(e)}
+                                                value={e}
+                                            >
+                                                {e}
+                                            </option>
+                                        );
+                                    })}
+                        </datalist> */}
+                    </div>
+                </SearchUI>
+            </form>
+
         </Box>
         // =======
         //             </div>
