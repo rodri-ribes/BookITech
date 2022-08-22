@@ -508,6 +508,7 @@ export const getLibros = () => async (dispatch) => {
 // };
 export const getSearch = (name) => async (dispatch) => {
     try {
+        console.log(name)
         dispatch(setLoadingTrue());
         let buscar = await axios.get(
             //URL PARA BUSCAR

@@ -112,9 +112,8 @@ function NavBar({ user, setUser }) {
 
 
     const clickIcon = () =>{
-        console.log('ANASHEE')
         setRender(true)
-        cleanSearch('')
+        cleanSearch()
     }
 
 

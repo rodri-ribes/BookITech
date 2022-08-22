@@ -67,11 +67,17 @@ export default function Search() {
     //     setOption(titulo);
     // }, [books]);
 
+    const cleanName = () =>{
+        setName('')
+    }
+
 
     useEffect(()=>{
         console.log('DALEE PAA')
-        dispatch(addFunctionCleans(setName))
+        dispatch(addFunctionCleans(cleanName))
     },[])
+
+    
 
     function handleChange2(e) {
         let named = e.target.value  
@@ -102,38 +108,37 @@ export default function Search() {
         }
     }
 
-    function redirect() {
-        if (window.location.pathname !== "/") {
-            navigate("/");
-        }
-    }
+    // function redirect() {
+    //     if (window.location.pathname !== "/") {
+    //         navigate("/");
+    //     }
+    // }
 
-    function handleChange(e) {
-        if (name.length >= 3) {
-            // setName(e.target.value);
-            dispatch(getSearch(name));
-            setDisplay(true);
-            // setOption(books.map((e) => e.title));
-        }
-        console.log(window.location.pathname);
-        // if (!name) {
-        // setName(e.target.value);
-        dispatch(getSearch(name));
-        if (name.length < 2) {
-            setDisplay(false);
-            // setOption([]);
-        }
-    }
+    // function handleChange(e) {
+    //     if (name.length >= 3) {
+    //         // setName(e.target.value);
+    //         dispatch(getSearch(name));
+    //         setDisplay(true);
+    //         // setOption(books.map((e) => e.title));
+    //     }
+    //     console.log(window.location.pathname);
+    //     // if (!name) {
+    //     // setName(e.target.value);
+    //     dispatch(getSearch(name));
+    //     if (name.length < 2) {
+    //         setDisplay(false);
+    //         // setOption([]);
+    //     }
+    // }
 
     function handleSubmit(e) {
         e.preventDefault();
         if (window.location.pathname !== '/') {
             navigate('/')
-            // console.log(e.target.value)
             dispatch(getSearch(name))
-            // setName("");
         }
     }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <form onSubmit={(e) => handleSubmit(e)} >
@@ -161,7 +166,7 @@ export default function Search() {
                         onChange={(e) => handleChange2(e)}
                         // onClick={redirect}
                         type="text"
-                        // value={name}
+                        value={name}
                         sx={{
                             flexGrow: 1,
                             display: { md: "flex" },
