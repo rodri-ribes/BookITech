@@ -132,8 +132,8 @@ export default function Search() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (window.location.pathname !== '/') {
-            navigate('/')
+        if (window.location.pathname === '/') {
+            navigate('/search')
             dispatch(getSearch(name))
         }
     }

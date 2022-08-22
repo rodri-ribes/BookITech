@@ -105,7 +105,7 @@ function Home() {
                 <div className={style.Container__PanelCards}>
                     {error ? <Card404 /> :
                         loading ? <Loading /> :
-                            (filtrado.length === 0) ? <Noresults /> :
+                            (filtrado.filter(searchTerm(nameSearch)).length === 0) ? <Noresults /> :
                                 filtrado && filtrado.filter(searchTerm(nameSearch))
                                     .slice(
                                         (pagina - 1) * porPagina,

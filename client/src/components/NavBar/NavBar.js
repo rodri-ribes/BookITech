@@ -113,7 +113,7 @@ function NavBar({ user, setUser }) {
 
     const clickIcon = () =>{
         setRender(true)
-        cleanSearch()
+        cleanSearch('')
     }
 
 
