@@ -10,7 +10,10 @@ import { UserAuth } from '../../firebase/AuthContext';
 import { FacebookLoginButton, GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider, onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../../firebase/index';
-const { REACT_APP_API } = process.env
+
+import SpinnerSignUp from '../auxiliar/SpinnerSignUp/SpinnerSignUp'
+const {REACT_APP_API} = process.env
+
 
 
 export default function SignUp() {
@@ -110,10 +113,12 @@ export default function SignUp() {
             onSubmit={async (valores, { resetForm }) => {
 
                 let { name, email, password } = valores;
-
+                setConfirm({ message: <SpinnerSignUp />, visible: true, error: false })
+                
                 let fullName;
-
+                email = email.toLocaleLowerCase();
                 fullName = name.charAt(0).toUpperCase() + name.slice(1)
+                
                 console.log(fullName, email, password)
                 try {
                     let resp = await axios.post(REACT_APP_API + `/signup`, {

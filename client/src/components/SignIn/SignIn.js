@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import style from './SignIn.module.css'
-
+import SpinnerSignUp from '../auxiliar/SpinnerSignUp/SpinnerSignUp'
 import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
@@ -90,6 +90,9 @@ export default function SignIn() {
             onSubmit={async (valores, { resetForm }) => {
 
                 let { email, password } = valores;
+
+                
+                email = email.toLowerCase();
 
                 try {
                     let resp = await axios.post(REACT_APP_API + `/signin`, {

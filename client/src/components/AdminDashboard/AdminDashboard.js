@@ -6,6 +6,7 @@ import CRUD from './CRUD/CRUD'
 import { SalesHistory } from "./SalesHistory/SalesHistory";
 import {CommentsMod} from './CommentsMod/CommentsMod'
 import {theme} from './theme'
+import { getLibros } from "../../redux/features/data/dataSlice";
 
 const classes= {
     dashboard: {
@@ -17,12 +18,16 @@ const classes= {
 
 export function AdminDashboard(){
 
-
+  const dispatch = useDispatch()
+  let books = useSelector((state) => state.data.books)
+useEffect(()=>{
+  dispatch(getLibros())
+},[])
   const state = useSelector((state) => state.data.dashboardState);
   const componentReturn ={
     'CRUD' : <CRUD/>,
     'Sales History' : <SalesHistory/> || <h1>sales history</h1>,
-    'Review Comments' : <CommentsMod/>
+    'Review Comments' : <CommentsMod books={books} />
   }
 
   return (

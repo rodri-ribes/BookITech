@@ -57,7 +57,8 @@ function Detail() {
     let user = JSON.parse(window.localStorage.getItem("user"));
 
     let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
-    setDetails(data.data)
+    setDetails({...data.data,
+      comments: data.data.comments.filter(e=> !e.flagged)})
 
     if (user !== null) {
       let dataUsuario = await axios.get(REACT_APP_API + `/user/${user.id}`);
@@ -550,18 +551,14 @@ function Detail() {
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>MORE REVIEWS</h4>
                     <hr />
-                    <p>To see what friends thought of this book, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
-                    <div className={style.Container__Separador} />
-                    <h4>READER Q&A</h4>
-                    <hr />
-                    <p>To ask other readers questions about {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
+                    <p>To see what friends thought of this book, please <Link className={style.LinkStyle} to="/signin">Sign In</Link></p>
                     <div className={style.Container__Separador} />
 
                   </div>
                   <div className={style.Container__Content__Acitivity__Details}>
                     <h4>COMMENTS</h4>
                     <hr />
-                    <p>To leave a comment on {details.title}, please <Link className={style.LinkStyle} to="/signup">Sign Up</Link></p>
+                    <p>To leave a comment on {details.title}, please <Link className={style.LinkStyle} to="/signin">Sign In</Link></p>
                     <div className={style.Container__Separador} />
                     <div className={style.Container__Content__Acitivity__Details}>
                       {
