@@ -133,7 +133,7 @@ export default function Search() {
     function handleSubmit(e) {
         e.preventDefault();
         if (window.location.pathname !== '/') {
-            navigate('/')
+            navigate('/search')
             dispatch(getSearch(name))
         }
     }
