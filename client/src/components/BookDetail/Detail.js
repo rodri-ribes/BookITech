@@ -57,7 +57,8 @@ function Detail() {
     let user = JSON.parse(window.localStorage.getItem("user"));
 
     let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
-    setDetails(data.data)
+    setDetails({...data.data,
+      comments: data.data.comments.filter(e=> !e.flagged)})
 
     if (user !== null) {
       let dataUsuario = await axios.get(REACT_APP_API + `/user/${user.id}`);
