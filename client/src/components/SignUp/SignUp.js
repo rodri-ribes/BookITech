@@ -109,7 +109,8 @@ export default function SignUp() {
             onSubmit={async (valores, { resetForm }) => {
 
                 let { name, email, password } = valores;
-
+                
+                email = email.toLowerCase;
                 let fullName;
 
                 fullName = name.charAt(0).toUpperCase() + name.slice(1)
