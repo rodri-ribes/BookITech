@@ -39,6 +39,7 @@ const { REACT_APP_API } = process.env;
 function Profile() {
     let dispatch = useDispatch();
     let Favo = useSelector((state) => state.data.Favo);
+    let Favorites=Favo?.map(l=>l.book)
     var favLength = Favo.length;
     var leftConstraints = favLength * -100;
     const [expanded, setExpanded] = useState(false);
@@ -708,7 +709,7 @@ function Profile() {
                                     aria-label="simple table"
                                 >
                                     <TableBody>
-                                        {User.buy.map((s) => {
+                                        {User.buy?.map((s) => {
                                             return (
                                                 <TableRow
                                                     key={s.isbn13}
@@ -815,7 +816,7 @@ function Profile() {
                                     aria-label="simple table"
                                 >
                                     <TableBody>
-                                        {User.reviews.map((s) => {
+                                        {User.reviews?.map((s) => {
                                             return (
                                                 <TableRow
                                                     key={s.isbn13}
@@ -932,7 +933,7 @@ function Profile() {
                                     aria-label="simple table"
                                 >
                                     <TableBody>
-                                        {User.reviews.map((s) => {
+                                        {User.reviews?.map((s) => {
                                             return (
                                                 <TableRow
                                                     key={s.isbn13}
@@ -1053,7 +1054,7 @@ function Profile() {
                                             left: leftConstraints,
                                         }}
                                     >
-                                        {Favo.map((l, i) => {
+                                        {Favorites?.map((l, i) => {
                                             return (
                                                 <motion.div
                                                     className={
