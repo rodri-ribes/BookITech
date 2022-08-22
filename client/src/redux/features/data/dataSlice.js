@@ -431,6 +431,7 @@ export const dataSlice = createSlice({
         },
         contadorQuitarCart: (state, actions) => {
             state.CartUser = state.CartUser.filter(c => c._id !== actions.payload)
+
         },
         vaciarCarritoDespDeLogin: (state, actions) => {
             state.Cart = actions.payload
