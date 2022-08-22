@@ -16,6 +16,7 @@ import FiltersSidebar from "../Filters/FiltersSidebar"
     let dispatch = useDispatch();
     let heart = useSelector(state => state.data.heart)
     let user = useSelector(state => state.data.user)
+    let nameSearch = useSelector((state) => state.data.nameSearch);
 
 
     // const [loading, setLoading] = useState(true)
@@ -29,9 +30,11 @@ import FiltersSidebar from "../Filters/FiltersSidebar"
     }
 }
     useEffect(() => {  
-        if(window.localStorage.getItem("user")) idUser() 
-        dispatch(getLibros());   
+        if(window.localStorage.getItem("user")) idUser()   
+        if(nameSearch === "") dispatch(getLibros()); 
     }, [dispatch]);
+
+
     let books = useSelector((state) => state.data.books);
     let loading = useSelector((state) => state.data.loading);
     let error = useSelector((state) => state.data.error);
