@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import Carruselito from './Carousel/Carousel';
 import { getLibros } from '../../redux/features/data/dataSlice';
-import { Navigation, Pagination, Autoplay, A11y, History, HashNavigation   } from 'swiper';
+import { Navigation, Pagination, Autoplay, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useDispatch, useSelector } from 'react-redux';
 import 'swiper/css';
@@ -24,24 +24,13 @@ function Landing() {
   }, [dispatch]);
   
   let booksReduce2 = books.slice(15,30)
-
-  const title1 = 'Libros mas vendidos!'
-
   let booksWithReviews = books.filter(b => b.reviews.length > 0)
-  console.log(booksWithReviews)
 
   let sortByRating = booksWithReviews.sort((prev, next) => { 
     let previo = prev.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0) 
     let siguiente = next.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0)    
-    return siguiente - previo
+      return siguiente - previo
   })
-
-
-  sortByRating.push(books[30])
-  if(sortByRating.length > 20){
-    sortByRating.slice(0,20)
-  }
-
 
 
 
@@ -51,16 +40,14 @@ function Landing() {
 
 <Swiper
     id='main'
-    modules={[Navigation, Pagination, Autoplay , A11y, History, HashNavigation  ]}
-    HashNavigation 
-    // history 
+    modules={[Navigation, Pagination, Autoplay , A11y ]}
     loop={true}
     a11y 
     pagination={{ clickable: true }}
     // navigation = {true}
     navigation={true}
     autoplay={{
-        delay: 10000,
+        delay: 8000,
         pauseOnMouseEnter: true,
         disableOnInteraction: false,
       }}
