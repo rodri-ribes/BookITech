@@ -160,13 +160,13 @@ async function createUser(req, res) {
                 port: 465,
                 secure: true, // true for 465, false for other ports
                 auth: {
-                    user: 'ledobookitech@zohomail.com', // generated ethereal user
-                    pass: 'frqGYjAbPUUR', // generated ethereal password
+                    user: 'bookitech@zohomail.com', // generated ethereal user
+                    pass: '81tmAGWHmRtd', // generated ethereal password
                 },
             });
 
             const prueba = await transporter.sendMail({
-                from: '"BookITech 📖" <ledobookitech@zohomail.com> ',
+                from: '"BookITech 📖" <bookitech@zohomail.com> ',
                 to: email,
                 subject: "HELLOOO ",
                 html: `
@@ -181,7 +181,7 @@ async function createUser(req, res) {
                 </div>
                 <div style="text-align:center; padding:10px; background-color:#0a1929; color:#DADADA;">
                 <p style="font-family:Rockweel,Lucidatypewriter; font-size:15px;" >↓BUY HERE!↓</p>
-                <a href="https://bookitech-olive.vercel.app/" style="font-family:Rockweel,Lucidatypewriter; font-size:17px; >📚BookITech 📗</a>
+                <a href="https://bookitech-olive.vercel.app/" style="font-family:Rockweel,Lucidatypewriter; font-size:17px;" >📚BookITech 📗</a>
                 </div>
                 </div>
                 </div>
@@ -293,14 +293,14 @@ async function PostBook(req, res) {
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-                user: 'ledobookitech@zohomail.com', // generated ethereal user
-                pass: 'frqGYjAbPUUR', // generated ethereal password
+                user: 'bookitech@zohomail.com', // generated ethereal user
+                pass: '81tmAGWHmRtd', // generated ethereal password
             },
         });
         let url =items.flat().map(e => e)
         // <img src=${img[0]} alt='img not foun' width='150' height='150' />
         const prueba = await transporter.sendMail({
-            from: '"BookITech 📖" <ledobookitech@zohomail.com> ',
+            from: '"BookITech 📖" <bookitech@zohomail.com> ',
             to: email,
             subject: "YOUR BOOKS ",
             html: `
