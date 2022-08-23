@@ -28,13 +28,13 @@ const saveSignIn = async (req, res) => {
       port: 465,
       secure: true, // true for 465, false for other ports
       auth: {
-        user: 'ledobookitech@zohomail.com', // generated ethereal user
-        pass: 'frqGYjAbPUUR', // generated ethereal password
+        user: 'bookitech@zohomail.com', // generated ethereal user
+        pass: '81tmAGWHmRtd', // generated ethereal password
       },
     });
 
     await transporter.sendMail({
-      from: '"BookITech 📖" <ledobookitech@zohomail.com> ',
+      from: '"BookITech 📖" <bookitech@zohomail.com> ',
       to: email,
       subject: "HELLOOO ",
       html: `
