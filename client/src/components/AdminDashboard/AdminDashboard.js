@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CRUD from './CRUD/CRUD'
 import { SalesHistory } from "./SalesHistory/SalesHistory";
 import {CommentsMod} from './CommentsMod/CommentsMod'
+import {ModUsers} from './ModUsers/ModUsers'
 import {theme} from './theme'
 import { getLibros } from "../../redux/features/data/dataSlice";
 
@@ -26,8 +27,9 @@ useEffect(()=>{
   const state = useSelector((state) => state.data.dashboardState);
   const componentReturn ={
     'CRUD' : <CRUD/>,
-    'Sales History' : <SalesHistory/> || <h1>sales history</h1>,
-    'Review Comments' : <CommentsMod books={books} />
+    'Sales History' : <SalesHistory/>,
+    'Review Comments' : <CommentsMod books={books} />,
+    'Moderate Users' : <ModUsers/>
   }
 
   return (

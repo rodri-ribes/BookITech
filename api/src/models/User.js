@@ -33,7 +33,23 @@ const UserSchema = new Schema({
             status: String,
             review: String,
         }
-    ]
+    ],
+
+        banned: {
+            date: String,
+            numberOfBans: {
+                type: Number,
+                default: 0
+            },
+            flaggedComments:{
+                type: Number,
+                default: 0
+            },
+            isBanned: {
+                type: Boolean,
+                default: false
+            }
+    }
 })
 
 module.exports = mongoose.model('User', UserSchema)
