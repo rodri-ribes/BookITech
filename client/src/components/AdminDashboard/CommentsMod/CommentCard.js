@@ -18,14 +18,16 @@ export function CommentCard(props){
     const [reviewed, setReviewed] = useState(false)
     async function dispatchChange(type){
         if(type === 'flag'){
-            var success = await axios.put(REACT_APP_API +'/comments/edit/' + comment.bookId + '/' + comment.commentId, {type: {review: true},content:{...comment, reviewed: true, flagged: true}})   
-            .catch(err => console.log(err))
+            var success = await axios.put(REACT_APP_API +'/comments/edit/' + comment.bookId + '/' + comment.commentId, {content:{...comment, reviewed: true, flagged: true}}).catch(err => console.log(err))
+            var banned = await axios.post(REACT_APP_API + '/user/ban', {id :comment.user})
+            return (success && banned)
         }
         if(type === 'ok'){
             var success = await axios.put(REACT_APP_API +'/comments/edit/' + comment.bookId + '/' + comment.commentId, {type: {review: true},content:{...comment, reviewed: true}})   
             .catch(err => console.log(err))
+            return (success)
+
         }
-        return (success)
     }
     const handleOk = async (event) =>{
         event.preventDefault()
