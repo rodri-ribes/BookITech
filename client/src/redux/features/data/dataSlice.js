@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BsNutFill } from "react-icons/bs";
-
+import {Alert} from 'react-st-modal'
 const { REACT_APP_API } = process.env;
-
 
 export const dataSlice = createSlice({
     name: "data",
@@ -86,15 +85,15 @@ export const dataSlice = createSlice({
             if (Number(payload.min) === Number(payload.max)) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert("Max and Min are the same, please make them different");
+                Alert("Max and Min are the same, please make them different");
             } else if (Number(payload.min) > Number(payload.max)) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert("Min is greater than Max");
+                Alert("Min is greater than Max");
             } else if (Number(payload.min) < 0 || Number(payload.max) < 0) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert("Min or Máx are less than 0");
+                Alert("Min or Máx are less than 0");
             } else {
 
                 let copirange = state.books.filter(
@@ -103,6 +102,7 @@ export const dataSlice = createSlice({
                         Number(payload.max) >= Number(e.price.slice(1))
                 );
                 if (!copirange.length) {
+                    Alert('The range you want to search for was not found');
                     state.books = state.allBooks.filter(e => Number(e.price.slice(1)) >= Number(payload.min) && Number(payload.max) >= Number(e.price.slice(1)))
                 } else {
                     return {
@@ -520,7 +520,7 @@ export const getSearch = (name) => async (dispatch) => {
         dispatch(setLoadingFalse());
         // console.log(buscar.data);
     } catch (error) {
-        alert("the books were not found");
+        Alert("the books were not found");
         console.log(error);
     }
 };

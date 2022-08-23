@@ -111,7 +111,7 @@ function Detail() {
     'mongoose',
     'java',
     'javascript',
-    ' html',
+    'html',
     'css',
     'python',
     'php',
@@ -384,7 +384,7 @@ function Detail() {
                   <p>{total.toFixed(1)}</p>
                 </div>
                 <div className={style.Container__Content__Info__details_description}>
-                  <p>{details.desc}</p>
+                  <p>{details.desc.replace(/&#039;/g,"´")}</p>
                 </div>
                 <div className={style.Container__Content__Info__details_ficha}>
                   <p>PaperBack: {details.pages} Pages</p>
@@ -604,7 +604,7 @@ function Detail() {
                 {theme.length > 0 ?
                   theme.slice(1, 6).map(c => {
                     return (
-                      <a href={`/book/${c.isbn13}`} className={style.Container__BarRight__Apart__Container__Card}>
+                      <a href={`/book/${c.isbn13}`} className={style.Container__BarRight__Apart__Container__Card} >
                         <img src={c.image} alt={c.title} />
                         <div className={style.Container__BarRight__Apart__Container__Card__info}>
                           <h3>{c.title.charAt(0).toUpperCase() + c.title.slice(1)}</h3>

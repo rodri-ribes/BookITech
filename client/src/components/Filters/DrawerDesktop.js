@@ -17,9 +17,9 @@ import {
     FilTheme,
     ORdenAZ,
     PriceRange,
-    ChangeRange,
+    ChangeRange,ResetFil,
 } from "../../redux/features/data/dataSlice";
-
+import {Alert} from 'react-st-modal'
 
 
 function DrawerDesktop( { setPagina }) {
@@ -37,12 +37,12 @@ function DrawerDesktop( { setPagina }) {
         "mongoose",
         "java",
         "javascript",
-        " html",
+        "html",
         "css",
         "python",
         "php",
         "react",
-        "redux",
+        // "redux",
         "perl",
         "swift",
         "rust",
@@ -56,12 +56,12 @@ function DrawerDesktop( { setPagina }) {
 
     function handleChangeRangeMin(e) {
         dispatch(ChangeRange("MintoMax"));
-        setPagina(1);
+        // setPagina(1);
     }
 
     function handleChangeRangeMax(e) {
         dispatch(ChangeRange("MaxtoMin"));
-        setPagina(1);
+        // setPagina(1);
     }
 
     function validate() {
@@ -76,16 +76,16 @@ function DrawerDesktop( { setPagina }) {
     }
     function handleTheme(e) {
         dispatch(FilTheme(e.target.textContent));
-        setPagina(1);
+        // setPagina(1);
     }
 
-    function handleRange(e) {
+    async function handleRange(e) {
         if (!range.max || !range.min) {
-            alert("Máx and Min Required");
+            await Alert("Máx and Min Required");
         } else {
             dispatch(PriceRange(range));
             setRange({ max: "", min: "" });
-            setPagina(1);
+            // setPagina(1);
         }
     }
     function handleChange(e) {
@@ -102,14 +102,17 @@ function DrawerDesktop( { setPagina }) {
     }
     function handleOrdenAZ(e) {
         dispatch(ORdenAZ("A-Z"));
-        setPagina(1);
+        // setPagina(1);
     }
 
     function handleOrdenZA(e) {
         dispatch(ORdenAZ("Z-A"));
-        setPagina(1);
+        // setPagina(1);
     }
-
+    function ClearFilter() {
+        dispatch(ResetFil())
+        // setPagina(1)
+    }
 
 
     const cssTextField = {
@@ -280,6 +283,9 @@ function DrawerDesktop( { setPagina }) {
                         </ListItem>
                     </Box>
             </List>
+            <ListItem >
+                    <ListItemButton onClick={() => ClearFilter()}>RESET</ListItemButton>
+            </ListItem>
             <List>
                 <Typography
                     sx={{
