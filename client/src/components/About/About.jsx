@@ -12,8 +12,8 @@ function About() {
                 alignItem: "baseline",
             }}
         >
-            <Stack sx={{ml: 30, mt: 8}}>
-                <img src="/favicon.ico" alt="logo" width="300px" />
+            <Stack sx={{ml: 50, mt: 8}}>
+                <img src="/favicon.ico" alt="logo" width="200px" />
             </Stack>
             <Typography
                 variant="h6"
@@ -25,8 +25,8 @@ function About() {
                     display: { xs: "none", md: "flex" },
                     fontFamily: "monospace",
                     fontWeight: 800,
-                    fontSize: "10rem",
-                    letterSpacing: "1.2rem",
+                    fontSize: "8rem",
+                    letterSpacing: "1rem",
                     color: "inherit",
                     textDecoration: "none",
                 }}
