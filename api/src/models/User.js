@@ -36,7 +36,7 @@ const UserSchema = new Schema({
     ],
 
         banned: {
-            date: String,
+            date: {type: String},
             numberOfBans: {
                 type: Number,
                 default: 0
