@@ -10,6 +10,7 @@ export const dataSlice = createSlice({
     initialState: {
         books: [],
         book: [],
+        nameSearch: "",
         details: [],
         Cart: [],
         Favs: [],
@@ -29,7 +30,9 @@ export const dataSlice = createSlice({
         error: false,
         dataUser: [],
         CartUser: [],
-        heart:[]
+        heart: [],
+        cleanSearch: null,
+
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -39,12 +42,7 @@ export const dataSlice = createSlice({
         },
         //Search
         SearchTitle: (state, actions) => {
-            return {
-                ...state,
-                book: actions.payload.data,
-                books: actions.payload.data,
-                nameSearch: actions.payload.name,
-            };
+            state.nameSearch = actions.payload;
         },
         addCart: (state, actions) => {
             state.Cart = state.Cart.concat(
@@ -390,7 +388,7 @@ export const dataSlice = createSlice({
         },
         vaciarFav: (state, actions) => {
             state.Favo = [];
-            state.heart=[];
+            state.heart = [];
         },
         delistBook: (state, actions) => {
             return;
@@ -418,32 +416,34 @@ export const dataSlice = createSlice({
         },
         dataUser: (state, actions) => {
             state.dataUser = actions.payload;
+
         },
 
-        heart:(state, actions)=>{
-            state.heart= actions.payload;
+        heart: (state, actions) => {
+            state.heart = actions.payload;
         },
 
         contadorCart: (state, actions) => {
+
             state.CartUser = actions.payload;
         },
         contadorQuitarCart: (state, actions) => {
             state.CartUser = state.CartUser.filter(c => c._id !== actions.payload)
+
         },
         vaciarCarritoDespDeLogin: (state, actions) => {
             state.Cart = actions.payload
         },
-
-
         clearFil: (state, actions) => {
             state.books = state.allBooks;
             state.range = [];
             state.A_Z = [];
             state.MinToMax = [];
             state.Theme = [];
+        },
+        addFunctionClean: (state, actions) => {
+            state.cleanSearch = actions.payload
         }
-
-
     },
 });
 
@@ -482,9 +482,8 @@ export const {
     contadorQuitarCart,
     contadorCart,
     clearFil,
-    vaciarCarritoDespDeLogin
-
-
+    vaciarCarritoDespDeLogin,
+    addFunctionClean,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -509,12 +508,9 @@ export const getLibros = () => async (dispatch) => {
 // };
 export const getSearch = (name) => async (dispatch) => {
     try {
+
         dispatch(setLoadingTrue());
-        let buscar = await axios.get(
-            //URL PARA BUSCAR
-            REACT_APP_API + `/books/${name}`
-        );
-        dispatch(SearchTitle({ data: buscar.data, name: name }));
+        dispatch(SearchTitle(name));
         dispatch(setLoadingFalse());
         // console.log(buscar.data);
     } catch (error) {
@@ -613,7 +609,7 @@ export const DeleteComment = (id) => async (dispatch) => {
 export const Vaciar = () => async (dispatch) => {
     dispatch(vaciarCommets());
 };
-export const vaciarFavs = ()=> async (dispatch) => {
+export const vaciarFavs = () => async (dispatch) => {
     dispatch(vaciarFav())
     console.log("putBook")
 }
@@ -719,19 +715,21 @@ export const actionVaciarCarritoDespDeLogin = () => (dispatch) => {
 
     dispatch(vaciarCarritoDespDeLogin([]))
 }
-export const GetHeart=(idUser)=> async (dispatch) => {
-    try{
+export const GetHeart = (idUser) => async (dispatch) => {
+    try {
         let success = await axios.get(REACT_APP_API + `/favorite/id?email=${idUser}`)
-       await dispatch(heart(success.data))
+        await dispatch(heart(success.data))
     }
-    catch(error){
+    catch (error) {
         console.log(error)
     }
 
 }
 
-
-
 export const ResetFil = () => (dispatch) => {
     dispatch(clearFil())
+}
+
+export const addFunctionCleans = (fnc) => (dispatch) => {
+    dispatch(addFunctionClean(fnc))
 }

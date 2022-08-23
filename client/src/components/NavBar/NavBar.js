@@ -25,6 +25,8 @@ function NavBar({ user, setUser }) {
     const drawerWidth = "17vh";
 
     const [click, setClick] = useState({});
+    const [render, setRender] = useState(false)
+
 
     const navigate=useNavigate()
 
@@ -33,6 +35,7 @@ function NavBar({ user, setUser }) {
     };
 
     let userr = useSelector((state) => state.data.user);
+    let cleanSearch = useSelector((state) => state.data.cleanSearch);
     let dispatch = useDispatch();
 
     const logOut = () => {
@@ -107,6 +110,21 @@ function NavBar({ user, setUser }) {
         fontFamily:"monospace"
     };
 
+
+    const clickIcon = () =>{
+        setRender(true)
+        cleanSearch('')
+    }
+
+
+    useEffect(()=>{
+        if(render) {
+            dispatch(getLibros())
+        }
+        setRender(false)
+    },[render])
+
+
     return (
         <>
             <AppBar
@@ -125,12 +143,13 @@ function NavBar({ user, setUser }) {
                         /> */}
                         <Link to="/" style={textLink}>
                             <IconButton sx={{ display:{xs: "none", md: "flex"}, color: "#DADADA", mr: 2}}>
-                                <AdbIcon />
+                                <img src="/favicon.ico" alt="logo" width="40px" />
                             </IconButton>
                         </Link>
                         <Link to="/" style={textLink}>
                             <Typography
                                 variant="h6"
+                                onClick={() => clickIcon()}
                                 noWrap
                                 component="a"
                                 sx={{
@@ -232,7 +251,7 @@ function NavBar({ user, setUser }) {
 
                         <Link to="/" style={textLink}>
                             <IconButton sx={{ display: {md: "none"}, color: "#DADADA", mr: 1 }}>
-                                <AdbIcon />
+                            <img src="/favicon.ico" alt="logo" width="40px" />
                             </IconButton>
                             {/* <Typography
                                 variant="h5"

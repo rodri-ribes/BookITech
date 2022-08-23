@@ -23,7 +23,7 @@ export function CommentCard(props){
             return (success && banned)
         }
         if(type === 'ok'){
-            var success = await axios.put(REACT_APP_API +'/comments/edit/' + comment.bookId + '/' + comment.commentId, {content:{...comment, reviewed: true}})   
+            var success = await axios.put(REACT_APP_API +'/comments/edit/' + comment.bookId + '/' + comment.commentId, {type: {review: true},content:{...comment, reviewed: true}})   
             .catch(err => console.log(err))
             return (success)
 
