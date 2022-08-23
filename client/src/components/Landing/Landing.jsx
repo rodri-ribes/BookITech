@@ -5,6 +5,7 @@ import { getLibros } from '../../redux/features/data/dataSlice';
 import { Navigation, Pagination, Autoplay, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useDispatch, useSelector } from 'react-redux';
+import LoadingSlider from './Loading/LoadingSlider'
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -17,6 +18,7 @@ function Landing() {
 
     let dispatch = useDispatch();
     let books = useSelector((state) => state.data.books);
+    let loading = useSelector((state) => state.data.loading);
   
   
   useEffect(() => {   
@@ -78,10 +80,19 @@ function Landing() {
 
   </Swiper>
 
+  {
+    loading ? <LoadingSlider/> :
+    <Carruselito books={booksReduce2}  title={'Best Sellers!'} />
+  }
+   
 
-  <Carruselito books={booksReduce2}  title={'Best Sellers!'} />
+   {loading ? <LoadingSlider/> :
+    <Carruselito books={sortByRating}  title={'Top Rated Books!'}   />
+    }
 
-  <Carruselito books={sortByRating}  title={'Top Rated Books!'}   />
+
+
+ 
     </>
    
   )
