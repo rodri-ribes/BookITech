@@ -23,12 +23,24 @@ function Landing() {
     dispatch(getLibros());
   }, [dispatch]);
   
-  let booksReduce = books.slice(0,15)
   let booksReduce2 = books.slice(15,30)
 
   const title1 = 'Libros mas vendidos!'
 
+  let booksWithReviews = books.filter(b => b.reviews.length > 0)
+  console.log(booksWithReviews)
 
+  let sortByRating = booksWithReviews.sort((prev, next) => { 
+    let previo = prev.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0) 
+    let siguiente = next.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0)    
+    return siguiente - previo
+  })
+
+
+  sortByRating.push(books[30])
+  if(sortByRating.length > 20){
+    sortByRating.slice(0,20)
+  }
 
 
 
@@ -80,9 +92,9 @@ function Landing() {
   </Swiper>
 
 
-  <Carruselito books={booksReduce}  title={title1} />
+  <Carruselito books={booksReduce2}  title={'Best Sellers!'} />
 
-  <Carruselito books={booksReduce2}  title={'Libros con mejor rating!'}   />
+  <Carruselito books={sortByRating}  title={'Top Rated Books!'}   />
     </>
    
   )

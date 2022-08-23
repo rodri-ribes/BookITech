@@ -79,7 +79,7 @@ export default function Search() {
     
 
     function handleChange2(e) {
-        let named = e.target.value  
+        let named = (e.target.value).toLowerCase();
         // console.log(named)
         // console.log(name)
         if(name === ''){
