@@ -30,6 +30,7 @@ import styles from "./Profile.module.css";
 import {
     updateUserdata,
     UpdatePass,
+    getFav,
 } from "../../redux/features/data/dataSlice";
 import axios from "axios";
 import Spinner from "../auxiliar/Spinner/Spinner";
@@ -39,7 +40,9 @@ const { REACT_APP_API } = process.env;
 function Profile() {
     let dispatch = useDispatch();
     let Favo = useSelector((state) => state.data.Favo);
-    let Favorites=Favo?.map(l=>l.book)
+    let Boooks = useSelector((state) => state.data.books);
+    console.log(Boooks);
+    let Favorites = Favo?.map((l) => l.book);
     var favLength = Favo.length;
     var leftConstraints = favLength * -100;
     const [expanded, setExpanded] = useState(false);
@@ -78,8 +81,17 @@ function Profile() {
         }
     };
 
+    const idUser = () => {
+        if (window.localStorage.getItem("user")) {
+            let auxUser = JSON.parse(window.localStorage.getItem("user"));
+            let idUser = auxUser?.email;
+            dispatch(getFav(idUser));
+        }
+    };
+
     useEffect(() => {
         getdata();
+        idUser();
     }, [updateData]);
 
     const handleChange = (panel) => (event, isExpanded) => {
@@ -225,6 +237,8 @@ function Profile() {
         }
     };
     // validate()
+
+    console.log(User);
 
     const bodyUpdate = (
         <Grid sx={modalStyles}>
@@ -733,8 +747,9 @@ function Profile() {
                                                             <img
                                                                 src={s.image}
                                                                 alt={s.title.replace(
-                                                                s.title[0],
-                                                                s.title[0].toUpperCase())}
+                                                                    s.title[0],
+                                                                    s.title[0].toUpperCase()
+                                                                )}
                                                                 width="100px"
                                                                 height="auto"
                                                             />
@@ -933,7 +948,7 @@ function Profile() {
                                     aria-label="simple table"
                                 >
                                     <TableBody>
-                                        {User.reviews?.map((s) => {
+                                        {User.comments?.map((s) => {
                                             return (
                                                 <TableRow
                                                     key={s.isbn13}
@@ -949,17 +964,13 @@ function Profile() {
                                                         align="left"
                                                     >
                                                         <Link
-                                                            to={
-                                                                "/book/" +
-                                                                s.book
-                                                            }
+                                                            to={"/book/" + s.id}
                                                         >
                                                             <img
-                                                                src={s.bookImg}
-                                                                alt={s.bookTitle.replace(
-                                                                    s
-                                                                        .bookTitle[0],
-                                                                    s.bookTitle[0].toUpperCase()
+                                                                src={s.image}
+                                                                alt={s.title?.replace(
+                                                                    s.title[0],
+                                                                    s.title[0].toUpperCase()
                                                                 )}
                                                                 width="100px"
                                                                 height="auto"
@@ -975,9 +986,9 @@ function Profile() {
                                                                 color: "#DADADA",
                                                             }}
                                                         >
-                                                            {s.bookTitle.replace(
-                                                                s.bookTitle[0],
-                                                                s.bookTitle[0].toUpperCase()
+                                                            {s.title?.replace(
+                                                                s.title[0],
+                                                                s.title[0].toUpperCase()
                                                             )}
                                                         </Typography>
                                                     </TableCell>
@@ -990,7 +1001,7 @@ function Profile() {
                                                                 color: "#DADADA",
                                                             }}
                                                         >
-                                                            {`"${s.review}"`}
+                                                            {`"${s.content}"`}
                                                         </Typography>
                                                     </TableCell>
                                                     <TableCell>
@@ -1002,7 +1013,7 @@ function Profile() {
                                                                 color: "#DADADA",
                                                             }}
                                                         >
-                                                            {s.status}
+                                                            {s.date}
                                                         </Typography>
                                                     </TableCell>
                                                 </TableRow>

@@ -6,7 +6,7 @@ const router = Router();
 router.post('/signup', createUser);
 router.post('/signin', loginUser);
 
-router.get('/user/:admin', GetUsersAdmin)
+router.get('/user/admin/:admin', GetUsersAdmin)
 
 router.get('/user/:id', GetUser)
 router.put('/user/:id', PutUser)
