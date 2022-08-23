@@ -24,7 +24,6 @@ export const dataSlice = createSlice({
         MinToMax: [],
         dashboardState: ["CRUD"],
         id: [""],
-        nameSearch: "",
         loading: true,
         error: false,
         dataUser: [],
@@ -587,10 +586,10 @@ export const Comments = (id) => async (dispatch) => {
         console.log(error);
     }
 };
-export const postComments = (payload) => async (dispatch) => {
+export const postComments = (payload, _id) => async (dispatch) => {
     try {
         const response = await axios.post(
-            REACT_APP_API + `/comments/`,
+            REACT_APP_API + `/comments/?_id=${_id}`,
             payload
         );
         dispatch(comments(response.data));

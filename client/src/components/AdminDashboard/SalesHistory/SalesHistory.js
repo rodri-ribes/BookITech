@@ -13,7 +13,7 @@ export function SalesHistory() {
     async function main() {
         let admin = "admin"
         try {
-            let data = await axios.get(REACT_APP_API + `/user/${admin}`);
+            let data = await axios.get(REACT_APP_API + `/user/admin/${admin}`);
             setVentas(data.data)
         } catch (error) {
             console.log(error)

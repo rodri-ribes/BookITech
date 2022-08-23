@@ -79,7 +79,7 @@ export default function Search() {
     
 
     function handleChange2(e) {
-        let named = e.target.value  
+        let named = (e.target.value).toLowerCase();
         // console.log(named)
         // console.log(name)
         if(name === ''){
@@ -132,7 +132,7 @@ export default function Search() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (window.location.pathname === '/') {
+        if (window.location.pathname !== '/search') {
             navigate('/search')
             dispatch(getSearch(name))
         }
