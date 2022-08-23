@@ -160,10 +160,7 @@ function Profile() {
     //   let link=result[1]
     //   setAux(link)
     //   console.log(aux)
-     
-      
-     
-    
+ 
   };
 
   const cleaner = () => {
