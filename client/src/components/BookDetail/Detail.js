@@ -182,8 +182,8 @@ function Detail() {
         let usuario = JSON.parse(window.localStorage.getItem("user"))
         user = [usuario.id, usuario.img, usuario.name]
       }
-
-      await axios.post(REACT_APP_API + `/comments/${id}`, {
+        let _id = usuario.id
+      await axios.post(REACT_APP_API + `/comments/${id}?_id=${_id}`, {
         content, fecha, user
       })
 

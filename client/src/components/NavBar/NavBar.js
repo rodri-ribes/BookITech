@@ -54,7 +54,7 @@ function NavBar({ user, setUser }) {
         }
     };
 
-    const pagesLog = ["Favorites", "Profile"];
+    const pagesLog = ["Search", "Favorites", "Profile"];
     const pagesNoLog = ["SignIn", "SignUp"];
 
     const settings = ["Profile", "Favorites", "Logout"];

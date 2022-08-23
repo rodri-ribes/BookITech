@@ -134,7 +134,6 @@ export default function Search() {
         e.preventDefault();
 
         if (window.location.pathname === '/') {
-
             navigate('/search')
             dispatch(getSearch(name))
         }

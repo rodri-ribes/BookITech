@@ -8,8 +8,12 @@ const UserSchema = new Schema({
     email: { type: String },
     passwordHash: { type: String },
     comments: [{
-        type: Schema.Types.ObjectId, //Para checkear
-        ref: 'Comment'
+        title: String,
+        date: String,
+        content: String,
+        image: String,
+        id: String,
+        // user: user,
     }],
     realName: { type: String },
     lastname: { type: String },
