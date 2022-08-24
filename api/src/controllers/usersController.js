@@ -264,7 +264,7 @@ async function PutUser(req, res) {
         }
         return res.status(404).send('falta el body')
     } catch (err) {
-        res.status(404).send(err)
+        res.status(401).send(err)
     }
 }
 
