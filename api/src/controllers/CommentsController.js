@@ -39,22 +39,20 @@ async function updateComments(req, res) {
 
     let { content, fecha, type } = req.body;
 
-    let date = fecha || null;
+    let date = fecha || null
+    if(type) {
+        let book = await Book.findOne({ isbn13: idBook}).catch( err => console.log(err))
+        if(!book) return res.status(400).send("book not found")
+        book.comments.forEach(comment => {
+            if(comment._id == idComment) {
+                comment.flagged = type.flag  
+                comment.reviewed = true
+            }})
+        console.log(book)
+        const success = await book.save().catch( err => console.log(err))
+        if(!success) return res.status(400).send("failed")
+        return res.status(200).send(success)
 
-    if (type.review) {
-        console.log(content);
-        let book = await Book.findOne({ isbn13: idBook }).catch((err) =>
-            console.log(err)
-        );
-        if (!book) return res.status(400).send("book not found");
-        book.comments.forEach((comment) => {
-            if (comment.id == idComment) {
-                comment.flagged = content.flagged;
-                comment.reviewed = content.reviewed;
-            }
-        });
-        await book.save();
-        return res.status(200);
     }
 
     try {

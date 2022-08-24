@@ -2,9 +2,10 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import Carruselito from './Carousel/Carousel';
 import { getLibros } from '../../redux/features/data/dataSlice';
-import { Navigation, Pagination, Autoplay, A11y, History, HashNavigation   } from 'swiper';
+import { Navigation, Pagination, Autoplay, A11y } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useDispatch, useSelector } from 'react-redux';
+import LoadingSlider from './Loading/LoadingSlider'
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -17,18 +18,22 @@ function Landing() {
 
     let dispatch = useDispatch();
     let books = useSelector((state) => state.data.books);
+    let loading = useSelector((state) => state.data.loading);
   
   
   useEffect(() => {   
     dispatch(getLibros());
   }, [dispatch]);
   
-  let booksReduce = books.slice(0,15)
   let booksReduce2 = books.slice(15,30)
+  let booksWithReviews = books.filter(b => b.reviews.length > 0)
 
-  const title1 = 'Libros mas vendidos!'
 
-
+  let sortByRating = booksWithReviews.sort((prev, next) => { 
+    let previo = prev.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0) 
+    let siguiente = next.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0)    
+      return siguiente - previo
+  })
 
 
 
@@ -39,16 +44,14 @@ function Landing() {
 
 <Swiper
     id='main'
-    modules={[Navigation, Pagination, Autoplay , A11y, History, HashNavigation  ]}
-    HashNavigation 
-    // history 
+    modules={[Navigation, Pagination, Autoplay , A11y ]}
     loop={true}
     a11y 
     pagination={{ clickable: true }}
     // navigation = {true}
     navigation={true}
     autoplay={{
-        delay: 10000,
+        delay: 8000,
         pauseOnMouseEnter: true,
         disableOnInteraction: false,
       }}
@@ -79,10 +82,22 @@ function Landing() {
 
   </Swiper>
 
+  {
+    loading ? <LoadingSlider/> :
+    <Carruselito books={booksReduce2}  title={'Best Sellers!'} />
+  }
+   
 
-  <Carruselito books={booksReduce}  title={title1} />
+   {loading ? <LoadingSlider/> :
+    <Carruselito books={sortByRating}  title={'Top Rated Books!'}   />
+    }
 
-  <Carruselito books={booksReduce2}  title={'Libros con mejor rating!'}   />
+
+
+  <Carruselito books={booksReduce}  title={"Best Selling Books"} />
+
+  <Carruselito books={booksReduce2}  title={'Top Rated Books'}   />
+
     </>
    
   )
