@@ -11,9 +11,12 @@ class PaymentService {
             // },
             items: req.body.items,
             back_urls: {
-                failure: "https://bookitech-olive.vercel.app/failure",
-                pending: "https://bookitech-olive.vercel.app/pending",
-                success: "https://bookitech-olive.vercel.app/success"
+                failure: "http://localhost:3000/failure",
+                pending: "http://localhost:3000/pending",
+                success: "http://localhost:3000/success"
+                // failure: "https://bookitech-olive.vercel.app/failure",
+                // pending: "https://bookitech-olive.vercel.app/pending",
+                // success: "https://bookitech-olive.vercel.app/success"
             },
             auto_return: "approved"
         };

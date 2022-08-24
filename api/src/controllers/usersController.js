@@ -152,7 +152,7 @@ async function loginUser(req, res) {
                 token: ( await crypto).randomBytes(32).toString('hex')
             }).save();
           
-            const message = `localhost:3001/verify/${user.id}/${tokenMail.token}`;
+            const message = `localhost:3000/verify/${user.id}/${tokenMail.token}`;
             await sendEmail(user.email, "Verify Email", message);
         }
 
