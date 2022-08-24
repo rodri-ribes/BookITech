@@ -97,10 +97,10 @@ async function loginUser(req, res) {
             }).save();
           
             const message = `localhost:3001/verify/${user.id}/${tokenMail.token}`;
-            //await sendEmail(user.email, "Verify Email", message);
+            await sendEmail(user.email, "Verify Email", message);
         }
 
-        res.status(401).send({message: 'An Email was sent to your account please verify' });
+        res.status(401).send('An Email was sent to your account please verify' );
 
     }
 
@@ -162,7 +162,7 @@ async function createUser(req, res) {
                 token: ( await crypto).randomBytes(32).toString('hex')
             }).save();
           
-            const message = `localhost:3001/verify/${newUser.id}/${tokenMail.token}`;
+            const message = `localhost:3000/verify/${newUser.id}/${tokenMail.token}`;
             await sendEmail(newUser.email, "Verify Email", message);
             
             res.send("An Email sent to your account please verify");
@@ -179,28 +179,28 @@ async function createUser(req, res) {
             });
             
 
-            const prueba = await transporter.sendMail({
-                from: '"BookITech 📖" <ledobookitech@zohomail.com> ',
-                to: email,
-                subject: "HELLOOO ",
-                html: `
-                <div  style="justify-content:center;">
-                <div  style="background-color:#DCDCDC; border-radius:20px; font-family:Rockweel,Lucidatypewriter; font-size=40px;">
-                <h1 style="text-align:center; padding:10px; text-decoration:underline; background-color:#0a1929; color:#DADADA;">Welcome to BookITech 📖</h1>
-                <div  style="text-align:center; padding:0px 100px">
-                <img src=${img[0]} alt='img not foun' width="200px" height="200px" />
-                <img src=${img[1]} alt='img not foun' width="200px" height="200px"/>
-                        <img src=${img[2]} alt='img not foun' width="200px" height="200px"/>                      
-                        <img src=${img[3]} alt='img not foun' width="200px" height="200px"/>
-                </div>
-                <div style="text-align:center; padding:10px; background-color:#0a1929; color:#DADADA;">
-                <p style="font-family:Rockweel,Lucidatypewriter; font-size:15px;" >↓BUY HERE!↓</p>
-                <a href="https://bookitech-olive.vercel.app/" style="font-family:Rockweel,Lucidatypewriter; font-size:17px; >📚BookITech 📗</a>
-                </div>
-                </div>
-                </div>
-                `
-            })
+            // const prueba = await transporter.sendMail({
+            //     from: '"BookITech 📖" <ledobookitech@zohomail.com> ',
+            //     to: email,
+            //     subject: "HELLOOO ",
+            //     html: `
+            //     <div  style="justify-content:center;">
+            //     <div  style="background-color:#DCDCDC; border-radius:20px; font-family:Rockweel,Lucidatypewriter; font-size=40px;">
+            //     <h1 style="text-align:center; padding:10px; text-decoration:underline; background-color:#0a1929; color:#DADADA;">Welcome to BookITech 📖</h1>
+            //     <div  style="text-align:center; padding:0px 100px">
+            //     <img src=${img[0]} alt='img not foun' width="200px" height="200px" />
+            //     <img src=${img[1]} alt='img not foun' width="200px" height="200px"/>
+            //             <img src=${img[2]} alt='img not foun' width="200px" height="200px"/>                      
+            //             <img src=${img[3]} alt='img not foun' width="200px" height="200px"/>
+            //     </div>
+            //     <div style="text-align:center; padding:10px; background-color:#0a1929; color:#DADADA;">
+            //     <p style="font-family:Rockweel,Lucidatypewriter; font-size:15px;" >↓BUY HERE!↓</p>
+            //     <a href="https://bookitech-olive.vercel.app/" style="font-family:Rockweel,Lucidatypewriter; font-size:17px; >📚BookITech 📗</a>
+            //     </div>
+            //     </div>
+            //     </div>
+            //     `
+            // })
             
             // res.status(200).json({
             //     id: newUser.id,
@@ -240,7 +240,7 @@ async function getToken (req, res) {
       user.verified = true;
       await user.save();
       
-      await Token.findByIdAndRemove(token1._id);
+    //   await Token.findByIdAndRemove(token1._id);
   
       res.send("email verified sucessfully");
     } catch (error) {

@@ -111,41 +111,36 @@ export default function SignUp() {
                 password2: "",
             }}
             onSubmit={async (valores, { resetForm }) => {
-
-                setConfirm({ message: <SpinnerSignUp />, visible: null, error: null })
+                setConfirm({ message: <SpinnerSignUp />, visible: true, error: null })
+                
                 let { name, email, password } = valores;
 
                 let fullName;
                 email = email.toLowerCase();
                 fullName = name.charAt(0).toUpperCase() + name.slice(1)
                 console.log(fullName, email, password)
+                
                 try {
                     let resp = await axios.post(REACT_APP_API + `/signup`, {
                         fullName, email, password
                     })
-                    window.localStorage.setItem("user", JSON.stringify(resp.data))
-                    dispatch(getUser(resp.data))
+                   // window.localStorage.setItem("user", JSON.stringify(resp.data))
+                    //dispatch(getUser(resp.data))
                     setMsg(resp.message);
-                    setConfirm({ message: "Successfully registered", visible: true, error: false })
+                    setConfirm({ message: "An Email was sent to your account, please verify to sign in", visible: true, error: false })
 
                     setTimeout(() => {
                         setConfirm({ message: "", visible: null, error: null })
                         dispatch(getLibros())
                         navigate("/")
-                    }, 2000);
+                    }, 10000);
 
                     resetForm();
                     valores.password2 = "";
 
                 } catch (error) {
 
-                    if (
-                        error.response &&
-                        error.response.status >= 400 &&
-                        error.response.status <= 500
-                    ) {
-                        setConfirm({message: error.response.data, visible: true, error: true});
-                    }
+                   
 
                     setConfirm({ message: error.response.data, visible: true, error: true })
                     setTimeout(() => {

@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import success from "../../images/success.png";
 import styles from "./styles.module.css";
+import { Typography } from "@mui/material";
 
 
 const EmailVerify = () => {
@@ -12,7 +13,7 @@ const EmailVerify = () => {
 	useEffect(() => {
 		const verifyEmailUrl = async () => {
 			try {
-				const url = `http://localhost:3001/users/${param.id}/verify/${param.token}`;
+				const url = `http://localhost:3001/verify/${param.id}/${param.token}`;
 				const { data } = await axios.get(url);
 				console.log(data);
 				setValidUrl(true);
@@ -25,19 +26,19 @@ const EmailVerify = () => {
 	}, [param]);
 
 	return (
-		<Form>
+		<div className={styles.ContainerForm}>
 			{validUrl ? (
 				<div className={styles.container}>
 					<img src={success} alt="success_img" className={styles.success_img} />
-					<h1>Email verified successfully</h1>
-					<Link to="/login">
-						<button className={styles.green_btn}>Login</button>
+					<Typography sx={{fontFamily:'monospace', fontSize:'1.5rem', color: 'green', fontWeight:'800', mt:2, mb: 2}}>Email verified successfully</Typography>
+					<Link to="/signin">
+					<button type='submit' className={styles.Container__Button}>SignIn</button>
 					</Link>
 				</div>
 			) : (
 				<h1>404 Not Found</h1>
 			)}
-		</Form>
+		</div>
 	);
 };
 

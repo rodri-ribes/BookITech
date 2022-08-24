@@ -116,7 +116,7 @@ export default function SignIn() {
                     setConfirm({ message: error.response.data, visible: true, error: true })
                     setTimeout(() => {
                         setConfirm({ message: "", visible: null, error: null })
-                    }, 2000);
+                    }, 4000);
 
                 }
             }}

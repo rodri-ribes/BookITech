@@ -13,7 +13,8 @@ const saveSignIn = async (req, res) => {
     await User.create({
       email,
       fullName: displayName,
-      img: photoURL
+      verified: true
+      
     })
     const book = await Book.find()
     let img = book.map(e => {
