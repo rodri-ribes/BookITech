@@ -11,6 +11,46 @@ import Confirmation from "./Confirmation";
 
 const {REACT_APP_API} = process.env
 const color = '#173A5E'
+
+const styles = theme => ({
+  multilineColor:{
+      color:'#EEEEEE'
+  }
+});
+
+const cssTextField = {
+  width: "100%",
+  mb: 1.5,
+  "& .MuiInputBase-root": {
+      color: "#DADADA",
+  },
+  "& .MuiInput-inputMultiline":{
+    color: '#EEEEEE',
+  },
+  "& .MuiFormLabel-root": {
+      color: "#818181",
+  },
+  "& .MuiFormLabel-root.Mui-focused": {
+      color: "#DADADA",
+  },
+  "& .MuiOutlinedInput-root": {
+      "& > fieldset": { borderColor: "#818181" },
+  },
+  "& .MuiOutlinedInput-root.Mui-focused": {
+      "& > fieldset": {
+          borderColor: "primary.main",
+      },
+  },
+  "& .MuiOutlinedInput-root:hover": {
+      "& > fieldset": {
+          borderColor: "#DADADA",
+      },
+  },
+  "& .MuiOutlinedInput-root.Mui-focused fieldset": {
+      borderColor: "primary.main",
+  },
+};
+
 export function FormInput(props) {
   
   const {prompt, id} = props
@@ -120,19 +160,20 @@ export function FormInput(props) {
               <h5>Title</h5>
               <TextField
               disabled = {confirmation}
-              sx={{backgroundColor: color, minWidth: '85%', color: 'white', borderRadius: '10px', color:'#EEEEEE'}}
+              sx={cssTextField}
                 id="title-input"
                 name="title"
                 placeholder={formValues.title}
                 type="text"
                 onChange={handleInputChange}
+               
               />
             </Grid>
             <Grid xs={12} item>
             <h5>Subtitle</h5>
               <TextField
               disabled = {confirmation}
-              sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
+              sx={cssTextField}
                 id="subtitle-input"
                 name="subtitle"
                 placeholder={formValues.subtitle}
@@ -144,7 +185,7 @@ export function FormInput(props) {
             <h5>Authors</h5>
               <TextField
               disabled = {confirmation}
-              sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
+              sx={cssTextField}
                 id="authors-input"
                 name="authors"
                 placeholder={formValues.authors}
@@ -160,7 +201,7 @@ export function FormInput(props) {
             <h5>ISBN13</h5>
               <TextField
               disabled = {confirmation}
-              sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
+              sx={cssTextField}
               id="isbn13-input"
               name="isbn13"
                 placeholder={formValues.isbn13}
@@ -172,7 +213,7 @@ export function FormInput(props) {
             <h5>Pages</h5>
               <TextField
               disabled = {confirmation}
-              sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
+              sx={cssTextField}
                 id="pages-input"
                 name="pages"
                 placeholder={formValues.pages}
@@ -184,7 +225,7 @@ export function FormInput(props) {
              <h5>Year</h5>
               <TextField
               disabled = {confirmation}
-              sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
+              sx={cssTextField}
               id="year-input"
               name="year"
               placeholder={formValues.year}
@@ -197,10 +238,10 @@ export function FormInput(props) {
             <h5>Summary</h5>
               <TextField
               disabled = {confirmation}
-              sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
+              sx={cssTextField}
                 id="desc-input"
                 name="desc"
-                multiline
+                multiline={true}
                 minRows={5}
                 placeholder={formValues.desc}
                 type="text"
@@ -211,7 +252,7 @@ export function FormInput(props) {
             <h5>Language</h5>
               <TextField
               disabled = {confirmation}
-              sx={{backgroundColor: color, minWidth:'85%', borderRadius: '10px'}}
+              sx={cssTextField}
                 id="language-input"
                 name="language"
                 placeholder={formValues.language}
@@ -223,7 +264,7 @@ export function FormInput(props) {
             <h5>Price</h5>
               <TextField
               disabled = {confirmation}
-              sx={{backgroundColor: color, color:'white', minWidth:'40%', borderRadius: '10px'}}
+              sx={cssTextField}
                 id="price-input"
                 name="price"
                 placeholder={formValues.price[0]=='$'? formValues.price : '$' + formValues.price}
@@ -235,7 +276,7 @@ export function FormInput(props) {
             <h5>Publisher</h5>
               <TextField
               disabled = {confirmation}
-              sx={{backgroundColor: color, minWidth:'90%', borderRadius: '10px'}}
+              sx={cssTextField}
                 id="publisher-input"
                 name="publisher"
                 placeholder={formValues.publisher}
@@ -247,7 +288,7 @@ export function FormInput(props) {
             <h5>Image URL</h5>
               <TextField
               disabled = {confirmation}
-              sx={{backgroundColor: color, minWidth: '85%', borderRadius: '10px'}}
+              sx={cssTextField}
                 id="image-input"
                 name="image"
                 placeholder={formValues.image}

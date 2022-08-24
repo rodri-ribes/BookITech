@@ -26,6 +26,7 @@ const books = useSelector((state) => state.data.books)
 const id = useSelector(state => state.data.id)
 const [isDelisted, setIsDelisted] = useState(false)
 const [idState, setIdState] = useState(id)
+let nameSearch = useSelector((state) => state.data.nameSearch);
 
 useEffect(()=>{
   dispatch(setId(''))  
@@ -42,20 +43,37 @@ useEffect(() =>{
   dispatch(getLibros())
 }, [isDelisted])
 
+const [filtrado, setfiltrado] = useState([])
+
+function searchTerm(term) {
+    return function (x) {
+        return x.title.toLowerCase().includes(term) || x.authors !== undefined && x.authors.toLowerCase().includes(term) || !term
+    }
+}
+
+useEffect(() => {
+    setfiltrado(books)
+}, [books])
+
+
+
+let filteredBooks = filtrado.filter(searchTerm(nameSearch))
+
 function handleOnClick(e){
   e.preventDefault()
+  dispatch(setId(''))
   setPrompt(!prompt)
 }
 
     return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth='md' sx={{position: 'relative', display: 'flex'}} >
+      <Container maxWidth='md' sx={{position: 'relative', display: 'flex', marginLeft: '300px'}} >
         <Box sx={{ bgcolor: '#0a1929', height: 'auto', width: '70vw'}}>
           {!prompt ? <FormInput id={idState} prompt={setPrompt} /> :
           <>
             <Input delisted={isDelisted} setDelisted={setIsDelisted} />
-            <CardsContainer  setDelisted={setIsDelisted} books={books.slice(0,9)}/>
+            <CardsContainer  setDelisted={setIsDelisted} books={filteredBooks.slice(0,9)}/>
             </>}
         <Button  variant="outlined" onClick={e =>handleOnClick(e)}>{!prompt ? <Typography variant='h6'>Go back</Typography> : <AddIcon fontSize='large'/>}</Button>
     

@@ -576,7 +576,7 @@ module.exports = {
     updateUser,
     banUser,
     unbanUser,
-    userIsBanned
+    userIsBanned,
     deleteUser
 
 }
