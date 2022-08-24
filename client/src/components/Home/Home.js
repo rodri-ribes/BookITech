@@ -69,7 +69,7 @@ function Home() {
         }
     }, [setSizeGrid]);
 
-    //----------LOGICA DE FILTRADO POR NOMBRE HECHO POR RODRI -----------
+    //----------LOGICA DE FILTRADO POR SEARCH-----------
 
 
 
@@ -77,7 +77,7 @@ function Home() {
 
     function searchTerm(term) {
         return function (x) {
-            return x.title.toLowerCase().includes(term) || !term
+            return x.title.toLowerCase().includes(term) || x.authors !== undefined && x.authors.toLowerCase().includes(term) || !term
         }
     }
 
@@ -85,13 +85,18 @@ function Home() {
         setfiltrado(books)
     }, [books])
 
+
+
+    let filteredBooks = filtrado.filter(searchTerm(nameSearch))
+
     //logica de paginado
 
     const [pagina, setPagina] = useState(1);
 
     const porPagina = 10;
 
-    const ceil = filtrado.length / porPagina;
+    const ceil = filteredBooks.length / porPagina;
+
     const maximo = Math.ceil(ceil)
 
     return (
@@ -105,8 +110,8 @@ function Home() {
                 <div className={style.Container__PanelCards}>
                     {error ? <Card404 /> :
                         loading ? <Loading /> :
-                            (filtrado.filter(searchTerm(nameSearch)).length === 0) ? <Noresults /> :
-                                filtrado && filtrado.filter(searchTerm(nameSearch))
+                            (filteredBooks.length === 0) ? <Noresults /> :
+                                filteredBooks && filteredBooks
                                     .slice(
                                         (pagina - 1) * porPagina,
                                         (pagina - 1) * porPagina + porPagina

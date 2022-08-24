@@ -11,13 +11,12 @@ class PaymentService {
             // },
             items: req.body.items,
             back_urls: {
-                failure: "http://localhost:3000/failure",
-                pending: "http://localhost:3000/pending",
-                success: "http://localhost:3000/success"
+                failure: "https://bookitech-olive.vercel.app/failure",
+                pending: "https://bookitech-olive.vercel.app/pending",
+                success: "https://bookitech-olive.vercel.app/success"
             },
             auto_return: "approved"
         };
-        console.log("lo que se va por body", body)
         const payment = await axios.post(url, body, {
             headers: {
                 "Content-Type": "application/json",

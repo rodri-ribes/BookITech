@@ -37,23 +37,23 @@ const BookSchema = new Schema({
     year: {
         type: Number
     },
-    ratings: [
-        {
-            user: {
-                type: Schema.Types.ObjectId,
-                ref: 'User'
-            },
-            rating: {
-                type: Number
-            },
-            data: {
-                type: String
-            },
-            content: {
-                type: String
-            }
-        }
-    ],
+    // ratings: [
+    //     {
+    //         user: {
+    //             type: Schema.Types.ObjectId,
+    //             ref: 'User'
+    //         },
+    //         rating: {
+    //             type: Number
+    //         },
+    //         data: {
+    //             type: String
+    //         },
+    //         content: {
+    //             type: String
+    //         }
+    //     }
+    // ],
     desc: {
         type: String
     },
@@ -87,8 +87,6 @@ const BookSchema = new Schema({
             }
         }
     ],
-
-
     reviews: [
         {
             book: String,
@@ -103,7 +101,10 @@ const BookSchema = new Schema({
             review: String,
         }
     ],
-
+    rating: {
+        type: Number,
+        default: 0,
+    }
 
 })
 
