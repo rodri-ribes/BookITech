@@ -26,8 +26,6 @@ function Landing() {
   let booksReduce = books.slice(0,15)
   let booksReduce2 = books.slice(15,30)
 
-  const title1 = 'Libros mas vendidos!'
-
 
 
 
@@ -80,9 +78,9 @@ function Landing() {
   </Swiper>
 
 
-  <Carruselito books={booksReduce}  title={title1} />
+  <Carruselito books={booksReduce}  title={"Best Selling Books"} />
 
-  <Carruselito books={booksReduce2}  title={'Libros con mejor rating!'}   />
+  <Carruselito books={booksReduce2}  title={'Top Rated Books'}   />
     </>
    
   )

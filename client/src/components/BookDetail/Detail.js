@@ -57,8 +57,10 @@ function Detail() {
     let user = JSON.parse(window.localStorage.getItem("user"));
 
     let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
-    setDetails({...data.data,
-      comments: data.data.comments.filter(e=> !e.flagged)})
+    setDetails({
+      ...data.data,
+      comments: data.data.comments.filter(e => !e.flagged)
+    })
 
     if (user !== null) {
       let dataUsuario = await axios.get(REACT_APP_API + `/user/${user.id}`);
@@ -182,7 +184,7 @@ function Detail() {
         let usuario = JSON.parse(window.localStorage.getItem("user"))
         user = [usuario.id, usuario.img, usuario.name]
       }
-        let _id = usuario.id
+      let _id = usuario.id
       await axios.post(REACT_APP_API + `/comments/${id}?_id=${_id}`, {
         content, fecha, user
       })
@@ -307,9 +309,9 @@ function Detail() {
     })
   }, [details, dataUser])
 
-  //---------LOGICA PARA CALCULAR LA PUNTUACION DEL POST ----------
 
-  const [total, setTotal] = useState(Math.random() * 5)
+
+
 
   //---------LOGICA PARA EL PAGINADO DE COMENTARIOS ----------
 
@@ -337,7 +339,35 @@ function Detail() {
     maximoReview = Math.ceil(ceilReview)
   }
 
+  //---------LOGICA PARA CALCULAR LA PUNTUACION DEL POST ----------
 
+  const [total, setTotal] = useState(0)
+
+  let suma = 0;
+
+  async function postRating(total) {
+    await axios.post(REACT_APP_API + `/books/rating`, {
+      rating: total, id
+    })
+  }
+
+  useEffect(() => {
+    details && details.reviews.forEach(e => {
+      suma += e.rating
+    })
+
+    if (suma > 0) {
+      setTotal(suma / details.reviews.length)
+    }
+
+    if (total !== 0) {
+      postRating(total)
+    }
+
+  }, [details, total])
+
+  // window.location.href
+  let url = window.location.origin
   return (
     <div className={style.Container}>
       {details ?
@@ -351,14 +381,14 @@ function Detail() {
               <meta property="og:type" content="article" />
               <meta property="og:title" content={details.title} />
               <meta property="og:description" content={details.desc} />
-              <meta property="og:url" content={`http://localhost:3000/book/${id}`} />
+              <meta property="og:url" content={`${url}/book/${id}`} />
               <meta property="og:site_name" content="BooksTech" />
               <meta property="og:image" content={details.image} />
               <meta name="twitter:title" content={details.title} />
               <meta name="twitter:description" content={details.desc} />
               <meta name="twitter:image" content={details.image} />
               <meta name="twitter:card" content={details.image} />
-              <meta name="twitter:url" content={`http://localhost:3000/book/${id}`} />
+              <meta name="twitter:url" content={`${url}/book/${id}`} />
             </head>
             <div className={style.Container__Content__Info}>
               <div className={style.Container__Content__Info__Img}>
@@ -384,7 +414,7 @@ function Detail() {
                   <p>{total.toFixed(1)}</p>
                 </div>
                 <div className={style.Container__Content__Info__details_description}>
-                  <p>{details.desc.replace(/&#039;/g,"´")}</p>
+                  <p>{details.desc.replace(/&#039;/g, "´")}</p>
                 </div>
                 <div className={style.Container__Content__Info__details_ficha}>
                   <p>PaperBack: {details.pages} Pages</p>

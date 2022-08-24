@@ -69,7 +69,7 @@ function Home() {
         }
     }, [setSizeGrid]);
 
-    //----------LOGICA DE FILTRADO POR NOMBRE HECHO POR RODRI -----------
+    //----------LOGICA DE FILTRADO POR SEARCH-----------
 
 
 
@@ -77,7 +77,7 @@ function Home() {
 
     function searchTerm(term) {
         return function (x) {
-            return x.title.toLowerCase().includes(term) || !term
+            return x.title.toLowerCase().includes(term) || x.authors !== undefined && x.authors.toLowerCase().includes(term) || !term
         }
     }
 
@@ -85,13 +85,16 @@ function Home() {
         setfiltrado(books)
     }, [books])
 
+
     //logica de paginado
 
     const [pagina, setPagina] = useState(1);
 
     const porPagina = 10;
 
+
     const ceil = filtrado.length / porPagina;
+
     const maximo = Math.ceil(ceil)
 
     return (
