@@ -19,23 +19,49 @@ async function GetUser(req, res) {
 async function getAllUsers(req, res) { 
 
     const users = await User.find({}).catch(err => console.log(err))
-    if(!users) res.status(400).send("no users found").json({ok: false})
-    return res.status(200).send(users).json({ok: true})
+    if(!users) return res.status(400).send("no users found")
+    return res.status(200).send(users)
 }
 
 async function banUser(req, res){ 
 
-    const {id} = req.body
-    var user = await User.findById(id).catch(err => console.log(err))
-    user = {
-        ...user,
-        banned: {
-            ...banned,
-            flaggedComments: flaggedComments +1
-        }
-    }
-    const success = await User.findByIdAndUpdate(id, user).catch(err => console.log(err))
+    const {id} = req.params
+    const user = await User.findById(id).catch(err => console.log(err))
+    if(user.banned.isBanned) return res.status(401).send("user already banned")    
+    if(user.banned.flaggedComments<2) {
+        user.banned.flaggedComments = user.banned.flaggedComments +1
+    }else{ 
+    user.banned.flaggedComments = 0
+    user.banned.isBanned= true
+    user.banned.date = new Date().toDateString()
+    user.banned.numberOfBans = user.banned.numberOfBans +1
+    } 
+    user.comments = user.comments?.length ? [...user.comments] : []
+    console.log(user)
+
+    const success = await user.save().catch(err => console.log(err))
+    if(!success) return res.status(400).send("banning update failed")
+    return res.status(200).send(success)
 }
+
+async function unbanUser(req, res){
+    
+    const {id} = req.params
+    const user = await User.findById(id).catch(err => alert(err))
+    if(!user.banned.isBanned) return res.status(400).send('user was not banned')
+    user.banned.flaggedComments = 0
+    user.banned.isBanned= false
+    user.banned.date = ''
+    user.banned.numberOfBans = user.banned.numberOfBans - 1
+    user.comments = user.comments?.length ? [...user.comments] : []
+    console.log(user)
+
+    const success = await user.save().catch(err => console.log(err))
+    if(!success) return res.status(400).send("banning update failed")
+    return res.status(200).send(success)
+}
+
+
 
 async function GetUsersAdmin(req, res) {
     const { admin } = req.params;
@@ -49,23 +75,23 @@ async function GetUsersAdmin(req, res) {
 }
 
 
-async function PutUser(req, res) {
-    try {
-        const { fullName, img, phone } = req.body
-        const { id } = req.params
+// async function PutUser(req, res) {
+//     try {
+//         const { fullName, img, phone } = req.body
+//         const { id } = req.params
 
-        if (fullName && img && phone) {
+//         if (fullName && img && phone) {
 
-            let upDate = { fullName, img, phone }
-            await User.findByIdAndUpdate(id, upDate)
-            return res.status(200).send('Actualizado')
-        }
-        return res.status(404).send('falta el body')
+//             let upDate = { fullName, img, phone }
+//             await User.findByIdAndUpdate(id, upDate)
+//             return res.status(200).send('Actualizado')
+//         }
+//         return res.status(404).send('falta el body')
 
-    } catch (err) {
-        res.status(404).send('Fallo en el PUT')
-    }
-}
+//     } catch (err) {
+//         res.status(404).send('Fallo en el PUT')
+//     }
+// }
 
 async function updateUser(req, res){
 
@@ -127,15 +153,9 @@ async function createUser(req, res) {
 
     if (fullName && email && password) {
 
-
-
-
         let existe = await User.findOne({
             email
         })
-
-
-
 
         if (existe) {
             return res.status(401).send("The user is already registered");
@@ -270,7 +290,7 @@ async function PutUser(req, res) {
         }
         return res.status(404).send('falta el body')
     } catch (err) {
-        res.status(404).send('Fallo en el PUT')
+        res.status(401).send(err)
     }
 }
 
@@ -430,5 +450,6 @@ module.exports = {
     GetUsersAdmin,
     getAllUsers,
     updateUser,
-    banUser
+    banUser,
+    unbanUser
 }

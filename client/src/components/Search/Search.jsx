@@ -10,6 +10,7 @@ import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
+import { Select } from "@mui/material";
 
 const SearchUI = styled("div")(({ theme }) => ({
     position: "relative",
@@ -132,6 +133,7 @@ export default function Search() {
 
     function handleSubmit(e) {
         e.preventDefault();
+
         if (window.location.pathname !== '/search') {
             navigate('/search')
             dispatch(getSearch(name))
@@ -171,6 +173,8 @@ export default function Search() {
                             display: { md: "flex" },
                         }}
                     />
+
+
                     <div>
                         {/* <div>
                     <form onSubmit={(e) => handleSubmit(e)}>
@@ -206,6 +210,7 @@ export default function Search() {
                                     })}
                         </datalist> */}
                     </div>
+                    
                 </SearchUI>
             </form>
 
