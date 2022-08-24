@@ -135,7 +135,7 @@ function FiltersSidebar(props, { setPagina }) {
 
     function handleOrdenZA(e) {
         e.preventDefault();
-        // handleDrawerToggle()
+        handleDrawerToggle()
         console.log(e.target.value);
         dispatch(ORdenAZ("Z-A"));
         // setPagina(1);
