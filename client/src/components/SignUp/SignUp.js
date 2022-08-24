@@ -12,7 +12,6 @@ import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider, onAuthStateC
 import SpinnerSignUp from '../auxiliar/SpinnerSignUp/SipinnerSignUp'
 import { auth } from '../../firebase/index';
 
-import SpinnerSignUp from '../auxiliar/SpinnerSignUp/SpinnerSignUp'
 const {REACT_APP_API} = process.env
 
 
