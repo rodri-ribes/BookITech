@@ -18,7 +18,7 @@ const UserSchema = new Schema({
     realName: { type: String },
     lastname: { type: String },
     ban: { type: Boolean, default: false },
-    img: { type: String, default: random[0] },
+    img: { type: String },
     phone: { type: String },
     address: { type: String },
     // rrss:[{type: String}],

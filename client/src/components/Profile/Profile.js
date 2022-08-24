@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import CardBook from "../Home/CardBook/CardBook";
 import CssBaseline from "@mui/material/CssBaseline";
+import { uploadFile } from "../../firebase/config";
 import Container from "@mui/material/Container";
 import {
     Avatar,
@@ -10,6 +11,7 @@ import {
     TableCell,
     TableContainer,
     TableRow,
+    Input,
     Typography,
     Modal,
     Button,
@@ -21,6 +23,7 @@ import {
 import styled from "@emotion/styled";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { motion } from "framer-motion";
@@ -41,7 +44,6 @@ function Profile() {
     let dispatch = useDispatch();
     let Favo = useSelector((state) => state.data.Favo);
     let Boooks = useSelector((state) => state.data.books);
-    console.log(Boooks);
     let Favorites = Favo?.map((l) => l.book);
     var favLength = Favo.length;
     var leftConstraints = favLength * -100;
@@ -58,7 +60,7 @@ function Profile() {
         current: "",
         password: "",
     });
-    const [fieldSelected, setFieldSelected] = useState({
+    let [fieldSelected, setFieldSelected] = useState({
         fullName: "",
         email: "",
         img: "",
@@ -67,9 +69,10 @@ function Profile() {
         phone: "",
         address: "",
     });
+    const [image,setImage]= useState(null)
 
-    let userId = JSON.parse(window.localStorage.getItem("user"));
-    console.log(userId);
+    // let userId = JSON.parse(window.localStorage.getItem("user"));
+    // console.log(userId);
 
     const getdata = async () => {
         let userId = JSON.parse(window.localStorage.getItem("user"));
@@ -129,6 +132,14 @@ function Profile() {
             [name]: value,
         }));
     };
+    // const handleChange3 = (e) => {
+    //   const { name, file } = e.target;
+    //   console.log(file)
+    //   setFieldSelected((prevState) => ({
+    //     ...prevState,
+    //     [name]: file,
+    //   }));
+    // };
     const handleChangePass = (e) => {
         const { name, value } = e.target;
         setPass((prevState) => ({
@@ -141,6 +152,21 @@ function Profile() {
         setFieldSelected("");
         setPass("");
     };
+    const handleCapture = async (e) => {
+      e.preventDefault()
+        // carga en firebase
+      let result = await uploadFile(image);
+      console.log(result[1])
+      handleCapture2(result[1])
+       
+    };
+    const handleCapture2=(e)=>{
+      console.log(e)
+      setFieldSelected((prevState) =>({
+        ...prevState,
+          img : e,  
+      })) 
+    }
 
     const pushNewData = () => {
         setUpdateData((prevState) => ({
@@ -238,7 +264,7 @@ function Profile() {
     };
     // validate()
 
-    console.log(User);
+    
 
     const bodyUpdate = (
         <Grid sx={modalStyles}>
@@ -258,13 +284,18 @@ function Profile() {
                     onChange={(e) => handleChange2(e)}
                     value={fieldSelected && fieldSelected.email}
                 />
-                <TextField
-                    sx={cssTextField}
-                    label="Avatar"
-                    name="img"
-                    onChange={(e) => handleChange2(e)}
-                    value={fieldSelected && fieldSelected.img}
-                />
+               <TextField
+                  type="file"
+                  sx={cssTextField}
+                  label="Avatar"
+                  name="img"
+                  onChange={(e) => {setImage(e.target.files[0])}}
+                  //value={fieldSelected && fieldSelected.img}
+                  defaultValue={fieldSelected && fieldSelected.img}
+                    />
+                <Button onClick={(e)=>handleCapture(e)}>
+                    push first for image
+                </Button>
                 <TextField
                     sx={cssTextField}
                     label="Name"
@@ -305,7 +336,7 @@ function Profile() {
                 <Button
                     disabled={boole === false}
                     color="primary"
-                    onClick={() => pushNewData()}
+                    onClick={() => {pushNewData()}}
                 >
                     update
                 </Button>
@@ -369,6 +400,7 @@ function Profile() {
                                     sx={{ width: 250, height: 250 }}
                                 />
                             </ButtonBase>
+                            {/* pushNewImg(e); */}
                         </Grid>
                         <Grid item xs={8} sm container>
                             <Grid
@@ -644,36 +676,13 @@ function Profile() {
                                     >
                                         {User.comments?.length} comments
                                     </Typography>
-                                    {/* <Typography
-                                        sx={{
-                                            color: "#DADADA",
-                                            fontSize: "2rem",
-                                            fontFamily: "monospace",
-                                        }}
-                                        gutterBottom
-                                        variant="subtitle1"
-                                        component="div"
-                                    >
-                                        {User.fav?.length} favorites
-                                    </Typography> */}
-                                    {/* <Typography
-                                            gutterBottom
-                                            variant="subtitle1"
-                                            component="div"
-                                            fontFamily:"monospace"
-                                        >
-                                            {User.email.length} readed books
-                                        </Typography>
-                                        <Typography variant="body2" gutterBottom fontFamily:"monospace">
-                                            Joined in {User.email.length}
-                                        </Typography> */}
+                                   
                                 </Grid>
                             </Grid>
                         </Grid>
 
                         <Modal
                             open={modalUpdate}
-                            // onClose={openCloseModal()}
                         >
                             {bodyUpdate}
                         </Modal>
