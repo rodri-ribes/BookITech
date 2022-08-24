@@ -442,6 +442,9 @@ export const dataSlice = createSlice({
         },
         addFunctionClean: (state, actions) => {
             state.cleanSearch = actions.payload
+        }, 
+        CleanSearchTitle: (state, actions) => {
+            state.nameSearch = '';
         }
     },
 });
@@ -483,6 +486,7 @@ export const {
     clearFil,
     vaciarCarritoDespDeLogin,
     addFunctionClean,
+    CleanSearchTitle,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -731,4 +735,8 @@ export const ResetFil = () => (dispatch) => {
 
 export const addFunctionCleans = (fnc) => (dispatch) => {
     dispatch(addFunctionClean(fnc))
+}
+
+export const cleanSearchTitle = () => (dispatch) =>{
+    dispatch(CleanSearchTitle())
 }
