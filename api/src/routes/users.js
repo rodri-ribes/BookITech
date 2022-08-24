@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const { createUser, loginUser, GetUser, PutUser, PostBook, banUser, GetUsersAdmin, createReview, editReview, ChangePass, userIsBanned, getToken ,getAllUsers, unbanUser } = require("../controllers/usersController");
+const { createUser, loginUser, GetUser, PutUser, PostBook, banUser, GetUsersAdmin, createReview, editReview, ChangePass, getToken, userIsBanned, getAllUsers, unbanUser, deleteUser } = require("../controllers/usersController");
 
 
 const router = Router();
@@ -21,5 +21,6 @@ router.post('/review/:id', createReview)
 router.put('/review/edit/:id', editReview)
 router.get("/verify/:id/:token", getToken)
 router.get('/user/isbanned/:id', userIsBanned)
+router.delete("/user/:id", deleteUser)
 
 module.exports = router

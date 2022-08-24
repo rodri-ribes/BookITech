@@ -181,7 +181,7 @@ async function loginUser(req, res) {
                 token: ( await crypto).randomBytes(32).toString('hex')
             }).save();
           
-            const message = `localhost:3001/verify/${user.id}/${tokenMail.token}`;
+            const message = `localhost:3000/verify/${user.id}/${tokenMail.token}`;
             await sendEmail(user.email, "Verify Email", message);
         }
 
@@ -556,7 +556,10 @@ async function editReview(req, res) {
     }
 }
 
-
+async function deleteUser(req, res){
+    await User.findByIdAndRemove(req.params.id)
+    res.json("borrado")
+}
 
 module.exports = {
     loginUser,
@@ -574,5 +577,6 @@ module.exports = {
     banUser,
     unbanUser,
     userIsBanned
+    deleteUser
 
 }
