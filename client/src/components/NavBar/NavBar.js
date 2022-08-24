@@ -4,7 +4,7 @@ import { Link,useNavigate } from "react-router-dom";
 import Search from "../Search/Search";
 import CartShopping from "../CartShopping/CartShopping";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser,vaciarFavs,getLibros } from "../../redux/features/data/dataSlice";
+import { getUser,vaciarFavs,getLibros, cleanSearchTitle } from "../../redux/features/data/dataSlice";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/index";
 import AppBar from "@mui/material/AppBar";
@@ -116,6 +116,7 @@ function NavBar({ user, setUser }) {
     const clickIcon = () =>{
         setRender(true)
         cleanSearch('')
+        dispatch(cleanSearchTitle())
     }
 
 
