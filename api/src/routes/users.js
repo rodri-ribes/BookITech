@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { createUser, loginUser, GetUser, PutUser, PostBook, banUser, GetUsersAdmin, createReview, editReview, ChangePass } = require("../controllers/usersController");
+const { createUser, loginUser, GetUser, PutUser, PostBook, banUser, GetUsersAdmin, createReview, editReview, ChangePass, getAllUsers, unbanUser } = require("../controllers/usersController");
 
 const router = Router();
 
@@ -10,10 +10,11 @@ router.get('/user/admin/:admin', GetUsersAdmin)
 
 router.get('/user/:id', GetUser)
 router.put('/user/:id', PutUser)
-router.post('/user/ban', banUser)
+router.put('/user/ban/:id', banUser)
+router.put('/user/unban/:id', unbanUser)
 router.post('/user/:email', PostBook)
 router.put("/user/change/:id", ChangePass)
-
+router.get('/users/all', getAllUsers)
 router.post('/review/:id', createReview)
 router.put('/review/edit/:id', editReview)
 

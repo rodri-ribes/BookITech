@@ -25,7 +25,7 @@ const parseComment = (book) => {
             user: comment.user[0],
             book: book.title,
             bookId: book.isbn13,
-            // commentIndex : book.indexOf(comment)
+            commentId : comment._id
         }
         })
         return [...booksComments]
@@ -36,13 +36,12 @@ async function filterBooks(){
     const books = await axios.get(REACT_APP_API + '/books').catch(err =>console.log(err))
     const commentsMatrix = books.data.map(book => parseComment(book)).filter(e => e!=false)
     setComments([].concat(...commentsMatrix).filter(e => !e.reviewed))
-    console.table(comments)
 }
 
 const [comments, setComments] = useState([])
 
 useEffect(()=>{
-    filterBooks()
+    //filterBooks()
 }, [])
 
     return (
@@ -50,7 +49,7 @@ useEffect(()=>{
           <CssBaseline />
           <Container maxWidth='md' sx={{position: 'relative', display: 'flex'}} >
             <Box sx={{ bgcolor: '#173A5E', minHeight: '75vh', width: '70vw', borderRadius: '7px'}}>
-                <div style={{ width:'95%', display: 'flex', justifyContent:'space-between', paddingTop:'10px'}}>
+                <div style={{ width:'95%', display: 'flex', justifyContent:'space-between', paddingTop:'10px', paddingBottom:'10px'}}>
                     <Typography sx={{margin: '20px'}} variant='h5'>Unreviewed comments: </Typography>
                     <Button sx={{paddingTop:'10px', alignSelf: 'flex-end'}} variant='outlined' onClick={filterBooks}> <RefreshIcon fontSize='large'/></Button>
                 </div>
@@ -59,7 +58,7 @@ useEffect(()=>{
                 return !e.reviewed && 
                     <CommentCard key={e._id}comment={e}/>})
                     
-                : <Typography sx={{marginLeft: '25px'}} variant='body'>Up to date...</Typography> }
+                : <Typography sx={{marginLeft: '25px'}} variant='body'>We'll show you when there're new comments...</Typography> }
                
             </Box>
           </Container>
