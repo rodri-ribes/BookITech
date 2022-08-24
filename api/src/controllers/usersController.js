@@ -27,17 +27,46 @@ async function getAllUsers(req, res) {
     return res.status(200).send(users)
 }
 
+async function userIsBanned(req,res) {
+
+    const {id} = req.params
+    const user = await User.findById(id).catch(err => console.log(err))
+    if(!user) return res.status(404).send("User not found")
+    if(!user.banned.isBanned) return res.status(200).json({banned: false})
+    const daysSinceBan = (parseInt(Date.now()) - parseInt(user.banned.date)) / (1000 * 3600 * 24)
+    switch(user.banned.numberOfBans){
+        case 3: return res.status(200).json({banned: 'permanent'})
+        case 2: {
+            if(daysSinceBan >= 14) {
+                user.banned.isBanned = false
+                await user.save()
+                return res.status(200).json({banned: false})
+            }
+            return res.status(200).json({banned: Math.ceil( 14 - daysSinceBan)})
+        }
+        case 1: {
+            if(daysSinceBan >= 7) {
+                user.banned.isBanned = false
+                await user.save()
+                return res.status(200).json({banned: false})
+            }
+        return res.status(200).json({banned: Math.ceil( 7 - daysSinceBan)})
+        }
+    } 
+}
+
 async function banUser(req, res){ 
 
     const {id} = req.params
     const user = await User.findById(id).catch(err => console.log(err))
-    if(user.banned.isBanned) return res.status(401).send("user already banned")    
-    if(user.banned.flaggedComments<2) {
+    if(!user) return res.status(403).send("not a real user")
+    if(user?.banned?.isBanned) return res.status(401).send("user already banned")    
+    if(user?.banned?.flaggedComments<2) {
         user.banned.flaggedComments = user.banned.flaggedComments +1
     }else{ 
     user.banned.flaggedComments = 0
     user.banned.isBanned= true
-    user.banned.date = new Date().toDateString()
+    user.banned.date = Date.now()
     user.banned.numberOfBans = user.banned.numberOfBans +1
     } 
     user.comments = user.comments?.length ? [...user.comments] : []
@@ -547,6 +576,7 @@ module.exports = {
     updateUser,
     banUser,
     unbanUser,
+    userIsBanned
     deleteUser
 
 }
