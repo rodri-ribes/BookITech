@@ -1,15 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BsNutFill } from "react-icons/bs";
-
+import {Alert} from 'react-st-modal'
 const { REACT_APP_API } = process.env;
-
 
 export const dataSlice = createSlice({
     name: "data",
     initialState: {
         books: [],
         book: [],
+        nameSearch: "",
         details: [],
         Cart: [],
         Favs: [],
@@ -24,12 +24,13 @@ export const dataSlice = createSlice({
         MinToMax: [],
         dashboardState: ["CRUD"],
         id: [""],
-        nameSearch: "",
         loading: true,
         error: false,
         dataUser: [],
         CartUser: [],
-        heart:[]
+        heart: [],
+        cleanSearch: null,
+
     },
     reducers: {
         //**Aca irian los reducers, que modificarian el estado, dejo uno para que tengan como referencia.. */
@@ -39,12 +40,7 @@ export const dataSlice = createSlice({
         },
         //Search
         SearchTitle: (state, actions) => {
-            return {
-                ...state,
-                book: actions.payload.data,
-                books: actions.payload.data,
-                nameSearch: actions.payload.name,
-            };
+            state.nameSearch = actions.payload;
         },
         addCart: (state, actions) => {
             state.Cart = state.Cart.concat(
@@ -84,15 +80,15 @@ export const dataSlice = createSlice({
             if (Number(payload.min) === Number(payload.max)) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert("Max and Min are the same, please make them different");
+                Alert("Max and Min are the same, please make them different");
             } else if (Number(payload.min) > Number(payload.max)) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert("Min is greater than Max");
+                Alert("Min is greater than Max");
             } else if (Number(payload.min) < 0 || Number(payload.max) < 0) {
                 state.books = [...state.books];
                 state.range = [...state.books];
-                alert("Min or Máx are less than 0");
+                Alert("Min or Máx are less than 0");
             } else {
 
                 let copirange = state.books.filter(
@@ -101,6 +97,7 @@ export const dataSlice = createSlice({
                         Number(payload.max) >= Number(e.price.slice(1))
                 );
                 if (!copirange.length) {
+                    Alert('The range you want to search for was not found');
                     state.books = state.allBooks.filter(e => Number(e.price.slice(1)) >= Number(payload.min) && Number(payload.max) >= Number(e.price.slice(1)))
                 } else {
                     return {
@@ -390,7 +387,7 @@ export const dataSlice = createSlice({
         },
         vaciarFav: (state, actions) => {
             state.Favo = [];
-            state.heart=[];
+            state.heart = [];
         },
         delistBook: (state, actions) => {
             return;
@@ -418,32 +415,34 @@ export const dataSlice = createSlice({
         },
         dataUser: (state, actions) => {
             state.dataUser = actions.payload;
+
         },
 
-        heart:(state, actions)=>{
-            state.heart= actions.payload;
+        heart: (state, actions) => {
+            state.heart = actions.payload;
         },
 
         contadorCart: (state, actions) => {
+
             state.CartUser = actions.payload;
         },
         contadorQuitarCart: (state, actions) => {
             state.CartUser = state.CartUser.filter(c => c._id !== actions.payload)
+
         },
         vaciarCarritoDespDeLogin: (state, actions) => {
             state.Cart = actions.payload
         },
-
-
         clearFil: (state, actions) => {
             state.books = state.allBooks;
             state.range = [];
             state.A_Z = [];
             state.MinToMax = [];
             state.Theme = [];
+        },
+        addFunctionClean: (state, actions) => {
+            state.cleanSearch = actions.payload
         }
-
-
     },
 });
 
@@ -482,9 +481,8 @@ export const {
     contadorQuitarCart,
     contadorCart,
     clearFil,
-    vaciarCarritoDespDeLogin
-
-
+    vaciarCarritoDespDeLogin,
+    addFunctionClean,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -509,16 +507,13 @@ export const getLibros = () => async (dispatch) => {
 // };
 export const getSearch = (name) => async (dispatch) => {
     try {
+
         dispatch(setLoadingTrue());
-        let buscar = await axios.get(
-            //URL PARA BUSCAR
-            REACT_APP_API + `/books/${name}`
-        );
-        dispatch(SearchTitle({ data: buscar.data, name: name }));
+        dispatch(SearchTitle(name));
         dispatch(setLoadingFalse());
         // console.log(buscar.data);
     } catch (error) {
-        alert("the books were not found");
+        Alert("the books were not found");
         console.log(error);
     }
 };
@@ -591,10 +586,10 @@ export const Comments = (id) => async (dispatch) => {
         console.log(error);
     }
 };
-export const postComments = (payload) => async (dispatch) => {
+export const postComments = (payload, _id) => async (dispatch) => {
     try {
         const response = await axios.post(
-            REACT_APP_API + `/comments/`,
+            REACT_APP_API + `/comments/?_id=${_id}`,
             payload
         );
         dispatch(comments(response.data));
@@ -613,7 +608,7 @@ export const DeleteComment = (id) => async (dispatch) => {
 export const Vaciar = () => async (dispatch) => {
     dispatch(vaciarCommets());
 };
-export const vaciarFavs = ()=> async (dispatch) => {
+export const vaciarFavs = () => async (dispatch) => {
     dispatch(vaciarFav())
     console.log("putBook")
 }
@@ -719,19 +714,21 @@ export const actionVaciarCarritoDespDeLogin = () => (dispatch) => {
 
     dispatch(vaciarCarritoDespDeLogin([]))
 }
-export const GetHeart=(idUser)=> async (dispatch) => {
-    try{
+export const GetHeart = (idUser) => async (dispatch) => {
+    try {
         let success = await axios.get(REACT_APP_API + `/favorite/id?email=${idUser}`)
-       await dispatch(heart(success.data))
+        await dispatch(heart(success.data))
     }
-    catch(error){
+    catch (error) {
         console.log(error)
     }
 
 }
 
-
-
 export const ResetFil = () => (dispatch) => {
     dispatch(clearFil())
+}
+
+export const addFunctionCleans = (fnc) => (dispatch) => {
+    dispatch(addFunctionClean(fnc))
 }

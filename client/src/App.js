@@ -8,11 +8,14 @@ import Detail from "./components/BookDetail/Detail"
 import SignIn from './components/SignIn/SignIn.js'
 import SignUp from './components/SignUp/SignUp.js'
 import Favorite from "./components/Favorites/Favorite";
-import { AuthContextProvider } from "./firebase/AuthContext.js";
+import Landing from "./components/Landing/Landing.jsx";
 import Profile from "./components/Profile/Profile.js";
+import { AuthContextProvider } from "./firebase/AuthContext.js";
 import { AdminDashboard } from './components/AdminDashboard/AdminDashboard';
 import { Card404 } from "./components/404/Card404.js";
 import EmailVerify from "./components/EmailVerify/emailVerify.js";
+import About from "./components/About/About.jsx";
+
 
 function App() {
 
@@ -22,8 +25,10 @@ function App() {
         <NavBar />
         <div className="container">
           <Routes>
+            <Route path="/about" element={<About />} />
             <Route path="/book/:id" element={<Detail />} />
-            <Route path="/" element={<Home />} />
+            <Route path='/' element={<Landing />} />
+            <Route path="/search" element={<Home />} />
             <Route path="/favorites" element={<Favorite />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />

@@ -20,6 +20,53 @@ async function GetUser(req, res) {
     }
 }
 
+async function getAllUsers(req, res) { 
+
+    const users = await User.find({}).catch(err => console.log(err))
+    if(!users) return res.status(400).send("no users found")
+    return res.status(200).send(users)
+}
+
+async function banUser(req, res){ 
+
+    const {id} = req.params
+    const user = await User.findById(id).catch(err => console.log(err))
+    if(user.banned.isBanned) return res.status(401).send("user already banned")    
+    if(user.banned.flaggedComments<2) {
+        user.banned.flaggedComments = user.banned.flaggedComments +1
+    }else{ 
+    user.banned.flaggedComments = 0
+    user.banned.isBanned= true
+    user.banned.date = new Date().toDateString()
+    user.banned.numberOfBans = user.banned.numberOfBans +1
+    } 
+    user.comments = user.comments?.length ? [...user.comments] : []
+    console.log(user)
+
+    const success = await user.save().catch(err => console.log(err))
+    if(!success) return res.status(400).send("banning update failed")
+    return res.status(200).send(success)
+}
+
+async function unbanUser(req, res){
+    
+    const {id} = req.params
+    const user = await User.findById(id).catch(err => alert(err))
+    if(!user.banned.isBanned) return res.status(400).send('user was not banned')
+    user.banned.flaggedComments = 0
+    user.banned.isBanned= false
+    user.banned.date = ''
+    user.banned.numberOfBans = user.banned.numberOfBans - 1
+    user.comments = user.comments?.length ? [...user.comments] : []
+    console.log(user)
+
+    const success = await user.save().catch(err => console.log(err))
+    if(!success) return res.status(400).send("banning update failed")
+    return res.status(200).send(success)
+}
+
+
+
 async function GetUsersAdmin(req, res) {
     const { admin } = req.params;
 
@@ -50,6 +97,15 @@ async function PutUser(req, res) {
     }
 }
 
+async function updateUser(req, res){
+
+    const {id} = req.params
+    const {newValues} = req.body
+    const success = await User.findByIdAndUpdate(id, newValues).catch(err => console.log(err))
+    if(!success) return res.status(400).send("update failed").json({ok: false})
+    return res.status(200).send(success)
+
+}
 
 async function loginUser(req, res) {
 
@@ -173,10 +229,11 @@ async function createUser(req, res) {
                 port: 465,
                 secure: true, // true for 465, false for other ports
                 auth: {
-                    user: 'ledobookitech@zohomail.com', // generated ethereal user
-                    pass: 'frqGYjAbPUUR', // generated ethereal password
+                    user: 'bookitech@zohomail.com', // generated ethereal user
+                    pass: '81tmAGWHmRtd', // generated ethereal password
                 },
             });
+
             
 
             // const prueba = await transporter.sendMail({
@@ -218,6 +275,32 @@ async function createUser(req, res) {
             //     rol: newUser.rol,
             //     buy: newUser.buy
             // })
+
+
+            const prueba = await transporter.sendMail({
+                from: '"BookITech 📖" <bookitech@zohomail.com> ',
+                to: email,
+                subject: "HELLOOO ",
+                html: `
+                <div  style="justify-content:center;">
+                <div  style="background-color:#DCDCDC; border-radius:20px; font-family:Rockweel,Lucidatypewriter; font-size=40px;">
+                <h1 style="text-align:center; padding:10px; text-decoration:underline; background-color:#0a1929; color:#DADADA;">Welcome to BookITech 📖</h1>
+                <div  style="text-align:center; padding:0px 100px">
+                <img src=${img[0]} alt='img not foun' width="200px" height="200px" />
+                <img src=${img[1]} alt='img not foun' width="200px" height="200px"/>
+                        <img src=${img[2]} alt='img not foun' width="200px" height="200px"/>                      
+                        <img src=${img[3]} alt='img not foun' width="200px" height="200px"/>
+                </div>
+                <div style="text-align:center; padding:10px; background-color:#0a1929; color:#DADADA;">
+                <p style="font-family:Rockweel,Lucidatypewriter; font-size:15px;" >↓BUY HERE!↓</p>
+                <a href="https://bookitech-olive.vercel.app/" style="font-family:Rockweel,Lucidatypewriter; font-size:17px;" >📚BookITech 📗</a>
+                </div>
+                </div>
+                </div>
+                `
+            })
+          
+
         }
     }
 }
@@ -333,14 +416,14 @@ async function PostBook(req, res) {
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-                user: 'ledobookitech@zohomail.com', // generated ethereal user
-                pass: 'frqGYjAbPUUR', // generated ethereal password
+                user: 'bookitech@zohomail.com', // generated ethereal user
+                pass: '81tmAGWHmRtd', // generated ethereal password
             },
         });
         let url =items.flat().map(e => e)
         // <img src=${img[0]} alt='img not foun' width='150' height='150' />
         const prueba = await transporter.sendMail({
-            from: '"BookITech 📖" <ledobookitech@zohomail.com> ',
+            from: '"BookITech 📖" <bookitech@zohomail.com> ',
             to: email,
             subject: "YOUR BOOKS ",
             html: `
@@ -463,4 +546,9 @@ module.exports = {
     createReview,
     GetUsersAdmin,
     getToken,
+    getAllUsers,
+    updateUser,
+    banUser,
+    unbanUser
+
 }

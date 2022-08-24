@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getSearch } from "../../redux/features/data/dataSlice";
+import { getSearch, addFunctionCleans } from "../../redux/features/data/dataSlice";
 import { AiOutlineSearch } from "react-icons/ai";
 // import style from './Search.module.css';
 import { styled, alpha } from "@mui/material/styles";
@@ -10,6 +10,7 @@ import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
+import { Select } from "@mui/material";
 
 const SearchUI = styled("div")(({ theme }) => ({
     position: "relative",
@@ -60,135 +61,158 @@ export default function Search() {
     const books = useSelector((state) => state.data.allBooks);
     let navigate = useNavigate();
     const dispatch = useDispatch();
-    useEffect(() => {
-        let titulo = books.map((e) => e.title);
-        // let autor = books.map((e) => e.authors);
-        // let obj = titulo.concat(autor);
-        setOption(titulo);
-    }, [books]);
+    // useEffect(() => {
+    //     let titulo = books.map((e) => e.title);
+    //     // let autor = books.map((e) => e.authors);
+    //     // let obj = titulo.concat(autor);
+    //     setOption(titulo);
+    // }, [books]);
+
+    const cleanName = (search) =>{
+        setName(`${search}`)
+    }
+
+
+    useEffect(()=>{
+        dispatch(addFunctionCleans(cleanName))
+    },[])
+
+    
 
     function handleChange2(e) {
-        // setName('');
-        // setName(e.target.value);
-        dispatch(getSearch(e.target.value));
-        // if (!name) {
-        // setName(e.target.value);
-        // if (name.length < 1) {
-        //     setDisplay(false);
-        //     // setOption([]);
-        // }
-    }
-
-    function redirect() {
-        if (window.location.pathname !== "/") {
-            navigate("/");
+        let named = (e.target.value).toLowerCase();
+        // console.log(named)
+        // console.log(name)
+        if(name === ''){
+            setName((prevState) =>{
+                return prevState + named
+            })
+            dispatch(getSearch(named))
+        return 
+        }
+        if(name.length < named.length){
+            setName((prevState) =>{
+                return prevState + named[named.length - 1]
+            })
+            dispatch(getSearch(named))
+            setName(named)
+        return
+        }
+        if(name.length > named.length){
+            let diferencia = name.length - named.length
+            setName((prevState) =>{
+                return prevState.slice(0, -diferencia)
+            })
+            dispatch(getSearch(named))
+        return
         }
     }
 
-    function handleChange(e) {
-        if (name.length >= 3) {
-            // setName(e.target.value);
-            dispatch(getSearch(name));
-            setDisplay(true);
-            // setOption(books.map((e) => e.title));
-        }
-        console.log(window.location.pathname);
-        // if (!name) {
-        // setName(e.target.value);
-        dispatch(getSearch(name));
-        if (name.length < 2) {
-            setDisplay(false);
-            // setOption([]);
-        }
-    }
+    // function redirect() {
+    //     if (window.location.pathname !== "/") {
+    //         navigate("/");
+    //     }
+    // }
+
+    // function handleChange(e) {
+    //     if (name.length >= 3) {
+    //         // setName(e.target.value);
+    //         dispatch(getSearch(name));
+    //         setDisplay(true);
+    //         // setOption(books.map((e) => e.title));
+    //     }
+    //     console.log(window.location.pathname);
+    //     // if (!name) {
+    //     // setName(e.target.value);
+    //     dispatch(getSearch(name));
+    //     if (name.length < 2) {
+    //         setDisplay(false);
+    //         // setOption([]);
+    //     }
+    // }
 
     function handleSubmit(e) {
         e.preventDefault();
-        if (!name) {
-            alert("failed search");
-            setName("");
-            // setDisplay(false);
-            // setOption([]);
-        } else {
-            dispatch(getSearch(name));
-            setName("");
-            // setDisplay(false);
+        if (window.location.pathname !== '/search') {
+            navigate('/search')
+            dispatch(getSearch(name))
         }
     }
-    function setClick(val) {
-        setName(val);
-        setDisplay(false);
-    }
-    //redirect
-    //
+
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <SearchUI>
-                <SearchIconWrapper>
-                    <IconButton
-                        aria-label="search"
-                        color="inherit"
-                        sx={{ ml: -2.5, display: { md: "none", xs: "flex" } }}
-                    >
-                        <SearchIcon />
-                    </IconButton>
-                    <IconButton
-                        aria-label="search"
-                        color="inherit"
-                        sx={{ display: { md: "flex", xs: "none" } }}
-                        pointer= "cursor"
-                    >
-                        <SearchIcon />
-                    </IconButton>
-                </SearchIconWrapper>
-                <StyledInputBase
-                    placeholder="Search…"
-                    inputProps={{ "aria-label": "search" }}
-                    onChange={(e) => handleChange2(e)}
-                    onClick={redirect}
-                    type="text"
-                    // value={name}
-                    sx={{
-                        flexGrow: 1,
-                        display: { md: "flex" },
-                    }}
-                />
-                <div>
-                    {/* <div>
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <input
-                        onChange={(e) => handleChange(e)}
+            <form onSubmit={(e) => handleSubmit(e)} >
+                <SearchUI>
+                    <SearchIconWrapper>
+                        <IconButton
+                            aria-label="search"
+                            color="inherit"
+                            sx={{ ml: -2.5, display: { md: "none", xs: "flex" } }}
+                        >
+                            <SearchIcon />
+                        </IconButton>
+                        <IconButton
+                            aria-label="search"
+                            color="inherit"
+                            sx={{ display: { md: "flex", xs: "none" } }}
+                            pointer= "cursor"
+                        >
+                            <SearchIcon />
+                        </IconButton>
+                    </SearchIconWrapper>
+                    <StyledInputBase
+                        placeholder="Search…"
+                        inputProps={{ "aria-label": "search" }}
+                        onChange={(e) => handleChange2(e)}
+                        // onClick={redirect}
                         type="text"
-                        placeholder="Search..."
                         value={name}
-                        list="form"
+                        sx={{
+                            flexGrow: 1,
+                            display: { md: "flex" },
+                        }}
                     />
-                    <button type="submit">
-                        <AiOutlineSearch />
-                    </button>
-                </form>
-<<<<<<< HEAD
-            </div> */}
-                    {/* <datalist id="form">
-                        {display &&
-                            option
-                                ?.filter((e) =>
-                                    e.toLowerCase().includes(name.toLowerCase())
-                                )
-                                .map((e, k) => {
-                                    return (
-                                        <option
-                                            key={k}
-                                            onClick={() => setClick(e)}
-                                            value={e}
-                                        >
-                                            {e}
-                                        </option>
-                                    );
-                                })}
-                    </datalist> */}
-                </div>
-            </SearchUI>
+
+
+                    <div>
+                        {/* <div>
+                    <form onSubmit={(e) => handleSubmit(e)}>
+                        <input
+                            onChange={(e) => handleChange(e)}
+                            type="text"
+                            placeholder="Search..."
+                            value={name}
+                            list="form"
+                        />
+                        <button type="submit">
+                            <AiOutlineSearch />
+                        </button>
+                    </form>
+    <<<<<<< HEAD
+                </div> */}
+                        {/* <datalist id="form">
+                            {display &&
+                                option
+                                    ?.filter((e) =>
+                                        e.toLowerCase().includes(name.toLowerCase())
+                                    )
+                                    .map((e, k) => {
+                                        return (
+                                            <option
+                                                key={k}
+                                                onClick={() => setClick(e)}
+                                                value={e}
+                                            >
+                                                {e}
+                                            </option>
+                                        );
+                                    })}
+                        </datalist> */}
+                    </div>
+                    
+                </SearchUI>
+            </form>
+
         </Box>
         // =======
         //             </div>

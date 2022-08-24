@@ -16,27 +16,29 @@ export function CommentCard(props){
     }, [])
     const {comment} = props
     const [reviewed, setReviewed] = useState(false)
-    async function dispatchChange(type){
-        if(type === 'flag'){
-            var success = await axios.put(REACT_APP_API +'/comments/edit/' + comment.bookId + '/' + comment.commentId, {content:{...comment, reviewed: true, flagged: true}})   
+
+    async function dispatchChange(flag){
+
+        let success = await axios.put(REACT_APP_API +'/comments/edit/' + comment.bookId + '/' + comment.commentId, {type: {flag: flag},content:{...comment}})   
+        .catch(err => console.log(err))
+
+        if(flag){
+            let banned = await axios.put(REACT_APP_API + '/user/ban/' + comment.user)
             .catch(err => console.log(err))
-        }
-        if(type === 'ok'){
-            var success = await axios.put(REACT_APP_API +'/comments/edit/' + comment.bookId + '/' + comment.commentId, {content:{...comment, reviewed: true}})   
-            .catch(err => console.log(err))
-        }
+            return (success && banned)
+            }
         return (success)
     }
     const handleOk = async (event) =>{
         event.preventDefault()
-        const success = await dispatchChange('ok')
-        if(!success) alert("operation failed")
+        const success = await dispatchChange(false)
+        return
     
         }
     const handleFlag = async (event) =>{
         event.preventDefault()
-        const success = await dispatchChange('flag')       
-        if(!success) alert("operation failed")
+        const success = await dispatchChange(true)       
+        return
     
         }
            return !reviewed && <Box sx={{ marginLeft: '20px', marginBottom:'10px', bgcolor: 'rgb(210,210,210)', minHeight: '10vh', width: '60vw', borderRadius: '7px', display: 'flex', flexDirection:'row', justifyContent:'space-between'}}>
@@ -46,7 +48,7 @@ export function CommentCard(props){
                     </div>
                     <div style={{alignSelf: 'flex-end', marginBottom: '5px', marginRight:'5px'}}>
                         <Button onClick={event =>{ handleOk(event);setReviewed(true)}} variant='contained'><DoneIcon/></Button>
-                        <Button onClick={event => {handleFlag(event);setReviewed(true)}} variant="outlined"><DoDisturbOnIcon/></Button>
+                        <Button onClick={event => {handleFlag(event);setReviewed(true)}} variant="outlined">X</Button>
                     </div>
                 </Box>
                 

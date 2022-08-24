@@ -8,8 +8,12 @@ const UserSchema = new Schema({
     email: { type: String },
     passwordHash: { type: String },
     comments: [{
-        type: Schema.Types.ObjectId, //Para checkear
-        ref: 'Comment'
+        title: String,
+        date: String,
+        content: String,
+        image: String,
+        id: String,
+        // user: user,
     }],
     realName: { type: String },
     lastname: { type: String },
@@ -35,9 +39,25 @@ const UserSchema = new Schema({
         }
     ],
     verified: {
-        type: Boolean,
-        default: false,
+           type: Boolean,
+           default: false,
     },
+    banned: {
+           date: {type: String},
+           numberOfBans: {
+                type: Number,
+                default: 0
+            },
+            flaggedComments:{
+                type: Number,
+                default: 0
+            },
+            isBanned: {
+                type: Boolean,
+                default: false
+            }
+    }
+
 })
 
 module.exports = mongoose.model('User', UserSchema)

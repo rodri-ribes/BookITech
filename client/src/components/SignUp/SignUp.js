@@ -11,7 +11,10 @@ import { FacebookLoginButton, GithubLoginButton, GoogleLoginButton } from "react
 import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider, onAuthStateChanged } from 'firebase/auth'
 import SpinnerSignUp from '../auxiliar/SpinnerSignUp/SipinnerSignUp'
 import { auth } from '../../firebase/index';
-const { REACT_APP_API } = process.env
+
+import SpinnerSignUp from '../auxiliar/SpinnerSignUp/SpinnerSignUp'
+const {REACT_APP_API} = process.env
+
 
 
 export default function SignUp() {
@@ -114,10 +117,14 @@ export default function SignUp() {
                 setConfirm({ message: <SpinnerSignUp />, visible: true, error: null })
                 
                 let { name, email, password } = valores;
-
+                setConfirm({ message: <SpinnerSignUp />, visible: true, error: false })
+                
                 let fullName;
+
                 email = email.toLowerCase();
+
                 fullName = name.charAt(0).toUpperCase() + name.slice(1)
+                
                 console.log(fullName, email, password)
                 
                 try {
