@@ -86,11 +86,14 @@ function Home() {
     }, [books])
 
 
+    let filteredBooks = filtrado.filter(searchTerm(nameSearch))
+
     //logica de paginado
 
     const [pagina, setPagina] = useState(1);
 
     const porPagina = 10;
+
 
 
     const ceil = filtrado.length / porPagina;
@@ -108,8 +111,8 @@ function Home() {
                 <div className={style.Container__PanelCards}>
                     {error ? <Card404 /> :
                         loading ? <Loading /> :
-                            (filtrado.filter(searchTerm(nameSearch)).length === 0) ? <Noresults /> :
-                                filtrado && filtrado.filter(searchTerm(nameSearch))
+                            (filteredBooks.length === 0) ? <Noresults /> :
+                                filteredBooks && filteredBooks
                                     .slice(
                                         (pagina - 1) * porPagina,
                                         (pagina - 1) * porPagina + porPagina
