@@ -54,8 +54,10 @@ function NavBar({ user, setUser }) {
         }
     };
 
-    const pagesLog = ["Search", "Favorites", "Profile"];
+    const pagesLog = ["Search", "Admin", "Favorites", "Profile"];
     const pagesNoLog = ["SignIn", "SignUp"];
+    const pagesNoLog2 = ["SignIn", "SignUp", "Search", "Admin"]
+
 
     const settings = ["Profile", "Favorites", "Logout"];
 
@@ -124,7 +126,7 @@ function NavBar({ user, setUser }) {
         setRender(false)
     },[render])
 
-
+console.log(window.localStorage.getItem("user"));
     return (
         <>
             <AppBar
@@ -359,7 +361,7 @@ function NavBar({ user, setUser }) {
                                         >
                                             <Avatar
                                                 alt="Avatar"
-                                                src="https://getavataaars.com/?avatarStyle=Circle&clotheType=CollarSweater&eyeType=Hearts&eyebrowType=SadConcerned&facialHairType=MoustacheFancy&mouthType=Vomit&skinColor=Pale&topType=NoHair"
+                                                src={userr?.img}
                                             />
                                         </IconButton>
                                     </Tooltip>
@@ -390,6 +392,30 @@ function NavBar({ user, setUser }) {
                                             >
                                                 <Typography textAlign="center">
                                                     Profile
+                                                </Typography>
+                                            </Link>
+                                        </MenuItem>
+                                        <MenuItem
+                                            onClick={handleCloseUserMenu}
+                                        >
+                                            <Link
+                                                to="/admin"
+                                                style={textLink2}
+                                            >
+                                                <Typography textAlign="center">
+                                                    Admin
+                                                </Typography>
+                                            </Link>
+                                        </MenuItem>
+                                        <MenuItem
+                                            onClick={handleCloseUserMenu}
+                                        >
+                                            <Link
+                                                to="/search"
+                                                style={textLink2}
+                                            >
+                                                <Typography textAlign="center">
+                                                    Search
                                                 </Typography>
                                             </Link>
                                         </MenuItem>
