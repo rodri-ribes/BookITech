@@ -33,7 +33,11 @@ const UserSchema = new Schema({
             status: String,
             review: String,
         }
-    ]
+    ],
+    verified: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 module.exports = mongoose.model('User', UserSchema)

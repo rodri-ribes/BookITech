@@ -9,6 +9,7 @@ import { getLibros, getUser } from '../../redux/features/data/dataSlice';
 import { UserAuth } from '../../firebase/AuthContext';
 import { FacebookLoginButton, GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider, onAuthStateChanged } from 'firebase/auth'
+import SpinnerSignUp from '../auxiliar/SpinnerSignUp/SipinnerSignUp'
 import { auth } from '../../firebase/index';
 const { REACT_APP_API } = process.env
 
@@ -18,6 +19,8 @@ export default function SignUp() {
     let user = useSelector(state => state.data.user)
 
     const [loggeado, setloggeado] = useState(user || window.localStorage.getItem("user"))
+    const [error, setError] = useState("");
+	const [msg, setMsg] = useState("");
 
     useEffect(() => {
         if (loggeado) {
@@ -109,10 +112,11 @@ export default function SignUp() {
             }}
             onSubmit={async (valores, { resetForm }) => {
 
+                setConfirm({ message: <SpinnerSignUp />, visible: null, error: null })
                 let { name, email, password } = valores;
 
                 let fullName;
-
+                email = email.toLowerCase();
                 fullName = name.charAt(0).toUpperCase() + name.slice(1)
                 console.log(fullName, email, password)
                 try {
@@ -121,6 +125,7 @@ export default function SignUp() {
                     })
                     window.localStorage.setItem("user", JSON.stringify(resp.data))
                     dispatch(getUser(resp.data))
+                    setMsg(resp.message);
                     setConfirm({ message: "Successfully registered", visible: true, error: false })
 
                     setTimeout(() => {
@@ -133,6 +138,14 @@ export default function SignUp() {
                     valores.password2 = "";
 
                 } catch (error) {
+
+                    if (
+                        error.response &&
+                        error.response.status >= 400 &&
+                        error.response.status <= 500
+                    ) {
+                        setConfirm({message: error.response.data, visible: true, error: true});
+                    }
 
                     setConfirm({ message: error.response.data, visible: true, error: true })
                     setTimeout(() => {

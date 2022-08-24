@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { createUser, loginUser, GetUser, PutUser, PostBook, GetUsersAdmin, createReview, editReview, ChangePass } = require("../controllers/usersController");
+const { createUser, loginUser, GetUser, PutUser, PostBook, GetUsersAdmin, createReview, editReview, ChangePass, getToken } = require("../controllers/usersController");
 
 const router = Router();
 
@@ -15,5 +15,6 @@ router.put("/user/change/:id", ChangePass)
 
 router.post('/review/:id', createReview)
 router.put('/review/edit/:id', editReview)
+router.get("/verify/:id/:token", getToken)
 
 module.exports = router

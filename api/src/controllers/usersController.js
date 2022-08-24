@@ -4,6 +4,10 @@ const Book = require('../models/Book')
 const User = require("../models/User");
 const Cart = require("../models/Cart");
 const nodemailer = require('nodemailer')
+const Token = require('../models/Token')
+const crypto = import("crypto");
+const sendEmail = require('../utils/email')
+
 
 async function GetUser(req, res) {
     const { id } = req.params;
@@ -56,8 +60,8 @@ async function loginUser(req, res) {
         email
 
     })
-
-    if (user) {
+    console.log(user);
+    if (user.verified){
 
         bcrypt.compare(password, user.passwordHash, function (err, pass) {
             if (pass) {
@@ -74,7 +78,8 @@ async function loginUser(req, res) {
                     // rrss: user.rrss,
                     option: user.option,
                     rol: user.rol,
-                    buy: user.buy
+                    buy: user.buy,
+                    verified: user.verified
                 })
             } else {
 
@@ -82,10 +87,29 @@ async function loginUser(req, res) {
             }
         })
 
+    }else {
 
-    } else {
-        res.status(401).send("invalid user or password")
+        let token = await Token.findOne({ _id: user._id });
+        if(!token){
+            let tokenMail = await new Token({
+                userId: user._id,
+                token: ( await crypto).randomBytes(32).toString('hex')
+            }).save();
+          
+            const message = `localhost:3001/verify/${user.id}/${tokenMail.token}`;
+            //await sendEmail(user.email, "Verify Email", message);
+        }
+
+        res.status(401).send({message: 'An Email was sent to your account please verify' });
+
     }
+
+    
+
+        
+
+       
+    
 };
 
 
@@ -131,6 +155,19 @@ async function createUser(req, res) {
                 }
                 return min
             })
+           
+
+            let tokenMail = await new Token({
+                userId: newUser._id,
+                token: ( await crypto).randomBytes(32).toString('hex')
+            }).save();
+          
+            const message = `localhost:3001/verify/${newUser.id}/${tokenMail.token}`;
+            await sendEmail(newUser.email, "Verify Email", message);
+            
+            res.send("An Email sent to your account please verify");
+
+
             const transporter = nodemailer.createTransport({
                 host: "smtp.zoho.com",
                 port: 465,
@@ -140,6 +177,7 @@ async function createUser(req, res) {
                     pass: 'frqGYjAbPUUR', // generated ethereal password
                 },
             });
+            
 
             const prueba = await transporter.sendMail({
                 from: '"BookITech 📖" <ledobookitech@zohomail.com> ',
@@ -163,26 +201,52 @@ async function createUser(req, res) {
                 </div>
                 `
             })
-            console.log(prueba.messageId);
-            res.status(200).json({
-                id: newUser.id,
-                name: newUser.fullName,
-                email: newUser.email,
-                realName: newUser.realName,
-                lastname: newUser.lastname,
-                token: token,
-                ban: newUser.ban,
-                img: newUser.img,
-                phone: newUser.phone,
-                address: newUser.address,
-                // rrss: newUser.rrss,
-                option: newUser.option,
-                rol: newUser.rol,
-                buy: newUser.buy
-            })
+            
+            // res.status(200).json({
+            //     id: newUser.id,
+            //     name: newUser.fullName,
+            //     email: newUser.email,
+            //     realName: newUser.realName,
+            //     lastname: newUser.lastname,
+            //     token: token,
+            //     ban: newUser.ban,
+            //     img: newUser.img,
+            //     phone: newUser.phone,
+            //     address: newUser.address,
+            //     // rrss: newUser.rrss,
+            //     option: newUser.option,
+            //     rol: newUser.rol,
+            //     buy: newUser.buy
+            // })
         }
     }
 }
+
+async function getToken (req, res) {
+    const { id, token} = req.params;
+    console.log(id,token);
+    try {
+      const user = await User.findOne({ _id: id });
+      console.log(user);
+      if (!user) return res.status(400).send("Invalid user link");
+  
+      const token1 = await Token.findOne({
+        userId: user._id,
+        token: token,
+      });
+      console.log(token1);
+      if (!token1) return res.status(400).send("Invalid token link");
+
+      user.verified = true;
+      await user.save();
+      
+      await Token.findByIdAndRemove(token1._id);
+  
+      res.send("email verified sucessfully");
+    } catch (error) {
+      res.status(400).send("An error occured");
+    }
+};
 
 async function ChangePass(req, res) {
     const { id } = req.params
@@ -397,5 +461,6 @@ module.exports = {
     PostBook,
     editReview,
     createReview,
-    GetUsersAdmin
+    GetUsersAdmin,
+    getToken,
 }
