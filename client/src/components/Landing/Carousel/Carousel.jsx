@@ -32,8 +32,25 @@ useEffect(() => {
       // id='main'
       modules={[Navigation]}
       navigation= {true}
-      slidesPerView={5}
-      slidesPerGroupAuto={true}
+      breakpoints={{
+        0:{
+          slidesPerView:1
+        },
+        480:{
+          slidesPerView:2
+        },
+        768:{
+          slidesPerView:3
+        },
+        1024:{
+          slidesPerView:4
+        },
+        1280:{
+          slidesPerView:5
+        },
+      }}
+    
+    
     >
   {
     books ? books.map(l =>{
