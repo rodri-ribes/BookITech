@@ -30,6 +30,7 @@ import { motion } from "framer-motion";
 import EditIcon from "@mui/icons-material/Edit";
 import Stack from "@mui/material/Stack";
 import styles from "./Profile.module.css";
+import GradeIcon from '@mui/icons-material/Grade';
 import {
     updateUserdata,
     UpdatePass,
@@ -38,6 +39,8 @@ import {
 import axios from "axios";
 import Spinner from "../auxiliar/Spinner/Spinner";
 import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper";
 const { REACT_APP_API } = process.env;
 
 function Profile() {
@@ -76,8 +79,10 @@ function Profile() {
 
     const getdata = async () => {
         let userId = JSON.parse(window.localStorage.getItem("user"));
+        console.log(userId);
         try {
             let data = await axios.get(REACT_APP_API + `/user/${userId.id}`);
+            console.log(data.data);
             setUser(data.data);
         } catch (error) {
             console.log(error);
@@ -101,14 +106,7 @@ function Profile() {
         setExpanded(isExpanded ? panel : false);
     };
 
-    // const rating = User.rating
-    // const ratingAvg = function(rating) {
-    //   let i = 0, summ = 0, ArrayLen = myArray.length;
-    //   while (i < ArrayLen) {
-    //       summ = summ + rating[i++];
-    // }
-    //   return summ / ArrayLen;
-    // }
+
 
     // const commonStyles = {
     //   bgcolor: 'background.paper',
@@ -179,7 +177,6 @@ function Profile() {
             phone: fieldSelected.phone,
             address: fieldSelected.address,
         }));
-        console.log(updateData);
         openCloseModal();
         dispatch(updateUserdata(User._id, fieldSelected));
     };
@@ -189,7 +186,6 @@ function Profile() {
             current: pass.current,
             password: pass.password,
         }));
-        console.log(passChange);
         openCloseModalPass();
         dispatch(UpdatePass(User._id, pass));
     };
@@ -300,12 +296,9 @@ function Profile() {
                     sx={cssTextField}
                     label="Name"
                     name="realName"
-                    error={boole}
-                    helperText={boole === false ? "ERRORRRR" : ""}
-                    onChange={(e) => {
-                        handleChange2(e);
-                        setText(e.target.value);
-                    }}
+                    // error={boole}
+                    // helperText={boole === false ? "ERRORRRR" : ""}
+                    onChange={(e) => handleChange2(e)}
                     value={fieldSelected && fieldSelected.realName}
                 />
                 <TextField
@@ -334,7 +327,7 @@ function Profile() {
             <br />
             <div align="right">
                 <Button
-                    disabled={boole === false}
+                    // disabled={boole === false}
                     color="primary"
                     onClick={() => {pushNewData()}}
                 >
@@ -380,6 +373,15 @@ function Profile() {
             </div>
         </Grid>
     );
+
+    let ratings = User.reviews?.map(r => r.rating)
+    let ratingSum = ratings?.reduce((r, t) => {
+        return  t+r},0)
+    let ratingAvg = ratingSum / ratings?.length
+
+
+    
+    // console.log(JSON.parse(window.localStorage.getItem("buy")));
 
     // if (!User.length) return
     return (
@@ -639,23 +641,38 @@ function Profile() {
                             >
                                 <Grid item xs>
                                     <br /> <br />
+                                    <Stack display="flex" flexDirection="row">
+                                        <Typography
+                                            sx={{
+                                                color: "#DADADA",
+                                                fontSize: "1.7rem",
+                                                fontFamily: "monospace",
+                                            }}
+                                            gutterBottom
+                                            variant="subtitle1"
+                                            component="div"
+                                        >
+                                            {ratingAvg ? `avg ${ratingAvg}` : `avg 0`} 
+                                        </Typography>
+                                        <GradeIcon sx={{color: "yellow", fontSize: "30px", mt:1}} />
+                                    </Stack>
+                                        <Typography
+                                            sx={{
+                                                color: "#DADADA",
+                                                fontSize: "1.7rem",
+                                                fontFamily: "monospace",
+                                                mb:4
+                                            }}
+                                            gutterBottom
+                                            variant="subtitle1"
+                                            component="div"
+                                        >
+                                            rating granted
+                                        </Typography>
                                     <Typography
                                         sx={{
                                             color: "#DADADA",
-                                            fontSize: "2rem",
-                                            fontFamily: "monospace",
-                                        }}
-                                        gutterBottom
-                                        variant="subtitle1"
-                                        component="div"
-                                        // fontFamily="monospace"
-                                    >
-                                        Rating (0 avg)
-                                    </Typography>
-                                    <Typography
-                                        sx={{
-                                            color: "#DADADA",
-                                            fontSize: "2rem",
+                                            fontSize: "1.7rem",
                                             fontFamily: "monospace",
                                         }}
                                         gutterBottom
@@ -667,7 +684,7 @@ function Profile() {
                                     <Typography
                                         sx={{
                                             color: "#DADADA",
-                                            fontSize: "2rem",
+                                            fontSize: "1.7rem",
                                             fontFamily: "monospace",
                                         }}
                                         gutterBottom
@@ -676,7 +693,30 @@ function Profile() {
                                     >
                                         {User.comments?.length} comments
                                     </Typography>
-                                   
+                                    <Typography
+                                        sx={{
+                                            color: "#DADADA",
+                                            fontSize: "1.7rem",
+                                            fontFamily: "monospace",
+                                        }}
+                                        gutterBottom
+                                        variant="subtitle1"
+                                        component="div"
+                                    >
+                                        {User.buy?.length} purchased books
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            color: "#DADADA",
+                                            fontSize: "1.7rem",
+                                            fontFamily: "monospace",
+                                        }}
+                                        gutterBottom
+                                        variant="subtitle1"
+                                        component="div"
+                                    >
+                                        {Favorites?.length} favorite books
+                                    </Typography>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -784,11 +824,23 @@ function Profile() {
                                                             align="left"
                                                             sx={{
                                                                 fontSize:
+                                                                    "22px",
+                                                                color: "#DADADA",
+                                                            }}
+                                                        >
+                                                            x{s.cantidad}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Typography
+                                                            align="left"
+                                                            sx={{
+                                                                fontSize:
                                                                     "24px",
                                                                 color: "#DADADA",
                                                             }}
                                                         >
-                                                            {s.price}
+                                                            $ {(s.cantidad * s.price?.slice(1)).toFixed(2)}
                                                         </Typography>
                                                     </TableCell>
                                                 </TableRow>
@@ -899,6 +951,21 @@ function Profile() {
                                                         >
                                                             {`"${s.review}"`}
                                                         </Typography>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Typography
+                                                            align="left"
+                                                            sx={{
+                                                                fontSize:
+                                                                    "30px",
+                                                                color: "#DADADA",
+                                                            }}
+                                                        >
+                                                            {`${s.rating}`}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <GradeIcon sx={{ml: -3,fontSize:"35px", color: "yellow"}} />
                                                     </TableCell>
                                                     <TableCell>
                                                         <Typography
@@ -1064,37 +1131,33 @@ function Profile() {
                                 color: "#DADADA",
                             }}
                         >
-                            <Typography>
-                                <motion.div className={styles.carousel}>
-                                    <motion.div
-                                        className={styles.containerItem}
-                                        drag="x"
-                                        dragConstraints={{
-                                            right: 0,
-                                            left: leftConstraints,
-                                        }}
-                                    >
+                            <div className={styles.carruselito}>
+                                <Swiper 
+                                    // id='main'
+                                    modules={[Navigation]}
+                                    navigation= {true}
+                                    slidesPerView={4}
+                                    slidesPerGroup={4}
+                                >
+                                    
                                         {Favorites?.map((l, i) => {
                                             return (
-                                                <motion.div
-                                                    className={
-                                                        styles.carouselItem
-                                                    }
-                                                >
-                                                    <CardBook
-                                                        name={l.title}
-                                                        id={l.isbn13}
-                                                        authors={l.authors}
-                                                        img={l.image}
-                                                        price={l.price}
-                                                        key={i}
-                                                    />
-                                                </motion.div>
+                                                <SwiperSlide>
+                                                    <div className={styles.slide_container}>
+                                                        <CardBook
+                                                            name={l.title}
+                                                            id={l.isbn13}
+                                                            authors={l.authors}
+                                                            img={l.image}
+                                                            price={l.price}
+                                                            key={i}
+                                                        />
+                                                    </div>
+                                                </SwiperSlide>
                                             );
                                         })}
-                                    </motion.div>
-                                </motion.div>
-                            </Typography>
+                                </Swiper>
+                            </div>
                         </AccordionDetails>
                     </Accordion>
                 </Container>
