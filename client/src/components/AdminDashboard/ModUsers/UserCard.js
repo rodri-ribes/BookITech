@@ -4,12 +4,14 @@ import axios from 'axios';
 const {REACT_APP_API} = process.env
 export function UserCard(props){
    
-   const {user} = props
+   const {user, lift} = props
    const handleUnban = async (e) =>{
     e.preventDefault()
     const unbaned = await axios.put(REACT_APP_API + '/user/unban/' + user._id).catch(err => console.log(err))
     if(!unbaned) console.log("unbaned failed")
     console.log("unbanned succesfully")
+    lift(true)
+    return
    }
 
    return <Box sx={{ marginLeft: '20px', marginBottom:'10px', bgcolor: 'rgb(210,210,210)', minHeight: '10vh', width: '60vw', borderRadius: '7px', display: 'flex', flexDirection:'row', justifyContent:'space-between'}}>
