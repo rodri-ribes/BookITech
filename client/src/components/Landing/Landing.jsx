@@ -28,11 +28,13 @@ function Landing() {
   let booksReduce2 = books.slice(15,30)
   let booksWithReviews = books.filter(b => b.reviews.length > 0)
 
+
   let sortByRating = booksWithReviews.sort((prev, next) => { 
     let previo = prev.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0) 
     let siguiente = next.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0)    
       return siguiente - previo
   })
+
 
 
 
@@ -92,7 +94,10 @@ function Landing() {
 
 
 
- 
+  <Carruselito books={booksReduce}  title={"Best Selling Books"} />
+
+  <Carruselito books={booksReduce2}  title={'Top Rated Books'}   />
+
     </>
    
   )
