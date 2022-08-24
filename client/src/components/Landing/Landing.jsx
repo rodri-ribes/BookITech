@@ -93,11 +93,6 @@ function Landing() {
     }
 
 
-
-  <Carruselito books={booksReduce}  title={"Best Selling Books"} />
-
-  <Carruselito books={booksReduce2}  title={'Top Rated Books'}   />
-
     </>
    
   )
