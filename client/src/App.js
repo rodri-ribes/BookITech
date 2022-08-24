@@ -13,7 +13,9 @@ import Profile from "./components/Profile/Profile.js";
 import { AuthContextProvider } from "./firebase/AuthContext.js";
 import { AdminDashboard } from './components/AdminDashboard/AdminDashboard';
 import { Card404 } from "./components/404/Card404.js";
+import EmailVerify from "./components/EmailVerify/emailVerify.js";
 import About from "./components/About/About.jsx";
+
 
 function App() {
 
@@ -33,6 +35,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path='/admin' element={<AdminDashboard />} />
             <Route path="*" element={<Card404 />} />
+            <Route path="/verify/:id/:token" element={<EmailVerify />} />
           </Routes>
         </div>
         <Footer />
