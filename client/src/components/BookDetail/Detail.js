@@ -27,6 +27,7 @@ function Detail() {
   const dispatch = useDispatch()
   const { id } = useParams()
   const [details, setDetails] = useState(false)
+  let [User, setUser]= useState()
 
   //------ STATE PARA LA APARICION DE ELEMENTOS EN EL DOM --------------------
 
@@ -163,6 +164,18 @@ function Detail() {
     let usuario = JSON.parse(window.localStorage.getItem("user"))
     user = [usuario.id, usuario.img, usuario.name]
   }
+  const getdata = async () => {
+    let userId = JSON.parse(window.localStorage.getItem("user"));
+    try {
+        let data = await axios.get(REACT_APP_API + `/user/${userId.id}`);
+        setUser(data.data);
+    } catch (error) {
+        console.log(error);
+    }
+};
+useEffect(() => {
+    getdata()
+},[])
   // let usuario = JSON.parse(window.localStorage.getItem("user"))
   // let user = [usuario.id, usuario.img, usuario.name]
 

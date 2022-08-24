@@ -44,7 +44,6 @@ function Profile() {
     let dispatch = useDispatch();
     let Favo = useSelector((state) => state.data.Favo);
     let Boooks = useSelector((state) => state.data.books);
-    console.log(Boooks);
     let Favorites = Favo?.map((l) => l.book);
     var favLength = Favo.length;
     var leftConstraints = favLength * -100;
@@ -61,7 +60,7 @@ function Profile() {
         current: "",
         password: "",
     });
-    const [fieldSelected, setFieldSelected] = useState({
+    let [fieldSelected, setFieldSelected] = useState({
         fullName: "",
         email: "",
         img: "",
@@ -72,8 +71,8 @@ function Profile() {
     });
     const [image,setImage]= useState(null)
 
-    let userId = JSON.parse(window.localStorage.getItem("user"));
-    console.log(userId);
+    // let userId = JSON.parse(window.localStorage.getItem("user"));
+    // console.log(userId);
 
     const getdata = async () => {
         let userId = JSON.parse(window.localStorage.getItem("user"));
@@ -133,14 +132,14 @@ function Profile() {
             [name]: value,
         }));
     };
-    const handleChange3 = (e) => {
-      const { name, file } = e.target;
-      console.log(file)
-      setFieldSelected((prevState) => ({
-        ...prevState,
-        [name]: file,
-      }));
-    };
+    // const handleChange3 = (e) => {
+    //   const { name, file } = e.target;
+    //   console.log(file)
+    //   setFieldSelected((prevState) => ({
+    //     ...prevState,
+    //     [name]: file,
+    //   }));
+    // };
     const handleChangePass = (e) => {
         const { name, value } = e.target;
         setPass((prevState) => ({
@@ -153,31 +152,21 @@ function Profile() {
         setFieldSelected("");
         setPass("");
     };
-    const pushNewImg = () => {
-      setUpdateData((prevState) => ({
-        ...prevState,
-        img: fieldSelected.img,
-      }));
-      dispatch(updateUserdata(User._id, fieldSelected));
-    };
     const handleCapture = async (e) => {
       e.preventDefault()
-        
-      //const { name }=e.target
-      //console.log(image.name)
         // carga en firebase
-        const result = await uploadFile(image);
-        console.log(result)
-        setFieldSelected((prevState)=>({
-          ...prevState,
-          img : result[1]
-        }))
-        console.log(fieldSelected)
-      //   let link=result[1]
-      //   setAux(link)
-      //   console.log(aux)
-   
+      let result = await uploadFile(image);
+      console.log(result[1])
+      handleCapture2(result[1])
+       
     };
+    const handleCapture2=(e)=>{
+      console.log(e)
+      setFieldSelected((prevState) =>({
+        ...prevState,
+          img : e,  
+      })) 
+    }
 
     const pushNewData = () => {
         setUpdateData((prevState) => ({
@@ -275,7 +264,7 @@ function Profile() {
     };
     // validate()
 
-    console.log(User);
+    
 
     const bodyUpdate = (
         <Grid sx={modalStyles}>
@@ -300,12 +289,12 @@ function Profile() {
                   sx={cssTextField}
                   label="Avatar"
                   name="img"
-                  onChange={(e) => {setImage(e.target.files[0]);handleChange3(e)}}
+                  onChange={(e) => {setImage(e.target.files[0])}}
                   //value={fieldSelected && fieldSelected.img}
                   defaultValue={fieldSelected && fieldSelected.img}
                     />
                 <Button onClick={(e)=>handleCapture(e)}>
-                    xd
+                    push first for image
                 </Button>
                 <TextField
                     sx={cssTextField}
@@ -347,7 +336,7 @@ function Profile() {
                 <Button
                     disabled={boole === false}
                     color="primary"
-                    onClick={() => pushNewData()}
+                    onClick={() => {pushNewData()}}
                 >
                     update
                 </Button>
@@ -411,19 +400,7 @@ function Profile() {
                                     sx={{ width: 250, height: 250 }}
                                 />
                             </ButtonBase>
-                        <form onSubmit={handleCapture}>
-                          <Input
-                            type="file"
-                                // sx={cssTextField}
-                            id=""
-                            name=""
-                            onChange={(e) => {setImage(e.target.files[0])}}
-                            //value={fieldSelected && fieldSelected.img}
-                            ></Input>
-                          <button color="primary" type="form" onClick={() =>pushNewImg()}>
-                            <PhotoCamera />
-                          </button>
-                        </form>
+                            {/* pushNewImg(e); */}
                         </Grid>
                         <Grid item xs={8} sm container>
                             <Grid
@@ -699,36 +676,13 @@ function Profile() {
                                     >
                                         {User.comments?.length} comments
                                     </Typography>
-                                    {/* <Typography
-                                        sx={{
-                                            color: "#DADADA",
-                                            fontSize: "2rem",
-                                            fontFamily: "monospace",
-                                        }}
-                                        gutterBottom
-                                        variant="subtitle1"
-                                        component="div"
-                                    >
-                                        {User.fav?.length} favorites
-                                    </Typography> */}
-                                    {/* <Typography
-                                            gutterBottom
-                                            variant="subtitle1"
-                                            component="div"
-                                            fontFamily:"monospace"
-                                        >
-                                            {User.email.length} readed books
-                                        </Typography>
-                                        <Typography variant="body2" gutterBottom fontFamily:"monospace">
-                                            Joined in {User.email.length}
-                                        </Typography> */}
+                                   
                                 </Grid>
                             </Grid>
                         </Grid>
 
                         <Modal
                             open={modalUpdate}
-                            // onClose={openCloseModal()}
                         >
                             {bodyUpdate}
                         </Modal>

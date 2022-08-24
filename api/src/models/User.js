@@ -38,10 +38,13 @@ const UserSchema = new Schema({
             review: String,
         }
     ],
-
-        banned: {
-            date: {type: String},
-            numberOfBans: {
+    verified: {
+           type: Boolean,
+           default: false,
+    },
+    banned: {
+           date: {type: String},
+           numberOfBans: {
                 type: Number,
                 default: 0
             },
@@ -54,6 +57,7 @@ const UserSchema = new Schema({
                 default: false
             }
     }
+
 })
 
 module.exports = mongoose.model('User', UserSchema)

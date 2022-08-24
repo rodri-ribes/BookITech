@@ -19,6 +19,7 @@ export default function SignIn() {
         visible: null,
         error: null,
     })
+    const [error, setError] = useState("");
 
     let navigate = useNavigate()
     let dispatch = useDispatch();
@@ -91,15 +92,17 @@ export default function SignIn() {
 
                 let { email, password } = valores;
 
-
                 email = email.toLowerCase();
 
                 try {
                     let resp = await axios.post(REACT_APP_API + `/signin`, {
                         password, email
                     })
+
                     window.localStorage.setItem("user", JSON.stringify(resp.data))
+                    
                     dispatch(getUser(resp.data))
+                    
                     setConfirm({ message: "You logged in successfully", visible: true, error: false })
                     dispatch(GetHeart(resp.data.email))
                     dispatch(getFav(resp.data.email))
@@ -115,7 +118,7 @@ export default function SignIn() {
                     setConfirm({ message: error.response.data, visible: true, error: true })
                     setTimeout(() => {
                         setConfirm({ message: "", visible: null, error: null })
-                    }, 2000);
+                    }, 4000);
 
                 }
             }}
@@ -157,6 +160,7 @@ export default function SignIn() {
                             />
                             <ErrorMessage name='password' component={() => (<div className={style.Container__Div_Error}><p>{errors.password}</p></div>)} />
                         </div>
+                        {/* {error && <div className={style.error_msg}>{error}</div>} */}
                         <button type='submit' className={style.Container__Button}>SignIn</button>
                         {confirm.visible ? <div className={`${confirm.error ? style.Container__Div_NotSucess : style.Container__Div_Sucess}`}><p>{confirm.message}</p></div> : null}
                         <p className={style.Container__Register}>You do not have an account? <Link to="/signup" className={style.Container__Register_Link}>Sign up</Link></p>

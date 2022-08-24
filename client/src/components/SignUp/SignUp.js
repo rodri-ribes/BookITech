@@ -9,9 +9,9 @@ import { getLibros, getUser } from '../../redux/features/data/dataSlice';
 import { UserAuth } from '../../firebase/AuthContext';
 import { FacebookLoginButton, GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider, onAuthStateChanged } from 'firebase/auth'
+import SpinnerSignUp from '../auxiliar/SpinnerSignUp/SipinnerSignUp'
 import { auth } from '../../firebase/index';
 
-import SpinnerSignUp from '../auxiliar/SpinnerSignUp/SpinnerSignUp'
 const {REACT_APP_API} = process.env
 
 
@@ -21,6 +21,8 @@ export default function SignUp() {
     let user = useSelector(state => state.data.user)
 
     const [loggeado, setloggeado] = useState(user || window.localStorage.getItem("user"))
+    const [error, setError] = useState("");
+	const [msg, setMsg] = useState("");
 
     useEffect(() => {
         if (loggeado) {
@@ -111,33 +113,40 @@ export default function SignUp() {
                 password2: "",
             }}
             onSubmit={async (valores, { resetForm }) => {
-
+                setConfirm({ message: <SpinnerSignUp />, visible: true, error: null })
+                
                 let { name, email, password } = valores;
                 setConfirm({ message: <SpinnerSignUp />, visible: true, error: false })
                 
                 let fullName;
-                email = email.toLocaleLowerCase();
+
+                email = email.toLowerCase();
+
                 fullName = name.charAt(0).toUpperCase() + name.slice(1)
                 
                 console.log(fullName, email, password)
+                
                 try {
                     let resp = await axios.post(REACT_APP_API + `/signup`, {
                         fullName, email, password
                     })
-                    window.localStorage.setItem("user", JSON.stringify(resp.data))
-                    dispatch(getUser(resp.data))
-                    setConfirm({ message: "Successfully registered", visible: true, error: false })
+                   // window.localStorage.setItem("user", JSON.stringify(resp.data))
+                    //dispatch(getUser(resp.data))
+                    setMsg(resp.message);
+                    setConfirm({ message: "An Email was sent to your account, please verify to sign in", visible: true, error: false })
 
                     setTimeout(() => {
                         setConfirm({ message: "", visible: null, error: null })
                         dispatch(getLibros())
                         navigate("/")
-                    }, 2000);
+                    }, 10000);
 
                     resetForm();
                     valores.password2 = "";
 
                 } catch (error) {
+
+                   
 
                     setConfirm({ message: error.response.data, visible: true, error: true })
                     setTimeout(() => {
