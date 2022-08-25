@@ -19,6 +19,9 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import AdbIcon from "@mui/icons-material/Adb";
+import axios from 'axios';
+const { REACT_APP_API } = process.env;
 
 function NavBar({ user, setUser }) {
     const [click, setClick] = useState({});
@@ -106,7 +109,7 @@ function NavBar({ user, setUser }) {
         setRender(false);
     }, [render]);
 
-    // console.log(userr.rol);
+
     return (
         <>
             <AppBar
