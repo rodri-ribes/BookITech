@@ -75,12 +75,12 @@ function Landing() {
 
 
   let sortByRating = booksWithReviews.sort((prev, next) => { 
-    let previo = prev.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0) 
-    let siguiente = next.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0)    
+    let previo = (prev.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0))/ prev.reviews.length 
+    let siguiente = (next.reviews.reduce((acc, item)=>{ return  acc += item.rating}, 0) )/ next.reviews.length  
       return siguiente - previo
   })
 
-  
+
   return (
     <>
 

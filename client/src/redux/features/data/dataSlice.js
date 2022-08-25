@@ -31,6 +31,7 @@ export const dataSlice = createSlice({
         heart: [],
         cleanSearch: null,
         PutSetInput:null,
+        PutSetpages:null
 
     },
     reducers: {
@@ -450,6 +451,9 @@ export const dataSlice = createSlice({
         PutSetInput:(state, actions)=>{
             state.PutSetInput= actions.payload
         },
+        PutSetpages:(state, actions)=>{
+            state.PutSetpages = actions.payload
+        }
     },
 });
 
@@ -492,6 +496,7 @@ export const {
     addFunctionClean,
     CleanSearchTitle,
     PutSetInput,
+    PutSetpages,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -748,4 +753,8 @@ export const cleanSearchTitle = () => (dispatch) =>{
 
 export const putSetInput = (fnc) => (dispatch) =>{
     dispatch(PutSetInput(fnc))
+}
+
+export const putSetPages = (fnc) =>(dispatch) =>{
+    dispatch(PutSetpages(fnc))
 }

@@ -3,7 +3,7 @@ import CardBook from './CardBook/CardBook';
 import style from './home.module.css';
 import { Paginacion } from './Pagination/Pagination';
 import { useDispatch, useSelector, connect } from 'react-redux';
-import { getLibros, getFav, GetHeart } from '../../redux/features/data/dataSlice';
+import { getLibros, getFav, GetHeart, putSetPages } from '../../redux/features/data/dataSlice';
 import Search from '../Search/Search';
 import Filters from '../Filters/Filters';
 import Loading from './Loading/Loading.jsx';
@@ -21,7 +21,8 @@ function Home() {
 
 
 
-
+    
+    const [pagina, setPagina] = useState(1);
     // const [loading, setLoading] = useState(true)
     // const [error, setError] = useState(false)
     const idUser = () => {
@@ -35,6 +36,7 @@ function Home() {
     useEffect(() => {
         if (window.localStorage.getItem("user")) idUser()
         if (nameSearch === "") dispatch(getLibros());
+        dispatch(putSetPages(setPagina))
     }, [dispatch]);
 
 
@@ -91,7 +93,6 @@ function Home() {
 
     //logica de paginado
 
-    const [pagina, setPagina] = useState(1);
 
     const porPagina = 10;
 

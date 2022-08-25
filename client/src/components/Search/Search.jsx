@@ -59,6 +59,9 @@ export default function Search() {
     const [option, setOption] = useState([]);
     const [name, setName] = useState("");
     const books = useSelector((state) => state.data.allBooks);
+    let setPagina = useSelector((state) => state.data.PutSetpages);
+    let setInput = useSelector((state) => state.data.PutSetInput);
+
     let navigate = useNavigate();
     const dispatch = useDispatch();
     // useEffect(() => {
@@ -81,6 +84,8 @@ export default function Search() {
 
     function handleChange2(e) {
         let named = (e.target.value).toLowerCase();
+        setPagina(1)
+        setInput(1)
         // console.log(named)
         // console.log(name)
         if(name === ''){
@@ -132,6 +137,8 @@ export default function Search() {
     // }
 
     function handleSubmit(e) {
+        setInput(1)
+        setPagina(1)
         e.preventDefault();
         cleanName('')
         if (window.location.pathname !== '/search') {
