@@ -19,6 +19,9 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import AdbIcon from "@mui/icons-material/Adb";
+import axios from 'axios';
+const { REACT_APP_API } = process.env;
 
 function NavBar({ user, setUser }) {
     const [click, setClick] = useState({});
@@ -33,7 +36,7 @@ function NavBar({ user, setUser }) {
     let userr = useSelector((state) => state.data.user);
     let cleanSearch = useSelector((state) => state.data.cleanSearch);
     let dispatch = useDispatch();
-
+    let [avatar,setAvatar] = useState(false)
     const logOut = () => {
         signOut(auth);
         window.localStorage.removeItem("user");
@@ -97,16 +100,29 @@ function NavBar({ user, setUser }) {
         dispatch(cleanSearchTitle())
     }
 
-
     useEffect(()=>{
         if(render) {
             dispatch(getLibros())
 
         }
-        setRender(false);
-    }, [render]);
-
-    console.log(userr.rol);
+        setRender(false)
+    },[render])
+    
+    useEffect(() => {
+        const getAvatar = async () => {
+            let userId = JSON.parse(window.localStorage.getItem("user"));
+            // console.log(userId);
+            try {
+                let data = await axios.get(REACT_APP_API + `/user/${userId.id}`);
+                // console.log(data.data);
+                setAvatar(data.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getAvatar()
+    },[avatar])
+    
     return (
         <>
             <AppBar
@@ -345,7 +361,8 @@ function NavBar({ user, setUser }) {
                                         >
                                             <Avatar
                                                 alt="Avatar"
-                                                src={userr?.img}
+                                                src={avatar?.img ||
+                                                    "https://avataaars.io/?avatarStyle=Circle&topType=Eyepatch&facialHairType=BeardMagestic&clotheType=BlazerShirt&eyeType=WinkWacky&eyebrowType=RaisedExcitedNatural&mouthType=Serious&skinColor=Tanned" }
                                             />
                                         </IconButton>
                                     </Tooltip>
