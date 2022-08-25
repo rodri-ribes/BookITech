@@ -63,6 +63,34 @@ function NavBar({ user, setUser }) {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
 
+
+    // const [sizeNav, setSizeNav] = useState("");
+
+    // const sizeH = {
+    //     width: { sm: `calc(100% - ${drawerWidth}px)` },
+    //     ml: { sm: `${drawerWidth}px` },
+    //     backgroundColor: "#0f243b",
+    //     color: "#DADADA",
+    // };
+
+    // const sizeOthers = {
+    //     backgroundColor: "#0f243b",
+    //     color: "#DADADA",
+    // };
+
+    // useEffect(() => {
+    //     if (window.location.pathname === "/") {
+    //         setSizeNav(sizeH);
+    //     } else {
+    //         setSizeNav(sizeOthers);
+    //     }
+    // }, [setSizeNav]);
+    const setCleanInput = () =>{
+        cleanSearch('')
+        dispatch(cleanSearchTitle())
+    }
+
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -75,6 +103,10 @@ function NavBar({ user, setUser }) {
     };
 
     const handleCloseUserMenu = () => {
+        if (window.location.pathname !== '/Search') {
+            cleanSearch('')
+            dispatch(cleanSearchTitle())
+        }
         setAnchorElUser(null);
     };
 
@@ -189,7 +221,11 @@ function NavBar({ user, setUser }) {
                                     horizontal: "left",
                                 }}
                                 open={Boolean(anchorElNav)}
-                                onClose={handleCloseNavMenu}
+                                // onClose={handleCloseNavMenu}
+                                onClick={()=>{
+                                    handleCloseNavMenu();
+                                    setCleanInput();
+                                }}
                                 sx={{
                                     display: {
                                         xs: "block",
@@ -209,7 +245,11 @@ function NavBar({ user, setUser }) {
                                             return (
                                                 <MenuItem
                                                     key={page}
-                                                    onClick={handleCloseNavMenu}
+                                                    // onClick={handleCloseNavMenu}
+                                                    onClick={()=>{
+                                                        handleCloseNavMenu();
+                                                        setCleanInput();
+                                                    }}
                                                 >
                                                     <Link
                                                         to={`/${page}`}
@@ -230,7 +270,11 @@ function NavBar({ user, setUser }) {
                                             return (
                                                 <MenuItem
                                                     key={page}
-                                                    onClick={handleCloseNavMenu}
+                                                    // onClick={handleCloseNavMenu}
+                                                    onClick={()=>{
+                                                        handleCloseNavMenu();
+                                                        setCleanInput();
+                                                    }}
                                                 >
                                                     <Link
                                                         to={`/${page}`}
@@ -281,7 +325,11 @@ function NavBar({ user, setUser }) {
                                         return (
                                             <Button
                                                 key={page}
-                                                onClick={handleCloseNavMenu}
+                                                // onClick={handleCloseNavMenu}
+                                                onClick={()=>{
+                                                    handleCloseNavMenu();
+                                                    setCleanInput();
+                                                }}
                                                 sx={{
                                                     my: 2,
                                                     color: "white",
@@ -315,7 +363,11 @@ function NavBar({ user, setUser }) {
                                         return (
                                             <Button
                                                 key={page}
-                                                onClick={handleCloseNavMenu}
+                                                // onClick={handleCloseNavMenu}
+                                                onClick={()=>{
+                                                    handleCloseNavMenu();
+                                                    setCleanInput();
+                                                }}
                                                 sx={{
                                                     my: 2,
                                                     color: "white",
@@ -447,7 +499,11 @@ function NavBar({ user, setUser }) {
                                             return (
                                                 <MenuItem
                                                     key={page}
-                                                    onClick={handleCloseNavMenu}
+                                                    // onClick={handleCloseNavMenu}
+                                                    onClick={()=>{
+                                                        handleCloseNavMenu();
+                                                        setCleanInput();
+                                                    }}
                                                 >
                                                     <Link
                                                         to={`/${page}`}
@@ -468,7 +524,11 @@ function NavBar({ user, setUser }) {
                                             return (
                                                 <MenuItem
                                                     key={page}
-                                                    onClick={handleCloseNavMenu}
+                                                    // onClick={handleCloseNavMenu}
+                                                    onClick={()=>{
+                                                        handleCloseNavMenu();
+                                                        setCleanInput();
+                                                    }}
                                                     sx={{
                                                         display: {
                                                             xs: "none",
