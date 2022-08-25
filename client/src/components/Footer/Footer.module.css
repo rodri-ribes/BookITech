@@ -27,8 +27,8 @@
 }
 
 .Terms p{
-    color: "#DADADA";
-    font-family: "monospace";
+    color: #DADADA;
+    font-family: monospace;
     font-size: 2rem;
     padding: 0 10px;
     letter-spacing: .3rem;
@@ -58,7 +58,7 @@
     color: #DADADA;
     font-size: 2rem;
     margin-right: 25px;
-    font-family: "monospace";
+    font-family: monospace;
     letter-spacing: .3rem;
 }
 
