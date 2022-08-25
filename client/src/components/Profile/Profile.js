@@ -77,13 +77,13 @@ function Profile() {
 
     const getdata = async () => {
         let userId = JSON.parse(window.localStorage.getItem("user"));
-        console.log(userId);
+     
         try {
             let data = await axios.get(REACT_APP_API + `/user/${userId.id}`);
-            console.log(data.data);
+      
             setUser(data.data);
         } catch (error) {
-            console.log(error);
+              console.log(error);
         }
     };
 
@@ -129,12 +129,12 @@ function Profile() {
       e.preventDefault()
         // carga en firebase
       let result = await uploadFile(image);
-      console.log(result[1])
+    
       handleCapture2(result[1])
        
     };
     const handleCapture2=(e)=>{
-      console.log(e)
+
       setFieldSelected((prevState) =>({
         ...prevState,
           img : e,  
