@@ -18,12 +18,14 @@ import { BsSortAlphaUp } from "react-icons/bs";
 import { BsSortDownAlt } from "react-icons/bs";
 import { BsSortUpAlt } from "react-icons/bs";
 import { Button, TextField } from "@mui/material";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import { useDispatch } from "react-redux";
 import {
     FilTheme,
     ORdenAZ,
     PriceRange,
-    ChangeRange,ResetFil,
+    ChangeRange,
+    ResetFil,
 } from "../../redux/features/data/dataSlice";
 import DrawerDesktop from "./DrawerDesktop";
 
@@ -40,7 +42,7 @@ function FiltersSidebar(props) {
         max: "",
         min: "",
     });
-    const [/*errors*/, setErrors] = useState({});
+    const [, /*errors*/ setErrors] = useState({});
 
     const tematica = [
         "mongo",
@@ -64,9 +66,11 @@ function FiltersSidebar(props) {
         "express.js",
     ];
     function ClearFilter() {
+
         dispatch(ResetFil())
         setInput(1);
         setPagina(1);
+
     }
 
     const handleDrawerToggle = () => {
@@ -144,7 +148,7 @@ function FiltersSidebar(props) {
 
     function handleOrdenZA(e) {
         e.preventDefault();
-        handleDrawerToggle()
+        handleDrawerToggle();
         console.log(e.target.value);
         dispatch(ORdenAZ("Z-A"));
         setInput(1);
@@ -329,9 +333,7 @@ function FiltersSidebar(props) {
                 </Box>
                 {/* </form> */}
             </List>
-            <ListItem >
-                    <ListItemButton onClick={() => ClearFilter()}>RESET</ListItemButton>
-                </ListItem>
+
             <List>
                 <Typography
                     sx={{
@@ -406,6 +408,33 @@ function FiltersSidebar(props) {
                 >
                     <FilterAltIcon />
                 </IconButton>
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={handleDrawerToggle}
+                    sx={{ mt:4, mr: 2, display: { md: "none" } }}
+                >
+                    <Typography
+                        fontSize={"16px"}
+                        sx={{ fontWeight: 800, letterSpacing: ".2rem" }}
+                        variant="h6"
+                        noWrap
+                        component="div"
+                    >
+                        RESET
+                    </Typography>
+                </IconButton>
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={() => ClearFilter()}
+                    sx={{ mr: 2, display: { md: "none" } }}
+                >
+                    <FilterAltOffIcon />
+                </IconButton>
+                
             </Toolbar>
 
             <Box

@@ -58,11 +58,11 @@ const saveSignIn = async (req, res) => {
         `
     })
     return res.json({
-      name: user.fullName,
-      email: user.email,
-      img: user.img,
-      id: user._id,
-      buy: user.buy
+      name: User.fullName,
+      email: User.email,
+      img: User.img,
+      id: User._id,
+      buy: User.buy
     })
   }
   return res.json({

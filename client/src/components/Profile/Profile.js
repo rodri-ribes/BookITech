@@ -74,18 +74,16 @@ function Profile() {
     });
     const [image,setImage]= useState(null)
 
-    // let userId = JSON.parse(window.localStorage.getItem("user"));
-    // console.log(userId);
 
     const getdata = async () => {
         let userId = JSON.parse(window.localStorage.getItem("user"));
-        console.log(userId);
+     
         try {
             let data = await axios.get(REACT_APP_API + `/user/${userId.id}`);
-            console.log(data.data);
+      
             setUser(data.data);
         } catch (error) {
-            console.log(error);
+              console.log(error);
         }
     };
 
@@ -107,22 +105,6 @@ function Profile() {
     };
 
 
-
-    // const commonStyles = {
-    //   bgcolor: 'background.paper',
-    //   m: 1,
-    //   borderColor: 'text.primary',
-    //   width: '30rem',
-    //   height: '1px',
-    // };
-
-    // const Img = styled('img')({
-    //   margin: 'auto',
-    //   display: 'block',
-    //   maxWidth: '100%',
-    //   maxHeight: '100%',
-    // });
-
     const handleChange2 = (e) => {
         const { name, value } = e.target;
         setFieldSelected((prevState) => ({
@@ -130,14 +112,7 @@ function Profile() {
             [name]: value,
         }));
     };
-    // const handleChange3 = (e) => {
-    //   const { name, file } = e.target;
-    //   console.log(file)
-    //   setFieldSelected((prevState) => ({
-    //     ...prevState,
-    //     [name]: file,
-    //   }));
-    // };
+
     const handleChangePass = (e) => {
         const { name, value } = e.target;
         setPass((prevState) => ({
@@ -154,12 +129,12 @@ function Profile() {
       e.preventDefault()
         // carga en firebase
       let result = await uploadFile(image);
-      console.log(result[1])
+    
       handleCapture2(result[1])
        
     };
     const handleCapture2=(e)=>{
-      console.log(e)
+
       setFieldSelected((prevState) =>({
         ...prevState,
           img : e,  
@@ -380,9 +355,6 @@ function Profile() {
     let ratingAvg = ratingSum / ratings?.length
 
 
-    
-    // console.log(JSON.parse(window.localStorage.getItem("buy")));
-
     // if (!User.length) return
     return (
         <div className={styles.cont}>
@@ -474,9 +446,6 @@ function Profile() {
                                                                 "monospace",
                                                         }}
                                                     >
-                                                        {/* <EditIcon
-                                                            sx={iconosStyles}
-                                                        /> */}
                                                     </TableCell>
                                                 </TableRow>
                                             </TableBody>
@@ -504,9 +473,6 @@ function Profile() {
                                                                 "monospace",
                                                         }}
                                                     >
-                                                        {/* <EditIcon
-                                                            sx={iconosStyles}
-                                                        /> */}
                                                     </TableCell>
                                                 </TableRow>
                                             </TableBody>
@@ -534,9 +500,6 @@ function Profile() {
                                                                 "monospace",
                                                         }}
                                                     >
-                                                        {/* <EditIcon
-                                                            sx={iconosStyles}
-                                                        /> */}
                                                     </TableCell>
                                                 </TableRow>
                                             </TableBody>
@@ -564,9 +527,6 @@ function Profile() {
                                                                 "monospace",
                                                         }}
                                                     >
-                                                        {/* <EditIcon
-                                                            sx={iconosStyles}
-                                                        /> */}
                                                     </TableCell>
                                                 </TableRow>
                                             </TableBody>
@@ -594,9 +554,6 @@ function Profile() {
                                                                 "monospace",
                                                         }}
                                                     >
-                                                        {/* <EditIcon
-                                                            sx={iconosStyles}
-                                                        /> */}
                                                     </TableCell>
                                                 </TableRow>
                                             </TableBody>
@@ -728,7 +685,6 @@ function Profile() {
                         </Modal>
                         <Modal
                             open={modalUpdatePass}
-                            // onClose={openCloseModal()}
                         >
                             {bodyUpdatePass}
                         </Modal>
@@ -824,6 +780,18 @@ function Profile() {
                                                             align="left"
                                                             sx={{
                                                                 fontSize:
+                                                                    "18px",
+                                                                color: "#DADADA",
+                                                            }}
+                                                        >
+                                                            {s.date}
+                                                        </Typography>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Typography
+                                                            align="left"
+                                                            sx={{
+                                                                fontSize:
                                                                     "22px",
                                                                 color: "#DADADA",
                                                             }}
@@ -882,10 +850,6 @@ function Profile() {
                                 color: "#DADADA",
                             }}
                         >
-                            {/* <Typography>
-                                Dare to write your review about the books you
-                                have read!
-                            </Typography> */}
                             <TableContainer>
                                 <Table
                                     sx={{ minWidth: 650 }}
@@ -1133,7 +1097,6 @@ function Profile() {
                         >
                             <div className={styles.carruselito}>
                                 <Swiper 
-                                    // id='main'
                                     modules={[Navigation]}
                                     navigation= {true}
                                     slidesPerView={4}

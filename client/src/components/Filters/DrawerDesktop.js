@@ -13,6 +13,7 @@ import { BsSortAlphaUp } from "react-icons/bs";
 import { BsSortDownAlt } from "react-icons/bs";
 import { BsSortUpAlt } from "react-icons/bs";
 import { Button, TextField } from "@mui/material";
+import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import { useDispatch } from "react-redux";
 import {
     FilTheme,
@@ -158,6 +159,11 @@ function DrawerDesktop( { setPagina }) {
     const drawer = (
         <div>
             <Toolbar sx={{ mt: 4, backgroundColor: "#07121e", color: "#DADADA" }} />
+            {/* <ListItem> */}
+                <Button sx={{ width: "85%",ml:1,  mr:2, mb:2}} variant="outlined" onClick={() => ClearFilter()}>
+                    RESET FILTERS
+                </Button>
+            {/* </ListItem> */}
             <Divider />
             <List>
                 <Typography
@@ -294,9 +300,9 @@ function DrawerDesktop( { setPagina }) {
                         </ListItem>
                     </Box>
             </List>
-            <ListItem >
+            {/* <ListItem >
                     <ListItemButton onClick={() => ClearFilter()}>RESET</ListItemButton>
-            </ListItem>
+            </ListItem> */}
             <List>
                 <Typography
                     sx={{

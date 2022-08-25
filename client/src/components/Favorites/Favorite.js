@@ -7,6 +7,7 @@ import CardBook from '../Home/CardBook/CardBook';
 import { Paginacion } from '../Home/Pagination/Pagination'
 import { GiBookmarklet } from "react-icons/gi"
 import {getFav} from '../../redux/features/data/dataSlice'
+import { Typography } from '@mui/material';
 
 function Favorite() {
     //props
@@ -22,7 +23,7 @@ function Favorite() {
     return (
         <div className={fav.Container} >
             <div className={fav.Favs}>
-                <h1>Favorites <GiBookmarklet /></h1>
+                <Typography sx={{fontSize:"4rem", fontFamily: "monospace"}}>Favorites <GiBookmarklet /></Typography>
             </div>
 
             <div className={fav.Container__PanelCards} >
