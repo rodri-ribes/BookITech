@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BiEdit } from 'react-icons/bi';
 import { BsCartCheck, BsFacebook, BsTwitter, BsLinkedin, BsGoogle } from 'react-icons/bs';
+import { AiFillStar } from 'react-icons/ai';
 import Rating from '@mui/material/Rating';
 import { Link, NavLink, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
@@ -27,7 +28,7 @@ function Detail() {
   const dispatch = useDispatch()
   const { id } = useParams()
   const [details, setDetails] = useState(false)
-  let [User, setUser]= useState()
+  let [User, setUser] = useState()
 
   //------ STATE PARA LA APARICION DE ELEMENTOS EN EL DOM --------------------
 
@@ -153,7 +154,7 @@ function Detail() {
   }, [details])
 
   let theme = useSelector(state => state.data.Theme)
-  details && console.log("detalles ", details)
+
   //-------------FUNCION QUE CARGA EL COMENTARIO A LA DB ---------------------
 
   let user;
@@ -167,15 +168,15 @@ function Detail() {
   const getdata = async () => {
     let userId = JSON.parse(window.localStorage.getItem("user"));
     try {
-        let data = await axios.get(REACT_APP_API + `/user/${userId.id}`);
-        setUser(data.data);
+      let data = await axios.get(REACT_APP_API + `/user/${userId.id}`);
+      setUser(data.data);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-};
-useEffect(() => {
+  };
+  useEffect(() => {
     getdata()
-},[])
+  }, [])
   // let usuario = JSON.parse(window.localStorage.getItem("user"))
   // let user = [usuario.id, usuario.img, usuario.name]
 
@@ -204,7 +205,10 @@ useEffect(() => {
 
       setComment("")
       let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
-      setDetails(data.data)
+      setDetails({
+        ...data.data,
+        comments: data.data.comments.filter(e => !e.flagged)
+      })
     } else {
       setError({
         error: "comment",
@@ -237,7 +241,6 @@ useEffect(() => {
           setReview(c.review)
           setDateReview(c.status)
           setRating(c.rating)
-          console.log("entro a las review", c)
         }
       })
     }
@@ -423,7 +426,8 @@ useEffect(() => {
                   <h3>By {details.authors.toUpperCase()}</h3>
                 </div>
                 <div className={style.Container__Content__Info__details_rating}>
-                  <Rating name="half-rating-read" defaultValue={total} precision={0.5} readOnly />
+                  {/* <Rating name="half-rating-read" defaultValue={0} precision={0.5} readOnly />  */}
+                  <AiFillStar />
                   <p>{total.toFixed(1)}</p>
                 </div>
                 <div className={style.Container__Content__Info__details_description}>
@@ -560,7 +564,7 @@ useEffect(() => {
                       {details.comments.slice(
                         (pagina - 1) * porPagina,
                         (pagina - 1) * porPagina + porPagina
-                      ).map(c => {
+                      ).reverse().map(c => {
                         return (
                           <CardComment
                             name={c.user[2]}
