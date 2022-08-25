@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from 'react-redux';
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -30,9 +31,11 @@ import DrawerDesktop from "./DrawerDesktop";
 
 const drawerWidth = 240;
 
-function FiltersSidebar(props, { setPagina }) {
-    const { window } = props;
+function FiltersSidebar(props) {
+    const { window, setPagina } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
+    let setInput = useSelector((state) => state.data.PutSetInput);
+
 
     const dispatch = useDispatch();
     const [range, setRange] = useState({
@@ -63,8 +66,11 @@ function FiltersSidebar(props, { setPagina }) {
         "express.js",
     ];
     function ClearFilter() {
-        dispatch(ResetFil());
-        // setPagina(1)
+
+        dispatch(ResetFil())
+        setInput(1);
+        setPagina(1);
+
     }
 
     const handleDrawerToggle = () => {
@@ -75,14 +81,16 @@ function FiltersSidebar(props, { setPagina }) {
         e.preventDefault();
         handleDrawerToggle();
         dispatch(ChangeRange("MintoMax"));
-        // setPagina(1);
+        setInput(1);
+        setPagina(1);
     }
 
     function handleChangeRangeMax(e) {
         e.preventDefault();
         handleDrawerToggle();
         dispatch(ChangeRange("MaxtoMin"));
-        // setPagina(1);
+        setInput(1);
+        setPagina(1);
     }
 
     function validate() {
@@ -100,7 +108,8 @@ function FiltersSidebar(props, { setPagina }) {
         handleDrawerToggle();
         console.log(e.target.textContent);
         dispatch(FilTheme(e.target.textContent));
-        // setPagina(1);
+        setInput(1);
+        setPagina(1);
     }
 
     function handleRange(e) {
@@ -112,7 +121,8 @@ function FiltersSidebar(props, { setPagina }) {
             dispatch(PriceRange(range));
             setRange({ max: "", min: "" });
             // console.log('holaaa');
-            // setPagina(1);
+            setInput(1);
+            setPagina(1);
         }
     }
     function handleChange(e) {
@@ -132,7 +142,8 @@ function FiltersSidebar(props, { setPagina }) {
         handleDrawerToggle();
         console.log(e.target.value);
         dispatch(ORdenAZ("A-Z"));
-        // setPagina(1);
+        setInput(1);
+        setPagina(1);
     }
 
     function handleOrdenZA(e) {
@@ -140,7 +151,8 @@ function FiltersSidebar(props, { setPagina }) {
         handleDrawerToggle();
         console.log(e.target.value);
         dispatch(ORdenAZ("Z-A"));
-        // setPagina(1);
+        setInput(1);
+        setPagina(1);
     }
 
     const cssTextField = {
@@ -468,7 +480,7 @@ function FiltersSidebar(props, { setPagina }) {
                     }}
                     // open PaperProps={{ style: { height: "875px" } }}
                 >
-                    <DrawerDesktop />
+                    <DrawerDesktop setPagina={setPagina}/>
                     {/* {drawer} */}
                 </Drawer>
             </Box>

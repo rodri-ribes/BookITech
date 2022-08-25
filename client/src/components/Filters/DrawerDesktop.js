@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from 'react-redux';
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
@@ -24,6 +25,9 @@ import {Alert} from 'react-st-modal'
 
 
 function DrawerDesktop( { setPagina }) {
+
+
+    let setInput = useSelector((state) => state.data.PutSetInput);
 
     const dispatch = useDispatch();
     const [range, setRange] = useState({
@@ -57,12 +61,14 @@ function DrawerDesktop( { setPagina }) {
 
     function handleChangeRangeMin(e) {
         dispatch(ChangeRange("MintoMax"));
-        // setPagina(1);
+        setInput(1);
+        setPagina(1);
     }
 
     function handleChangeRangeMax(e) {
         dispatch(ChangeRange("MaxtoMin"));
-        // setPagina(1);
+        setInput(1);
+        setPagina(1);
     }
 
     function validate() {
@@ -76,8 +82,9 @@ function DrawerDesktop( { setPagina }) {
         return err;
     }
     function handleTheme(e) {
+        setInput(1);
+        setPagina(1);
         dispatch(FilTheme(e.target.textContent));
-        // setPagina(1);
     }
 
     async function handleRange(e) {
@@ -86,7 +93,8 @@ function DrawerDesktop( { setPagina }) {
         } else {
             dispatch(PriceRange(range));
             setRange({ max: "", min: "" });
-            // setPagina(1);
+            setInput(1);
+        setPagina(1);
         }
     }
     function handleChange(e) {
@@ -103,16 +111,19 @@ function DrawerDesktop( { setPagina }) {
     }
     function handleOrdenAZ(e) {
         dispatch(ORdenAZ("A-Z"));
-        // setPagina(1);
+        setInput(1);
+        setPagina(1);
     }
 
     function handleOrdenZA(e) {
         dispatch(ORdenAZ("Z-A"));
-        // setPagina(1);
+        setInput(1);
+        setPagina(1);
     }
     function ClearFilter() {
         dispatch(ResetFil())
-        // setPagina(1)
+        setInput(1);
+        setPagina(1);
     }
 
 

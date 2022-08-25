@@ -1,8 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import {putSetInput} from '../../../redux/features/data/dataSlice.js'
 import styles from './pagination.module.css';
 
 export const Paginacion = ({ pagina, setPagina, maximo }) => {
     const [input, setInput] = useState(1);
+
+    let dispatch = useDispatch()
+
+    useEffect(()=>{
+    dispatch(putSetInput(setInput))
+    },[])
+
 
     const nextPage = () => {
         setInput(parseInt(input) + 1);
