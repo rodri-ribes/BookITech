@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Search from "../Search/Search";
 import CartShopping from "../CartShopping/CartShopping";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser,vaciarFavs,getLibros, cleanSearchTitle } from "../../redux/features/data/dataSlice";
+import { getUser, vaciarFavs, getLibros, cleanSearchTitle } from "../../redux/features/data/dataSlice";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/index";
 import AppBar from "@mui/material/AppBar";
@@ -86,27 +86,27 @@ function NavBar({ user, setUser }) {
         fontFamily: "monospace",
     };
 
-    const clickIcon = () => {
-        setRender(true);
-        cleanSearch("");
-    };
+    // const clickIcon = () => {
+    //     setRender(true);
+    //     cleanSearch("");
+    // };
 
-    const clickIcon = () =>{
+    const clickIcon = () => {
         setRender(true)
         cleanSearch('')
         dispatch(cleanSearchTitle())
     }
 
 
-    useEffect(()=>{
-        if(render) {
+    useEffect(() => {
+        if (render) {
             dispatch(getLibros())
 
         }
         setRender(false);
     }, [render]);
 
-    console.log(userr.rol);
+    // console.log(userr.rol);
     return (
         <>
             <AppBar
@@ -116,7 +116,7 @@ function NavBar({ user, setUser }) {
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
                 position="sticky"
-                // sx={{ backgroundColor: "#0f243b", color: "#DADADA" }}
+            // sx={{ backgroundColor: "#0f243b", color: "#DADADA" }}
             >
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
@@ -280,7 +280,7 @@ function NavBar({ user, setUser }) {
                                                 </Link>
                                             </Button>
                                         );
-                                    } else if (userr.rol === "admin") {
+                                    } else if (userr && userr.rol === "admin") {
                                         <MenuItem onClick={handleCloseNavMenu}>
                                             <Link to="/admin" style={textLink2}>
                                                 <Typography

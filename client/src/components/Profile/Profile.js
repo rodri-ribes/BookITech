@@ -72,15 +72,15 @@ function Profile() {
         phone: "",
         address: "",
     });
-    const [image,setImage]= useState(null)
+    const [image, setImage] = useState(null)
 
 
     const getdata = async () => {
         let userId = JSON.parse(window.localStorage.getItem("user"));
-        console.log(userId);
+
         try {
             let data = await axios.get(REACT_APP_API + `/user/${userId.id}`);
-            console.log(data.data);
+
             setUser(data.data);
         } catch (error) {
             console.log(error);
@@ -126,19 +126,17 @@ function Profile() {
         setPass("");
     };
     const handleCapture = async (e) => {
-      e.preventDefault()
+        e.preventDefault()
         // carga en firebase
-      let result = await uploadFile(image);
-      console.log(result[1])
-      handleCapture2(result[1])
-       
+        let result = await uploadFile(image);
+        handleCapture2(result[1])
+
     };
-    const handleCapture2=(e)=>{
-      console.log(e)
-      setFieldSelected((prevState) =>({
-        ...prevState,
-          img : e,  
-      })) 
+    const handleCapture2 = (e) => {
+        setFieldSelected((prevState) => ({
+            ...prevState,
+            img: e,
+        }))
     }
 
     const pushNewData = () => {
@@ -235,7 +233,7 @@ function Profile() {
     };
     // validate()
 
-    
+
 
     const bodyUpdate = (
         <Grid sx={modalStyles}>
@@ -255,16 +253,16 @@ function Profile() {
                     onChange={(e) => handleChange2(e)}
                     value={fieldSelected && fieldSelected.email}
                 />
-               <TextField
-                  type="file"
-                  sx={cssTextField}
-                  label="Avatar"
-                  name="img"
-                  onChange={(e) => {setImage(e.target.files[0])}}
-                  //value={fieldSelected && fieldSelected.img}
-                  defaultValue={fieldSelected && fieldSelected.img}
-                    />
-                <Button onClick={(e)=>handleCapture(e)}>
+                <TextField
+                    type="file"
+                    sx={cssTextField}
+                    label="Avatar"
+                    name="img"
+                    onChange={(e) => { setImage(e.target.files[0]) }}
+                    //value={fieldSelected && fieldSelected.img}
+                    defaultValue={fieldSelected && fieldSelected.img}
+                />
+                <Button onClick={(e) => handleCapture(e)}>
                     push first for image
                 </Button>
                 <TextField
@@ -304,7 +302,7 @@ function Profile() {
                 <Button
                     // disabled={boole === false}
                     color="primary"
-                    onClick={() => {pushNewData()}}
+                    onClick={() => { pushNewData() }}
                 >
                     update
                 </Button>
@@ -351,7 +349,8 @@ function Profile() {
 
     let ratings = User.reviews?.map(r => r.rating)
     let ratingSum = ratings?.reduce((r, t) => {
-        return  t+r},0)
+        return t + r
+    }, 0)
     let ratingAvg = ratingSum / ratings?.length
 
 
@@ -609,23 +608,23 @@ function Profile() {
                                             variant="subtitle1"
                                             component="div"
                                         >
-                                            {ratingAvg ? `avg ${ratingAvg}` : `avg 0`} 
+                                            {ratingAvg ? `avg ${ratingAvg}` : `avg 0`}
                                         </Typography>
-                                        <GradeIcon sx={{color: "yellow", fontSize: "30px", mt:1}} />
+                                        <GradeIcon sx={{ color: "yellow", fontSize: "30px", mt: 1 }} />
                                     </Stack>
-                                        <Typography
-                                            sx={{
-                                                color: "#DADADA",
-                                                fontSize: "1.7rem",
-                                                fontFamily: "monospace",
-                                                mb:4
-                                            }}
-                                            gutterBottom
-                                            variant="subtitle1"
-                                            component="div"
-                                        >
-                                            rating granted
-                                        </Typography>
+                                    <Typography
+                                        sx={{
+                                            color: "#DADADA",
+                                            fontSize: "1.7rem",
+                                            fontFamily: "monospace",
+                                            mb: 4
+                                        }}
+                                        gutterBottom
+                                        variant="subtitle1"
+                                        component="div"
+                                    >
+                                        rating granted
+                                    </Typography>
                                     <Typography
                                         sx={{
                                             color: "#DADADA",
@@ -929,7 +928,7 @@ function Profile() {
                                                         </Typography>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <GradeIcon sx={{ml: -3,fontSize:"35px", color: "yellow"}} />
+                                                        <GradeIcon sx={{ ml: -3, fontSize: "35px", color: "yellow" }} />
                                                     </TableCell>
                                                     <TableCell>
                                                         <Typography
@@ -1096,29 +1095,29 @@ function Profile() {
                             }}
                         >
                             <div className={styles.carruselito}>
-                                <Swiper 
+                                <Swiper
                                     modules={[Navigation]}
-                                    navigation= {true}
+                                    navigation={true}
                                     slidesPerView={4}
                                     slidesPerGroup={4}
                                 >
-                                    
-                                        {Favorites?.map((l, i) => {
-                                            return (
-                                                <SwiperSlide>
-                                                    <div className={styles.slide_container}>
-                                                        <CardBook
-                                                            name={l.title}
-                                                            id={l.isbn13}
-                                                            authors={l.authors}
-                                                            img={l.image}
-                                                            price={l.price}
-                                                            key={i}
-                                                        />
-                                                    </div>
-                                                </SwiperSlide>
-                                            );
-                                        })}
+
+                                    {Favorites?.map((l, i) => {
+                                        return (
+                                            <SwiperSlide>
+                                                <div className={styles.slide_container}>
+                                                    <CardBook
+                                                        name={l.title}
+                                                        id={l.isbn13}
+                                                        authors={l.authors}
+                                                        img={l.image}
+                                                        price={l.price}
+                                                        key={i}
+                                                    />
+                                                </div>
+                                            </SwiperSlide>
+                                        );
+                                    })}
                                 </Swiper>
                             </div>
                         </AccordionDetails>

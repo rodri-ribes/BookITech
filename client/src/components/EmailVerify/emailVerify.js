@@ -15,7 +15,6 @@ const EmailVerify = () => {
 			try {
 				const url = `http://localhost:3001/verify/${param.id}/${param.token}`;
 				const { data } = await axios.get(url);
-				console.log(data);
 				setValidUrl(true);
 			} catch (error) {
 				console.log(error);
@@ -30,9 +29,9 @@ const EmailVerify = () => {
 			{validUrl ? (
 				<div className={styles.container}>
 					<img src={success} alt="success_img" className={styles.success_img} />
-					<Typography sx={{fontFamily:'monospace', fontSize:'1.5rem', color: 'green', fontWeight:'800', mt:2, mb: 2}}>Email verified successfully</Typography>
+					<Typography sx={{ fontFamily: 'monospace', fontSize: '1.5rem', color: 'green', fontWeight: '800', mt: 2, mb: 2 }}>Email verified successfully</Typography>
 					<Link to="/signin">
-					<button type='submit' className={styles.Container__Button}>SignIn</button>
+						<button type='submit' className={styles.Container__Button}>SignIn</button>
 					</Link>
 				</div>
 			) : (

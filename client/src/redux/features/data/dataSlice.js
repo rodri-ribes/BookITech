@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BsNutFill } from "react-icons/bs";
-import {Alert} from 'react-st-modal'
+import { Alert } from 'react-st-modal'
 const { REACT_APP_API } = process.env;
 
 export const dataSlice = createSlice({
@@ -123,7 +123,7 @@ export const dataSlice = createSlice({
                             return Number(b.price.slice(1)) - Number(a.price.slice(1))
                         });
                     if (JSON.stringify(state.MinToMax) === JSON.stringify(min)) {
-                        console.log('holaaaaMin')
+
                         filterAZ = copiABC.sort((a, b) => {
                             if (a.title > b.title) {
                                 return 1;
@@ -138,7 +138,7 @@ export const dataSlice = createSlice({
                             })
                     }
                     else if (JSON.stringify(state.MinToMax) === JSON.stringify(max)) {
-                        console.log('Holaaa max')
+
                         filterAZ = copiABC.sort((a, b) => {
                             if (a.title > b.title) {
                                 return 1;
@@ -442,7 +442,7 @@ export const dataSlice = createSlice({
         },
         addFunctionClean: (state, actions) => {
             state.cleanSearch = actions.payload
-        }, 
+        },
         CleanSearchTitle: (state, actions) => {
             state.nameSearch = '';
         }
@@ -614,11 +614,11 @@ export const Vaciar = () => async (dispatch) => {
 };
 export const vaciarFavs = () => async (dispatch) => {
     dispatch(vaciarFav())
-    console.log("putBook")
+
 }
 export const UpdateComment = (id, payload) => async (dispatch) => {
     try {
-        console.log("payload", id, payload);
+
         const response = await axios.put(
             REACT_APP_API + `/comments/${id}`,
             payload
@@ -635,7 +635,7 @@ export const deleteBook = (id) => async (dispatch) => {
         let success = await axios.put(
             `${REACT_APP_API}/books/delist/${id}`
         );
-        console.log(success);
+
         if (success) dispatch(delistBook());
     } catch (error) {
         console.log(error);
@@ -647,7 +647,7 @@ export const updateBook = (payload) => async (dispatch) => {
         let success = await axios.put(
             `${REACT_APP_API}/books/${payload.id}`, { ...payload, delisted: false }
         );
-        console.log(success);
+
         if (success) dispatch(updateBook());
     } catch (error) {
         console.log(error);
@@ -659,7 +659,6 @@ export const createBook = (payload) => async (dispatch) => {
         let success = await axios.post(
             `${REACT_APP_API}/books/`, { ...payload }
         );
-        console.log(success);
         if (success) dispatch(newBook());
     } catch (error) {
         console.log(error);
@@ -672,7 +671,7 @@ export const setId = (payload) => async (dispatch) => {
 export const getDataUser = (id) => async (dispatch) => {
     try {
         const res = await axios.get(REACT_APP_API + `/user/${id}`);
-        console.log(res.data);
+
         dispatch(dataUser(res.data));
     } catch (error) {
         console.log(error);
@@ -681,7 +680,7 @@ export const getDataUser = (id) => async (dispatch) => {
 
 export const updateUserdata = (id, payload) => async (dispatch) => {
     try {
-        console.log(payload);
+
         const res = await axios.put(REACT_APP_API + `/user/${id}`, payload);
         dispatch(dataUser(res.data));
     } catch (error) {
@@ -690,7 +689,7 @@ export const updateUserdata = (id, payload) => async (dispatch) => {
 }
 export const UpdatePass = (id, payload) => async (dispatch) => {
     try {
-        console.log(payload);
+
         const res = await axios.put(REACT_APP_API + `/user/change/${id}`, payload)
         alert("Password changed successfully")
     }
@@ -702,7 +701,7 @@ export const UpdatePass = (id, payload) => async (dispatch) => {
 export const getCartUser = (idUser) => async (dispatch) => {
     try {
         let res = await axios.get(REACT_APP_API + '/cart/' + idUser)
-        // console.log(res.data[0].cart)
+
         dispatch(contadorCart(res.data[0].cart))
     } catch (error) {
         console.log(error);
@@ -737,6 +736,6 @@ export const addFunctionCleans = (fnc) => (dispatch) => {
     dispatch(addFunctionClean(fnc))
 }
 
-export const cleanSearchTitle = () => (dispatch) =>{
+export const cleanSearchTitle = () => (dispatch) => {
     dispatch(CleanSearchTitle())
 }

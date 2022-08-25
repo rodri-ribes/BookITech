@@ -12,7 +12,7 @@ import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider, onAuthStateC
 import SpinnerSignUp from '../auxiliar/SpinnerSignUp/SipinnerSignUp'
 import { auth } from '../../firebase/index';
 
-const {REACT_APP_API} = process.env
+const { REACT_APP_API } = process.env
 
 
 
@@ -22,7 +22,7 @@ export default function SignUp() {
 
     const [loggeado, setloggeado] = useState(user || window.localStorage.getItem("user"))
     const [error, setError] = useState("");
-	const [msg, setMsg] = useState("");
+    const [msg, setMsg] = useState("");
 
     useEffect(() => {
         if (loggeado) {
@@ -114,23 +114,23 @@ export default function SignUp() {
             }}
             onSubmit={async (valores, { resetForm }) => {
                 setConfirm({ message: <SpinnerSignUp />, visible: true, error: null })
-                
+
                 let { name, email, password } = valores;
                 setConfirm({ message: <SpinnerSignUp />, visible: true, error: false })
-                
+
                 let fullName;
 
                 email = email.toLowerCase();
 
                 fullName = name.charAt(0).toUpperCase() + name.slice(1)
-                
-                console.log(fullName, email, password)
-                
+
+
+
                 try {
                     let resp = await axios.post(REACT_APP_API + `/signup`, {
                         fullName, email, password
                     })
-                   // window.localStorage.setItem("user", JSON.stringify(resp.data))
+                    // window.localStorage.setItem("user", JSON.stringify(resp.data))
                     //dispatch(getUser(resp.data))
                     setMsg(resp.message);
                     setConfirm({ message: "An Email was sent to your account, please verify to sign in", visible: true, error: false })
@@ -146,7 +146,7 @@ export default function SignUp() {
 
                 } catch (error) {
 
-                   
+
 
                     setConfirm({ message: error.response.data, visible: true, error: true })
                     setTimeout(() => {

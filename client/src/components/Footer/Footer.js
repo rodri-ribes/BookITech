@@ -7,7 +7,7 @@ import { Typography } from "@mui/material";
 const textLink = {
     textDecoration: "none",
     color: "#DADADA",
-    fontFamily:"monospace"
+    fontFamily: "monospace"
 };
 
 function Footer() {
@@ -20,9 +20,9 @@ function Footer() {
                     </div>
                     <div className={style.Social}>
                         <Link to="/about" style={textLink}>
-                            <Typography className={style.linkAbout}>
+                            <p className={style.linkAbout}>
                                 About
-                            </Typography>
+                            </p>
                         </Link>
                         <div>
                             <a
