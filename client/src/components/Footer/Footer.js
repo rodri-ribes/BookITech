@@ -20,9 +20,9 @@ function Footer() {
                     </div>
                     <div className={style.Social}>
                         <Link to="/about" style={textLink}>
-                            <Typography className={style.linkAbout}>
+                            <p className={style.linkAbout}>
                                 About
-                            </Typography>
+                            </p>
                         </Link>
                         <div>
                             <a
