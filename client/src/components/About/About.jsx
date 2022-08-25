@@ -18,7 +18,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 const data = [
     {
         avatar: "photo_2022-08-24_19-32-22.png",
-        name: "Rodri Apellido Apellido",
+        name: "Rodrigo Ribes",
         linkedin: "https://www.linkedin.com/in/rodrigo-ribes/",
         github: "https://github.com/rodri-ribes",
         portfolio: "https://rodrigoribes.netlify.app/",

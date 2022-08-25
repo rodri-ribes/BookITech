@@ -384,6 +384,10 @@ function Detail() {
 
   // window.location.href
   let url = window.location.origin
+
+  const handleClick =()=>{
+    main()
+  }
   return (
     <div className={style.Container}>
       {details ?
@@ -561,10 +565,7 @@ function Detail() {
                         comment={comment}
                         error={error}
                       />
-                      {details.comments.slice(
-                        (pagina - 1) * porPagina,
-                        (pagina - 1) * porPagina + porPagina
-                      ).reverse().map(c => {
+                      {details.comments.slice().reverse().map(c => {
                         return (
                           <CardComment
                             name={c.user[2]}
@@ -579,17 +580,7 @@ function Detail() {
                           />
                         )
                       })}
-                      <div className={style.Container__Centrar}>
-                        {details.comments.length > 5 ?
-                          <Paginacion
-                            pagina={pagina}
-                            setPagina={setPagina}
-                            maximo={maximo}
-                          />
-                          :
-                          null
-                        }
-                      </div>
+                    
                     </div>
                   </div>
                 </div>
@@ -609,7 +600,7 @@ function Detail() {
                     <div className={style.Container__Separador} />
                     <div className={style.Container__Content__Acitivity__Details}>
                       {
-                        details.comments.map(c => {
+                        details.comments.slice().reverse().map(c => {
                           return (
                             <CardComment
                               name={c.user[2]}
@@ -651,14 +642,14 @@ function Detail() {
                 {theme.length > 0 ?
                   theme.slice(1, 6).map(c => {
                     return (
-                      <a href={`/book/${c.isbn13}`} className={style.Container__BarRight__Apart__Container__Card} >
+                      <NavLink onClick={handleClick} to={`/book/${c.isbn13}`} className={style.Container__BarRight__Apart__Container__Card} >
                         <img src={c.image} alt={c.title} />
                         <div className={style.Container__BarRight__Apart__Container__Card__info}>
                           <h3>{c.title.charAt(0).toUpperCase() + c.title.slice(1)}</h3>
                           <h4>Author: {c.authors.charAt(0).toUpperCase() + c.authors.slice(1)}</h4>
                           <p>{c.subtitle.charAt(0).toUpperCase() + c.subtitle.slice(1)}</p>
                         </div>
-                      </a>
+                      </NavLink>
                     )
                   })
                   :
