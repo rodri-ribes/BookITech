@@ -86,7 +86,6 @@ function NavBar({ user, setUser }) {
     //     }
     // }, [setSizeNav]);
     const setCleanInput = () =>{
-        console.log('asdasdasd')
         cleanSearch('')
         dispatch(cleanSearchTitle())
     }
@@ -103,7 +102,7 @@ function NavBar({ user, setUser }) {
     };
 
     const handleCloseUserMenu = () => {
-        if (window.location.pathname !== '/search') {
+        if (window.location.pathname !== '/Search') {
             cleanSearch('')
             dispatch(cleanSearchTitle())
         }
@@ -196,6 +195,7 @@ console.log(window.localStorage.getItem("user"));
                                     horizontal: "left",
                                 }}
                                 open={Boolean(anchorElNav)}
+                                // onClose={handleCloseNavMenu}
                                 onClick={()=>{
                                     handleCloseNavMenu();
                                     setCleanInput();
@@ -219,6 +219,7 @@ console.log(window.localStorage.getItem("user"));
                                             return (
                                                 <MenuItem
                                                     key={page}
+                                                    // onClick={handleCloseNavMenu}
                                                     onClick={()=>{
                                                         handleCloseNavMenu();
                                                         setCleanInput();
@@ -372,11 +373,7 @@ console.log(window.localStorage.getItem("user"));
                                 aria-label="account of current user"
                                 aria-controls="menu-appbar"
                                 aria-haspopup="true"
-                                // onClick={handleOpenNavMenu}
-                                onClick={()=>{
-                                    handleCloseNavMenu();
-                                    setCleanInput();
-                                }}
+                                onClick={handleOpenNavMenu}
                                 color="inherit"
                                 sx={{ display: { md: "none" } }}
                             >
@@ -388,11 +385,7 @@ console.log(window.localStorage.getItem("user"));
                                 <Box sx={{ flexGrow: 0 }}>
                                     <Tooltip title="Open settings">
                                         <IconButton
-                                            // onClick={handleOpenUserMenu}
-                                            onClick={()=>{
-                                                handleCloseNavMenu();
-                                                setCleanInput();
-                                            }}
+                                            onClick={handleOpenUserMenu}
                                             sx={{ p: 0, mr: 1 }}
                                         >
                                             <Avatar
@@ -415,20 +408,12 @@ console.log(window.localStorage.getItem("user"));
                                             horizontal: "right",
                                         }}
                                         open={Boolean(anchorElUser)}
-                                        // onClose={handleCloseUserMenu}
-                                        onClick={()=>{
-                                            handleCloseNavMenu();
-                                            setCleanInput();
-                                        }}
+                                        onClose={handleCloseUserMenu}
                                     >
                                         {/* {settings.map((setting) => ( */}
                                         <MenuItem
                                             // key={setting}
-                                            // onClick={handleCloseUserMenu}
-                                            onClick={()=>{
-                                                handleCloseNavMenu();
-                                                setCleanInput();
-                                            }}
+                                            onClick={handleCloseUserMenu}
                                         >
                                             <Link
                                                 to="/profile"
@@ -440,11 +425,7 @@ console.log(window.localStorage.getItem("user"));
                                             </Link>
                                         </MenuItem>
                                         <MenuItem
-                                            // onClick={handleCloseUserMenu}
-                                            onClick={()=>{
-                                                handleCloseNavMenu();
-                                                setCleanInput();
-                                            }}
+                                            onClick={handleCloseUserMenu}
                                         >
                                             <Link
                                                 to="/admin"
@@ -456,11 +437,7 @@ console.log(window.localStorage.getItem("user"));
                                             </Link>
                                         </MenuItem>
                                         <MenuItem
-                                            // onClick={handleCloseUserMenu}
-                                            onClick={()=>{
-                                                handleCloseNavMenu();
-                                                setCleanInput();
-                                            }}
+                                            onClick={handleCloseUserMenu}
                                         >
                                             <Link
                                                 to="/search"
@@ -471,13 +448,7 @@ console.log(window.localStorage.getItem("user"));
                                                 </Typography>
                                             </Link>
                                         </MenuItem>
-                                        <MenuItem
-                                        //  onClick={handleCloseUserMenu}
-                                        onClick={()=>{
-                                            handleCloseNavMenu();
-                                            setCleanInput();
-                                        }}
-                                         >
+                                        <MenuItem onClick={handleCloseUserMenu}>
                                             <Link
                                                 to="/favorites"
                                                 style={textLink2}
@@ -487,13 +458,7 @@ console.log(window.localStorage.getItem("user"));
                                                 </Typography>
                                             </Link>
                                         </MenuItem>
-                                        <MenuItem 
-                                        // onClick={handleCloseUserMenu}
-                                        onClick={()=>{
-                                            handleCloseNavMenu();
-                                            setCleanInput();
-                                        }}
-                                        >
+                                        <MenuItem onClick={handleCloseUserMenu}>
                                             <Link
                                                 to="/"
                                                 style={textLink2}

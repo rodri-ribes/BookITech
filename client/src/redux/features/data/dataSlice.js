@@ -30,6 +30,7 @@ export const dataSlice = createSlice({
         CartUser: [],
         heart: [],
         cleanSearch: null,
+        PutSetInput:null,
 
     },
     reducers: {
@@ -445,7 +446,10 @@ export const dataSlice = createSlice({
         }, 
         CleanSearchTitle: (state, actions) => {
             state.nameSearch = '';
-        }
+        },
+        PutSetInput:(state, actions)=>{
+            state.PutSetInput= actions.payload
+        },
     },
 });
 
@@ -487,6 +491,7 @@ export const {
     vaciarCarritoDespDeLogin,
     addFunctionClean,
     CleanSearchTitle,
+    PutSetInput,
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -739,4 +744,8 @@ export const addFunctionCleans = (fnc) => (dispatch) => {
 
 export const cleanSearchTitle = () => (dispatch) =>{
     dispatch(CleanSearchTitle())
+}
+
+export const putSetInput = (fnc) => (dispatch) =>{
+    dispatch(PutSetInput(fnc))
 }
