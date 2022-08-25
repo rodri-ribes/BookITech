@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Carruselito from './Carousel/Carousel';
 import { getLibros } from '../../redux/features/data/dataSlice';
@@ -14,22 +14,63 @@ import img1 from './assets/imagen1.png'
 import img2 from './assets/imagen2.png'
 import img3 from './assets/imagen4.png'
 import img4 from './assets/imagen5.png'
+import axios from 'axios';
+const { REACT_APP_API } = process.env
 
 
 function Landing() {
-
-
-
-    let dispatch = useDispatch();
-    let books = useSelector((state) => state.data.books);
-    let loading = useSelector((state) => state.data.loading);
   
+  let dispatch = useDispatch();
+  let books = useSelector((state) => state.data.books);
+  let loading = useSelector((state) => state.data.loading);
+
+  //----------------- LOGICA DE LOS MAS VENDIDOS ------------------------
+  
+    const [ventas, setVentas] = useState(false)
+
+    async function main() {
+      let admin = "admin"
+      try {
+          let data = await axios.get(REACT_APP_API + `/user/admin/${admin}`);
+          setVentas(data.data)
+      } catch (error) {
+          console.log(error)
+      }
+  }
+  
+  useEffect(() => {
+      main()
+  }, [])
+
+  const [best, setBest] = useState(false)
+
+  let filtrado = []
+  let filtrado2 = []
+
+  if(ventas){
+    ventas.filter(c => {
+      if(c.buy.length > 0){
+          c.buy.forEach(f => {
+            filtrado.push(f.isbn13)
+          })
+      }
+    })
+    filtrado2 = [...new Set(filtrado)] 
+  }
+  
+  useEffect(() => { 
+    setBest(books.filter(c => {
+      return filtrado2.includes(c.isbn13)
+    }))
+}, [books])
+
+//-------------------------------------------------------------
+
   
   useEffect(() => {   
     dispatch(getLibros());
   }, [dispatch]);
   
-  let booksReduce2 = books.slice(15,30)
   let booksWithReviews = books.filter(b => b.reviews.length > 0)
 
 
@@ -39,10 +80,7 @@ function Landing() {
       return siguiente - previo
   })
 
-
-
-
-
+  
   return (
     <>
 
@@ -88,7 +126,7 @@ function Landing() {
 
   {
     loading ? <LoadingSlider/> :
-    <Carruselito books={booksReduce2}  title={'Best Sellers!'} />
+    <Carruselito books={best}  title={'Best Sellers!'} />
   }
    
 

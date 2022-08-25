@@ -35,8 +35,7 @@ const categories = [
     {
       id: 'Business',
       children: [
-        { id: 'Sales History', icon: <MonetizationOnIcon />, active: false },
-        { id: 'Analytics', icon: <QueryStatsIcon />, active: false },
+        { id: 'Sales History', icon: <MonetizationOnIcon />, active: false }
       ],
     },
   ];
@@ -77,7 +76,8 @@ const categories = [
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            paddingTop: '75px'
+            paddingTop: '75px',
+            zIndex: -0.5
           },
         }}
         variant="permanent"

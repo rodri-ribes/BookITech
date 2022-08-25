@@ -6,7 +6,7 @@ export default function Noresults() {
     const name = useSelector((state) => state.data.nameSearch)
   return (
     <div>
-        <p>No se han encontrado resultados para {name}...</p>
+        <p>No results for {name}...</p>
     </div>
   )
 }

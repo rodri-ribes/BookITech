@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Search from "../Search/Search";
 import CartShopping from "../CartShopping/CartShopping";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,14 +22,12 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import axios from 'axios';
 const { REACT_APP_API } = process.env;
+
 function NavBar({ user, setUser }) {
-    const drawerWidth = "17vh";
-
     const [click, setClick] = useState({});
-    const [render, setRender] = useState(false)
+    const [render, setRender] = useState(false);
 
-
-    const navigate=useNavigate()
+    const navigate = useNavigate();
 
     const changeClick = () => {
         setClick(!click);
@@ -42,7 +40,7 @@ function NavBar({ user, setUser }) {
     const logOut = () => {
         signOut(auth);
         window.localStorage.removeItem("user");
-        dispatch(vaciarFavs())
+        dispatch(vaciarFavs());
     };
 
     const handleLogout = async () => {
@@ -55,37 +53,15 @@ function NavBar({ user, setUser }) {
         }
     };
 
-    const pagesLog = ["Search", "Admin", "Favorites", "Profile"];
+    const pagesLog = ["Search", "Favorites", "Profile"];
     const pagesNoLog = ["SignIn", "SignUp"];
-    const pagesNoLog2 = ["SignIn", "SignUp", "Search", "Admin"]
-
+    const pagesNoLog2 = ["SignIn", "SignUp", "Search"];
+    const pagesAdmin = ["Search", "Admin", "Logout"];
 
     const settings = ["Profile", "Favorites", "Logout"];
 
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
-
-    // const [sizeNav, setSizeNav] = useState("");
-
-    // const sizeH = {
-    //     width: { sm: `calc(100% - ${drawerWidth}px)` },
-    //     ml: { sm: `${drawerWidth}px` },
-    //     backgroundColor: "#0f243b",
-    //     color: "#DADADA",
-    // };
-
-    // const sizeOthers = {
-    //     backgroundColor: "#0f243b",
-    //     color: "#DADADA",
-    // };
-
-    // useEffect(() => {
-    //     if (window.location.pathname === "/") {
-    //         setSizeNav(sizeH);
-    //     } else {
-    //         setSizeNav(sizeOthers);
-    //     }
-    // }, [setSizeNav]);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -105,14 +81,18 @@ function NavBar({ user, setUser }) {
     const textLink = {
         textDecoration: "none",
         color: "#DADADA",
-        fontFamily:"monospace"
+        fontFamily: "monospace",
     };
     const textLink2 = {
         textDecoration: "none",
         color: "#0a1929",
-        fontFamily:"monospace"
+        fontFamily: "monospace",
     };
 
+    const clickIcon = () => {
+        setRender(true);
+        cleanSearch("");
+    };
 
     const clickIcon = () =>{
         setRender(true)
@@ -123,9 +103,11 @@ function NavBar({ user, setUser }) {
     useEffect(()=>{
         if(render) {
             dispatch(getLibros())
+
         }
         setRender(false)
     },[render])
+    
     useEffect(() => {
         const getAvatar = async () => {
             let userId = JSON.parse(window.localStorage.getItem("user"));
@@ -140,6 +122,7 @@ function NavBar({ user, setUser }) {
         }
         getAvatar()
     },[avatar])
+    
     return (
         <>
             <AppBar
@@ -153,12 +136,19 @@ function NavBar({ user, setUser }) {
             >
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
-                        {/* <BookOnlineIcon
-                            sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}
-                        /> */}
                         <Link to="/" style={textLink}>
-                            <IconButton sx={{ display:{xs: "none", md: "flex"}, color: "#DADADA", mr: 2}}>
-                                <img src="/favicon.ico" alt="logo" width="40px" />
+                            <IconButton
+                                sx={{
+                                    display: { xs: "none", md: "flex" },
+                                    color: "#DADADA",
+                                    mr: 2,
+                                }}
+                            >
+                                <img
+                                    src="/favicon.ico"
+                                    alt="logo"
+                                    width="40px"
+                                />
                             </IconButton>
                         </Link>
                         <Link to="/" style={textLink}>
@@ -257,34 +247,21 @@ function NavBar({ user, setUser }) {
                                 })}
                             </Menu>
                         </Box>
-                        {/* <AdbIcon
-                            sx={{
-                                display: { xs: "flex", md: "none" },
-                                mr: 1,
-                            }}
-                        /> */}
 
                         <Link to="/" style={textLink}>
-                            <IconButton sx={{ display: {md: "none"}, color: "#DADADA", mr: 1 }}>
-                            <img src="/favicon.ico" alt="logo" width="40px" />
-                            </IconButton>
-                            {/* <Typography
-                                variant="h5"
-                                noWrap
-                                component="a"
+                            <IconButton
                                 sx={{
-                                    mr: 2,
-                                    display: { xs: "flex", sm: "none" },
-                                    flexGrow: 1,
-                                    fontFamily: "monospace",
-                                    fontWeight: 700,
-                                    letterSpacing: ".3rem",
-                                    color: "inherit",
-                                    textDecoration: "none",
+                                    display: { md: "none" },
+                                    color: "#DADADA",
+                                    mr: 1,
                                 }}
                             >
-                                BookITech
-                            </Typography> */}
+                                <img
+                                    src="/favicon.ico"
+                                    alt="logo"
+                                    width="40px"
+                                />
+                            </IconButton>
                         </Link>
                         <Box
                             sx={{
@@ -319,6 +296,16 @@ function NavBar({ user, setUser }) {
                                                 </Link>
                                             </Button>
                                         );
+                                    } else if (userr.rol === "admin") {
+                                        <MenuItem onClick={handleCloseNavMenu}>
+                                            <Link to="/admin" style={textLink2}>
+                                                <Typography
+                                                    textAlign={"center"}
+                                                >
+                                                    Admin
+                                                </Typography>
+                                            </Link>
+                                        </MenuItem>;
                                     }
                                 } else {
                                     if (
@@ -395,11 +382,7 @@ function NavBar({ user, setUser }) {
                                         open={Boolean(anchorElUser)}
                                         onClose={handleCloseUserMenu}
                                     >
-                                        {/* {settings.map((setting) => ( */}
-                                        <MenuItem
-                                            // key={setting}
-                                            onClick={handleCloseUserMenu}
-                                        >
+                                        <MenuItem onClick={handleCloseUserMenu}>
                                             <Link
                                                 to="/profile"
                                                 style={textLink2}
@@ -409,21 +392,14 @@ function NavBar({ user, setUser }) {
                                                 </Typography>
                                             </Link>
                                         </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseUserMenu}
-                                        >
-                                            <Link
-                                                to="/admin"
-                                                style={textLink2}
-                                            >
+                                        <MenuItem onClick={handleCloseUserMenu}>
+                                            <Link to="/admin" style={textLink2}>
                                                 <Typography textAlign="center">
                                                     Admin
                                                 </Typography>
                                             </Link>
                                         </MenuItem>
-                                        <MenuItem
-                                            onClick={handleCloseUserMenu}
-                                        >
+                                        <MenuItem onClick={handleCloseUserMenu}>
                                             <Link
                                                 to="/search"
                                                 style={textLink2}
@@ -454,7 +430,6 @@ function NavBar({ user, setUser }) {
                                                 </Typography>
                                             </Link>
                                         </MenuItem>
-                                        {/* ))} */}
                                     </Menu>
                                 </Box>
                             </>
