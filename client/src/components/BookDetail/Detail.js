@@ -384,6 +384,10 @@ function Detail() {
 
   // window.location.href
   let url = window.location.origin
+
+  const handleClick =()=>{
+    main()
+  }
   return (
     <div className={style.Container}>
       {details ?
@@ -651,14 +655,14 @@ function Detail() {
                 {theme.length > 0 ?
                   theme.slice(1, 6).map(c => {
                     return (
-                      <a href={`/book/${c.isbn13}`} className={style.Container__BarRight__Apart__Container__Card} >
+                      <NavLink onClick={handleClick} to={`/book/${c.isbn13}`} className={style.Container__BarRight__Apart__Container__Card} >
                         <img src={c.image} alt={c.title} />
                         <div className={style.Container__BarRight__Apart__Container__Card__info}>
                           <h3>{c.title.charAt(0).toUpperCase() + c.title.slice(1)}</h3>
                           <h4>Author: {c.authors.charAt(0).toUpperCase() + c.authors.slice(1)}</h4>
                           <p>{c.subtitle.charAt(0).toUpperCase() + c.subtitle.slice(1)}</p>
                         </div>
-                      </a>
+                      </NavLink>
                     )
                   })
                   :

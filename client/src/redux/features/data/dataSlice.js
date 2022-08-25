@@ -29,6 +29,7 @@ export const dataSlice = createSlice({
         dataUser: [],
         CartUser: [],
         heart: [],
+        guarda:false,
         cleanSearch: null,
         PutSetInput:null,
 
@@ -450,6 +451,12 @@ export const dataSlice = createSlice({
         PutSetInput:(state, actions)=>{
             state.PutSetInput= actions.payload
         },
+        dataPorongosa:(state, actions)=>{
+            state.guarda= actions.payload
+        },
+        VaciarImg:(state, actions)=>{
+            state.dataUser=[]
+        }
     },
 });
 
@@ -472,6 +479,7 @@ export const {
     addUserID,
     vaciarCommets,
     vaciarFav,
+    dataPorongosa,
     delistBook,
     changeDashboardState,
     putBook,
@@ -492,6 +500,7 @@ export const {
     addFunctionClean,
     CleanSearchTitle,
     PutSetInput,
+    VaciarImg
 } = dataSlice.actions;
 
 //Aca exportamos el dataSlice para tenerlo en la carpeta store, index.js
@@ -748,4 +757,10 @@ export const cleanSearchTitle = () => (dispatch) =>{
 
 export const putSetInput = (fnc) => (dispatch) =>{
     dispatch(PutSetInput(fnc))
+}
+export const setPoronga =(data)=> async (dispatch) => {
+    dispatch(dataPorongosa(data))
+}
+export const vaciarImg=()=> async (dispatch) => {
+    dispatch(VaciarImg())
 }

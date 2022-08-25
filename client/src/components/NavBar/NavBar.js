@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Search from "../Search/Search";
 import CartShopping from "../CartShopping/CartShopping";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser,vaciarFavs,getLibros, cleanSearchTitle } from "../../redux/features/data/dataSlice";
+import { getUser,vaciarFavs,getLibros, cleanSearchTitle,getDataUser,setPoronga, VaciarImg } from "../../redux/features/data/dataSlice";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/index";
 import AppBar from "@mui/material/AppBar";
@@ -34,6 +34,9 @@ function NavBar({ user, setUser }) {
     };
 
     let userr = useSelector((state) => state.data.user);
+    let userrr = useSelector((state) => state.data.dataUser);
+    let data = useSelector((state) => state.data.guarda)
+    
     let cleanSearch = useSelector((state) => state.data.cleanSearch);
     let dispatch = useDispatch();
     let [avatar,setAvatar] = useState(false)
@@ -41,11 +44,13 @@ function NavBar({ user, setUser }) {
         signOut(auth);
         window.localStorage.removeItem("user");
         dispatch(vaciarFavs());
+        dispatch(VaciarImg())
     };
 
     const handleLogout = async () => {
         window.localStorage.removeItem("user");
         dispatch(getUser(null));
+        
         try {
             await logOut();
         } catch (error) {
@@ -121,10 +126,6 @@ function NavBar({ user, setUser }) {
         fontFamily: "monospace",
     };
 
-    const clickIcon = () => {
-        setRender(true);
-        cleanSearch("");
-    };
 
     const clickIcon = () =>{
         setRender(true)
@@ -135,25 +136,28 @@ function NavBar({ user, setUser }) {
     useEffect(()=>{
         if(render) {
             dispatch(getLibros())
-
         }
         setRender(false)
     },[render])
     
-    useEffect(() => {
-        const getAvatar = async () => {
-            let userId = JSON.parse(window.localStorage.getItem("user"));
-            // console.log(userId);
-            try {
-                let data = await axios.get(REACT_APP_API + `/user/${userId.id}`);
-                // console.log(data.data);
-                setAvatar(data.data);
-            } catch (error) {
-                console.log(error);
-            }
+    const getAvatar = async () => {
+        let auxUser = JSON.parse(window.localStorage.getItem("user"));
+        let idUser = auxUser?.id
+        // console.log(userId);
+        try {
+            dispatch(getDataUser(idUser))
+            //let data = await axios.get(REACT_APP_API + `/user/${userId.id}`);
+            // console.log(data.data);
+            //setAvatar(data.data);
+        } catch (error) {
+            console.log(error);
         }
-        getAvatar()
-    },[avatar])
+    }
+    useEffect(() => {
+            getAvatar() 
+            dispatch(setPoronga(false))  
+    },[render,data])
+    
     
     return (
         <>
@@ -175,6 +179,7 @@ function NavBar({ user, setUser }) {
                                     color: "#DADADA",
                                     mr: 2,
                                 }}
+                                onClick={() => clickIcon()}
                             >
                                 <img
                                     src="/favicon.ico"
@@ -344,16 +349,6 @@ function NavBar({ user, setUser }) {
                                                 </Link>
                                             </Button>
                                         );
-                                    } else if (userr.rol === "admin") {
-                                        <MenuItem onClick={handleCloseNavMenu}>
-                                            <Link to="/admin" style={textLink2}>
-                                                <Typography
-                                                    textAlign={"center"}
-                                                >
-                                                    Admin
-                                                </Typography>
-                                            </Link>
-                                        </MenuItem>;
                                     }
                                 } else {
                                     if (
@@ -413,8 +408,8 @@ function NavBar({ user, setUser }) {
                                         >
                                             <Avatar
                                                 alt="Avatar"
-                                                src={avatar?.img ||
-                                                    "https://avataaars.io/?avatarStyle=Circle&topType=Eyepatch&facialHairType=BeardMagestic&clotheType=BlazerShirt&eyeType=WinkWacky&eyebrowType=RaisedExcitedNatural&mouthType=Serious&skinColor=Tanned" }
+                                                //"https://avataaars.io/?avatarStyle=Circle&topType=Eyepatch&facialHairType=BeardMagestic&clotheType=BlazerShirt&eyeType=WinkWacky&eyebrowType=RaisedExcitedNatural&mouthType=Serious&skinColor=Tanned"
+                                                src={userrr?.img  }
                                             />
                                         </IconButton>
                                     </Tooltip>
@@ -444,13 +439,15 @@ function NavBar({ user, setUser }) {
                                                 </Typography>
                                             </Link>
                                         </MenuItem>
-                                        <MenuItem onClick={handleCloseUserMenu}>
-                                            <Link to="/admin" style={textLink2}>
-                                                <Typography textAlign="center">
-                                                    Admin
-                                                </Typography>
-                                            </Link>
-                                        </MenuItem>
+                                    { userrr?.rol === "admin" ? 
+                                    <MenuItem onClick={handleCloseUserMenu}>
+                                        <Link to="/admin" style={textLink2}>
+                                            <Typography textAlign="center">
+                                                Admin
+                                            </Typography>
+                                        </Link>
+                                    </MenuItem> : null}
+                                        
                                         <MenuItem onClick={handleCloseUserMenu}>
                                             <Link
                                                 to="/search"

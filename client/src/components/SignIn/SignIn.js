@@ -5,7 +5,7 @@ import { Formik, Field, ErrorMessage, Form } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
-import { getLibros, getUser, GetHeart, getFav } from '../../redux/features/data/dataSlice';
+import { getLibros, getUser, GetHeart, getFav, getDataUser } from '../../redux/features/data/dataSlice';
 import { UserAuth } from '../../firebase/AuthContext';
 import { FacebookLoginButton, GithubLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 import { signInWithPopup, FacebookAuthProvider, GithubAuthProvider } from 'firebase/auth'
@@ -104,6 +104,7 @@ export default function SignIn() {
                     dispatch(getUser(resp.data))
                     
                     setConfirm({ message: "You logged in successfully", visible: true, error: false })
+                    dispatch(getDataUser(resp.data.id))
                     dispatch(GetHeart(resp.data.email))
                     dispatch(getFav(resp.data.email))
                     setTimeout(() => {
