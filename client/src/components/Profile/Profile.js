@@ -35,6 +35,7 @@ import {
     updateUserdata,
     UpdatePass,
     getFav,
+    setPoronga
 } from "../../redux/features/data/dataSlice";
 import axios from "axios";
 import Spinner from "../auxiliar/Spinner/Spinner";
@@ -47,14 +48,14 @@ function Profile() {
     let dispatch = useDispatch();
     let Favo = useSelector((state) => state.data.Favo);
     let Boooks = useSelector((state) => state.data.books);
+    let data = useSelector((state) => state.data.guarda)
     let Favorites = Favo?.map((l) => l.book);
     var favLength = Favo.length;
     var leftConstraints = favLength * -100;
     const [expanded, setExpanded] = useState(false);
-
+    
     const [User, setUser] = useState(false);
     const [text, setText] = useState("");
-
     const [updateData, setUpdateData] = useState();
     const [passChange, setPassChange] = useState();
     const [modalUpdate, setModalUpdate] = useState(false);
@@ -98,7 +99,7 @@ function Profile() {
     useEffect(() => {
         getdata();
         idUser();
-    }, [updateData]);
+    }, [updateData,data]);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
@@ -154,6 +155,7 @@ function Profile() {
         }));
         openCloseModal();
         dispatch(updateUserdata(User._id, fieldSelected));
+        dispatch(setPoronga(true))
     };
     const pushNewPass = () => {
         setPassChange((prevState) => ({
@@ -364,7 +366,6 @@ function Profile() {
                     <Grid container spacing={8}>
                         <Grid item>
                             <br /> <br />
-                            <ButtonBase>
                                 <Avatar
                                     alt="avatar"
                                     src={
@@ -373,7 +374,6 @@ function Profile() {
                                     }
                                     sx={{ width: 250, height: 250 }}
                                 />
-                            </ButtonBase>
                             {/* pushNewImg(e); */}
                         </Grid>
                         <Grid item xs={8} sm container>
