@@ -1,5 +1,6 @@
 import {
     Avatar,
+    ButtonBase,
     Container,
     Grid,
     IconButton,
@@ -16,28 +17,32 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 
 const data = [
     {
-        avatar: "Rodri",
+        avatar: "photo_2022-08-24_19-32-22.png",
         name: "Rodri Apellido Apellido",
-        linkedin: "https://www.google.com",
-        github: "",
+        linkedin: "https://www.linkedin.com/in/rodrigo-ribes/",
+        github: "https://github.com/rodri-ribes",
+        portfolio: "https://rodrigoribes.netlify.app/",
     },
     {
-        avatar: "Pablo",
+        avatar: "photo_2022-08-24_19-54-46.png",
         name: "Pablo David Clavijo",
         linkedin: "http://linkedin.com/in/pablo-david-clavijo-7653a610a/",
         github: "http://github.com/pablodclavijo",
+        portfolio: "",
     },
     {
         avatar: "photo_2022-08-24_18-37-45.png",
         name: "Sebastian Esteban Torreiro",
         linkedin: "https://www.linkedin.com/in/sebastian-torreiro-a90bb6181/",
         github: "https://github.com/SebastianTorreiro",
+        portfolio: "",
     },
     {
-        avatar: "Lucho",
+        avatar: "photo_2022-08-24_18-49-28.png",
         name: "Luciano Ezequiel Diaz Ocampo",
         linkedin: "https://www.linkedin.com/in/luciano-diaz-ocampo/",
         github: "https://github.com/LuchoD99",
+        portfolio: "",
     },
 ];
 
@@ -47,18 +52,21 @@ const data2 = [
         name: "Felipe Gómez Mufdi",
         linkedin: "https://www.linkedin.com/in/mufdidev/",
         github: "https://github.com/Mufdi",
+        portfolio: "",
     },
     {
-        avatar: "Jorge",
-        name: "Jorge Apellido Apellido",
-        linkedin: "",
-        github: "",
+        avatar: "photo_2022-08-24_19-50-48.png",
+        name: "Jorge Ignacio Guazzini Yáñez",
+        linkedin: "https://www.linkedin.com/in/jguazzini/",
+        github: "https://github.com/JGuazzini",
+        portfolio: "",
     },
     {
         avatar: "photo_2022-08-24_17-52-20.png",
         name: "Sergio Yepes Gualteros",
         linkedin: "https://www.linkedin.com/in/sergio-yepes-2b7158214/",
         github: "https://github.com/SergioYepes",
+        portfolio: "",
     },
 ];
 
@@ -145,15 +153,24 @@ function About() {
                 </Grid>
             </Grid>
             <Grid>
-                <Typography sx={{ mt: 10 }}>
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum."
+                <Typography sx={{ mt: 7, ml:{sx: 0, sm:5, md:10}, mr:{sx: 0, sm:5, md:5}, fontWeight:500, fontSize:"1.1rem" }}>
+                    This project has been carried out thanks to the effort and
+                    dedication of this great team of technology enthusiasts who,
+                    from day one, have focused our work on the end customer.
+                    <br /><br />
+                    BookITech was born from the need to find specific books with
+                    IT themes. Today it is very difficult to find similar sites
+                    and the ones that exist do not cover everything that a user
+                    may consider when facing this search. For this reason, we
+                    incorporate specific features focused on achieving better
+                    results, as well as the possibility of discovering new
+                    titles and technologies. 
+                    <br /><br />
+                    We deeply hope that BookITech is to
+                    your liking and that you see in us your solution to find
+                    that IT book you are looking for.
+                    <br /><br /><br />
+                    BookITech Team
                 </Typography>
             </Grid>
             <Grid sx={{ display: { xs: "grid", sm: "grid", md: "flex" } }}>
@@ -185,11 +202,15 @@ function About() {
                                             }}
                                         >
                                             <TableCell align="left">
-                                                <Avatar
-                                                    src={d.avatar}
-                                                    alt="avatar"
-                                                    sx={stylesAvatar}
-                                                />
+                                                <ButtonBase>
+                                                    <a href={d.portfolio}>
+                                                        <Avatar
+                                                            src={d.avatar}
+                                                            alt="avatar"
+                                                            sx={stylesAvatar}
+                                                        />
+                                                    </a>
+                                                </ButtonBase>
                                             </TableCell>
                                             <TableCell>
                                                 <Typography
