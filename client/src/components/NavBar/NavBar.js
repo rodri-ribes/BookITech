@@ -121,11 +121,6 @@ function NavBar({ user, setUser }) {
         fontFamily: "monospace",
     };
 
-    const clickIcon = () => {
-        setRender(true);
-        cleanSearch("");
-    };
-
     const clickIcon = () =>{
         setRender(true)
         cleanSearch('')
