@@ -47,7 +47,7 @@ useEffect(()=>{
     return (
         <React.Fragment>
           <CssBaseline />
-          <Container maxWidth='md' sx={{position: 'relative', display: 'flex'}} >
+          <Container maxWidth='md' sx={{position: 'relative', display: 'flex', marginLeft: '300px'}} >
             <Box sx={{ bgcolor: '#173A5E', minHeight: '75vh', width: '70vw', borderRadius: '7px'}}>
                 <div style={{ width:'95%', display: 'flex', justifyContent:'space-between', paddingTop:'10px', paddingBottom:'10px'}}>
                     <Typography sx={{margin: '20px'}} variant='h5'>Unreviewed comments: </Typography>

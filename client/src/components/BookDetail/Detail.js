@@ -205,7 +205,10 @@ function Detail() {
 
       setComment("")
       let data = await axios.get(REACT_APP_API + `/books/id/${id}`);
-      setDetails(data.data)
+      setDetails({
+        ...data.data,
+        comments: data.data.comments.filter(e => !e.flagged)
+      })
     } else {
       setError({
         error: "comment",
