@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector ,useDispatch, connect} from "react-redux"
 import {Card404} from "../404/Card404"
 import fav from "./Fav.module.css"
+import WithoutFav from './withoutFav/WithoutFav'
 //import CardBook from "./CardBook/CardBook"
 import CardBook from '../Home/CardBook/CardBook';
 import { Paginacion } from '../Home/Pagination/Pagination'
@@ -27,7 +28,7 @@ function Favorite() {
             </div>
 
             <div className={fav.Container__PanelCards} >
-                {
+                {Favorites.length === 0 ? <WithoutFav/> :
                     Favorites.slice(
                         (pagina - 1) * porPagina,
                         (pagina - 1) * porPagina + porPagina

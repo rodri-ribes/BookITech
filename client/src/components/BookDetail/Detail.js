@@ -565,10 +565,7 @@ function Detail() {
                         comment={comment}
                         error={error}
                       />
-                      {details.comments.slice(
-                        (pagina - 1) * porPagina,
-                        (pagina - 1) * porPagina + porPagina
-                      ).reverse().map(c => {
+                      {details.comments.slice().reverse().map(c => {
                         return (
                           <CardComment
                             name={c.user[2]}
@@ -583,17 +580,7 @@ function Detail() {
                           />
                         )
                       })}
-                      <div className={style.Container__Centrar}>
-                        {details.comments.length > 5 ?
-                          <Paginacion
-                            pagina={pagina}
-                            setPagina={setPagina}
-                            maximo={maximo}
-                          />
-                          :
-                          null
-                        }
-                      </div>
+                    
                     </div>
                   </div>
                 </div>
@@ -613,7 +600,7 @@ function Detail() {
                     <div className={style.Container__Separador} />
                     <div className={style.Container__Content__Acitivity__Details}>
                       {
-                        details.comments.map(c => {
+                        details.comments.slice().reverse().map(c => {
                           return (
                             <CardComment
                               name={c.user[2]}
