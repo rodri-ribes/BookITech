@@ -1,0 +1,53 @@
+.Container{
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%; */
+}
+
+.Container__Search{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 30%;
+    position: relative;
+    left: -20px;
+    top: -20px;
+    height: 50px;
+}
+
+.Container__PanelCards{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.Container__Pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.Container__Pagination_btns{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 200px;
+    outline: 1px solid blue;
+}
+
+.Container__Pagination_btns button{
+    padding: 5px 10px;
+}
+
+@media screen and (max-width: 968px){
+    .Container{
+        width: 90%;
+        margin: 0 auto;
+    }
+}

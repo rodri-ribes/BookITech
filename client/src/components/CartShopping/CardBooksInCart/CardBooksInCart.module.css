@@ -1,0 +1,81 @@
+.Container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    background-color: #0f243b ;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    padding: 0.5rem;
+    position: relative;
+}
+
+.Container__IMG{
+    width: 25%;
+}
+
+.Container__IMG img{
+    width: 100px;
+}
+
+.Container__Datos{
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    margin-left: 0.5rem;
+}
+
+.Container__Cross{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding-right: 0.5rem;
+    width: 10%;
+}
+
+.Container__Cross svg{
+    cursor: pointer;
+    color: white;
+}
+
+.Container__Datos_Name{
+    font-family: lucida sans;
+    font-weight: 600;
+}
+
+.Container__Datos_Subtitle{
+    font-family: arial;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.Container__Datos_Price{
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.Container__Datos_btns{
+    display: flex;
+    align-self: flex-end;
+    width: 60px;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 100px;
+    /* background-color: rgb(166, 166, 166); */
+}
+
+.Container__Datos_btns__btn{
+    color: white;
+    background-color: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.Container__Datos_btns p{
+    background-color: rgb(112, 112, 112);
+    padding: 0 0.2rem;
+    border-radius: 3px;
+    color: white;
+}

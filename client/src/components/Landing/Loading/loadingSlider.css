@@ -1,0 +1,9 @@
+.container-loading-slider{
+    display: flex;
+    gap: 90px;
+    margin-top: 140px;
+}
+.loadin-slider{
+    margin-right: 12px;
+    margin-left: 12px;
+}

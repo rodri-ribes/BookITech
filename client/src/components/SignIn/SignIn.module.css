@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Darker+Grotesque&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Livvic:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner:wght@500&display=swap');
+
+.ContainerForm{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+}
+
+
+.Container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    width: 400px;
+    border: 1px solid black;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.Container_Title{
+    font-family: 'Edu QLD Beginner', cursive;
+    align-self: center;
+    font-size: 2rem;
+    color: black;
+}
+
+.Container__Div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    margin: 1rem 0;
+}
+
+.Container__Div_Input{
+    padding: 5px 10px;
+    font-family: lucida sans;
+    outline: none;
+    background-color: transparent;
+    border-radius: 3px;
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+.Container__Div_Input::placeholder{
+    font-family: 'Darker Grotesque', sans-serif;
+    font-size: 1.2rem;
+    
+    color: black;
+}   
+
+.Container__Div_Error{
+    width: 100%;
+}
+
+.Container__Div_Error p {
+    padding: 3px 5px;
+    font-family: 'Livvic', sans-serif;
+    color: red;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.Container__Div_Sucess{
+    width: 100%;
+}
+
+.Container__Div_Sucess p {
+    padding: 3px 5px;
+    font-family: 'Livvic', sans-serif;
+    color: green;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.Container__Div_NotSucess{
+    width: 100%;
+}
+
+.Container__Div_NotSucess p {
+    padding: 3px 5px;
+    font-family: 'Livvic', sans-serif;
+    color: red;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.Container__Button{
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid black;
+    background-color: #0f243b;
+    color: white;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: all 1s;
+}
+
+.error_msg{
+    width: 370px;
+	padding: 15px;
+	margin: 5px 0;
+	font-size: 14px;
+	background-color: #f34646;
+	color: white;
+	border-radius: 5px;
+	text-align: center;
+}
+
+.Container__Register{
+    text-align: center;
+    margin-top: 0.5rem;
+    font-family: lucida sans;
+    text-decoration: none;
+    color: black;
+}
+
+.Container__Register_Link{
+    text-decoration: none;
+    color: blue;
+}
+
+.Container__Button:hover{
+    background-color: rgb(127, 3, 55);
+    color: white;
+}
+
+.Container__Button:active{
+    transform: scale(1.05);
+}
+
+.Container__Google{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+
+@media screen and (max-width: 968px){
+
+    .ContainerForm{
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
