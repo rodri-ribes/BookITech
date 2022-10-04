@@ -181,7 +181,7 @@ async function loginUser(req, res) {
                 token: ( await crypto).randomBytes(32).toString('hex')
             }).save();
           
-            const message = `localhost:3000/verify/${user.id}/${tokenMail.token}`;
+            const message = `https://bookitech-olive.vercel.app/verify/${user.id}/${tokenMail.token}`;
             await sendEmail(user.email, "Verify Email", message);
         }
 
@@ -241,7 +241,7 @@ async function createUser(req, res) {
                 token: ( await crypto).randomBytes(32).toString('hex')
             }).save();
           
-            const message = `localhost:3000/verify/${newUser.id}/${tokenMail.token}`;
+            const message = `https://bookitech-olive.vercel.app/verify/${newUser.id}/${tokenMail.token}`;
             await sendEmail(newUser.email, "Verify Email", message);
             
             res.send("An Email sent to your account please verify");
